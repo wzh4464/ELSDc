@@ -21,7 +21,8 @@
 # For that, uncomment the following line and replace `/usr/lib` with
 # the directory where the library is located.
 #LIB= -I/usr/lib
-OPT= -O3
+# OPT= -O3
+OPT= -g
 
 elsdc: main.c pgm.c svg.c elsdc.c gauss.c curve_grow.c polygon.c ring.c ellipse_fit.c rectangle.c iterator.c image.c lapack_wrapper.c misc.c 
 	cc $(OPT) $(LIB) -o $@ $^ -llapack -lm
