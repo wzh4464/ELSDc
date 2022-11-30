@@ -84,6 +84,7 @@ int main( int argc, char **argv )
   /* call detection procedure */
   ELSDc( in, &ell_count, &ell_out, &ell_labels, &poly_count, &poly_out, 
          &poly_labels, out );
+  free_PImageDouble(in);
 
   /* write results in ASCII */
   /* Ellipse file: each line contains 1 integer and 11 doubles in the form

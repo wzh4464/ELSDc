@@ -27,6 +27,7 @@
 #ifndef POLYGON_H
 #define POLYGON_H
 
+#include <stdio.h>
 #include "misc.h"
 #include "rectangle.h"
 
