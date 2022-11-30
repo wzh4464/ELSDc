@@ -26,9 +26,9 @@ OPT= -O3
 elsdc: main.c pgm.c svg.c elsdc.c gauss.c curve_grow.c polygon.c ring.c ellipse_fit.c rectangle.c iterator.c image.c lapack_wrapper.c misc.c
 	cc $(OPT) $(LIB) -o $@ $^ -llapack -lm
 
-shared: pgm.c svg.c elsdc.c gauss.c curve_grow.c polygon.c ring.c ellipse_fit.c rectangle.c iterator.c image.c lapack_wrapper.c misc.c
-	cc -c $(OPT) $(LIB) -fpic $^ -shared -llapack -lm
-	cc -shared -o libelsdc.so pgm.o svg.o elsdc.o gauss.o curve_grow.o polygon.o ring.o ellipse_fit.o rectangle.o iterator.o image.o lapack_wrapper.o misc.o
+shared: python_interface.c pgm.c svg.c elsdc.c gauss.c curve_grow.c polygon.c ring.c ellipse_fit.c rectangle.c iterator.c image.c lapack_wrapper.c misc.c
+	cc -c $(OPT) $(LIB) -fpic $^
+	cc -shared -o libelsdc.so python_interface.o pgm.o svg.o elsdc.o gauss.o curve_grow.o polygon.o ring.o ellipse_fit.o rectangle.o iterator.o image.o lapack_wrapper.o misc.o -llapack -lm
 
 clean:
 	rm elsdc
