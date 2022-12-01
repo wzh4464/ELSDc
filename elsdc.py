@@ -3,9 +3,14 @@ import time
 from typing import List
 import numpy as np
 import cv2
+import os
 
 
-elsdc = CDLL("./libelsdc.so")
+try:
+    elsdc = CDLL("./libelsdc.so")
+except OSError:
+    os.system("make shared")
+    elsdc = CDLL("./libelsdc.so")
 
 
 class _Ring(Structure):
