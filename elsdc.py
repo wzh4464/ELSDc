@@ -7,10 +7,10 @@ import os
 
 
 try:
-    elsdc = CDLL("./libelsdc.so")
+    elsdc = CDLL(os.path.join(os.path.dirname(os.path.realpath(__file__)), "libelsdc.so"))
 except OSError:
     os.system("make shared")
-    elsdc = CDLL("./libelsdc.so")
+    elsdc = CDLL(os.path.join(os.path.dirname(os.path.realpath(__file__)), "libelsdc.so"))
 
 
 class _Ring(Structure):
