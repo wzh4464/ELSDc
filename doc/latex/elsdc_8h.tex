@@ -1,0 +1,50 @@
+\doxysection{src/elsdc.h File Reference}
+\hypertarget{elsdc_8h}{}\label{elsdc_8h}\index{src/elsdc.h@{src/elsdc.h}}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{elsdc_8h_aa2aaa9b563acdbb2af4a8679f19f2426}{POLYGON}}~\textquotesingle{}p\textquotesingle{}
+\item 
+\#define \mbox{\hyperlink{elsdc_8h_a5e84628ccf5bc23ccfac181b077616ae}{CURVE}}~\textquotesingle{}c\textquotesingle{}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{elsdc_8h_a622977efb42238086935cbcd5e6704ee}{ELSDc}} (\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} in, int \texorpdfstring{$\ast$}{*}ell\+\_\+count, \mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}ell\+\_\+out, int \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}ell\+\_\+labels, int \texorpdfstring{$\ast$}{*}poly\+\_\+count, \mbox{\hyperlink{structPolygon}{Polygon}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}poly\+\_\+out, int \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}poly\+\_\+labels, \mbox{\hyperlink{image_8h_ad2f6828b30c727a557c8c201c2913f0f}{PImage\+Int}} out)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{elsdc_8h_a5e84628ccf5bc23ccfac181b077616ae}\label{elsdc_8h_a5e84628ccf5bc23ccfac181b077616ae} 
+\index{elsdc.h@{elsdc.h}!CURVE@{CURVE}}
+\index{CURVE@{CURVE}!elsdc.h@{elsdc.h}}
+\doxysubsubsection{\texorpdfstring{CURVE}{CURVE}}
+{\footnotesize\ttfamily \#define CURVE~\textquotesingle{}c\textquotesingle{}}
+
+
+
+Definition at line \mbox{\hyperlink{elsdc_8h_source_l00029}{29}} of file \mbox{\hyperlink{elsdc_8h_source}{elsdc.\+h}}.
+
+\Hypertarget{elsdc_8h_aa2aaa9b563acdbb2af4a8679f19f2426}\label{elsdc_8h_aa2aaa9b563acdbb2af4a8679f19f2426} 
+\index{elsdc.h@{elsdc.h}!POLYGON@{POLYGON}}
+\index{POLYGON@{POLYGON}!elsdc.h@{elsdc.h}}
+\doxysubsubsection{\texorpdfstring{POLYGON}{POLYGON}}
+{\footnotesize\ttfamily \#define POLYGON~\textquotesingle{}p\textquotesingle{}}
+
+
+
+Definition at line \mbox{\hyperlink{elsdc_8h_source_l00028}{28}} of file \mbox{\hyperlink{elsdc_8h_source}{elsdc.\+h}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{elsdc_8h_a622977efb42238086935cbcd5e6704ee}\label{elsdc_8h_a622977efb42238086935cbcd5e6704ee} 
+\index{elsdc.h@{elsdc.h}!ELSDc@{ELSDc}}
+\index{ELSDc@{ELSDc}!elsdc.h@{elsdc.h}}
+\doxysubsubsection{\texorpdfstring{ELSDc()}{ELSDc()}}
+{\footnotesize\ttfamily void ELSDc (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}}}]{in,  }\item[{int \texorpdfstring{$\ast$}{*}}]{ell\+\_\+count,  }\item[{\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{ell\+\_\+out,  }\item[{int \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{ell\+\_\+labels,  }\item[{int \texorpdfstring{$\ast$}{*}}]{poly\+\_\+count,  }\item[{\mbox{\hyperlink{structPolygon}{Polygon}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{poly\+\_\+out,  }\item[{int \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{poly\+\_\+labels,  }\item[{\mbox{\hyperlink{image_8h_ad2f6828b30c727a557c8c201c2913f0f}{PImage\+Int}}}]{out }\end{DoxyParamCaption})}
+
+Entry point in detector\textquotesingle{}s code. Gets as input an image, and returns two lists of geometric shapes\+: polygons and ellipses (circles are considered particular ellipses, and segments are particular polygons). 
+
+Definition at line \mbox{\hyperlink{elsdc_8c_source_l00780}{780}} of file \mbox{\hyperlink{elsdc_8c_source}{elsdc.\+c}}.
+

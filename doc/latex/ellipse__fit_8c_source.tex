@@ -1,0 +1,394 @@
+\doxysection{ellipse\+\_\+fit.\+c}
+\hypertarget{ellipse__fit_8c_source}{}\label{ellipse__fit_8c_source}\index{src/ellipse\_fit.c@{src/ellipse\_fit.c}}
+\mbox{\hyperlink{ellipse__fit_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00001}00001\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00002}00002\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00003}00003\ \textcolor{comment}{\ \ Copyright\ (c)\ 2012-\/2014\ viorica\ patraucean\ (vpatrauc@gmail.com)}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00004}00004\ \textcolor{comment}{\ \ }}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00005}00005\ \textcolor{comment}{\ \ This\ program\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00006}00006\ \textcolor{comment}{\ \ it\ under\ the\ terms\ of\ the\ GNU\ Affero\ General\ Public\ License\ as}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00007}00007\ \textcolor{comment}{\ \ published\ by\ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00008}00008\ \textcolor{comment}{\ \ License,\ or\ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00009}00009\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00010}00010\ \textcolor{comment}{\ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00011}00011\ \textcolor{comment}{\ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00012}00012\ \textcolor{comment}{\ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ See\ the}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00013}00013\ \textcolor{comment}{\ \ GNU\ Affero\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00014}00014\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00015}00015\ \textcolor{comment}{\ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ Affero\ General\ Public\ License}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00016}00016\ \textcolor{comment}{\ \ along\ with\ this\ program.\ If\ not,\ see\ <http://www.gnu.org/licenses/>.}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00017}00017\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00018}00018\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00019}00019\ \textcolor{comment}{\ \ ellipse\_fit.c\ -\/\ This\ file\ belongs\ to\ ELSDc\ project\ (Ellipse\ and\ Line\ Segment\ }}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00020}00020\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Detector\ with\ continuous\ validation).}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00021}00021\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ -\/\ It\ contains\ functions\ to\ normalize\ a\ set\ of\ points\ and\ to\ fit\ }}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00022}00022\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ an\ ellipse\ or\ a\ circle\ to\ these\ points.}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00023}00023\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00024}00024\ \textcolor{comment}{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00027}00027\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00028}00028\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00029}00029\ \textcolor{preprocessor}{\#include\ <math.h>}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00030}00030\ \textcolor{preprocessor}{\#include\ <float.h>}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00031}00031\ \textcolor{preprocessor}{\#include\ <stddef.h>}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00032}00032\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{misc_8h}{misc.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00033}00033\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{lapack__wrapper_8h}{lapack\_wrapper.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00034}00034\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{ellipse__fit_8h}{ellipse\_fit.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00035}00035\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00037}00037\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00041}00041\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ellipse2param(\ \textcolor{keywordtype}{double}\ *p,\ \textcolor{keywordtype}{double}\ *param)}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00042}00042\ \{}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00043}00043\ \ \ \textcolor{comment}{/*\ p\ =\ [\ a,\ \ \ \ \ 1/2*b,\ 1/2*d,\ \ \ }}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00044}00044\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ 1/2*b,\ \ \ \ \ c,\ 1/2*e,\ \ }}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00045}00045\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ 1/2*d,\ 1/2*e,\ f\ \ \ \ \ ];\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00046}00046\ \ \ \textcolor{keywordtype}{double}\ a,\ b,\ c,\ d,\ e,\ f;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00047}00047\ \ \ \textcolor{keywordtype}{double}\ thetarad,\ cost,\ sint,\ cos\_squared,\ sin\_squared,\ cos\_sin;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00048}00048\ \ \ \textcolor{keywordtype}{double}\ Ao,\ Au,\ Av,\ Auu,\ Avv;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00049}00049\ \ \ \textcolor{keywordtype}{double}\ tuCentre,\ tvCentre,\ wCentre,\ uCentre,\ vCentre,\ Ru,\ Rv;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00051}00051\ \ \ \textcolor{comment}{/*\ check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00052}00052\ \ \ \textcolor{keywordflow}{if}(\ p\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ellipse2param:\ null\ input\ ellipse\ matrix."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00053}00053\ \ \ \textcolor{keywordflow}{if}(\ param\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ellipse2param:\ output\ 'param'\ should\ be\ non-\/null"{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00054}00054\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00055}00055\ \ \ a\ =\ \ \ p[0];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00056}00056\ \ \ b\ =\ 2*p[1];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00057}00057\ \ \ c\ =\ \ \ p[4];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00058}00058\ \ \ d\ =\ 2*p[2];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00059}00059\ \ \ e\ =\ 2*p[5];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00060}00060\ \ \ f\ =\ \ \ p[8];\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00062}00062\ \ \ thetarad\ =\ 0.5*atan2(b,a-\/c);\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00063}00063\ \ \ cost\ =\ cos(thetarad);\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00064}00064\ \ \ sint\ =\ sin(thetarad);}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00065}00065\ \ \ sin\_squared\ =\ sint\ *\ sint;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00066}00066\ \ \ cos\_squared\ =\ cost\ *\ cost;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00067}00067\ \ \ cos\_sin\ =\ sint\ *\ cost;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00068}00068\ \ \ Ao\ \ =\ \ f;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00069}00069\ \ \ Au\ \ =\ \ d*cost\ +\ e*sint;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00070}00070\ \ \ Av\ \ =\ -\/d*sint\ +\ e*cost;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00071}00071\ \ \ Auu\ =\ a*cos\_squared\ +\ c*sin\_squared\ +\ b*cos\_sin;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00072}00072\ \ \ Avv\ =\ a*sin\_squared\ +\ c*cos\_squared\ -\/\ b*cos\_sin;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00074}00074\ \ \ \textcolor{keywordflow}{if}(\ (Auu\ ==\ 0)\ ||\ (Avv==0)\ )}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00075}00075\ \ \ \ \ \{\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00076}00076\ \ \ \ \ \ \ param[0]\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00077}00077\ \ \ \ \ \ \ param[1]\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00078}00078\ \ \ \ \ \ \ param[2]\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00079}00079\ \ \ \ \ \ \ param[3]\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00080}00080\ \ \ \ \ \ \ param[4]\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00081}00081\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00082}00082\ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00083}00083\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00084}00084\ \ \ \ \ \ \ tuCentre\ =\ -\/Au\ /\ (2.*Auu);}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00085}00085\ \ \ \ \ \ \ tvCentre\ =\ -\/Av\ /\ (2.*Avv);}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00086}00086\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00087}00087\ \ \ \ \ \ \ wCentre\ \ =\ \ Ao-\/Auu*tuCentre*tuCentre\ -\/\ Avv*tvCentre\ *\ tvCentre;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00088}00088\ \ \ \ \ \ \ uCentre\ \ =\ \ tuCentre*cost\ -\/\ tvCentre*sint;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00089}00089\ \ \ \ \ \ \ vCentre\ \ =\ \ tuCentre*sint\ +\ tvCentre*cost;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00090}00090\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00091}00091\ \ \ \ \ \ \ Ru\ =\ -\/wCentre\ /\ Auu;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00092}00092\ \ \ \ \ \ \ Rv\ =\ -\/wCentre\ /\ Avv;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00093}00093\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00094}00094\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ Ru>0\ )\ Ru\ =\ \ pow(\ Ru,0.5);}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00095}00095\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \ \ \ \ \ \ Ru\ =\ -\/pow(-\/Ru,0.5);}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00096}00096\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00097}00097\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ Rv>0\ )\ Rv\ =\ \ pow(\ Rv,0.5);}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00098}00098\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \ \ \ \ \ \ Rv\ =\ -\/pow(-\/Rv,0.5);}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00099}00099\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00100}00100\ \ \ \ \ \ \ param[0]\ =\ uCentre;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00101}00101\ \ \ \ \ \ \ param[1]\ =\ vCentre;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00102}00102\ \ \ \ \ \ \ param[2]\ =\ Ru;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00103}00103\ \ \ \ \ \ \ param[3]\ =\ Rv;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00104}00104\ \ \ \ \ \ \ param[4]\ =\ thetarad;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00105}00105\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00106}00106\ \}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00107}00107\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00108}00108\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00109}00109\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00116}00116\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ vgg\_conditioner\_from\_points(\ \textcolor{keywordtype}{double}\ *T,\ \mbox{\hyperlink{structPoint}{Point}}\ *reg,\ \textcolor{keywordtype}{int}\ reg\_size\ )}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00117}00117\ \{}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00118}00118\ \ \ \textcolor{keywordtype}{double}\ mx\ =\ 0.0,\ my\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00119}00119\ \ \ \textcolor{keywordtype}{double}\ qmean\ =\ 0.0,\ Qt\ =\ 0.0,\ val;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00120}00120\ \ \ \textcolor{keywordtype}{int}\ i;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00121}00121\ \ \ \textcolor{comment}{/*\ check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00122}00122\ \ \ \textcolor{keywordflow}{if}(\ reg\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}vgg\_conditioner\_from\_points:\ invalid\ points\ list."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00123}00123\ \ \ \textcolor{keywordflow}{if}(\ reg\_size\ <=\ 0\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}vgg\_conditioner\_from\_points:\ invalid\ size\ list."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00124}00124\ \ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00125}00125\ \ \ \textcolor{comment}{/*\ compute\ mean\ point\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00126}00126\ \ \ \textcolor{keywordflow}{for}(\ i=0;\ i<reg\_size;\ i++\ )}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00127}00127\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00128}00128\ \ \ \ \ \ \ mx\ +=\ reg[i].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}};}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00129}00129\ \ \ \ \ \ \ my\ +=\ reg[i].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}};}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00130}00130\ \ \ \ \ \}\ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00131}00131\ \ \ mx\ /=\ (double)reg\_size;\ my\ /=\ (double)reg\_size;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00132}00132\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00133}00133\ \ \ \textcolor{comment}{/*\ compute\ mean\ variance\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00134}00134\ \ \ \textcolor{keywordflow}{for}(\ i=0;\ i<reg\_size;\ i++\ )}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00135}00135\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00136}00136\ \ \ \ \ \ \ val\ =\ (reg[i].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ -\/\ mx)*(reg[i].x\ -\/\ mx)+(reg[i].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ -\/\ my)*(reg[i].y\ -\/\ my);}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00137}00137\ \ \ \ \ \ \ Qt\ +=\ sqrt(val);}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00138}00138\ \ \ \ \ \}\ \ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00139}00139\ \ \ qmean\ =\ Qt/(double)reg\_size;\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00140}00140\ \ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00141}00141\ \ \ \textcolor{comment}{/*\ build\ normalization\ matrix\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00142}00142\ \ \ val\ =\ \mbox{\hyperlink{misc_8h_a514396dd60fa0621c83072091fb2a0cd}{SQRT2}}/qmean;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00143}00143\ \ \ T[1]\ =\ T[3]\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00144}00144\ \ \ T[0]\ =\ T[4]\ =\ val;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00145}00145\ \ \ T[2]\ =\ -\/val\ *\ mx;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00146}00146\ \ \ T[5]\ =\ -\/val\ *\ my;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00147}00147\ \ \ T[6]\ =\ T[7]\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00148}00148\ \ \ T[8]\ =\ 1;\ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00149}00149\ \}\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00150}00150\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00151}00151\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00152}00152\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00155}00155\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ antisym(\ \textcolor{keywordtype}{double}\ *u,\ \textcolor{keywordtype}{double}\ *A\ )}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00156}00156\ \{}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00157}00157\ \ \ A[0]\ =\ A[4]\ =\ A[8]\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00158}00158\ \ \ A[1]\ =\ -\/u[2];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00159}00159\ \ \ A[2]\ =\ \ u[1];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00160}00160\ \ \ A[3]\ =\ \ u[2];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00161}00161\ \ \ A[5]\ =\ -\/u[0];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00162}00162\ \ \ A[6]\ =\ -\/u[1];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00163}00163\ \ \ A[7]\ =\ \ u[0];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00164}00164\ \}\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00165}00165\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00166}00166\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00167}00167\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00171}00171\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ fit\_equations(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ gradx,\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ grady,\ \textcolor{keywordtype}{double}\ *vgg,\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00172}00172\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ *reg,\ \textcolor{keywordtype}{int}\ reg\_size,\ \textcolor{keywordtype}{double}\ **buff,\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00173}00173\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *size\_buff\_max\ )}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00174}00174\ \{}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00175}00175\ \ \ \textcolor{keywordtype}{int}\ i,j;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00176}00176\ \ \ \textcolor{keywordtype}{double}\ K[27];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00177}00177\ \ \ \textcolor{keywordtype}{double}\ asym[9];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00178}00178\ \ \ \textcolor{keywordtype}{int}\ idx;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00179}00179\ \ \ \textcolor{keywordtype}{double}\ crosspr[3];\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00180}00180\ \ \ \textcolor{keywordtype}{double}\ pnormx,\ pnormy,\ dirnormx,\ dirnormy;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00181}00181\ \ \ \textcolor{keywordtype}{int}\ addr;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00182}00182\ \ \ \textcolor{comment}{/*\ check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00183}00183\ \ \ \textcolor{keywordflow}{if}(\ (gradx\ ==\ NULL)\ ||\ (gradx-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00184}00184\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}fit\_equations:\ invalid\ input\ 'gradx'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00185}00185\ \ \ \ \ \textcolor{keywordflow}{if}(\ (grady\ ==\ NULL)\ ||\ (grady-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00186}00186\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}fit\_equations:\ invalid\ input\ 'grady'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00187}00187\ \ \ \textcolor{keywordflow}{if}(\ vgg\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}fit\_equations:\ invalid\ normalization\ matrix."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00188}00188\ \ \ \textcolor{keywordflow}{if}(\ reg\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}fit\_equations:\ invalid\ region."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00189}00189\ \ \ \textcolor{keywordflow}{if}(\ reg\_size<=0\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}fit\_equations:\ invalid\ region\ size."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00190}00190\ \ \ \textcolor{keywordflow}{if}(\ *buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}fit\_equations:\ invalid\ buffer."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00191}00191\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00192}00192\ \ \ \textcolor{comment}{/*\ if\ buffer\ too\ small,\ allocate\ twice\ the\ memory\ required\ at\ this\ step\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00193}00193\ \ \ \textcolor{keywordflow}{if}(\ reg\_size\ *\ 24\ >\ *size\_buff\_max\ )}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00194}00194\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00195}00195\ \ \ \ \ \ \ *buff\ =\ (\textcolor{keywordtype}{double}*)\ realloc(\ *buff,\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00196}00196\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{double})\ *\ 2\ *\ reg\_size\ *\ 24\ );\ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00197}00197\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ *buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}fit\_equations:\ not\ enough\ memory."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00198}00198\ \ \ \ \ \ \ *size\_buff\_max\ =\ 2\ *\ reg\_size\ *\ 24;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00199}00199\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00200}00200\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00201}00201\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00202}00202\ \ \ \textcolor{comment}{/*\ compute\ normalisation\ matrix\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00203}00203\ \ \ vgg\_conditioner\_from\_points(\ vgg,\ reg,\ reg\_size\ );}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00204}00204\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00205}00205\ \ \ \textcolor{comment}{/*\ compute\ equation\ system\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00206}00206\ \ \ \textcolor{keywordflow}{for}(\ i=0;\ i<reg\_size;\ i++)}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00207}00207\ \ \ \ \ \{\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00208}00208\ \ \ \ \ \ \ idx\ =\ i*4*6;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00209}00209\ \ \ \ \ \ \ \textcolor{comment}{/*\ normalise\ point\ (pnormx,pnormy)\ =\ VGG*(x,y)\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00210}00210\ \ \ \ \ \ \ pnormx\ =\ vgg[0]*reg[i].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ +\ vgg[1]*reg[i].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ +\ vgg[2];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00211}00211\ \ \ \ \ \ \ pnormy\ =\ vgg[3]*reg[i].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ +\ vgg[4]*reg[i].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ +\ vgg[5];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00212}00212\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00213}00213\ \ \ \ \ \ \ \textcolor{comment}{/*\ normalise\ gradient\ direction\ (dirnormx,dirnormy)\ =\ VGG*(dx,dy)\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00214}00214\ \ \ \ \ \ \ addr\ =\ reg[i].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ *\ gradx-\/>\mbox{\hyperlink{structImageDouble_aa4b0263c533c5ce471067bd5ede24477}{xsize}}\ +\ reg[i].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}};}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00215}00215\ \ \ \ \ \ \ dirnormx\ =\ -\/vgg[0]\ *\ grady-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[addr]\ +\ vgg[1]\ *\ gradx-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[addr];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00216}00216\ \ \ \ \ \ \ dirnormy\ =\ -\/vgg[3]\ *\ grady-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[addr]\ +\ vgg[4]\ *\ gradx-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[addr];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00217}00217\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00218}00218\ \ \ \ \ \ \ \textcolor{comment}{/*\ cross\ product\ (pnormx,pnormy)\ x\ (dirnormx,dirnormy)\ =\ tangent\ line\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00219}00219\ \ \ \ \ \ \ crosspr[0]\ =\ -\/dirnormy;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00220}00220\ \ \ \ \ \ \ crosspr[1]\ =\ \ dirnormx;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00221}00221\ \ \ \ \ \ \ crosspr[2]\ =\ \ pnormx\ *\ dirnormy\ -\/\ pnormy\ *\ dirnormx;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00222}00222\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00223}00223\ \ \ \ \ \ \ \textcolor{comment}{/*\ tangent\ equation:\ eq\ =\ -\/transpose(kron(TPts(1:3,i),antisym(l)))*J;\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00224}00224\ \ \ \ \ \ \ antisym(crosspr,asym);}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00225}00225\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00226}00226\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (j=0;j<9;j++)\ K[j]\ =\ asym[j]*pnormx;\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00227}00227\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (j=0;j<9;j++)\ K[j+9]\ =\ asym[j]*pnormy;\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00228}00228\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (j=0;j<9;j++)\ K[j+18]\ =\ asym[j];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00229}00229\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00230}00230\ \ \ \ \ \ \ (*buff)[idx]\ \ \ =\ -\/K[0];\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00231}00231\ \ \ \ \ \ \ (*buff)[idx+1]\ =\ -\/(K[3]+K[9]);\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00232}00232\ \ \ \ \ \ \ (*buff)[idx+2]\ =\ -\/(K[6]+K[18]);\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00233}00233\ \ \ \ \ \ \ (*buff)[idx+3]\ =\ -\/K[12];\ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00234}00234\ \ \ \ \ \ \ (*buff)[idx+4]\ =\ -\/(K[15]+K[21]);\ \ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00235}00235\ \ \ \ \ \ \ (*buff)[idx+5]\ =\ -\/K[24];\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00236}00236\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00237}00237\ \ \ \ \ \ \ (*buff)[idx+6]\ \ \ =\ -\/K[1];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00238}00238\ \ \ \ \ \ \ (*buff)[idx+6+1]\ =\ -\/(K[4]+K[10]);\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00239}00239\ \ \ \ \ \ \ (*buff)[idx+6+2]\ =\ -\/(K[7]+K[19]);\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00240}00240\ \ \ \ \ \ \ (*buff)[idx+6+3]\ =\ -\/K[13];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00241}00241\ \ \ \ \ \ \ (*buff)[idx+6+4]\ =\ -\/(K[16]+K[22]);}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00242}00242\ \ \ \ \ \ \ (*buff)[idx+6+5]\ =\ -\/K[25];\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00243}00243\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00244}00244\ \ \ \ \ \ \ (*buff)[idx+12]\ \ \ =\ -\/K[2];\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00245}00245\ \ \ \ \ \ \ (*buff)[idx+12+1]\ =\ -\/(K[5]+K[11]);\ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00246}00246\ \ \ \ \ \ \ (*buff)[idx+12+2]\ =\ -\/(K[8]+K[20]);}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00247}00247\ \ \ \ \ \ \ (*buff)[idx+12+3]\ =\ -\/K[14];\ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00248}00248\ \ \ \ \ \ \ (*buff)[idx+12+4]\ =\ -\/(K[17]+K[23]);\ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00249}00249\ \ \ \ \ \ \ (*buff)[idx+12+5]\ =\ -\/K[26];\ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00250}00250\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00251}00251\ \ \ \ \ \ \ \textcolor{comment}{/*\ position\ equation:\ eq\ =\ transpose(kron(TPts(1:3,i),TPts(1:3,i)))*J;\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00252}00252\ \ \ \ \ \ \ (*buff)[idx+18]\ =\ pnormx\ *\ pnormx;\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00253}00253\ \ \ \ \ \ \ (*buff)[idx+19]\ =\ 2\ *\ pnormx\ *\ pnormy;\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00254}00254\ \ \ \ \ \ \ (*buff)[idx+20]\ =\ 2\ *\ pnormx;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00255}00255\ \ \ \ \ \ \ (*buff)[idx+21]\ =\ pnormy\ *\ pnormy;\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00256}00256\ \ \ \ \ \ \ (*buff)[idx+22]\ =\ 2\ *\ pnormy;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00257}00257\ \ \ \ \ \ \ (*buff)[idx+23]\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00258}00258\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00259}00259\ \}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00260}00260\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00261}00261\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00262}00262\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00266}00266\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ fit\_circle(\ \textcolor{keywordtype}{double}\ *buff,\ \textcolor{keywordtype}{double}\ *vgg,\ \textcolor{keywordtype}{int}\ reg\_size,\ \textcolor{keywordtype}{double}\ *param\ )}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00267}00267\ \{}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00268}00268\ \ \ \textcolor{keywordtype}{int}\ i,\ j,\ k;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00269}00269\ \ \ \textcolor{keywordtype}{double}\ A[16];\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00270}00270\ \ \ \textcolor{comment}{/*\ check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00271}00271\ \ \ \textcolor{keywordflow}{if}(\ reg\_size<=0\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}fit\_circle:\ invalid\ size."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00272}00272\ \ \ \textcolor{keywordflow}{if}(\ buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}fit\_circle:\ invalid\ buffer."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00273}00273\ \ \ \textcolor{keywordflow}{if}(\ vgg\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}fit\_circle:\ invalid\ normalization\ matrix."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00274}00274\ \ \ \textcolor{keywordflow}{if}(\ param\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}fit\_circle:\ param\ must\ be\ non\ null."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00275}00275\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00276}00276\ \ \ \textcolor{comment}{/*\ circle\ fitting\ computes\ less\ parameters,\ so\ the\ equation\ matrix\ has\ }}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00277}00277\ \textcolor{comment}{\ \ \ \ \ only\ four\ columns,\ not\ six;\ modify\ accordingly\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00278}00278\ \ \ \textcolor{keywordflow}{for}(\ i=0;\ i<reg\_size*4*6;\ i+=6\ )}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00279}00279\ \ \ \ \ \{\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00280}00280\ \ \ \ \ \ \ buff[i]\ \ \ =\ buff[i]\ +\ buff[i+3];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00281}00281\ \ \ \ \ \ \ buff[i+1]\ =\ buff[i+2];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00282}00282\ \ \ \ \ \ \ buff[i+2]\ =\ buff[i+4];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00283}00283\ \ \ \ \ \ \ buff[i+3]\ =\ buff[i+5];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00284}00284\ \ \ \ \ \}\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00285}00285\ \ \ \textcolor{comment}{/*\ A\ =\ EQ'*EQ;\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00286}00286\ \ \ \textcolor{keywordflow}{for}(\ i=0;\ i<16;\ i++)\ A[i]\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00287}00287\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00288}00288\ \ \ \textcolor{keywordflow}{for}(\ i=0;\ i<4;\ i++\ )}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00289}00289\ \ \ \ \ \textcolor{keywordflow}{for}(\ j=0;\ j<4;\ j++)}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00290}00290\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(k=0;\ k<4*reg\_size;\ k++)}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00291}00291\ \ \ \ \ \ \ \ \ A[i*4+j]\ +=\ buff[k*6+i]\ *\ buff[k*6+j];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00292}00292\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00293}00293\ \ \ \textcolor{comment}{/*\ lapack\ call\ to\ solve\ linear\ system\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00294}00294\ \ \ \mbox{\hyperlink{lapack__wrapper_8c_a0c2af188e0233a54ff3baf6b9da6a3df}{lap\_eig}}(\ A,\ 4\ );\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00295}00295\ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00296}00296\ \ \ \textcolor{keywordtype}{double}\ s[9];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00297}00297\ \ \ s[0]\ =\ s[4]\ =\ A[0];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00298}00298\ \ \ s[1]\ =\ s[3]\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00299}00299\ \ \ s[2]\ =\ s[6]\ =\ A[1];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00300}00300\ \ \ s[5]\ =\ s[7]\ =\ A[2];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00301}00301\ \ \ s[8]\ =\ A[3];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00302}00302\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00303}00303\ \ \ \textcolor{comment}{/*\ apply\ inverse(normalisation\ matrix)\ */}\ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00304}00304\ \ \ \textcolor{comment}{/*\ C\ =\ T'*[\ x(1),0,x(2);\ 0,x(1),x(3)\ ;\ x(2),x(3),x(4)]*T;*/}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00305}00305\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00306}00306\ \ \ \textcolor{keywordtype}{double}\ C[9];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00307}00307\ \ \ C[0]\ =\ vgg[0]*vgg[0]*s[0]\ +\ vgg[3]*vgg[3]*s[4];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00308}00308\ \ \ C[1]\ =\ vgg[0]*vgg[1]*s[0]\ +\ vgg[3]*vgg[4]*s[4];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00309}00309\ \ \ C[2]\ =\ vgg[0]*vgg[2]*s[0]\ +\ vgg[3]*vgg[5]*s[4]+vgg[0]*s[2]\ +\ vgg[3]*s[5];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00310}00310\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00311}00311\ \ \ C[3]\ =\ vgg[0]*vgg[1]*s[0]\ +\ vgg[3]*vgg[4]*s[4];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00312}00312\ \ \ C[4]\ =\ vgg[1]*vgg[1]*s[0]\ +\ vgg[4]*vgg[4]*s[4];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00313}00313\ \ \ C[5]\ =\ vgg[1]*vgg[2]*s[0]\ +\ vgg[4]*vgg[5]*s[4]\ +\ vgg[1]*s[2]\ +\ vgg[4]*s[5];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00314}00314\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00315}00315\ \ \ C[6]\ =\ vgg[0]*vgg[2]*s[0]\ +\ vgg[0]*s[6]\ +\ vgg[3]*vgg[5]*s[4]\ +\ vgg[3]*s[7];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00316}00316\ \ \ C[7]\ =\ vgg[1]*vgg[2]*s[0]\ +\ vgg[1]*s[6]\ +\ vgg[4]*vgg[5]*s[4]\ +\ vgg[4]*s[7];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00317}00317\ \ \ C[8]\ =\ vgg[2]*vgg[2]*s[0]\ +\ vgg[2]*s[6]\ +\ vgg[5]*vgg[5]*s[4]\ +\ vgg[5]*s[7]+}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00318}00318\ \ \ \ \ \ \ \ \ \ vgg[2]*s[2]\ +\ vgg[5]*s[5]\ +\ s[8];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00319}00319\ \ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00320}00320\ \ \ ellipse2param(\ C,\ param\ );}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00321}00321\ \}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00322}00322\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00323}00323\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00324}00324\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00327}00327\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ fit\_ellipse(\ \textcolor{keywordtype}{double}\ *buff,\ \textcolor{keywordtype}{double}\ *vgg,\ \textcolor{keywordtype}{int}\ reg\_size,\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00328}00328\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ *param\ )}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00329}00329\ \{\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00330}00330\ \ \ \textcolor{keywordtype}{int}\ i,j,k;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00331}00331\ \ \ \textcolor{keywordtype}{double}\ A[36];\ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00332}00332\ \ \ \textcolor{comment}{/*\ check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00333}00333\ \ \ \textcolor{keywordflow}{if}(\ reg\_size\ <=\ 0\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}fit\_ellipse:\ invalid\ size."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00334}00334\ \ \ \textcolor{keywordflow}{if}(\ buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}fit\_ellipse:\ invalid\ buffer."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00335}00335\ \ \ \textcolor{keywordflow}{if}(\ vgg\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}fit\_ellipse:\ invalid\ normalization\ matrix."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00336}00336\ \ \ \textcolor{keywordflow}{if}(\ param\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}fit\_ellipse:\ param\ must\ be\ non\ null."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00337}00337\ \ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00338}00338\ \ \ \textcolor{comment}{/*\ A\ =\ EQ'*EQ;\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00339}00339\ \ \ \textcolor{keywordflow}{for}(\ i=0;\ i<36;\ i++\ )\ A[i]\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00340}00340\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00341}00341\ \ \ \textcolor{keywordflow}{for}(\ i=0;\ i<6;\ i++\ )}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00342}00342\ \ \ \ \ \textcolor{keywordflow}{for}(\ j=0;\ j<6;\ j++\ )}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00343}00343\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ k=0;\ k<4*reg\_size;\ k++\ )}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00344}00344\ \ \ \ \ \ \ \ \ A[i*6+j]\ +=\ buff[k*6+i]\ *\ buff[k*6+j];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00345}00345\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00346}00346\ \ \ \textcolor{comment}{/*\ lapack\ call\ to\ solve\ linear\ system\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00347}00347\ \ \ \mbox{\hyperlink{lapack__wrapper_8c_a0c2af188e0233a54ff3baf6b9da6a3df}{lap\_eig}}(\ A,\ 6\ );\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00348}00348\ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00349}00349\ \ \ \textcolor{keywordtype}{double}\ s[9];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00350}00350\ \ \ s[0]\ =\ A[0];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00351}00351\ \ \ s[1]\ =\ s[3]\ =\ A[1];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00352}00352\ \ \ s[2]\ =\ s[6]\ =\ A[2];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00353}00353\ \ \ s[4]\ =\ A[3];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00354}00354\ \ \ s[5]\ =\ s[7]\ =\ A[4];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00355}00355\ \ \ s[8]\ =\ A[5];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00356}00356\ \ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00357}00357\ \ \ \textcolor{comment}{/*\ apply\ inverse(normalisation\ matrix)\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00358}00358\ \ \ \textcolor{comment}{/*\ C\ =\ T'*[\ x(1),x(2),x(3);\ x(2),x(4),x(5)\ ;\ x(3),x(5),x(6)]*T;\ */}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00359}00359\ \ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00360}00360\ \ \ \textcolor{keywordtype}{double}\ C[9];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00361}00361\ \ \ C[0]\ =\ vgg[0]*vgg[0]*s[0]\ +\ vgg[0]*vgg[3]*s[3]\ +}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00362}00362\ \ \ \ \ \ \ \ \ \ vgg[0]*vgg[3]*s[1]\ +\ vgg[3]*vgg[3]*s[4];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00363}00363\ \ \ C[1]\ =\ vgg[0]*vgg[1]*s[0]\ +\ vgg[1]*vgg[3]*s[3]\ +}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00364}00364\ \ \ \ \ \ \ \ \ \ vgg[0]*vgg[4]*s[1]\ +\ vgg[3]*vgg[4]*s[4];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00365}00365\ \ \ C[2]\ =\ vgg[0]*vgg[2]*s[0]\ +\ vgg[2]*vgg[3]*s[3]\ +}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00366}00366\ \ \ \ \ \ \ \ \ \ vgg[0]*vgg[5]*s[1]\ +\ vgg[3]*vgg[5]*s[4]\ +\ vgg[0]*s[2]\ +\ vgg[3]*s[5];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00367}00367\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00368}00368\ \ \ C[3]\ =\ vgg[0]*vgg[1]*s[0]\ +\ vgg[0]*vgg[4]*s[3]\ +}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00369}00369\ \ \ \ \ \ \ \ \ \ vgg[1]*vgg[3]*s[1]\ +\ vgg[3]*vgg[4]*s[4];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00370}00370\ \ \ C[4]\ =\ vgg[1]*vgg[1]*s[0]\ +\ vgg[1]*vgg[4]*s[3]\ +}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00371}00371\ \ \ \ \ \ \ \ \ \ vgg[1]*vgg[4]*s[1]\ +\ vgg[4]*vgg[4]*s[4];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00372}00372\ \ \ C[5]\ =\ vgg[1]*vgg[2]*s[0]\ +\ vgg[2]*vgg[4]*s[3]\ +}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00373}00373\ \ \ \ \ \ \ \ \ \ vgg[1]*vgg[5]*s[1]\ +\ vgg[4]*vgg[5]*s[4]\ +\ vgg[1]*s[2]\ +\ vgg[4]*s[5];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00374}00374\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00375}00375\ \ \ C[6]\ =\ vgg[0]*vgg[2]*s[0]\ +\ vgg[0]*vgg[5]*s[3]\ +}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00376}00376\ \ \ \ \ \ \ \ \ \ vgg[0]*s[6]\ +\ vgg[2]*vgg[3]*s[1]\ +\ vgg[3]*vgg[5]*s[4]\ +\ vgg[3]*s[7];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00377}00377\ \ \ C[7]\ =\ vgg[1]*vgg[2]*s[0]\ +\ vgg[1]*vgg[5]*s[3]\ +}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00378}00378\ \ \ \ \ \ \ \ \ \ vgg[1]*s[6]\ +\ vgg[2]*vgg[4]*s[1]\ +\ vgg[4]*vgg[5]*s[4]\ +\ vgg[4]*s[7];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00379}00379\ \ \ C[8]\ =\ vgg[2]*vgg[2]*s[0]\ +\ vgg[2]*vgg[5]*s[3]\ +\ vgg[2]*s[6]\ +\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00380}00380\ \ \ \ \ \ \ \ \ \ vgg[2]*vgg[5]*s[1]\ +\ vgg[5]*vgg[5]*s[4]\ +\ vgg[5]*s[7]\ +\ vgg[2]*s[2]\ +\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00381}00381\ \ \ \ \ \ \ \ \ \ vgg[5]*s[5]\ +\ s[8];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00382}00382\ \ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00383}00383\ \ \ ellipse2param(C,param);}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00384}00384\ \}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00385}00385\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00386}00386\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00387}00387\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00390}\mbox{\hyperlink{ellipse__fit_8c_ae12e7701a84e615d38554c37a91e0c2c}{00390}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{ellipse__fit_8c_ae12e7701a84e615d38554c37a91e0c2c}{conic\_fit}}(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ gradx,\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ grady,\ \mbox{\hyperlink{structPoint}{Point}}\ *reg,\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00391}00391\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ reg\_size,\ \textcolor{keywordtype}{double}\ **buff,\ \textcolor{keywordtype}{int}\ *size\_buff\_max,\ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00392}00392\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ *cparam,\ \textcolor{keywordtype}{double}\ *eparam\ )}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00393}00393\ \{}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00394}00394\ \ \ \textcolor{keywordtype}{double}\ vgg[9];}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00395}00395\ \ \ \textcolor{keywordflow}{if}(\ (gradx\ ==\ NULL)\ ||\ (gradx-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00396}00396\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}conic\_fit:\ invalid\ input\ 'gradx'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00397}00397\ \ \ \textcolor{keywordflow}{if}(\ (grady\ ==\ NULL)\ ||\ (grady-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00398}00398\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}conic\_fit:\ invalid\ input\ 'grady'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00399}00399\ \ \ \textcolor{keywordflow}{if}(\ reg\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}conic\_fit:\ invalid\ region."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00400}00400\ \ \ \textcolor{keywordflow}{if}(\ reg\_size<=0\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}conic\_fit:\ invalid\ region\ size."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00401}00401\ \ \ \textcolor{keywordflow}{if}(\ *buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}conic\_fit:\ invalid\ buffer."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00402}00402\ \ \ \textcolor{keywordflow}{if}(\ cparam\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}conic\_fit:\ invalid\ 'cparam'."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00403}00403\ \ \ \textcolor{keywordflow}{if}(\ eparam\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}conic\_fit:\ invalid\ 'eparam'."{}});}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00404}00404\ \ \ }
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00405}00405\ \ \ fit\_equations(\ gradx,\ grady,\ vgg,\ reg,\ reg\_size,\ buff,\ size\_buff\_max\ );}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00406}00406\ \ \ fit\_ellipse(\ *buff,\ vgg,\ reg\_size,\ eparam\ );}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00407}00407\ \ \ fit\_circle\ (\ *buff,\ vgg,\ reg\_size,\ cparam\ );}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00408}00408\ \}}
+\DoxyCodeLine{\Hypertarget{ellipse__fit_8c_source_l00409}00409\ }
+
+\end{DoxyCode}

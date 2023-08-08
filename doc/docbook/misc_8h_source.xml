@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_misc_8h_source" xml:lang="en-US">
+<title>misc.h</title>
+<indexterm><primary>src/misc.h</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="_misc_8h_source_1l00001"/>00001 <emphasis role="comment">/*------------------------------------------------------------------------------</emphasis>
+<anchor xml:id="_misc_8h_source_1l00002"/>00002 <emphasis role="comment"></emphasis>
+<anchor xml:id="_misc_8h_source_1l00003"/>00003 <emphasis role="comment">&#32;&#32;Copyright&#32;(c)&#32;2012-2014&#32;viorica&#32;patraucean&#32;(vpatrauc@gmail.com)</emphasis>
+<anchor xml:id="_misc_8h_source_1l00004"/>00004 <emphasis role="comment"></emphasis>
+<anchor xml:id="_misc_8h_source_1l00005"/>00005 <emphasis role="comment">&#32;&#32;This&#32;program&#32;is&#32;free&#32;software:&#32;you&#32;can&#32;redistribute&#32;it&#32;and/or&#32;modify</emphasis>
+<anchor xml:id="_misc_8h_source_1l00006"/>00006 <emphasis role="comment">&#32;&#32;it&#32;under&#32;the&#32;terms&#32;of&#32;the&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License&#32;as</emphasis>
+<anchor xml:id="_misc_8h_source_1l00007"/>00007 <emphasis role="comment">&#32;&#32;published&#32;by&#32;the&#32;Free&#32;Software&#32;Foundation,&#32;either&#32;version&#32;3&#32;of&#32;the</emphasis>
+<anchor xml:id="_misc_8h_source_1l00008"/>00008 <emphasis role="comment">&#32;&#32;License,&#32;or&#32;(at&#32;your&#32;option)&#32;any&#32;later&#32;version.</emphasis>
+<anchor xml:id="_misc_8h_source_1l00009"/>00009 <emphasis role="comment"></emphasis>
+<anchor xml:id="_misc_8h_source_1l00010"/>00010 <emphasis role="comment">&#32;&#32;This&#32;program&#32;is&#32;distributed&#32;in&#32;the&#32;hope&#32;that&#32;it&#32;will&#32;be&#32;useful,</emphasis>
+<anchor xml:id="_misc_8h_source_1l00011"/>00011 <emphasis role="comment">&#32;&#32;but&#32;WITHOUT&#32;ANY&#32;WARRANTY;&#32;without&#32;even&#32;the&#32;implied&#32;warranty&#32;of</emphasis>
+<anchor xml:id="_misc_8h_source_1l00012"/>00012 <emphasis role="comment">&#32;&#32;MERCHANTABILITY&#32;or&#32;FITNESS&#32;FOR&#32;A&#32;PARTICULAR&#32;PURPOSE.&#32;See&#32;the</emphasis>
+<anchor xml:id="_misc_8h_source_1l00013"/>00013 <emphasis role="comment">&#32;&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License&#32;for&#32;more&#32;details.</emphasis>
+<anchor xml:id="_misc_8h_source_1l00014"/>00014 <emphasis role="comment"></emphasis>
+<anchor xml:id="_misc_8h_source_1l00015"/>00015 <emphasis role="comment">&#32;&#32;You&#32;should&#32;have&#32;received&#32;a&#32;copy&#32;of&#32;the&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License</emphasis>
+<anchor xml:id="_misc_8h_source_1l00016"/>00016 <emphasis role="comment">&#32;&#32;along&#32;with&#32;this&#32;program.&#32;If&#32;not,&#32;see&#32;&lt;http://www.gnu.org/licenses/&gt;.</emphasis>
+<anchor xml:id="_misc_8h_source_1l00017"/>00017 <emphasis role="comment"></emphasis>
+<anchor xml:id="_misc_8h_source_1l00018"/>00018 <emphasis role="comment">&#32;&#32;misc.h&#32;-&#32;This&#32;file&#32;belongs&#32;to&#32;ELSDc&#32;project&#32;(Ellipse&#32;and&#32;Line&#32;Segment&#32;</emphasis>
+<anchor xml:id="_misc_8h_source_1l00019"/>00019 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Detector&#32;with&#32;continuous&#32;validation).</emphasis>
+<anchor xml:id="_misc_8h_source_1l00020"/>00020 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;-&#32;It&#32;defines&#32;constants,&#32;data&#32;types,&#32;prototypes&#32;for&#32;misc&#32;functions&#32;</emphasis>
+<anchor xml:id="_misc_8h_source_1l00021"/>00021 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;needed&#32;in&#32;different&#32;parts&#32;of&#32;the&#32;project.&#32;</emphasis>
+<anchor xml:id="_misc_8h_source_1l00022"/>00022 <emphasis role="comment"></emphasis>
+<anchor xml:id="_misc_8h_source_1l00023"/>00023 <emphasis role="comment">------------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_misc_8h_source_1l00024"/>00024 
+<anchor xml:id="_misc_8h_source_1l00025"/>00025 
+<anchor xml:id="_misc_8h_source_1l00026"/>00026 <emphasis role="preprocessor">#ifndef&#32;MISC_H</emphasis>
+<anchor xml:id="_misc_8h_source_1l00027"/>00027 <emphasis role="preprocessor">#define&#32;MISC_H</emphasis>
+<anchor xml:id="_misc_8h_source_1l00028"/>00028 
+<anchor xml:id="_misc_8h_source_1l00029"/>00029 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_misc_8h_source_1l00033"/>00033 <emphasis role="preprocessor">#ifndef&#32;M_LN10</emphasis>
+<anchor xml:id="_misc_8h_source_1l00034"/><link linkend="_misc_8h_1a0a53871497a155afe91424c28a8ec3c4">00034</link> <emphasis role="preprocessor">#define&#32;M_LN10&#32;2.30258509299404568402</emphasis>
+<anchor xml:id="_misc_8h_source_1l00035"/>00035 <emphasis role="preprocessor">#endif&#32;</emphasis><emphasis role="comment">/*&#32;!M_LN10&#32;*/</emphasis><emphasis role="preprocessor"></emphasis>
+<anchor xml:id="_misc_8h_source_1l00036"/>00036 
+<anchor xml:id="_misc_8h_source_1l00037"/>00037 <emphasis role="preprocessor">#ifndef&#32;M_PI</emphasis>
+<anchor xml:id="_misc_8h_source_1l00038"/><link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">00038</link> <emphasis role="preprocessor">#define&#32;M_PI&#32;&#32;&#32;3.14159265358979323846</emphasis>
+<anchor xml:id="_misc_8h_source_1l00039"/>00039 <emphasis role="preprocessor">#endif&#32;</emphasis><emphasis role="comment">/*&#32;!M_PI&#32;*/</emphasis><emphasis role="preprocessor"></emphasis>
+<anchor xml:id="_misc_8h_source_1l00040"/>00040 
+<anchor xml:id="_misc_8h_source_1l00041"/>00041 <emphasis role="preprocessor">#ifndef&#32;FALSE</emphasis>
+<anchor xml:id="_misc_8h_source_1l00042"/><link linkend="_misc_8h_1aa93f0eb578d23995850d61f7d61c55c1">00042</link> <emphasis role="preprocessor">#define&#32;FALSE&#32;0</emphasis>
+<anchor xml:id="_misc_8h_source_1l00043"/>00043 <emphasis role="preprocessor">#endif&#32;</emphasis><emphasis role="comment">/*&#32;!FALSE&#32;*/</emphasis><emphasis role="preprocessor"></emphasis>
+<anchor xml:id="_misc_8h_source_1l00044"/>00044 
+<anchor xml:id="_misc_8h_source_1l00045"/>00045 <emphasis role="preprocessor">#ifndef&#32;TRUE</emphasis>
+<anchor xml:id="_misc_8h_source_1l00046"/><link linkend="_misc_8h_1aa8cecfc5c5c054d2875c03e77b7be15d">00046</link> <emphasis role="preprocessor">#define&#32;TRUE&#32;1</emphasis>
+<anchor xml:id="_misc_8h_source_1l00047"/>00047 <emphasis role="preprocessor">#endif&#32;</emphasis><emphasis role="comment">/*&#32;!TRUE&#32;*/</emphasis><emphasis role="preprocessor"></emphasis>
+<anchor xml:id="_misc_8h_source_1l00048"/>00048 
+<anchor xml:id="_misc_8h_source_1l00049"/><link linkend="_misc_8h_1a18d9edd8c3bfc9c1837a10505dfa037c">00049</link> <emphasis role="preprocessor">#define&#32;NOTDEF&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;-1024.0</emphasis>
+<anchor xml:id="_misc_8h_source_1l00050"/><link linkend="_misc_8h_1ae82255d0b75d68c1cd14d4019443a14d">00050</link> <emphasis role="preprocessor">#define&#32;M_3_2_PI&#32;&#32;&#32;&#32;&#32;&#32;&#32;4.71238898038</emphasis>
+<anchor xml:id="_misc_8h_source_1l00051"/><link linkend="_misc_8h_1ae11c01f236a7a89f767a7b34283da201">00051</link> <emphasis role="preprocessor">#define&#32;M_1_2_PI&#32;&#32;&#32;&#32;&#32;&#32;&#32;1.57079632679</emphasis>
+<anchor xml:id="_misc_8h_source_1l00052"/><link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">00052</link> <emphasis role="preprocessor">#define&#32;M_2__PI&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;6.28318530718</emphasis>
+<anchor xml:id="_misc_8h_source_1l00053"/><link linkend="_misc_8h_1a514396dd60fa0621c83072091fb2a0cd">00053</link> <emphasis role="preprocessor">#define&#32;SQRT2&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;1.41421356237</emphasis>
+<anchor xml:id="_misc_8h_source_1l00054"/><link linkend="_misc_8h_1a3db2b368b81b5e26dbd97b5f47ac979d">00054</link> <emphasis role="preprocessor">#define&#32;LOG10_2&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;0.30102999566</emphasis>
+<anchor xml:id="_misc_8h_source_1l00055"/><link linkend="_misc_8h_1a77cf8b4c639f547ffdf219b26ecd79a7">00055</link> <emphasis role="preprocessor">#define&#32;LOG10_9&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;0.95424250944</emphasis>
+<anchor xml:id="_misc_8h_source_1l00056"/>00056 
+<anchor xml:id="_misc_8h_source_1l00057"/><link linkend="_misc_8h_1a8a397aec99143b8dcf8e553c0115eb42">00057</link> <emphasis role="preprocessor">#define&#32;NOTUSED&#32;0</emphasis>
+<anchor xml:id="_misc_8h_source_1l00058"/><link linkend="_misc_8h_1abcd0a22ee4346cad5706adb6d2119429">00058</link> <emphasis role="preprocessor">#define&#32;USED&#32;1</emphasis>
+<anchor xml:id="_misc_8h_source_1l00059"/>00059 
+<anchor xml:id="_misc_8h_source_1l00060"/><link linkend="_misc_8h_1a24e753bacac6be5f30e18f8a2bdefda4">00060</link> <emphasis role="preprocessor">#define&#32;max(A,&#32;B)&#32;(((A)&gt;(B))?(A):(B))</emphasis>
+<anchor xml:id="_misc_8h_source_1l00061"/><link linkend="_misc_8h_1a2d017cd3beb218080a7988e2deed2a11">00061</link> <emphasis role="preprocessor">#define&#32;min(A,&#32;B)&#32;(((A)&lt;(B))?(A):(B))</emphasis>
+<anchor xml:id="_misc_8h_source_1l00062"/>00062 
+<anchor xml:id="_misc_8h_source_1l00063"/>00063 
+<anchor xml:id="_misc_8h_source_1l00064"/>00064 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_misc_8h_source_1l00067"/><link linkend="_structPoint">00067</link> <emphasis role="keyword">typedef</emphasis>&#32;<emphasis role="keyword">struct&#32;</emphasis>
+<anchor xml:id="_misc_8h_source_1l00068"/>00068 {
+<anchor xml:id="_misc_8h_source_1l00069"/><link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">00069</link> &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>,&#32;y;
+<anchor xml:id="_misc_8h_source_1l00070"/>00070 }&#32;<link linkend="_structPoint">Point</link>;
+<anchor xml:id="_misc_8h_source_1l00071"/>00071 
+<anchor xml:id="_misc_8h_source_1l00072"/>00072 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_misc_8h_source_1l00075"/><link linkend="_structPointD">00075</link> <emphasis role="keyword">typedef</emphasis>&#32;<emphasis role="keyword">struct&#32;</emphasis>
+<anchor xml:id="_misc_8h_source_1l00076"/>00076 {
+<anchor xml:id="_misc_8h_source_1l00077"/><link linkend="_structPointD_1af88b946fb90d5f08b5fb740c70e98c10">00077</link> &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_structPointD_1af88b946fb90d5f08b5fb740c70e98c10">x</link>,&#32;y;
+<anchor xml:id="_misc_8h_source_1l00078"/>00078 }&#32;<link linkend="_structPointD">PointD</link>;
+<anchor xml:id="_misc_8h_source_1l00079"/>00079 
+<anchor xml:id="_misc_8h_source_1l00080"/>00080 
+<anchor xml:id="_misc_8h_source_1l00081"/>00081 <emphasis role="comment">/*&#32;various&#32;function&#32;prototypes&#32;*/</emphasis>
+<anchor xml:id="_misc_8h_source_1l00082"/>00082 <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_misc_8h_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(&#32;<emphasis role="keywordtype">char</emphasis>&#32;*msg&#32;);
+<anchor xml:id="_misc_8h_source_1l00083"/>00083 <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_misc_8h_1a49d0391afab7c8872bbbfb86a814360b">double_equal</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;a,&#32;<emphasis role="keywordtype">double</emphasis>&#32;b);
+<anchor xml:id="_misc_8h_source_1l00084"/>00084 <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_misc_8h_1a9f29698bce67d856008e85a5c6b45b57">sign</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;val&#32;);
+<anchor xml:id="_misc_8h_source_1l00085"/>00085 <emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_misc_8h_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;x1,&#32;<emphasis role="keywordtype">double</emphasis>&#32;y1,&#32;<emphasis role="keywordtype">double</emphasis>&#32;x2,&#32;<emphasis role="keywordtype">double</emphasis>&#32;y2&#32;);
+<anchor xml:id="_misc_8h_source_1l00086"/>00086 <emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_misc_8h_1a4e46bd783e4efe71bee053481afeb4a9">angle_diff</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;a,&#32;<emphasis role="keywordtype">double</emphasis>&#32;b&#32;);
+<anchor xml:id="_misc_8h_source_1l00087"/>00087 <emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_misc_8h_1afc6d1f1cd19f4dfd5513632ab80322df">angle_diff_signed</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;a,&#32;<emphasis role="keywordtype">double</emphasis>&#32;b&#32;);
+<anchor xml:id="_misc_8h_source_1l00088"/>00088 <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_misc_8h_1a10ec5db73aebdd0d7508b49e72770ef4">swap_int</link>(&#32;<emphasis role="keywordtype">int</emphasis>&#32;*a,&#32;<emphasis role="keywordtype">int</emphasis>&#32;*b&#32;);
+<anchor xml:id="_misc_8h_source_1l00089"/>00089 <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_misc_8h_1abfa4eebba539e060400a6a7fe746614e">swap_double</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;*a,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*b&#32;);
+<anchor xml:id="_misc_8h_source_1l00090"/>00090 <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_misc_8h_1a3d503d641b82342adf77b51b2db53225">swap_ptr_pts</link>(&#32;<link linkend="_structPoint">Point</link>&#32;**a,&#32;<link linkend="_structPoint">Point</link>&#32;**b&#32;);
+<anchor xml:id="_misc_8h_source_1l00091"/>00091 <emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_misc_8h_1acbf3663dd6c05ce0f7f82f6d4b36c6a7">min_array</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;*v,&#32;<emphasis role="keywordtype">int</emphasis>&#32;sz&#32;);
+<anchor xml:id="_misc_8h_source_1l00092"/>00092 <emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_misc_8h_1a6d6f434a2cc946f78f7916364ad14f38">min_array_pos</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;*v,&#32;<emphasis role="keywordtype">int</emphasis>&#32;sz,&#32;<emphasis role="keywordtype">int</emphasis>&#32;*pos&#32;);
+<anchor xml:id="_misc_8h_source_1l00093"/>00093 <emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_misc_8h_1a7b7aa8971ae07b4e29a61533909d098d">max_array_pos</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;*a,&#32;<emphasis role="keywordtype">int</emphasis>&#32;sz,&#32;<emphasis role="keywordtype">int</emphasis>&#32;*poz&#32;);
+<anchor xml:id="_misc_8h_source_1l00094"/>00094 <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_misc_8h_1a5ff03a878859dab858f9fa1ce803e71f">in_interval</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;x,&#32;<emphasis role="keywordtype">double</emphasis>&#32;a,&#32;<emphasis role="keywordtype">double</emphasis>&#32;b&#32;);
+<anchor xml:id="_misc_8h_source_1l00095"/>00095 <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_misc_8h_1a7bd5f9830327532b199607799edf7fe2">is_aligned</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;a,&#32;<emphasis role="keywordtype">double</emphasis>&#32;theta,&#32;<emphasis role="keywordtype">double</emphasis>&#32;prec&#32;);
+<anchor xml:id="_misc_8h_source_1l00096"/>00096 <emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_misc_8h_1a00b6a4c474bea7360859f586ae2e2dea">norm_angle_diff</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;a,&#32;<emphasis role="keywordtype">double</emphasis>&#32;b&#32;);
+<anchor xml:id="_misc_8h_source_1l00097"/>00097 
+<anchor xml:id="_misc_8h_source_1l00098"/>00098 <emphasis role="preprocessor">#endif</emphasis>
+</programlisting></section>

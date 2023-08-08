@@ -1,0 +1,38 @@
+\doxysection{src/rectangle.c File Reference}
+\hypertarget{rectangle_8c}{}\label{rectangle_8c}\index{src/rectangle.c@{src/rectangle.c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$float.\+h$>$}\newline
+{\ttfamily \#include \"{}misc.\+h\"{}}\newline
+{\ttfamily \#include \"{}rectangle.\+h\"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{rectangle_8c_aa3b83f9baca390809a96c7b84f3a886a}{copy\+\_\+rect}} (\mbox{\hyperlink{structRectangle}{Rectangle}} \texorpdfstring{$\ast$}{*}in, \mbox{\hyperlink{structRectangle}{Rectangle}} \texorpdfstring{$\ast$}{*}out)
+\item 
+void \mbox{\hyperlink{rectangle_8c_a85626f7f589faf73e5ce6432a2ccdde8}{write\+\_\+rectangle}} (FILE \texorpdfstring{$\ast$}{*}f, \mbox{\hyperlink{structRectangle}{Rectangle}} \texorpdfstring{$\ast$}{*}r)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{rectangle_8c_aa3b83f9baca390809a96c7b84f3a886a}\label{rectangle_8c_aa3b83f9baca390809a96c7b84f3a886a} 
+\index{rectangle.c@{rectangle.c}!copy\_rect@{copy\_rect}}
+\index{copy\_rect@{copy\_rect}!rectangle.c@{rectangle.c}}
+\doxysubsubsection{\texorpdfstring{copy\_rect()}{copy\_rect()}}
+{\footnotesize\ttfamily void copy\+\_\+rect (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRectangle}{Rectangle}} \texorpdfstring{$\ast$}{*}}]{in,  }\item[{\mbox{\hyperlink{structRectangle}{Rectangle}} \texorpdfstring{$\ast$}{*}}]{out }\end{DoxyParamCaption})}
+
+Copy one \doxylink{structRectangle}{Rectangle} structure to another. 
+
+Definition at line \mbox{\hyperlink{rectangle_8c_source_l00037}{37}} of file \mbox{\hyperlink{rectangle_8c_source}{rectangle.\+c}}.
+
+\Hypertarget{rectangle_8c_a85626f7f589faf73e5ce6432a2ccdde8}\label{rectangle_8c_a85626f7f589faf73e5ce6432a2ccdde8} 
+\index{rectangle.c@{rectangle.c}!write\_rectangle@{write\_rectangle}}
+\index{write\_rectangle@{write\_rectangle}!rectangle.c@{rectangle.c}}
+\doxysubsubsection{\texorpdfstring{write\_rectangle()}{write\_rectangle()}}
+{\footnotesize\ttfamily void write\+\_\+rectangle (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f,  }\item[{\mbox{\hyperlink{structRectangle}{Rectangle}} \texorpdfstring{$\ast$}{*}}]{r }\end{DoxyParamCaption})}
+
+Write \doxylink{structRectangle}{Rectangle} coordinates to file; if file is NULL, write to stdout. 
+
+Definition at line \mbox{\hyperlink{rectangle_8c_source_l00061}{61}} of file \mbox{\hyperlink{rectangle_8c_source}{rectangle.\+c}}.
+

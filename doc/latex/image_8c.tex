@@ -1,0 +1,182 @@
+\doxysection{src/image.c File Reference}
+\hypertarget{image_8c}{}\label{image_8c}\index{src/image.c@{src/image.c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$ctype.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include \"{}misc.\+h\"{}}\newline
+{\ttfamily \#include \"{}image.\+h\"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{image_8c_aa58f34a2b6c4700cbd956f820418bdee}{free\+\_\+\+PImage\+Char}} (\mbox{\hyperlink{image_8h_abf368707b04976a0552dab4473f28b27}{PImage\+Char}} i)
+\item 
+\mbox{\hyperlink{image_8h_abf368707b04976a0552dab4473f28b27}{PImage\+Char}} \mbox{\hyperlink{image_8c_a7e4805b775ae0ce63216d5e7fac3d99b}{new\+\_\+\+PImage\+Char}} (unsigned int xsize, unsigned int ysize)
+\item 
+\mbox{\hyperlink{image_8h_abf368707b04976a0552dab4473f28b27}{PImage\+Char}} \mbox{\hyperlink{image_8c_a93f3134419a437219c46bc206a210bbb}{new\+\_\+\+PImage\+Char\+\_\+ini}} (unsigned int xsize, unsigned int ysize, unsigned char fill\+\_\+value)
+\item 
+void \mbox{\hyperlink{image_8c_a6ee6bd84de84b9c43d96a7daf535ccd3}{free\+\_\+\+PImage\+Int}} (\mbox{\hyperlink{image_8h_ad2f6828b30c727a557c8c201c2913f0f}{PImage\+Int}} i)
+\item 
+\mbox{\hyperlink{image_8h_ad2f6828b30c727a557c8c201c2913f0f}{PImage\+Int}} \mbox{\hyperlink{image_8c_a24e8904b30314d7539fdcc505a26cf07}{new\+\_\+\+PImage\+Int}} (unsigned int xsize, unsigned int ysize)
+\item 
+\mbox{\hyperlink{image_8h_ad2f6828b30c727a557c8c201c2913f0f}{PImage\+Int}} \mbox{\hyperlink{image_8c_aa54fa4ed5a519b86fb3264668ff6655f}{new\+\_\+\+PImage\+Int\+\_\+ini}} (unsigned int xsize, unsigned int ysize, int fill\+\_\+value)
+\item 
+void \mbox{\hyperlink{image_8c_a65f922be2f5afbbcdb04645cb8f8bbfb}{free\+\_\+\+PImage\+Double}} (\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} i)
+\item 
+\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} \mbox{\hyperlink{image_8c_a5baadc47eb068cd9e3b2d52a5065e3c0}{new\+\_\+\+PImage\+Double}} (unsigned int xsize, unsigned int ysize)
+\item 
+\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} \mbox{\hyperlink{image_8c_a366212b692e1b18885cb5b137c656a9d}{new\+\_\+\+PImage\+Double\+\_\+ini}} (unsigned int xsize, unsigned int ysize, double fill\+\_\+value)
+\item 
+\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} \mbox{\hyperlink{image_8c_a51ef0a087c0699dffd084d8930fa7377}{img\+\_\+gradient\+\_\+angle}} (\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} in, double threshold)
+\item 
+void \mbox{\hyperlink{image_8c_a0312c9c68ef16da181121d5f105caf33}{img\+\_\+gradient\+\_\+sort}} (\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} in, double threshold, \mbox{\hyperlink{image_8h_a9caa0284a00a0528cb868b69a5ad5370}{Coord\+List}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}list\+\_\+p, void \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}mem\+\_\+p, unsigned int n\+\_\+bins, double max\+\_\+grad, \mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} \texorpdfstring{$\ast$}{*}angles, \mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} \texorpdfstring{$\ast$}{*}gradmag, \mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} \texorpdfstring{$\ast$}{*}gradx, \mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} \texorpdfstring{$\ast$}{*}grady)
+\item 
+void \mbox{\hyperlink{image_8c_a23026d70139f0859bae4a5723784f1fc}{mark\+\_\+img\+\_\+pts}} (\mbox{\hyperlink{image_8h_ad2f6828b30c727a557c8c201c2913f0f}{PImage\+Int}} im, \mbox{\hyperlink{structPoint}{Point}} \texorpdfstring{$\ast$}{*}pts, int start, int end, int label)
+\item 
+int \mbox{\hyperlink{image_8c_a7d75c600cc492bd8efbc1cc0c3819d88}{in\+\_\+image}} (int x, int y, unsigned int xsize, unsigned int ysize)
+\item 
+int \mbox{\hyperlink{image_8c_a9d7c27ae8502d7bb6ef83ddd1e95df95}{local\+\_\+max}} (\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} im, int x, int y)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{image_8c_aa58f34a2b6c4700cbd956f820418bdee}\label{image_8c_aa58f34a2b6c4700cbd956f820418bdee} 
+\index{image.c@{image.c}!free\_PImageChar@{free\_PImageChar}}
+\index{free\_PImageChar@{free\_PImageChar}!image.c@{image.c}}
+\doxysubsubsection{\texorpdfstring{free\_PImageChar()}{free\_PImageChar()}}
+{\footnotesize\ttfamily void free\+\_\+\+PImage\+Char (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{image_8h_abf368707b04976a0552dab4473f28b27}{PImage\+Char}}}]{i }\end{DoxyParamCaption})}
+
+Free memory used in PImage\+Char \textquotesingle{}i\textquotesingle{}. 
+
+Definition at line \mbox{\hyperlink{image_8c_source_l00038}{38}} of file \mbox{\hyperlink{image_8c_source}{image.\+c}}.
+
+\Hypertarget{image_8c_a65f922be2f5afbbcdb04645cb8f8bbfb}\label{image_8c_a65f922be2f5afbbcdb04645cb8f8bbfb} 
+\index{image.c@{image.c}!free\_PImageDouble@{free\_PImageDouble}}
+\index{free\_PImageDouble@{free\_PImageDouble}!image.c@{image.c}}
+\doxysubsubsection{\texorpdfstring{free\_PImageDouble()}{free\_PImageDouble()}}
+{\footnotesize\ttfamily void free\+\_\+\+PImage\+Double (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}}}]{i }\end{DoxyParamCaption})}
+
+Free memory used in PImage\+Double \textquotesingle{}i\textquotesingle{}. 
+
+Definition at line \mbox{\hyperlink{image_8c_source_l00159}{159}} of file \mbox{\hyperlink{image_8c_source}{image.\+c}}.
+
+\Hypertarget{image_8c_a6ee6bd84de84b9c43d96a7daf535ccd3}\label{image_8c_a6ee6bd84de84b9c43d96a7daf535ccd3} 
+\index{image.c@{image.c}!free\_PImageInt@{free\_PImageInt}}
+\index{free\_PImageInt@{free\_PImageInt}!image.c@{image.c}}
+\doxysubsubsection{\texorpdfstring{free\_PImageInt()}{free\_PImageInt()}}
+{\footnotesize\ttfamily void free\+\_\+\+PImage\+Int (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{image_8h_ad2f6828b30c727a557c8c201c2913f0f}{PImage\+Int}}}]{i }\end{DoxyParamCaption})}
+
+Free memory used in PImage\+Int \textquotesingle{}i\textquotesingle{}. 
+
+Definition at line \mbox{\hyperlink{image_8c_source_l00099}{99}} of file \mbox{\hyperlink{image_8c_source}{image.\+c}}.
+
+\Hypertarget{image_8c_a51ef0a087c0699dffd084d8930fa7377}\label{image_8c_a51ef0a087c0699dffd084d8930fa7377} 
+\index{image.c@{image.c}!img\_gradient\_angle@{img\_gradient\_angle}}
+\index{img\_gradient\_angle@{img\_gradient\_angle}!image.c@{image.c}}
+\doxysubsubsection{\texorpdfstring{img\_gradient\_angle()}{img\_gradient\_angle()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} img\+\_\+gradient\+\_\+angle (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}}}]{in,  }\item[{double}]{threshold }\end{DoxyParamCaption})}
+
+Compute image gradient orientations. 
+
+Definition at line \mbox{\hyperlink{image_8c_source_l00219}{219}} of file \mbox{\hyperlink{image_8c_source}{image.\+c}}.
+
+\Hypertarget{image_8c_a0312c9c68ef16da181121d5f105caf33}\label{image_8c_a0312c9c68ef16da181121d5f105caf33} 
+\index{image.c@{image.c}!img\_gradient\_sort@{img\_gradient\_sort}}
+\index{img\_gradient\_sort@{img\_gradient\_sort}!image.c@{image.c}}
+\doxysubsubsection{\texorpdfstring{img\_gradient\_sort()}{img\_gradient\_sort()}}
+{\footnotesize\ttfamily void img\+\_\+gradient\+\_\+sort (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}}}]{in,  }\item[{double}]{threshold,  }\item[{\mbox{\hyperlink{image_8h_a9caa0284a00a0528cb868b69a5ad5370}{Coord\+List}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{list\+\_\+p,  }\item[{void \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{mem\+\_\+p,  }\item[{unsigned int}]{n\+\_\+bins,  }\item[{double}]{max\+\_\+grad,  }\item[{\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} \texorpdfstring{$\ast$}{*}}]{angles,  }\item[{\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} \texorpdfstring{$\ast$}{*}}]{gradmag,  }\item[{\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} \texorpdfstring{$\ast$}{*}}]{gradx,  }\item[{\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} \texorpdfstring{$\ast$}{*}}]{grady }\end{DoxyParamCaption})}
+
+Compute image gradient (magnitude and orientation) and return also the list of points ordered by gradient magnitude. 
+
+Definition at line \mbox{\hyperlink{image_8c_source_l00277}{277}} of file \mbox{\hyperlink{image_8c_source}{image.\+c}}.
+
+\Hypertarget{image_8c_a7d75c600cc492bd8efbc1cc0c3819d88}\label{image_8c_a7d75c600cc492bd8efbc1cc0c3819d88} 
+\index{image.c@{image.c}!in\_image@{in\_image}}
+\index{in\_image@{in\_image}!image.c@{image.c}}
+\doxysubsubsection{\texorpdfstring{in\_image()}{in\_image()}}
+{\footnotesize\ttfamily int in\+\_\+image (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y,  }\item[{unsigned int}]{xsize,  }\item[{unsigned int}]{ysize }\end{DoxyParamCaption})}
+
+Check if a given point is inside an image. 
+
+Definition at line \mbox{\hyperlink{image_8c_source_l00426}{426}} of file \mbox{\hyperlink{image_8c_source}{image.\+c}}.
+
+\Hypertarget{image_8c_a9d7c27ae8502d7bb6ef83ddd1e95df95}\label{image_8c_a9d7c27ae8502d7bb6ef83ddd1e95df95} 
+\index{image.c@{image.c}!local\_max@{local\_max}}
+\index{local\_max@{local\_max}!image.c@{image.c}}
+\doxysubsubsection{\texorpdfstring{local\_max()}{local\_max()}}
+{\footnotesize\ttfamily int local\+\_\+max (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}}}]{im,  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+Check if a given point is a local maximum in an image. Consider 8-\/neighbourhood. 
+
+Definition at line \mbox{\hyperlink{image_8c_source_l00441}{441}} of file \mbox{\hyperlink{image_8c_source}{image.\+c}}.
+
+\Hypertarget{image_8c_a23026d70139f0859bae4a5723784f1fc}\label{image_8c_a23026d70139f0859bae4a5723784f1fc} 
+\index{image.c@{image.c}!mark\_img\_pts@{mark\_img\_pts}}
+\index{mark\_img\_pts@{mark\_img\_pts}!image.c@{image.c}}
+\doxysubsubsection{\texorpdfstring{mark\_img\_pts()}{mark\_img\_pts()}}
+{\footnotesize\ttfamily void mark\+\_\+img\+\_\+pts (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{image_8h_ad2f6828b30c727a557c8c201c2913f0f}{PImage\+Int}}}]{im,  }\item[{\mbox{\hyperlink{structPoint}{Point}} \texorpdfstring{$\ast$}{*}}]{pts,  }\item[{int}]{start,  }\item[{int}]{end,  }\item[{int}]{label }\end{DoxyParamCaption})}
+
+Mark with the given label the image pixels contained in \textquotesingle{}pts\textquotesingle{} between \textquotesingle{}start\textquotesingle{} and \textquotesingle{}end\textquotesingle{} index. 
+
+Definition at line \mbox{\hyperlink{image_8c_source_l00407}{407}} of file \mbox{\hyperlink{image_8c_source}{image.\+c}}.
+
+\Hypertarget{image_8c_a7e4805b775ae0ce63216d5e7fac3d99b}\label{image_8c_a7e4805b775ae0ce63216d5e7fac3d99b} 
+\index{image.c@{image.c}!new\_PImageChar@{new\_PImageChar}}
+\index{new\_PImageChar@{new\_PImageChar}!image.c@{image.c}}
+\doxysubsubsection{\texorpdfstring{new\_PImageChar()}{new\_PImageChar()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{image_8h_abf368707b04976a0552dab4473f28b27}{PImage\+Char}} new\+\_\+\+PImage\+Char (\begin{DoxyParamCaption}\item[{unsigned int}]{xsize,  }\item[{unsigned int}]{ysize }\end{DoxyParamCaption})}
+
+Create a new PImage\+Char of size \textquotesingle{}xsize\textquotesingle{} times \textquotesingle{}ysize\textquotesingle{}. 
+
+Definition at line \mbox{\hyperlink{image_8c_source_l00051}{51}} of file \mbox{\hyperlink{image_8c_source}{image.\+c}}.
+
+\Hypertarget{image_8c_a93f3134419a437219c46bc206a210bbb}\label{image_8c_a93f3134419a437219c46bc206a210bbb} 
+\index{image.c@{image.c}!new\_PImageChar\_ini@{new\_PImageChar\_ini}}
+\index{new\_PImageChar\_ini@{new\_PImageChar\_ini}!image.c@{image.c}}
+\doxysubsubsection{\texorpdfstring{new\_PImageChar\_ini()}{new\_PImageChar\_ini()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{image_8h_abf368707b04976a0552dab4473f28b27}{PImage\+Char}} new\+\_\+\+PImage\+Char\+\_\+ini (\begin{DoxyParamCaption}\item[{unsigned int}]{xsize,  }\item[{unsigned int}]{ysize,  }\item[{unsigned char}]{fill\+\_\+value }\end{DoxyParamCaption})}
+
+Create a new PImage\+Char of size \textquotesingle{}xsize\textquotesingle{} times \textquotesingle{}ysize\textquotesingle{}, initialized to the value \textquotesingle{}fill\+\_\+value\textquotesingle{}. 
+
+Definition at line \mbox{\hyperlink{image_8c_source_l00078}{78}} of file \mbox{\hyperlink{image_8c_source}{image.\+c}}.
+
+\Hypertarget{image_8c_a5baadc47eb068cd9e3b2d52a5065e3c0}\label{image_8c_a5baadc47eb068cd9e3b2d52a5065e3c0} 
+\index{image.c@{image.c}!new\_PImageDouble@{new\_PImageDouble}}
+\index{new\_PImageDouble@{new\_PImageDouble}!image.c@{image.c}}
+\doxysubsubsection{\texorpdfstring{new\_PImageDouble()}{new\_PImageDouble()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} new\+\_\+\+PImage\+Double (\begin{DoxyParamCaption}\item[{unsigned int}]{xsize,  }\item[{unsigned int}]{ysize }\end{DoxyParamCaption})}
+
+Create a new PImage\+Double of size \textquotesingle{}xsize\textquotesingle{} times \textquotesingle{}ysize\textquotesingle{}. 
+
+Definition at line \mbox{\hyperlink{image_8c_source_l00172}{172}} of file \mbox{\hyperlink{image_8c_source}{image.\+c}}.
+
+\Hypertarget{image_8c_a366212b692e1b18885cb5b137c656a9d}\label{image_8c_a366212b692e1b18885cb5b137c656a9d} 
+\index{image.c@{image.c}!new\_PImageDouble\_ini@{new\_PImageDouble\_ini}}
+\index{new\_PImageDouble\_ini@{new\_PImageDouble\_ini}!image.c@{image.c}}
+\doxysubsubsection{\texorpdfstring{new\_PImageDouble\_ini()}{new\_PImageDouble\_ini()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} new\+\_\+\+PImage\+Double\+\_\+ini (\begin{DoxyParamCaption}\item[{unsigned int}]{xsize,  }\item[{unsigned int}]{ysize,  }\item[{double}]{fill\+\_\+value }\end{DoxyParamCaption})}
+
+Create a new PImage\+Double of size \textquotesingle{}xsize\textquotesingle{} times \textquotesingle{}ysize\textquotesingle{}, initialized to the value \textquotesingle{}fill\+\_\+value\textquotesingle{}. 
+
+Definition at line \mbox{\hyperlink{image_8c_source_l00198}{198}} of file \mbox{\hyperlink{image_8c_source}{image.\+c}}.
+
+\Hypertarget{image_8c_a24e8904b30314d7539fdcc505a26cf07}\label{image_8c_a24e8904b30314d7539fdcc505a26cf07} 
+\index{image.c@{image.c}!new\_PImageInt@{new\_PImageInt}}
+\index{new\_PImageInt@{new\_PImageInt}!image.c@{image.c}}
+\doxysubsubsection{\texorpdfstring{new\_PImageInt()}{new\_PImageInt()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{image_8h_ad2f6828b30c727a557c8c201c2913f0f}{PImage\+Int}} new\+\_\+\+PImage\+Int (\begin{DoxyParamCaption}\item[{unsigned int}]{xsize,  }\item[{unsigned int}]{ysize }\end{DoxyParamCaption})}
+
+Create a new PImage\+Int of size \textquotesingle{}xsize\textquotesingle{} times \textquotesingle{}ysize\textquotesingle{}. 
+
+Definition at line \mbox{\hyperlink{image_8c_source_l00112}{112}} of file \mbox{\hyperlink{image_8c_source}{image.\+c}}.
+
+\Hypertarget{image_8c_aa54fa4ed5a519b86fb3264668ff6655f}\label{image_8c_aa54fa4ed5a519b86fb3264668ff6655f} 
+\index{image.c@{image.c}!new\_PImageInt\_ini@{new\_PImageInt\_ini}}
+\index{new\_PImageInt\_ini@{new\_PImageInt\_ini}!image.c@{image.c}}
+\doxysubsubsection{\texorpdfstring{new\_PImageInt\_ini()}{new\_PImageInt\_ini()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{image_8h_ad2f6828b30c727a557c8c201c2913f0f}{PImage\+Int}} new\+\_\+\+PImage\+Int\+\_\+ini (\begin{DoxyParamCaption}\item[{unsigned int}]{xsize,  }\item[{unsigned int}]{ysize,  }\item[{int}]{fill\+\_\+value }\end{DoxyParamCaption})}
+
+Create a new PImage\+Int of size \textquotesingle{}xsize\textquotesingle{} times \textquotesingle{}ysize\textquotesingle{}, initialized to the value \textquotesingle{}fill\+\_\+value\textquotesingle{}. 
+
+Definition at line \mbox{\hyperlink{image_8c_source_l00138}{138}} of file \mbox{\hyperlink{image_8c_source}{image.\+c}}.
+

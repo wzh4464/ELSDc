@@ -1,0 +1,4 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_annotated" xml:lang="en-US">
+<title>Data Structures</title>
+Here are the data structures with brief descriptions:<link linkend="_structGaussFilter">GaussFilter</link><link linkend="_structImageChar">ImageChar</link><link linkend="_structImageDouble">ImageDouble</link><link linkend="_structImageInt">ImageInt</link><link linkend="_structlist">list</link><link linkend="_structPoint">Point</link><link linkend="_structPointD">PointD</link><link linkend="_structPolygon">Polygon</link><link linkend="_structPolyRect">PolyRect</link><link linkend="_structRectangle">Rectangle</link><link linkend="_structRectIter">RectIter</link><link linkend="_structRing">Ring</link></section>

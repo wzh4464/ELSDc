@@ -1,0 +1,61 @@
+\doxysection{src/iterator.h File Reference}
+\hypertarget{iterator_8h}{}\label{iterator_8h}\index{src/iterator.h@{src/iterator.h}}
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structRectIter}{Rect\+Iter}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{iterator_8h_a85d1536d02765e56ec37da19a90e7fda}{free\+\_\+\+Rect\+Iter}} (\mbox{\hyperlink{structRectIter}{Rect\+Iter}} \texorpdfstring{$\ast$}{*}iter)
+\item 
+int \mbox{\hyperlink{iterator_8h_af7da6dcffa5131ae89a09928a735876c}{end\+\_\+\+Rect\+Iter}} (\mbox{\hyperlink{structRectIter}{Rect\+Iter}} \texorpdfstring{$\ast$}{*}i)
+\item 
+void \mbox{\hyperlink{iterator_8h_a4c117221ffe49dc4f9e5f12638a29226}{inc\+\_\+\+Rect\+Iter}} (\mbox{\hyperlink{structRectIter}{Rect\+Iter}} \texorpdfstring{$\ast$}{*}i)
+\item 
+\mbox{\hyperlink{structRectIter}{Rect\+Iter}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{iterator_8h_a10e0fc06c9d67303b68e6b4296dd692e}{ini\+\_\+\+Rect\+Iter}} (\mbox{\hyperlink{structRectangle}{Rectangle}} \texorpdfstring{$\ast$}{*}r)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{iterator_8h_af7da6dcffa5131ae89a09928a735876c}\label{iterator_8h_af7da6dcffa5131ae89a09928a735876c} 
+\index{iterator.h@{iterator.h}!end\_RectIter@{end\_RectIter}}
+\index{end\_RectIter@{end\_RectIter}!iterator.h@{iterator.h}}
+\doxysubsubsection{\texorpdfstring{end\_RectIter()}{end\_RectIter()}}
+{\footnotesize\ttfamily int end\+\_\+\+Rect\+Iter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRectIter}{Rect\+Iter}} \texorpdfstring{$\ast$}{*}}]{i }\end{DoxyParamCaption})}
+
+Check if the iterator finished the full iteration. 
+
+Definition at line \mbox{\hyperlink{iterator_8c_source_l00085}{85}} of file \mbox{\hyperlink{iterator_8c_source}{iterator.\+c}}.
+
+\Hypertarget{iterator_8h_a85d1536d02765e56ec37da19a90e7fda}\label{iterator_8h_a85d1536d02765e56ec37da19a90e7fda} 
+\index{iterator.h@{iterator.h}!free\_RectIter@{free\_RectIter}}
+\index{free\_RectIter@{free\_RectIter}!iterator.h@{iterator.h}}
+\doxysubsubsection{\texorpdfstring{free\_RectIter()}{free\_RectIter()}}
+{\footnotesize\ttfamily void free\+\_\+\+Rect\+Iter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRectIter}{Rect\+Iter}} \texorpdfstring{$\ast$}{*}}]{iter }\end{DoxyParamCaption})}
+
+Free memory used by a rectangle iterator. 
+
+Definition at line \mbox{\hyperlink{iterator_8c_source_l00074}{74}} of file \mbox{\hyperlink{iterator_8c_source}{iterator.\+c}}.
+
+\Hypertarget{iterator_8h_a4c117221ffe49dc4f9e5f12638a29226}\label{iterator_8h_a4c117221ffe49dc4f9e5f12638a29226} 
+\index{iterator.h@{iterator.h}!inc\_RectIter@{inc\_RectIter}}
+\index{inc\_RectIter@{inc\_RectIter}!iterator.h@{iterator.h}}
+\doxysubsubsection{\texorpdfstring{inc\_RectIter()}{inc\_RectIter()}}
+{\footnotesize\ttfamily void inc\+\_\+\+Rect\+Iter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRectIter}{Rect\+Iter}} \texorpdfstring{$\ast$}{*}}]{i }\end{DoxyParamCaption})}
+
+Increment a rectangle iterator. 
+
+Definition at line \mbox{\hyperlink{iterator_8c_source_l00096}{96}} of file \mbox{\hyperlink{iterator_8c_source}{iterator.\+c}}.
+
+\Hypertarget{iterator_8h_a10e0fc06c9d67303b68e6b4296dd692e}\label{iterator_8h_a10e0fc06c9d67303b68e6b4296dd692e} 
+\index{iterator.h@{iterator.h}!ini\_RectIter@{ini\_RectIter}}
+\index{ini\_RectIter@{ini\_RectIter}!iterator.h@{iterator.h}}
+\doxysubsubsection{\texorpdfstring{ini\_RectIter()}{ini\_RectIter()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structRectIter}{Rect\+Iter}} \texorpdfstring{$\ast$}{*} ini\+\_\+\+Rect\+Iter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRectangle}{Rectangle}} \texorpdfstring{$\ast$}{*}}]{r }\end{DoxyParamCaption})}
+
+Create and initialize a rectangle iterator. 
+
+Definition at line \mbox{\hyperlink{iterator_8c_source_l00130}{130}} of file \mbox{\hyperlink{iterator_8c_source}{iterator.\+c}}.
+

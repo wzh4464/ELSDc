@@ -1,0 +1,94 @@
+\doxysection{image.\+h}
+\hypertarget{image_8h_source}{}\label{image_8h_source}\index{src/image.h@{src/image.h}}
+\mbox{\hyperlink{image_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00001}00001\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00002}00002\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00003}00003\ \textcolor{comment}{\ \ Copyright\ (c)\ 2007-\/2011\ rafael\ grompone\ von\ gioi\ (grompone@gmail.com)\ }}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00004}00004\ \textcolor{comment}{\ \ Copyright\ (c)\ 2012-\/2014\ viorica\ patraucean\ (vpatrauc@gmail.com)}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00005}00005\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00006}00006\ \textcolor{comment}{\ \ This\ program\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00007}00007\ \textcolor{comment}{\ \ it\ under\ the\ terms\ of\ the\ GNU\ Affero\ General\ Public\ License\ as}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00008}00008\ \textcolor{comment}{\ \ published\ by\ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00009}00009\ \textcolor{comment}{\ \ License,\ or\ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00010}00010\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00011}00011\ \textcolor{comment}{\ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00012}00012\ \textcolor{comment}{\ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00013}00013\ \textcolor{comment}{\ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ See\ the}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00014}00014\ \textcolor{comment}{\ \ GNU\ Affero\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00015}00015\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00016}00016\ \textcolor{comment}{\ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ Affero\ General\ Public\ License}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00017}00017\ \textcolor{comment}{\ \ along\ with\ this\ program.\ If\ not,\ see\ <http://www.gnu.org/licenses/>.}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00018}00018\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00019}00019\ \textcolor{comment}{\ \ image.h\ -\/\ This\ file\ belongs\ to\ ELSDc\ project\ (Ellipse\ and\ Line\ Segment\ }}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00020}00020\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ Detector\ with\ continuous\ validation).}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00021}00021\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ -\/\ It\ defines\ data\ structures\ for\ char\ /\ int\ /\ double\ images,\ function\ }}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00022}00022\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ prototypes\ to\ free\ /\ allocate\ /\ allocate\ and\ initialize\ these\ }}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00023}00023\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ structures,\ and\ prototype\ for\ image\ gradient\ computation.\ }}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00024}00024\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00025}00025\ \textcolor{comment}{\ \ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00027}00027\ \textcolor{preprocessor}{\#ifndef\ IMAGE\_H}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00028}00028\ \textcolor{preprocessor}{\#define\ IMAGE\_H}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00030}00030\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{misc_8h}{misc.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00032}00032\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00035}\mbox{\hyperlink{structImageChar}{00035}}\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structImageChar}{ImageChar}}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00036}00036\ \{\ }
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00037}\mbox{\hyperlink{structImageChar_ac24cea2bfcc927fd29bc74d1086707d8}{00037}}\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ *\mbox{\hyperlink{structImageChar_ac24cea2bfcc927fd29bc74d1086707d8}{data}};}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00038}\mbox{\hyperlink{structImageChar_aa4b0263c533c5ce471067bd5ede24477}{00038}}\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structImageChar_aa4b0263c533c5ce471067bd5ede24477}{xsize}},\ \mbox{\hyperlink{structImageChar_a7e7fdb6b4d76fd619024da6878c27d58}{ysize}};}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00039}\mbox{\hyperlink{image_8h_abf368707b04976a0552dab4473f28b27}{00039}}\ \}\ *\mbox{\hyperlink{image_8h_abf368707b04976a0552dab4473f28b27}{PImageChar}};\ \textcolor{comment}{/*\ pointer\ to\ ImageChar\ */}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00041}00041\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{image_8h_aa58f34a2b6c4700cbd956f820418bdee}{free\_PImageChar}}(\ \mbox{\hyperlink{structImageChar}{PImageChar}}\ i\ );}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00042}00042\ \mbox{\hyperlink{structImageChar}{PImageChar}}\ \mbox{\hyperlink{image_8h_a7e4805b775ae0ce63216d5e7fac3d99b}{new\_PImageChar}}(\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ xsize,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ ysize\ );}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00043}00043\ \mbox{\hyperlink{structImageChar}{PImageChar}}\ \mbox{\hyperlink{image_8h_a93f3134419a437219c46bc206a210bbb}{new\_PImageChar\_ini}}(\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ xsize,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ ysize,}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00044}00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ fill\_value\ );}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00046}00046\ }
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00047}00047\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00050}\mbox{\hyperlink{structImageInt}{00050}}\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structImageInt}{ImageInt}}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00051}00051\ \{}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00052}\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{00052}}\ \ \ \textcolor{keywordtype}{int}\ *\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}};}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00053}\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{00053}}\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}},\ \mbox{\hyperlink{structImageInt_a7e7fdb6b4d76fd619024da6878c27d58}{ysize}};}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00054}\mbox{\hyperlink{image_8h_ad2f6828b30c727a557c8c201c2913f0f}{00054}}\ \}\ *\mbox{\hyperlink{image_8h_ad2f6828b30c727a557c8c201c2913f0f}{PImageInt}};\ \textcolor{comment}{/*\ pointer\ to\ ImageInt\ */}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00055}00055\ }
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00056}00056\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{image_8h_a6ee6bd84de84b9c43d96a7daf535ccd3}{free\_PImageInt}}(\ \mbox{\hyperlink{structImageInt}{PImageInt}}\ i\ );}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00057}00057\ \mbox{\hyperlink{structImageInt}{PImageInt}}\ \mbox{\hyperlink{image_8h_a24e8904b30314d7539fdcc505a26cf07}{new\_PImageInt}}(\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ xsize,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ ysize\ );}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00058}00058\ \mbox{\hyperlink{structImageInt}{PImageInt}}\ \mbox{\hyperlink{image_8h_aa54fa4ed5a519b86fb3264668ff6655f}{new\_PImageInt\_ini}}(\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ xsize,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ ysize,}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00059}00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ fill\_value\ );}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00060}00060\ }
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00062}00062\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00065}\mbox{\hyperlink{structImageDouble}{00065}}\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structImageDouble}{ImageDouble}}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00066}00066\ \{}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00067}\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{00067}}\ \ \ \textcolor{keywordtype}{double}\ *\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}};}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00068}\mbox{\hyperlink{structImageDouble_aa4b0263c533c5ce471067bd5ede24477}{00068}}\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structImageDouble_aa4b0263c533c5ce471067bd5ede24477}{xsize}},\ \mbox{\hyperlink{structImageDouble_a7e7fdb6b4d76fd619024da6878c27d58}{ysize}};}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00069}\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{00069}}\ \}\ *\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImageDouble}};\ \textcolor{comment}{/*\ pointer\ to\ ImageDouble\ */}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00070}00070\ }
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00072}00072\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00075}\mbox{\hyperlink{image_8h_a9caa0284a00a0528cb868b69a5ad5370}{00075}}\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structlist}{list}}\ \mbox{\hyperlink{structlist}{CoordList}};}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00076}\mbox{\hyperlink{structlist}{00076}}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structlist}{list}}\ }
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00077}00077\ \{}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00078}\mbox{\hyperlink{structlist_a6150e0515f7202e2fb518f7206ed97dc}{00078}}\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structlist_a6150e0515f7202e2fb518f7206ed97dc}{x}},\ \mbox{\hyperlink{structlist_a0a2f84ed7838f07779ae24c5a9086d33}{y}};}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00079}\mbox{\hyperlink{structlist_a7d9504c931be4ef8f9755e0065d27489}{00079}}\ \ \ \mbox{\hyperlink{structlist}{CoordList}}\ *\mbox{\hyperlink{structlist_a7d9504c931be4ef8f9755e0065d27489}{next}};}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00080}00080\ \};}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00081}00081\ }
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00082}00082\ }
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00083}00083\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{image_8h_a65f922be2f5afbbcdb04645cb8f8bbfb}{free\_PImageDouble}}(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ i\ );}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00084}00084\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ \mbox{\hyperlink{image_8h_a5baadc47eb068cd9e3b2d52a5065e3c0}{new\_PImageDouble}}(\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ xsize,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ ysize\ );}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00085}00085\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ \mbox{\hyperlink{image_8h_a366212b692e1b18885cb5b137c656a9d}{new\_PImageDouble\_ini}}(\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ xsize,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ ysize,}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ fill\_value\ );}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00087}00087\ }
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00088}00088\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ \mbox{\hyperlink{image_8h_a51ef0a087c0699dffd084d8930fa7377}{img\_gradient\_angle}}(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ in,\ \textcolor{keywordtype}{double}\ threshold\ );}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00089}00089\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{image_8h_a0312c9c68ef16da181121d5f105caf33}{img\_gradient\_sort}}(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ in,\ \textcolor{keywordtype}{double}\ threshold,\ \mbox{\hyperlink{structlist}{CoordList}}\ **list\_p,\ }
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ **mem\_p,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ n\_bins,\ \textcolor{keywordtype}{double}\ max\_grad,\ }
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00091}00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ *angles,\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ *gradmag,\ }
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00092}00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ *gradx,\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ *grady\ );}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00093}00093\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{image_8h_a23026d70139f0859bae4a5723784f1fc}{mark\_img\_pts}}(\ \mbox{\hyperlink{structImageInt}{PImageInt}}\ im,\ \mbox{\hyperlink{structPoint}{Point}}\ *pts,\ \textcolor{keywordtype}{int}\ start,\ \textcolor{keywordtype}{int}\ end,\ \textcolor{keywordtype}{int}\ label\ );}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00094}00094\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{image_8h_a7d75c600cc492bd8efbc1cc0c3819d88}{in\_image}}(\ \textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ xsize,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ ysize);}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00095}00095\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{image_8h_a9d7c27ae8502d7bb6ef83ddd1e95df95}{local\_max}}(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ im,\ \textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y\ );}
+\DoxyCodeLine{\Hypertarget{image_8h_source_l00096}00096\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

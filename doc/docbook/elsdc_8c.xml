@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_elsdc_8c" xml:lang="en-US">
+<title>src/elsdc.c File Reference</title>
+<indexterm><primary>src/elsdc.c</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &lt;stdio.h&gt;<?linebreak?>#include &lt;stdlib.h&gt;<?linebreak?>#include &lt;math.h&gt;<?linebreak?>#include &lt;float.h&gt;<?linebreak?>#include &lt;string.h&gt;<?linebreak?>#include &quot;misc.h&quot;<?linebreak?>#include &quot;image.h&quot;<?linebreak?>#include &quot;gauss.h&quot;<?linebreak?>#include &quot;rectangle.h&quot;<?linebreak?>#include &quot;iterator.h&quot;<?linebreak?>#include &quot;polygon.h&quot;<?linebreak?>#include &quot;ring.h&quot;<?linebreak?>#include &quot;ellipse_fit.h&quot;<?linebreak?>#include &quot;curve_grow.h&quot;<?linebreak?>#include &quot;elsdc.h&quot;<?linebreak?></programlisting><simplesect>
+    <title>Macros    </title>
+        <itemizedlist>
+            <listitem><para>#define <link linkend="_elsdc_8c_1af685048ab39761c96a17c680b1b48a17">LOG10_1_2_M_2__PI</link>&#160;&#160;&#160;0.39908993418</para>
+</listitem>
+            <listitem><para>#define <link linkend="_elsdc_8c_1aa058eb8fdd5d04db876ffd7a18f3cd58">LOG10_EXP1</link>&#160;&#160;&#160;0.43429448190</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>void <link linkend="_elsdc_8c_1a14c0968bea725a2e334332bc4ac3c6ed">add_poly_out</link> (<link linkend="_structPolygon">Polygon</link> **poly_out, <link linkend="_structPolyRect">PolyRect</link> *poly, int poly_count, int *poly_count_max, int **labels, int lbl)</para>
+</listitem>
+            <listitem><para>void <link linkend="_elsdc_8c_1a3d4097d23c7734e16d559485b7ecfaab">add_ell_out</link> (<link linkend="_structRing">Ring</link> **ell_out, <link linkend="_structRing">Ring</link> *ell, int ell_count, int *ell_count_max, int **labels, int lbl)</para>
+</listitem>
+            <listitem><para>void <link linkend="_elsdc_8c_1a622977efb42238086935cbcd5e6704ee">ELSDc</link> (<link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> in, int *ell_count, <link linkend="_structRing">Ring</link> **ell_out, int **ell_labels, int *poly_count, <link linkend="_structPolygon">Polygon</link> **poly_out, int **poly_labels, <link linkend="_image_8h_1ad2f6828b30c727a557c8c201c2913f0f">PImageInt</link> out)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Macro Definition Documentation</title>
+<anchor xml:id="_elsdc_8c_1af685048ab39761c96a17c680b1b48a17"/><section>
+    <title>LOG10_1_2_M_2__PI</title>
+<indexterm><primary>LOG10_1_2_M_2__PI</primary><secondary>elsdc.c</secondary></indexterm>
+<indexterm><primary>elsdc.c</primary><secondary>LOG10_1_2_M_2__PI</secondary></indexterm>
+<para><computeroutput>#define LOG10_1_2_M_2__PI&#160;&#160;&#160;0.39908993418</computeroutput></para>
+<para>Continuous formulation of the number of false alarms NFAC = NT * k^n / n! log(n!) is bounded by Stirling&apos;s approximation: n! &gt;= sqrt(2pi) * n^(n+0.5) * exp(-n) then, log10(NFA) &lt;= log10(NT) + n*log10(k) - log10(latter expansion) </para>
+<para>
+Definition at line <link linkend="_elsdc_8c_source_1l00051">51</link> of file <link linkend="_elsdc_8c_source">elsdc.c</link>.</para>
+</section>
+<anchor xml:id="_elsdc_8c_1aa058eb8fdd5d04db876ffd7a18f3cd58"/><section>
+    <title>LOG10_EXP1</title>
+<indexterm><primary>LOG10_EXP1</primary><secondary>elsdc.c</secondary></indexterm>
+<indexterm><primary>elsdc.c</primary><secondary>LOG10_EXP1</secondary></indexterm>
+<para><computeroutput>#define LOG10_EXP1&#160;&#160;&#160;0.43429448190</computeroutput></para><para>
+Definition at line <link linkend="_elsdc_8c_source_1l00052">52</link> of file <link linkend="_elsdc_8c_source">elsdc.c</link>.</para>
+</section>
+</section>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="_elsdc_8c_1a3d4097d23c7734e16d559485b7ecfaab"/><section>
+    <title>add_ell_out()</title>
+<indexterm><primary>add_ell_out</primary><secondary>elsdc.c</secondary></indexterm>
+<indexterm><primary>elsdc.c</primary><secondary>add_ell_out</secondary></indexterm>
+<para><computeroutput>void add_ell_out (<link linkend="_structRing">Ring</link> ** ell_out, <link linkend="_structRing">Ring</link> * ell, int ell_count, int * ell_count_max, int ** labels, int lbl)</computeroutput></para>
+<para>A meaningful ellipse has been found; store it in output. </para>
+<para>
+Definition at line <link linkend="_elsdc_8c_source_1l00760">760</link> of file <link linkend="_elsdc_8c_source">elsdc.c</link>.</para>
+</section>
+<anchor xml:id="_elsdc_8c_1a14c0968bea725a2e334332bc4ac3c6ed"/><section>
+    <title>add_poly_out()</title>
+<indexterm><primary>add_poly_out</primary><secondary>elsdc.c</secondary></indexterm>
+<indexterm><primary>elsdc.c</primary><secondary>add_poly_out</secondary></indexterm>
+<para><computeroutput>void add_poly_out (<link linkend="_structPolygon">Polygon</link> ** poly_out, <link linkend="_structPolyRect">PolyRect</link> * poly, int poly_count, int * poly_count_max, int ** labels, int lbl)</computeroutput></para>
+<para>A meaningful polygon has been found; store it in output. </para>
+<para>
+Definition at line <link linkend="_elsdc_8c_source_1l00739">739</link> of file <link linkend="_elsdc_8c_source">elsdc.c</link>.</para>
+</section>
+<anchor xml:id="_elsdc_8c_1a622977efb42238086935cbcd5e6704ee"/><section>
+    <title>ELSDc()</title>
+<indexterm><primary>ELSDc</primary><secondary>elsdc.c</secondary></indexterm>
+<indexterm><primary>elsdc.c</primary><secondary>ELSDc</secondary></indexterm>
+<para><computeroutput>void ELSDc (<link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> in, int * ell_count, <link linkend="_structRing">Ring</link> ** ell_out, int ** ell_labels, int * poly_count, <link linkend="_structPolygon">Polygon</link> ** poly_out, int ** poly_labels, <link linkend="_image_8h_1ad2f6828b30c727a557c8c201c2913f0f">PImageInt</link> out)</computeroutput></para>
+<para>Entry point in detector&apos;s code. Gets as input an image, and returns two lists of geometric shapes: polygons and ellipses (circles are considered particular ellipses, and segments are particular polygons). </para>
+<para>
+Definition at line <link linkend="_elsdc_8c_source_1l00780">780</link> of file <link linkend="_elsdc_8c_source">elsdc.c</link>.</para>
+</section>
+</section>
+</section>

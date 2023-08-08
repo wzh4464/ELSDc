@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<book xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_index" xml:lang="en-US">
+    <info>
+    <title>ELSDc</title>
+    </info>
+    <xi:include href="md_src_2LICENSE.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+<chapter>
+    <title>Data Structure Documentation</title>
+    <xi:include href="structGaussFilter.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="structImageChar.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="structImageDouble.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="structImageInt.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="structlist.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="structPoint.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="structPointD.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="structPolygon.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="structPolyRect.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="structRectangle.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="structRectIter.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="structRing.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+</chapter>
+<chapter>
+    <title>File Documentation</title>
+    <xi:include href="curve__grow_8c.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="curve__grow_8c_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="curve__grow_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="curve__grow_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="ellipse__fit_8c.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="ellipse__fit_8c_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="ellipse__fit_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="ellipse__fit_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="elsdc_8c.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="elsdc_8c_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="elsdc_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="elsdc_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="gauss_8c.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="gauss_8c_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="gauss_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="gauss_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="image_8c.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="image_8c_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="image_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="image_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="iterator_8c.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="iterator_8c_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="iterator_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="iterator_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="lapack__wrapper_8c.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="lapack__wrapper_8c_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="lapack__wrapper_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="lapack__wrapper_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="LICENSE_8md.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="main_8c.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="main_8c_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="mexall_8m.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="mexall_8m_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="mexELSDc_8c.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="mexELSDc_8c_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="misc_8c.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="misc_8c_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="misc_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="misc_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="pgm_8c.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="pgm_8c_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="pgm_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="pgm_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="polygon_8c.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="polygon_8c_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="polygon_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="polygon_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="rectangle_8c.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="rectangle_8c_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="rectangle_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="rectangle_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="ring_8c.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="ring_8c_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="ring_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="ring_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="svg_8c.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="svg_8c_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="svg_8h.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+    <xi:include href="svg_8h_source.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+</chapter>
+<index/>
+</book>

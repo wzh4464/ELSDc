@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_structRectIter" xml:lang="en-US">
+<title>RectIter Struct Reference</title>
+<indexterm><primary>RectIter</primary></indexterm>
+<para>
+<computeroutput>#include &lt;iterator.h&gt;</computeroutput>
+</para>
+<simplesect>
+    <title>Data Fields    </title>
+        <itemizedlist>
+            <listitem><para>double <link linkend="_structRectIter_1a8b14543be0e1e25098de7a0a6f9e8b5c">vx</link> [4]</para>
+</listitem>
+            <listitem><para>double <link linkend="_structRectIter_1a32200ba3dee738c5005f3b12e8a4c5b7">vy</link> [4]</para>
+</listitem>
+            <listitem><para>double <link linkend="_structRectIter_1a3eefdb12a0278c393fdbb31a52c6d751">ys</link></para>
+</listitem>
+            <listitem><para>double <link linkend="_structRectIter_1a6daa5b14fcf6b3557da9371acadeab1f">ye</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_structRectIter_1a6150e0515f7202e2fb518f7206ed97dc">x</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_structRectIter_1a0a2f84ed7838f07779ae24c5a9086d33">y</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para><link linkend="_structRectangle">Rectangle</link> iterator structure: useful to scan the pixels inside a rectangle. </para>
+<para>
+Definition at line <link linkend="_iterator_8h_source_1l00033">33</link> of file <link linkend="_iterator_8h_source">iterator.h</link>.</para>
+</section>
+<section>
+<title>Field Documentation</title>
+<anchor xml:id="_structRectIter_1a8b14543be0e1e25098de7a0a6f9e8b5c"/><section>
+    <title>vx</title>
+<indexterm><primary>vx</primary><secondary>RectIter</secondary></indexterm>
+<indexterm><primary>RectIter</primary><secondary>vx</secondary></indexterm>
+<para><computeroutput>double vx[4]</computeroutput></para><para>
+Definition at line <link linkend="_iterator_8h_source_1l00035">35</link> of file <link linkend="_iterator_8h_source">iterator.h</link>.</para>
+</section>
+<anchor xml:id="_structRectIter_1a32200ba3dee738c5005f3b12e8a4c5b7"/><section>
+    <title>vy</title>
+<indexterm><primary>vy</primary><secondary>RectIter</secondary></indexterm>
+<indexterm><primary>RectIter</primary><secondary>vy</secondary></indexterm>
+<para><computeroutput>double vy[4]</computeroutput></para><para>
+Definition at line <link linkend="_iterator_8h_source_1l00036">36</link> of file <link linkend="_iterator_8h_source">iterator.h</link>.</para>
+</section>
+<anchor xml:id="_structRectIter_1a6150e0515f7202e2fb518f7206ed97dc"/><section>
+    <title>x</title>
+<indexterm><primary>x</primary><secondary>RectIter</secondary></indexterm>
+<indexterm><primary>RectIter</primary><secondary>x</secondary></indexterm>
+<para><computeroutput>int x</computeroutput></para><para>
+Definition at line <link linkend="_iterator_8h_source_1l00038">38</link> of file <link linkend="_iterator_8h_source">iterator.h</link>.</para>
+</section>
+<anchor xml:id="_structRectIter_1a0a2f84ed7838f07779ae24c5a9086d33"/><section>
+    <title>y</title>
+<indexterm><primary>y</primary><secondary>RectIter</secondary></indexterm>
+<indexterm><primary>RectIter</primary><secondary>y</secondary></indexterm>
+<para><computeroutput>int y</computeroutput></para><para>
+Definition at line <link linkend="_iterator_8h_source_1l00038">38</link> of file <link linkend="_iterator_8h_source">iterator.h</link>.</para>
+</section>
+<anchor xml:id="_structRectIter_1a6daa5b14fcf6b3557da9371acadeab1f"/><section>
+    <title>ye</title>
+<indexterm><primary>ye</primary><secondary>RectIter</secondary></indexterm>
+<indexterm><primary>RectIter</primary><secondary>ye</secondary></indexterm>
+<para><computeroutput>double ye</computeroutput></para><para>
+Definition at line <link linkend="_iterator_8h_source_1l00037">37</link> of file <link linkend="_iterator_8h_source">iterator.h</link>.</para>
+</section>
+<anchor xml:id="_structRectIter_1a3eefdb12a0278c393fdbb31a52c6d751"/><section>
+    <title>ys</title>
+<indexterm><primary>ys</primary><secondary>RectIter</secondary></indexterm>
+<indexterm><primary>RectIter</primary><secondary>ys</secondary></indexterm>
+<para><computeroutput>double ys</computeroutput></para><para>
+Definition at line <link linkend="_iterator_8h_source_1l00037">37</link> of file <link linkend="_iterator_8h_source">iterator.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+src/<link linkend="_iterator_8h">iterator.h</link></section>
+</section>

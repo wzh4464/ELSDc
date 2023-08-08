@@ -1,0 +1,74 @@
+\doxysection{src/svg.c File Reference}
+\hypertarget{svg_8c}{}\label{svg_8c}\index{src/svg.c@{src/svg.c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include \"{}polygon.\+h\"{}}\newline
+{\ttfamily \#include \"{}ring.\+h\"{}}\newline
+{\ttfamily \#include \"{}svg.\+h\"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+FILE \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{svg_8c_a558582c3fc08d1b34b5773e8543704a7}{init\+\_\+svg}} (char \texorpdfstring{$\ast$}{*}filename, unsigned int xsize, unsigned int ysize)
+\item 
+void \mbox{\hyperlink{svg_8c_a248633af17855dac187670ce42897417}{fclose\+\_\+svg}} (FILE \texorpdfstring{$\ast$}{*}fsvg)
+\item 
+void \mbox{\hyperlink{svg_8c_a3a909bc27359f0f315f09797743d1863}{write\+\_\+svg\+\_\+poly}} (FILE \texorpdfstring{$\ast$}{*}fsvg, \mbox{\hyperlink{structPolygon}{Polygon}} \texorpdfstring{$\ast$}{*}poly)
+\item 
+void \mbox{\hyperlink{svg_8c_addecc5315e2b2bf715678d6169c29cd2}{write\+\_\+svg\+\_\+circ\+\_\+arc}} (FILE \texorpdfstring{$\ast$}{*}fsvg, \mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}cring)
+\item 
+void \mbox{\hyperlink{svg_8c_abfaad49171308ccbecd1f3023ac13c15}{write\+\_\+svg\+\_\+ell\+\_\+arc}} (FILE \texorpdfstring{$\ast$}{*}fsvg, \mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}ering)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{svg_8c_a248633af17855dac187670ce42897417}\label{svg_8c_a248633af17855dac187670ce42897417} 
+\index{svg.c@{svg.c}!fclose\_svg@{fclose\_svg}}
+\index{fclose\_svg@{fclose\_svg}!svg.c@{svg.c}}
+\doxysubsubsection{\texorpdfstring{fclose\_svg()}{fclose\_svg()}}
+{\footnotesize\ttfamily void fclose\+\_\+svg (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{fsvg }\end{DoxyParamCaption})}
+
+Close an SVG file. 
+
+Definition at line \mbox{\hyperlink{svg_8c_source_l00060}{60}} of file \mbox{\hyperlink{svg_8c_source}{svg.\+c}}.
+
+\Hypertarget{svg_8c_a558582c3fc08d1b34b5773e8543704a7}\label{svg_8c_a558582c3fc08d1b34b5773e8543704a7} 
+\index{svg.c@{svg.c}!init\_svg@{init\_svg}}
+\index{init\_svg@{init\_svg}!svg.c@{svg.c}}
+\doxysubsubsection{\texorpdfstring{init\_svg()}{init\_svg()}}
+{\footnotesize\ttfamily FILE \texorpdfstring{$\ast$}{*} init\+\_\+svg (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{filename,  }\item[{unsigned int}]{xsize,  }\item[{unsigned int}]{ysize }\end{DoxyParamCaption})}
+
+Open and initialize an SVG file. 
+
+Definition at line \mbox{\hyperlink{svg_8c_source_l00037}{37}} of file \mbox{\hyperlink{svg_8c_source}{svg.\+c}}.
+
+\Hypertarget{svg_8c_addecc5315e2b2bf715678d6169c29cd2}\label{svg_8c_addecc5315e2b2bf715678d6169c29cd2} 
+\index{svg.c@{svg.c}!write\_svg\_circ\_arc@{write\_svg\_circ\_arc}}
+\index{write\_svg\_circ\_arc@{write\_svg\_circ\_arc}!svg.c@{svg.c}}
+\doxysubsubsection{\texorpdfstring{write\_svg\_circ\_arc()}{write\_svg\_circ\_arc()}}
+{\footnotesize\ttfamily void write\+\_\+svg\+\_\+circ\+\_\+arc (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{fsvg,  }\item[{\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}}]{cring }\end{DoxyParamCaption})}
+
+Write circular arc in SVG file. For details, see \href{http://www.w3.org/TR/SVG/paths.html\#PathDataEllipticalArcCommands}{\texttt{ http\+://www.\+w3.\+org/\+TR/\+SVG/paths.\+html\#\+Path\+Data\+Elliptical\+Arc\+Commands}} 
+
+Definition at line \mbox{\hyperlink{svg_8c_source_l00094}{94}} of file \mbox{\hyperlink{svg_8c_source}{svg.\+c}}.
+
+\Hypertarget{svg_8c_abfaad49171308ccbecd1f3023ac13c15}\label{svg_8c_abfaad49171308ccbecd1f3023ac13c15} 
+\index{svg.c@{svg.c}!write\_svg\_ell\_arc@{write\_svg\_ell\_arc}}
+\index{write\_svg\_ell\_arc@{write\_svg\_ell\_arc}!svg.c@{svg.c}}
+\doxysubsubsection{\texorpdfstring{write\_svg\_ell\_arc()}{write\_svg\_ell\_arc()}}
+{\footnotesize\ttfamily void write\+\_\+svg\+\_\+ell\+\_\+arc (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{fsvg,  }\item[{\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}}]{ering }\end{DoxyParamCaption})}
+
+Write elliptical arc in SVG file. For details, see \href{http://www.w3.org/TR/SVG/paths.html\#PathDataEllipticalArcCommands}{\texttt{ http\+://www.\+w3.\+org/\+TR/\+SVG/paths.\+html\#\+Path\+Data\+Elliptical\+Arc\+Commands}} 
+
+Definition at line \mbox{\hyperlink{svg_8c_source_l00152}{152}} of file \mbox{\hyperlink{svg_8c_source}{svg.\+c}}.
+
+\Hypertarget{svg_8c_a3a909bc27359f0f315f09797743d1863}\label{svg_8c_a3a909bc27359f0f315f09797743d1863} 
+\index{svg.c@{svg.c}!write\_svg\_poly@{write\_svg\_poly}}
+\index{write\_svg\_poly@{write\_svg\_poly}!svg.c@{svg.c}}
+\doxysubsubsection{\texorpdfstring{write\_svg\_poly()}{write\_svg\_poly()}}
+{\footnotesize\ttfamily void write\+\_\+svg\+\_\+poly (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{fsvg,  }\item[{\mbox{\hyperlink{structPolygon}{Polygon}} \texorpdfstring{$\ast$}{*}}]{poly }\end{DoxyParamCaption})}
+
+Write polygon in SVG file. For details, see \href{http://www.w3.org/TR/SVG/paths.html\#PathDataEllipticalArcCommands}{\texttt{ http\+://www.\+w3.\+org/\+TR/\+SVG/paths.\+html\#\+Path\+Data\+Elliptical\+Arc\+Commands}} 
+
+Definition at line \mbox{\hyperlink{svg_8c_source_l00073}{73}} of file \mbox{\hyperlink{svg_8c_source}{svg.\+c}}.
+

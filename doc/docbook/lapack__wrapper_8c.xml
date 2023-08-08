@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_lapack__wrapper_8c" xml:lang="en-US">
+<title>src/lapack_wrapper.c File Reference</title>
+<indexterm><primary>src/lapack_wrapper.c</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &lt;lapack.h&gt;<?linebreak?>#include &quot;lapack_wrapper.h&quot;<?linebreak?></programlisting><simplesect>
+    <title>Typedefs    </title>
+        <itemizedlist>
+            <listitem><para>typedef long int <link linkend="_lapack__wrapper_8c_1a99e088ad9e1bf72a6c0e148a6c2b7012">integer</link></para>
+</listitem>
+            <listitem><para>typedef double <link linkend="_lapack__wrapper_8c_1a1e69afaa4e6077b67397e6c36454b97a">doublereal</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>void <link linkend="_lapack__wrapper_8c_1a0c2af188e0233a54ff3baf6b9da6a3df">lap_eig</link> (double *A, int n)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Typedef Documentation</title>
+<anchor xml:id="_lapack__wrapper_8c_1a1e69afaa4e6077b67397e6c36454b97a"/><section>
+    <title>doublereal</title>
+<indexterm><primary>doublereal</primary><secondary>lapack_wrapper.c</secondary></indexterm>
+<indexterm><primary>lapack_wrapper.c</primary><secondary>doublereal</secondary></indexterm>
+<para><computeroutput>typedef double <link linkend="_lapack__wrapper_8c_1a1e69afaa4e6077b67397e6c36454b97a">doublereal</link></computeroutput></para><para>
+Definition at line <link linkend="_lapack__wrapper_8c_source_1l00029">29</link> of file <link linkend="_lapack__wrapper_8c_source">lapack_wrapper.c</link>.</para>
+</section>
+<anchor xml:id="_lapack__wrapper_8c_1a99e088ad9e1bf72a6c0e148a6c2b7012"/><section>
+    <title>integer</title>
+<indexterm><primary>integer</primary><secondary>lapack_wrapper.c</secondary></indexterm>
+<indexterm><primary>lapack_wrapper.c</primary><secondary>integer</secondary></indexterm>
+<para><computeroutput>typedef long int <link linkend="_lapack__wrapper_8c_1a99e088ad9e1bf72a6c0e148a6c2b7012">integer</link></computeroutput></para><para>
+Definition at line <link linkend="_lapack__wrapper_8c_source_1l00028">28</link> of file <link linkend="_lapack__wrapper_8c_source">lapack_wrapper.c</link>.</para>
+</section>
+</section>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="_lapack__wrapper_8c_1a0c2af188e0233a54ff3baf6b9da6a3df"/><section>
+    <title>lap_eig()</title>
+<indexterm><primary>lap_eig</primary><secondary>lapack_wrapper.c</secondary></indexterm>
+<indexterm><primary>lapack_wrapper.c</primary><secondary>lap_eig</secondary></indexterm>
+<para><computeroutput>void lap_eig (double * A, int n)</computeroutput></para>
+<para>Header of lapack function for computing the eigen-decomposition of a matrix of double. Solve linear system. &apos;n&apos; number of unknowns; &apos;A&apos; coefficients of the equations. </para>
+<para>
+Definition at line <link linkend="_lapack__wrapper_8c_source_1l00046">46</link> of file <link linkend="_lapack__wrapper_8c_source">lapack_wrapper.c</link>.</para>
+</section>
+</section>
+</section>

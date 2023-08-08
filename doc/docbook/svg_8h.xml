@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_svg_8h" xml:lang="en-US">
+<title>src/svg.h File Reference</title>
+<indexterm><primary>src/svg.h</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &quot;polygon.h&quot;<?linebreak?>#include &quot;ring.h&quot;<?linebreak?></programlisting><simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>FILE * <link linkend="_svg_8h_1a558582c3fc08d1b34b5773e8543704a7">init_svg</link> (char *filename, unsigned int xsize, unsigned int ysize)</para>
+</listitem>
+            <listitem><para>void <link linkend="_svg_8h_1a248633af17855dac187670ce42897417">fclose_svg</link> (FILE *fsvg)</para>
+</listitem>
+            <listitem><para>void <link linkend="_svg_8h_1a3a909bc27359f0f315f09797743d1863">write_svg_poly</link> (FILE *fsvg, <link linkend="_structPolygon">Polygon</link> *poly)</para>
+</listitem>
+            <listitem><para>void <link linkend="_svg_8h_1addecc5315e2b2bf715678d6169c29cd2">write_svg_circ_arc</link> (FILE *fsvg, <link linkend="_structRing">Ring</link> *cring)</para>
+</listitem>
+            <listitem><para>void <link linkend="_svg_8h_1abfaad49171308ccbecd1f3023ac13c15">write_svg_ell_arc</link> (FILE *fsvg, <link linkend="_structRing">Ring</link> *ering)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="_svg_8h_1a248633af17855dac187670ce42897417"/><section>
+    <title>fclose_svg()</title>
+<indexterm><primary>fclose_svg</primary><secondary>svg.h</secondary></indexterm>
+<indexterm><primary>svg.h</primary><secondary>fclose_svg</secondary></indexterm>
+<para><computeroutput>void fclose_svg (FILE * fsvg)</computeroutput></para>
+<para>Close an SVG file. </para>
+<para>
+Definition at line <link linkend="_svg_8c_source_1l00060">60</link> of file <link linkend="_svg_8c_source">svg.c</link>.</para>
+</section>
+<anchor xml:id="_svg_8h_1a558582c3fc08d1b34b5773e8543704a7"/><section>
+    <title>init_svg()</title>
+<indexterm><primary>init_svg</primary><secondary>svg.h</secondary></indexterm>
+<indexterm><primary>svg.h</primary><secondary>init_svg</secondary></indexterm>
+<para><computeroutput>FILE * init_svg (char * filename, unsigned int xsize, unsigned int ysize)</computeroutput></para>
+<para>Open and initialize an SVG file. </para>
+<para>
+Definition at line <link linkend="_svg_8c_source_1l00037">37</link> of file <link linkend="_svg_8c_source">svg.c</link>.</para>
+</section>
+<anchor xml:id="_svg_8h_1addecc5315e2b2bf715678d6169c29cd2"/><section>
+    <title>write_svg_circ_arc()</title>
+<indexterm><primary>write_svg_circ_arc</primary><secondary>svg.h</secondary></indexterm>
+<indexterm><primary>svg.h</primary><secondary>write_svg_circ_arc</secondary></indexterm>
+<para><computeroutput>void write_svg_circ_arc (FILE * fsvg, <link linkend="_structRing">Ring</link> * cring)</computeroutput></para>
+<para>Write circular arc in SVG file. For details, see <link xlink:href="http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands">http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands</link> </para>
+<para>
+Definition at line <link linkend="_svg_8c_source_1l00094">94</link> of file <link linkend="_svg_8c_source">svg.c</link>.</para>
+</section>
+<anchor xml:id="_svg_8h_1abfaad49171308ccbecd1f3023ac13c15"/><section>
+    <title>write_svg_ell_arc()</title>
+<indexterm><primary>write_svg_ell_arc</primary><secondary>svg.h</secondary></indexterm>
+<indexterm><primary>svg.h</primary><secondary>write_svg_ell_arc</secondary></indexterm>
+<para><computeroutput>void write_svg_ell_arc (FILE * fsvg, <link linkend="_structRing">Ring</link> * ering)</computeroutput></para>
+<para>Write elliptical arc in SVG file. For details, see <link xlink:href="http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands">http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands</link> </para>
+<para>
+Definition at line <link linkend="_svg_8c_source_1l00152">152</link> of file <link linkend="_svg_8c_source">svg.c</link>.</para>
+</section>
+<anchor xml:id="_svg_8h_1a3a909bc27359f0f315f09797743d1863"/><section>
+    <title>write_svg_poly()</title>
+<indexterm><primary>write_svg_poly</primary><secondary>svg.h</secondary></indexterm>
+<indexterm><primary>svg.h</primary><secondary>write_svg_poly</secondary></indexterm>
+<para><computeroutput>void write_svg_poly (FILE * fsvg, <link linkend="_structPolygon">Polygon</link> * poly)</computeroutput></para>
+<para>Write polygon in SVG file. For details, see <link xlink:href="http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands">http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands</link> </para>
+<para>
+Definition at line <link linkend="_svg_8c_source_1l00073">73</link> of file <link linkend="_svg_8c_source">svg.c</link>.</para>
+</section>
+</section>
+</section>

@@ -1,0 +1,67 @@
+\doxysection{rectangle.\+c}
+\hypertarget{rectangle_8c_source}{}\label{rectangle_8c_source}\index{src/rectangle.c@{src/rectangle.c}}
+\mbox{\hyperlink{rectangle_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00001}00001\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00002}00002\ \textcolor{comment}{\ \ }}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00003}00003\ \textcolor{comment}{\ \ Copyright\ (c)\ 2007-\/2011\ rafael\ grompone\ von\ gioi\ (grompone@gmail.com)}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00004}00004\ \textcolor{comment}{\ \ Copyright\ (c)\ 2012-\/2014\ viorica\ patraucean\ (vpatrauc@gmail.com)}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00005}00005\ \textcolor{comment}{\ \ }}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00006}00006\ \textcolor{comment}{\ \ This\ program\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00007}00007\ \textcolor{comment}{\ \ it\ under\ the\ terms\ of\ the\ GNU\ Affero\ General\ Public\ License\ as}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00008}00008\ \textcolor{comment}{\ \ published\ by\ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00009}00009\ \textcolor{comment}{\ \ License,\ or\ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00010}00010\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00011}00011\ \textcolor{comment}{\ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00012}00012\ \textcolor{comment}{\ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00013}00013\ \textcolor{comment}{\ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ See\ the}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00014}00014\ \textcolor{comment}{\ \ GNU\ Affero\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00015}00015\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00016}00016\ \textcolor{comment}{\ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ Affero\ General\ Public\ License}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00017}00017\ \textcolor{comment}{\ \ along\ with\ this\ program.\ If\ not,\ see\ <http://www.gnu.org/licenses/>.}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00018}00018\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00019}00019\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00020}00020\ \textcolor{comment}{\ \ rectangle.c\ -\/\ This\ file\ belongs\ to\ ELSDc\ project\ (Ellipse\ and\ Line\ Segment\ }}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00021}00021\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Detector\ with\ continuous\ validation).}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00022}00022\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ -\/\ It\ contains\ functions\ to\ work\ with\ rectangular\ connected\ }}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00023}00023\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ regions\ of\ pixels.}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00024}00024\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00025}00025\ \textcolor{comment}{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00027}00027\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00028}00028\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00029}00029\ \textcolor{preprocessor}{\#include\ <math.h>}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00030}00030\ \textcolor{preprocessor}{\#include\ <float.h>}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00031}00031\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{misc_8h}{misc.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00032}00032\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{rectangle_8h}{rectangle.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00033}00033\ }
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00034}00034\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00037}\mbox{\hyperlink{rectangle_8c_aa3b83f9baca390809a96c7b84f3a886a}{00037}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{rectangle_8c_aa3b83f9baca390809a96c7b84f3a886a}{copy\_rect}}(\ \mbox{\hyperlink{structRectangle}{Rectangle}}\ *in,\ \mbox{\hyperlink{structRectangle}{Rectangle}}\ *out\ )}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00038}00038\ \{}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00039}00039\ \ \ \textcolor{keywordflow}{if}(\ (in\ ==\ NULL)\ ||\ (out\ ==\ NULL)\ )\ }
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00040}00040\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}copy\_rect:\ invalid\ 'in'\ or\ 'out'."{}});}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00041}00041\ \ \ out-\/>\mbox{\hyperlink{structRectangle_ac75b803b570527306e1e744bfb7a604f}{x1}}\ =\ in-\/>\mbox{\hyperlink{structRectangle_ac75b803b570527306e1e744bfb7a604f}{x1}};}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00042}00042\ \ \ out-\/>\mbox{\hyperlink{structRectangle_ac3b72e5b77595ca2340ecf8ccfe5fd99}{y1}}\ =\ in-\/>\mbox{\hyperlink{structRectangle_ac3b72e5b77595ca2340ecf8ccfe5fd99}{y1}};}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00043}00043\ \ \ out-\/>\mbox{\hyperlink{structRectangle_adcf04f5f1964d18b332643939561da0d}{x2}}\ =\ in-\/>\mbox{\hyperlink{structRectangle_adcf04f5f1964d18b332643939561da0d}{x2}};}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00044}00044\ \ \ out-\/>\mbox{\hyperlink{structRectangle_a5347e514ebe985fb371754ffd2b5ff83}{y2}}\ =\ in-\/>\mbox{\hyperlink{structRectangle_a5347e514ebe985fb371754ffd2b5ff83}{y2}};}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00045}00045\ \ \ out-\/>\mbox{\hyperlink{structRectangle_ad4bd51cdbe6ba41894905207ed94974f}{len}}\ =\ in-\/>\mbox{\hyperlink{structRectangle_ad4bd51cdbe6ba41894905207ed94974f}{len}};}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00046}00046\ \ \ out-\/>\mbox{\hyperlink{structRectangle_a9df23e056f5d1a0388cd8190431c0e03}{width}}\ =\ in-\/>\mbox{\hyperlink{structRectangle_a9df23e056f5d1a0388cd8190431c0e03}{width}};}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00047}00047\ \ \ out-\/>\mbox{\hyperlink{structRectangle_ad1515daed95ba43fd919fddcf3144d1a}{wmin}}\ =\ in-\/>\mbox{\hyperlink{structRectangle_ad1515daed95ba43fd919fddcf3144d1a}{wmin}};}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00048}00048\ \ \ out-\/>\mbox{\hyperlink{structRectangle_a54612b6d232db5e1a58ae8b2f26b1df4}{wmax}}\ =\ in-\/>\mbox{\hyperlink{structRectangle_a54612b6d232db5e1a58ae8b2f26b1df4}{wmax}};}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00049}00049\ \ \ out-\/>\mbox{\hyperlink{structRectangle_ac176cb816ac192bd8ec2f73c40b43309}{cx}}\ =\ in-\/>\mbox{\hyperlink{structRectangle_ac176cb816ac192bd8ec2f73c40b43309}{cx}};}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00050}00050\ \ \ out-\/>\mbox{\hyperlink{structRectangle_a2d6a093e4a6fe06658d3d01563d028c9}{cy}}\ =\ in-\/>\mbox{\hyperlink{structRectangle_a2d6a093e4a6fe06658d3d01563d028c9}{cy}};}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00051}00051\ \ \ out-\/>\mbox{\hyperlink{structRectangle_aca81c35c21e3a5f7f3a8d24504e76664}{theta}}\ =\ in-\/>\mbox{\hyperlink{structRectangle_aca81c35c21e3a5f7f3a8d24504e76664}{theta}};}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00052}00052\ \ \ out-\/>\mbox{\hyperlink{structRectangle_a229d11aff11a7482259d1296b9b70b8a}{dx}}\ =\ in-\/>\mbox{\hyperlink{structRectangle_a229d11aff11a7482259d1296b9b70b8a}{dx}};}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00053}00053\ \ \ out-\/>\mbox{\hyperlink{structRectangle_a9deb6f886b19d50e714d890c3c268efc}{dy}}\ =\ in-\/>\mbox{\hyperlink{structRectangle_a9deb6f886b19d50e714d890c3c268efc}{dy}};}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00054}00054\ \ \ out-\/>\mbox{\hyperlink{structRectangle_aaa22d55a01e89d03ac81a5bbc95105aa}{prec}}\ =\ in-\/>\mbox{\hyperlink{structRectangle_aaa22d55a01e89d03ac81a5bbc95105aa}{prec}};}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00055}00055\ \}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00058}00058\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00061}\mbox{\hyperlink{rectangle_8c_a85626f7f589faf73e5ce6432a2ccdde8}{00061}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{rectangle_8c_a85626f7f589faf73e5ce6432a2ccdde8}{write\_rectangle}}(\ FILE\ *f,\ \mbox{\hyperlink{structRectangle}{Rectangle}}\ *r\ )}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00062}00062\ \{}
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00063}00063\ \ \ fprintf(f,\ \textcolor{stringliteral}{"{}\%f\ \%f\ \%f\ \%f\ \%f\ \%f\ \%f\ \%f\(\backslash\)n"{}},\ r-\/>\mbox{\hyperlink{structRectangle_ac75b803b570527306e1e744bfb7a604f}{x1}},\ r-\/>\mbox{\hyperlink{structRectangle_ac3b72e5b77595ca2340ecf8ccfe5fd99}{y1}},\ r-\/>\mbox{\hyperlink{structRectangle_adcf04f5f1964d18b332643939561da0d}{x2}},\ r-\/>\mbox{\hyperlink{structRectangle_a5347e514ebe985fb371754ffd2b5ff83}{y2}},\ }
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00064}00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r-\/>\mbox{\hyperlink{structRectangle_a229d11aff11a7482259d1296b9b70b8a}{dx}},\ r-\/>\mbox{\hyperlink{structRectangle_a9deb6f886b19d50e714d890c3c268efc}{dy}},\ r-\/>\mbox{\hyperlink{structRectangle_a54612b6d232db5e1a58ae8b2f26b1df4}{wmax}},\ r-\/>\mbox{\hyperlink{structRectangle_ad1515daed95ba43fd919fddcf3144d1a}{wmin}}\ );\ }
+\DoxyCodeLine{\Hypertarget{rectangle_8c_source_l00065}00065\ \}}
+
+\end{DoxyCode}

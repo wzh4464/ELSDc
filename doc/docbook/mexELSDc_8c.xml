@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_mexELSDc_8c" xml:lang="en-US">
+<title>src/mexELSDc.c File Reference</title>
+<indexterm><primary>src/mexELSDc.c</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &quot;mex.h&quot;<?linebreak?>#include &lt;stdio.h&gt;<?linebreak?>#include &lt;stdlib.h&gt;<?linebreak?>#include &quot;misc.h&quot;<?linebreak?>#include &quot;pgm.h&quot;<?linebreak?>#include &quot;svg.h&quot;<?linebreak?>#include &quot;polygon.h&quot;<?linebreak?>#include &quot;ring.h&quot;<?linebreak?>#include &quot;elsdc.h&quot;<?linebreak?></programlisting><simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>void <link linkend="_mexELSDc_8c_1a6a215cbfde54f82a3ce599228fc3fce5">mexFunction</link> (int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="_mexELSDc_8c_1a6a215cbfde54f82a3ce599228fc3fce5"/><section>
+    <title>mexFunction()</title>
+<indexterm><primary>mexFunction</primary><secondary>mexELSDc.c</secondary></indexterm>
+<indexterm><primary>mexELSDc.c</primary><secondary>mexFunction</secondary></indexterm>
+<para><computeroutput>void mexFunction (int nlhs, mxArray * plhs[], int nrhs, const mxArray * prhs[])</computeroutput></para><para>
+Definition at line <link linkend="_mexELSDc_8c_source_1l00011">11</link> of file <link linkend="_mexELSDc_8c_source">mexELSDc.c</link>.</para>
+</section>
+</section>
+</section>

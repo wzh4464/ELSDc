@@ -1,0 +1,78 @@
+\doxysection{src/polygon.h File Reference}
+\hypertarget{polygon_8h}{}\label{polygon_8h}\index{src/polygon.h@{src/polygon.h}}
+{\ttfamily \#include \"{}misc.\+h\"{}}\newline
+{\ttfamily \#include \"{}rectangle.\+h\"{}}\newline
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structPolyRect}{Poly\+Rect}}
+\item 
+struct \mbox{\hyperlink{structPolygon}{Polygon}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structPolyRect}{Poly\+Rect}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{polygon_8h_a6f6ebc705a3f6b7de7abc4c51f5c5e41}{new\+\_\+polyrect}} (void)
+\item 
+void \mbox{\hyperlink{polygon_8h_aba9f787d494579b057a533db04a3e79f}{clear\+\_\+polyrect}} (\mbox{\hyperlink{structPolyRect}{Poly\+Rect}} \texorpdfstring{$\ast$}{*}poly)
+\item 
+void \mbox{\hyperlink{polygon_8h_a32839ef9cf401a79864fd0d3b9718dec}{add\+\_\+rect\+\_\+to\+\_\+polyrect}} (\mbox{\hyperlink{structPolyRect}{Poly\+Rect}} \texorpdfstring{$\ast$}{*}poly, \mbox{\hyperlink{structRectangle}{Rectangle}} \texorpdfstring{$\ast$}{*}r)
+\item 
+void \mbox{\hyperlink{polygon_8h_ae802ef1e750a7539e7e8bcc4a5bee0d9}{write\+\_\+polyrect}} (FILE \texorpdfstring{$\ast$}{*}f, \mbox{\hyperlink{structPolyRect}{Poly\+Rect}} \texorpdfstring{$\ast$}{*}poly)
+\item 
+void \mbox{\hyperlink{polygon_8h_accef77c06a440cd1d9baf927ae7274f9}{polyrect2polygon}} (\mbox{\hyperlink{structPolyRect}{Poly\+Rect}} \texorpdfstring{$\ast$}{*}poly, \mbox{\hyperlink{structPolygon}{Polygon}} \texorpdfstring{$\ast$}{*}p)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{polygon_8h_a32839ef9cf401a79864fd0d3b9718dec}\label{polygon_8h_a32839ef9cf401a79864fd0d3b9718dec} 
+\index{polygon.h@{polygon.h}!add\_rect\_to\_polyrect@{add\_rect\_to\_polyrect}}
+\index{add\_rect\_to\_polyrect@{add\_rect\_to\_polyrect}!polygon.h@{polygon.h}}
+\doxysubsubsection{\texorpdfstring{add\_rect\_to\_polyrect()}{add\_rect\_to\_polyrect()}}
+{\footnotesize\ttfamily void add\+\_\+rect\+\_\+to\+\_\+polyrect (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structPolyRect}{Poly\+Rect}} \texorpdfstring{$\ast$}{*}}]{poly,  }\item[{\mbox{\hyperlink{structRectangle}{Rectangle}} \texorpdfstring{$\ast$}{*}}]{r }\end{DoxyParamCaption})}
+
+Add new rectangle to polygon. 
+
+Definition at line \mbox{\hyperlink{polygon_8c_source_l00070}{70}} of file \mbox{\hyperlink{polygon_8c_source}{polygon.\+c}}.
+
+\Hypertarget{polygon_8h_aba9f787d494579b057a533db04a3e79f}\label{polygon_8h_aba9f787d494579b057a533db04a3e79f} 
+\index{polygon.h@{polygon.h}!clear\_polyrect@{clear\_polyrect}}
+\index{clear\_polyrect@{clear\_polyrect}!polygon.h@{polygon.h}}
+\doxysubsubsection{\texorpdfstring{clear\_polyrect()}{clear\_polyrect()}}
+{\footnotesize\ttfamily void clear\+\_\+polyrect (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structPolyRect}{Poly\+Rect}} \texorpdfstring{$\ast$}{*}}]{poly }\end{DoxyParamCaption})}
+
+Reset a given polygon. 
+
+Definition at line \mbox{\hyperlink{polygon_8c_source_l00053}{53}} of file \mbox{\hyperlink{polygon_8c_source}{polygon.\+c}}.
+
+\Hypertarget{polygon_8h_a6f6ebc705a3f6b7de7abc4c51f5c5e41}\label{polygon_8h_a6f6ebc705a3f6b7de7abc4c51f5c5e41} 
+\index{polygon.h@{polygon.h}!new\_polyrect@{new\_polyrect}}
+\index{new\_polyrect@{new\_polyrect}!polygon.h@{polygon.h}}
+\doxysubsubsection{\texorpdfstring{new\_polyrect()}{new\_polyrect()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structPolyRect}{Poly\+Rect}} \texorpdfstring{$\ast$}{*} new\+\_\+polyrect (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+Add new rectangle to polygon. 
+
+Definition at line \mbox{\hyperlink{polygon_8c_source_l00037}{37}} of file \mbox{\hyperlink{polygon_8c_source}{polygon.\+c}}.
+
+\Hypertarget{polygon_8h_accef77c06a440cd1d9baf927ae7274f9}\label{polygon_8h_accef77c06a440cd1d9baf927ae7274f9} 
+\index{polygon.h@{polygon.h}!polyrect2polygon@{polyrect2polygon}}
+\index{polyrect2polygon@{polyrect2polygon}!polygon.h@{polygon.h}}
+\doxysubsubsection{\texorpdfstring{polyrect2polygon()}{polyrect2polygon()}}
+{\footnotesize\ttfamily void polyrect2polygon (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structPolyRect}{Poly\+Rect}} \texorpdfstring{$\ast$}{*}}]{poly,  }\item[{\mbox{\hyperlink{structPolygon}{Polygon}} \texorpdfstring{$\ast$}{*}}]{p }\end{DoxyParamCaption})}
+
+Detect continuity breaks (e.\+g. corners) in tangent space\+: represent each segment of the polygon as a horizontal segment in a (length, angle) space, and verify the centres of 3 consecutive rectangles in the polygon for approximate colinearity. \textquotesingle{}idx\textquotesingle{}\+: indexes of the rectangles to check; \textquotesingle{}order\textquotesingle{}\+: 1 if consecutive rectangles, 0 otherwise; \textquotesingle{}dim\textquotesingle{} is the size of \textquotesingle{}idx\textquotesingle{}; Output\+: continuity score in \mbox{[}0,1\mbox{]}\+: 0 not smooth, 1 perfect smooth. Given a polygon as a list of rectangles, extract only the ending points. A polygon with \textquotesingle{}dim\textquotesingle{} segments will have \textquotesingle{}2\texorpdfstring{$\ast$}{*}dim\textquotesingle{} ending points. ~\newline
+ 
+
+Definition at line \mbox{\hyperlink{polygon_8c_source_l00140}{140}} of file \mbox{\hyperlink{polygon_8c_source}{polygon.\+c}}.
+
+\Hypertarget{polygon_8h_ae802ef1e750a7539e7e8bcc4a5bee0d9}\label{polygon_8h_ae802ef1e750a7539e7e8bcc4a5bee0d9} 
+\index{polygon.h@{polygon.h}!write\_polyrect@{write\_polyrect}}
+\index{write\_polyrect@{write\_polyrect}!polygon.h@{polygon.h}}
+\doxysubsubsection{\texorpdfstring{write\_polyrect()}{write\_polyrect()}}
+{\footnotesize\ttfamily void write\+\_\+polyrect (\begin{DoxyParamCaption}\item[{FILE \texorpdfstring{$\ast$}{*}}]{f,  }\item[{\mbox{\hyperlink{structPolyRect}{Poly\+Rect}} \texorpdfstring{$\ast$}{*}}]{poly }\end{DoxyParamCaption})}
+
+Write polygon to file; if file is NULL, write to stdout. 
+
+Definition at line \mbox{\hyperlink{polygon_8c_source_l00093}{93}} of file \mbox{\hyperlink{polygon_8c_source}{polygon.\+c}}.
+

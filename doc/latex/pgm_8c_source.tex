@@ -1,0 +1,182 @@
+\doxysection{pgm.\+c}
+\hypertarget{pgm_8c_source}{}\label{pgm_8c_source}\index{src/pgm.c@{src/pgm.c}}
+\mbox{\hyperlink{pgm_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00001}00001\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00002}00002\ \textcolor{comment}{\ \ }}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00003}00003\ \textcolor{comment}{\ \ Copyright\ (c)\ 2007-\/2011\ rafael\ grompone\ von\ gioi\ (grompone@gmail.com)\ }}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00004}00004\ \textcolor{comment}{\ \ Copyright\ (c)\ 2012-\/2014\ viorica\ patraucean\ (vpatrauc@gmail.com)}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00005}00005\ \textcolor{comment}{\ \ }}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00006}00006\ \textcolor{comment}{\ \ This\ program\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00007}00007\ \textcolor{comment}{\ \ it\ under\ the\ terms\ of\ the\ GNU\ Affero\ General\ Public\ License\ as}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00008}00008\ \textcolor{comment}{\ \ published\ by\ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00009}00009\ \textcolor{comment}{\ \ License,\ or\ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00010}00010\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00011}00011\ \textcolor{comment}{\ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00012}00012\ \textcolor{comment}{\ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00013}00013\ \textcolor{comment}{\ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ See\ the}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00014}00014\ \textcolor{comment}{\ \ GNU\ Affero\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00015}00015\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00016}00016\ \textcolor{comment}{\ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ Affero\ General\ Public\ License}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00017}00017\ \textcolor{comment}{\ \ along\ with\ this\ program.\ If\ not,\ see\ <http://www.gnu.org/licenses/>.}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00018}00018\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00019}00019\ \textcolor{comment}{\ \ pgm.c\ -\/\ This\ file\ belongs\ to\ ELSDc\ project\ (Ellipse\ and\ Line\ Segment\ }}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00020}00020\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ Detector\ with\ continuous\ validation).}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00021}00021\ \textcolor{comment}{\ \ \ \ \ \ \ \ -\/\ It\ contains\ functions\ to\ read\ and\ write\ pgm\ images,\ and\ static\ }}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00022}00022\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ functions\ called\ by\ these\ to\ read\ characters\ and\ numbers\ from\ a\ file.}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00023}00023\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00024}00024\ \textcolor{comment}{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00027}00027\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00028}00028\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00029}00029\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00030}00030\ \textcolor{preprocessor}{\#include\ <float.h>}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00031}00031\ \textcolor{preprocessor}{\#include\ <ctype.h>}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00032}00032\ \textcolor{preprocessor}{\#include\ <time.h>}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00033}00033\ \textcolor{preprocessor}{\#include\ <limits.h>}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00034}00034\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{misc_8h}{misc.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00035}00035\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{image_8h}{image.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00036}00036\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{pgm_8h}{pgm.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00037}00037\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00039}00039\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00042}00042\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ skip\_whites\_and\_comments(\ FILE\ *f\ )}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00043}00043\ \{}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00044}00044\ \ \ \textcolor{keywordtype}{int}\ c;}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00045}00045\ \ \ \textcolor{keywordflow}{do}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00046}00046\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00047}00047\ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\ isspace(\ c\ =\ getc(f)\ )\ );\ \textcolor{comment}{/*\ skip\ spaces\ */}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00048}00048\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ c\ ==\ \textcolor{charliteral}{'\#'})\ \textcolor{comment}{/*\ skip\ comments\ */}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00049}00049\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\ (c\ !=\ \textcolor{charliteral}{'\(\backslash\)n'})\ \&\&\ (c\ !=\ \textcolor{charliteral}{'\(\backslash\)r'})\ \&\&\ (c\ !=\ EOF)\ )}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00050}00050\ \ \ \ \ \ \ \ \ \ \ c\ =\ getc(f);}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00051}00051\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00053}00053\ \ \ \textcolor{keywordflow}{while}(\ (c\ ==\ \textcolor{charliteral}{'\#'})\ ||\ (isspace(c))\ );}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00054}00054\ \ \ \textcolor{keywordflow}{if}(\ (c\ !=\ EOF)\ \&\&\ (ungetc(\ c,\ f\ )\ ==\ EOF)\ )}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00055}00055\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}skip\_whites\_and\_comments:\ unable\ to\ 'ungetc'\ in\ reading\ PGM\ file."{}});}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00056}00056\ \}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00059}00059\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00062}00062\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ get\_num(\ FILE\ *f\ )}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00063}00063\ \{}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00064}00064\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ num;}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00065}00065\ \ \ \textcolor{keywordtype}{int}\ c;}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00066}00066\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00067}00067\ \ \ \textcolor{keywordflow}{while}(\ isspace(\ c\ =\ getc(f)\ )\ );\ \textcolor{comment}{/*\ skip\ spaces\ */}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00068}00068\ \ \ \textcolor{keywordflow}{if}(\ !isdigit(c)\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}Error:\ corrupted\ PGM\ file."{}});}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00069}00069\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00070}00070\ \ \ num\ =\ (\textcolor{keywordtype}{unsigned}\ int)\ (c\ -\/\ \textcolor{charliteral}{'0'});}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00071}00071\ \ \ \textcolor{keywordflow}{while}(\ isdigit(\ c\ =\ getc(f)\ )\ )\ num\ =\ 10\ *\ num\ +\ c\ -\/\ \textcolor{charliteral}{'0'};}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00072}00072\ \ \ \textcolor{keywordflow}{if}(\ (c\ !=\ EOF)\ \&\&\ (ungetc(\ c,\ f\ )\ ==\ EOF)\ )}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00073}00073\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}get\_num:\ unable\ to\ 'ungetc'\ while\ reading\ PGM\ file."{}});}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00075}00075\ \ \ \textcolor{keywordflow}{return}\ num;}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00076}00076\ \}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00078}00078\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00079}00079\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00083}\mbox{\hyperlink{pgm_8c_a9a98683fcb23d861dc3b3ac2437267bb}{00083}}\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ \mbox{\hyperlink{pgm_8c_a9a98683fcb23d861dc3b3ac2437267bb}{read\_pgm\_image\_double}}(\ \textcolor{keywordtype}{char}\ *name\ )}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00084}00084\ \{}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00085}00085\ \ \ FILE\ *f;}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00086}00086\ \ \ \textcolor{keywordtype}{int}\ c,\ bin\ =\ \mbox{\hyperlink{misc_8h_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}};}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00087}00087\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ xsize,\ ysize,\ depth,\ x,\ y;}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00088}00088\ \ \ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ image;}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00089}00089\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00090}00090\ \ \ \textcolor{comment}{/*\ open\ file\ */}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00091}00091\ \ \ f\ =\ fopen(\ name,\textcolor{stringliteral}{"{}rb"{}});}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00092}00092\ \ \ \textcolor{keywordflow}{if}(\ f\ ==\ NULL\ )\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00093}00093\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}read\_pgm\_image\_double:\ unable\ to\ open\ input\ image\ file."{}});}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00095}00095\ \ \ \textcolor{comment}{/*\ read\ header\ */}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00096}00096\ \ \ \textcolor{keywordflow}{if}(\ getc(f)\ !=\ \textcolor{charliteral}{'P'})\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}read\_pgm\_image\_double:\ not\ a\ PGM\ file."{}});}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00097}00097\ \ \ \textcolor{keywordflow}{if}(\ (c\ =\ getc(f)\ )\ ==\ \textcolor{charliteral}{'2'})\ bin\ =\ \mbox{\hyperlink{misc_8h_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}};}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00098}00098\ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ c\ ==\ \textcolor{charliteral}{'5'})\ bin\ =\ \mbox{\hyperlink{misc_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}};}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00099}00099\ \ \ \textcolor{keywordflow}{else}\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}read\_pgm\_image\_double:\ not\ a\ PGM\ file."{}});}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00100}00100\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00101}00101\ \ \ skip\_whites\_and\_comments(f);}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00102}00102\ \ \ xsize\ =\ get\_num(f);\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ X\ size\ */}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00103}00103\ \ \ skip\_whites\_and\_comments(f);}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00104}00104\ \ \ ysize\ =\ get\_num(f);\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ Y\ size\ */}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00105}00105\ \ \ skip\_whites\_and\_comments(f);}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00106}00106\ \ \ depth\ =\ get\_num(f);\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ depth\ */}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00107}00107\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00108}00108\ \ \ \textcolor{keywordflow}{if}(\ depth==0\ )\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00109}00109\ \ \ \ \ fprintf(\ stderr,\textcolor{stringliteral}{"{}Warning:\ depth=0,\ probably\ invalid\ PGM\ file.\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00110}00110\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00111}00111\ \ \ \textcolor{comment}{/*\ white\ before\ data\ */}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00112}00112\ \ \ \textcolor{keywordflow}{if}(\ !isspace(\ c\ =\ getc(f)\ )\ )\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00113}00113\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}read\_pgm\_image\_double:\ corrupted\ PGM\ file."{}});}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00114}00114\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00115}00115\ \ \ \textcolor{comment}{/*\ get\ memory\ */}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00116}00116\ \ \ image\ =\ \mbox{\hyperlink{image_8c_a5baadc47eb068cd9e3b2d52a5065e3c0}{new\_PImageDouble}}(\ xsize,\ ysize\ );}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00117}00117\ \ \ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00118}00118\ \ \ \textcolor{comment}{/*\ read\ data\ */}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00119}00119\ \ \ \textcolor{keywordflow}{for}(\ y=0;\ y<ysize;\ y++)}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00120}00120\ \ \ \ \ \textcolor{keywordflow}{for}(\ x=0;\ x<xsize;\ x++)}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00121}00121\ \ \ \ \ \ \ image-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[\ x\ +\ y\ *\ xsize\ ]\ =\ bin\ ?\ (\textcolor{keywordtype}{double})\ getc(f)}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00122}00122\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ (double)\ get\_num(f);}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00123}00123\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00124}00124\ \ \ \textcolor{comment}{/*\ close\ file\ if\ needed\ */}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00125}00125\ \ \ \textcolor{keywordflow}{if}(\ (f\ !=\ stdin)\ \&\&\ (fclose(f)\ ==\ EOF)\ )}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00126}00126\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}read\_pgm\_image\_double:\ unable\ to\ close\ file."{}});}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00127}00127\ \ \ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00128}00128\ \ \ \textcolor{keywordflow}{return}\ image;}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00129}00129\ \}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00130}00130\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00131}00131\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00132}00132\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00136}\mbox{\hyperlink{pgm_8c_a94f252c634af4c81659315c4545be8b8}{00136}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{pgm_8c_a94f252c634af4c81659315c4545be8b8}{write\_pgm\_image\_int}}(\ \textcolor{keywordtype}{int}\ *image,\ \textcolor{keywordtype}{int}\ xsize,\ \textcolor{keywordtype}{int}\ ysize,\ \textcolor{keywordtype}{char}\ *name\ )}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00137}00137\ \{}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00138}00138\ \ \ FILE\ *f;}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00139}00139\ \ \ \textcolor{keywordtype}{int}\ x,\ y,\ n,\ v,\ \mbox{\hyperlink{misc_8h_a24e753bacac6be5f30e18f8a2bdefda4}{max}},\ \mbox{\hyperlink{misc_8h_a2d017cd3beb218080a7988e2deed2a11}{min}};}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00140}00140\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00141}00141\ \ \ \textcolor{comment}{/*\ check\ input\ */}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00142}00142\ \ \ \textcolor{keywordflow}{if}(\ (image\ ==\ NULL)\ ||\ (xsize\ <=\ 0)\ ||\ (ysize\ <=\ 0)\ )}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00143}00143\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}write\_pgm\_image\_int:\ invalid\ input\ image."{}});}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00144}00144\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00145}00145\ \ \ \textcolor{comment}{/*\ check\ min\ and\ max\ values\ */}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00146}00146\ \ \ \mbox{\hyperlink{misc_8h_a24e753bacac6be5f30e18f8a2bdefda4}{max}}\ =\ \mbox{\hyperlink{misc_8h_a2d017cd3beb218080a7988e2deed2a11}{min}}\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00147}00147\ \ \ \textcolor{keywordflow}{for}(\ y=0;\ y<ysize;\ y++\ )}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00148}00148\ \ \ \ \ \textcolor{keywordflow}{for}(\ x=0;\ x<xsize;\ x++\ )}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00149}00149\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00150}00150\ \ \ \ \ \ \ \ \ v\ =\ image[\ x\ +\ y\ *\ xsize\ ];}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00151}00151\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ v\ >\ \mbox{\hyperlink{misc_8h_a24e753bacac6be5f30e18f8a2bdefda4}{max}}\ )\ \mbox{\hyperlink{misc_8h_a24e753bacac6be5f30e18f8a2bdefda4}{max}}\ =\ v;}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00152}00152\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ v\ <\ \mbox{\hyperlink{misc_8h_a2d017cd3beb218080a7988e2deed2a11}{min}}\ )\ \mbox{\hyperlink{misc_8h_a2d017cd3beb218080a7988e2deed2a11}{min}}\ =\ v;}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00153}00153\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00154}00154\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00155}00155\ \ \ \textcolor{keywordflow}{if}(\ \mbox{\hyperlink{misc_8h_a2d017cd3beb218080a7988e2deed2a11}{min}}\ <\ 0\ )\ fprintf(\ stderr,}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00156}00156\ \ \ \ \ \textcolor{stringliteral}{"{}Warning:\ write\_pgm\_image\_int:\ negative\ values\ in\ '\%s'.\(\backslash\)n"{}},\ name\ );}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00157}00157\ \ \ \textcolor{keywordflow}{if}(\ \mbox{\hyperlink{misc_8h_a24e753bacac6be5f30e18f8a2bdefda4}{max}}\ >\ 65535\ )\ fprintf(\ stderr,}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00158}00158\ \ \ \ \ \textcolor{stringliteral}{"{}Warning:\ write\_pgm\_image\_int:\ values\ exceeding\ 65535\ in\ '\%s'.\(\backslash\)n"{}},\ name\ );}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00159}00159\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00160}00160\ \ \ \textcolor{comment}{/*\ open\ file\ */}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00161}00161\ \ \ \textcolor{keywordflow}{if}(\ strcmp(\ name,\textcolor{stringliteral}{"{}-\/"{}})\ ==\ 0\ )\ f\ =\ stdout;}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00162}00162\ \ \ \textcolor{keywordflow}{else}\ f\ =\ fopen(\ name,\textcolor{stringliteral}{"{}w"{}});}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00163}00163\ \ \ \textcolor{keywordflow}{if}(\ f\ ==\ NULL\ )\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00164}00164\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}write\_pgm\_image\_int:\ unable\ to\ open\ output\ image\ file."{}});}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00165}00165\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00166}00166\ \ \ \textcolor{comment}{/*\ write\ header\ */}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00167}00167\ \ \ fprintf(\ f,\textcolor{stringliteral}{"{}P2\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00168}00168\ \ \ fprintf(\ f,\textcolor{stringliteral}{"{}\%d\ \%d\(\backslash\)n"{}},\ xsize,\ ysize\ );}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00169}00169\ \ \ fprintf(\ f,\textcolor{stringliteral}{"{}\%d\(\backslash\)n"{}},\ \mbox{\hyperlink{misc_8h_a24e753bacac6be5f30e18f8a2bdefda4}{max}});}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00170}00170\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00171}00171\ \ \ \textcolor{comment}{/*\ write\ data\ */}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00172}00172\ \ \ \textcolor{keywordflow}{for}(\ n=0,\ y=0;\ y<ysize;\ y++\ )}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00173}00173\ \ \ \ \ \textcolor{keywordflow}{for}(\ x=0;\ x<xsize;\ x++\ )}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00174}00174\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00175}00175\ \ \ \ \ \ \ \ \ fprintf(\ f,\textcolor{stringliteral}{"{}\%d\ "{}},\ image[\ x\ +\ y\ *\ xsize\ ]\ );}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00176}00176\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ ++n\ ==\ 8\ )\ \ \textcolor{comment}{/*\ lines\ should\ not\ be\ longer\ than\ 70\ characters\ */}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00177}00177\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00178}00178\ \ \ \ \ \ \ \ \ \ \ \ \ fprintf(\ f,\textcolor{stringliteral}{"{}\(\backslash\)n"{}});}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00179}00179\ \ \ \ \ \ \ \ \ \ \ \ \ n\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00180}00180\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00181}00181\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00182}00182\ }
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00183}00183\ \ \ \textcolor{comment}{/*\ close\ file\ if\ needed\ */}}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00184}00184\ \ \ \textcolor{keywordflow}{if}(\ (f\ !=\ stdout)\ \&\&\ (fclose(f)\ ==\ EOF)\ )}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00185}00185\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}write\_pgm\_image\_int:\ unable\ to\ close\ file."{}});}
+\DoxyCodeLine{\Hypertarget{pgm_8c_source_l00186}00186\ \}}
+
+\end{DoxyCode}

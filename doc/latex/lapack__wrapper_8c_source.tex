@@ -1,0 +1,59 @@
+\doxysection{lapack\+\_\+wrapper.\+c}
+\hypertarget{lapack__wrapper_8c_source}{}\label{lapack__wrapper_8c_source}\index{src/lapack\_wrapper.c@{src/lapack\_wrapper.c}}
+\mbox{\hyperlink{lapack__wrapper_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00001}00001\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00002}00002\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00003}00003\ \textcolor{comment}{\ \ Copyright\ (c)\ 2014\ viorica\ patraucean\ (vpatrauc@gmail.com)}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00004}00004\ \textcolor{comment}{\ \ }}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00005}00005\ \textcolor{comment}{\ \ This\ program\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00006}00006\ \textcolor{comment}{\ \ it\ under\ the\ terms\ of\ the\ GNU\ Affero\ General\ Public\ License\ as}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00007}00007\ \textcolor{comment}{\ \ published\ by\ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00008}00008\ \textcolor{comment}{\ \ License,\ or\ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00009}00009\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00010}00010\ \textcolor{comment}{\ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00011}00011\ \textcolor{comment}{\ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00012}00012\ \textcolor{comment}{\ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ See\ the}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00013}00013\ \textcolor{comment}{\ \ GNU\ Affero\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00014}00014\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00015}00015\ \textcolor{comment}{\ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ Affero\ General\ Public\ License}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00016}00016\ \textcolor{comment}{\ \ along\ with\ this\ program.\ If\ not,\ see\ <http://www.gnu.org/licenses/>.}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00017}00017\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00018}00018\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00019}00019\ \textcolor{comment}{\ \ lapack\_wrapper.c\ -\/\ This\ file\ belongs\ to\ ELSDc\ project\ (Ellipse\ and\ Line\ }}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00020}00020\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Segment\ Detector\ with\ continuous\ validation).}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00021}00021\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ -\/\ It\ contains\ wrappers\ for\ lapack\ functions.}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00022}00022\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00023}00023\ \textcolor{comment}{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00025}00025\ \textcolor{preprocessor}{\#include\ <lapack.h>}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00026}00026\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{lapack__wrapper_8h}{lapack\_wrapper.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00028}\mbox{\hyperlink{lapack__wrapper_8c_a99e088ad9e1bf72a6c0e148a6c2b7012}{00028}}\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{lapack__wrapper_8c_a99e088ad9e1bf72a6c0e148a6c2b7012}{integer}};}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00029}\mbox{\hyperlink{lapack__wrapper_8c_a1e69afaa4e6077b67397e6c36454b97a}{00029}}\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{lapack__wrapper_8c_a1e69afaa4e6077b67397e6c36454b97a}{doublereal}};}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00032}00032\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00036}00036\ \textcolor{comment}{//\ void\ dsyev(char\ *jobz,\ char\ *uplo,\ integer\ *n,\ doublereal\ *a,\ }}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00037}00037\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ integer\ *lda,\ doublereal\ *w,\ doublereal\ *work,\ integer\ *lwork,\ }}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00038}00038\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ integer\ *info);}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00039}00039\ }
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00041}00041\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00046}\mbox{\hyperlink{lapack__wrapper_8c_a0c2af188e0233a54ff3baf6b9da6a3df}{00046}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{lapack__wrapper_8c_a0c2af188e0233a54ff3baf6b9da6a3df}{lap\_eig}}(\ \textcolor{keywordtype}{double}\ *A,\ \textcolor{keywordtype}{int}\ n\ )\ }
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00047}00047\ \{}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00048}00048\ \ \ \textcolor{keywordtype}{char}\ jobz\ =\ \textcolor{charliteral}{'V'};}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00049}00049\ \ \ \textcolor{keywordtype}{char}\ uplo\ =\ \textcolor{charliteral}{'U'};}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00050}00050\ \ \ \mbox{\hyperlink{lapack__wrapper_8c_a99e088ad9e1bf72a6c0e148a6c2b7012}{integer}}\ M\ =\ (\mbox{\hyperlink{lapack__wrapper_8c_a99e088ad9e1bf72a6c0e148a6c2b7012}{integer}})n;}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00051}00051\ \ \ \mbox{\hyperlink{lapack__wrapper_8c_a99e088ad9e1bf72a6c0e148a6c2b7012}{integer}}\ LDA\ =\ M;}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00052}00052\ \ \ \mbox{\hyperlink{lapack__wrapper_8c_a99e088ad9e1bf72a6c0e148a6c2b7012}{integer}}\ LWORK\ =\ 24;}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00053}00053\ \ \ \mbox{\hyperlink{lapack__wrapper_8c_a99e088ad9e1bf72a6c0e148a6c2b7012}{integer}}\ INFO;}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00054}00054\ \ \ \mbox{\hyperlink{lapack__wrapper_8c_a1e69afaa4e6077b67397e6c36454b97a}{doublereal}}\ W[6];}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00055}00055\ \ \ \mbox{\hyperlink{lapack__wrapper_8c_a1e69afaa4e6077b67397e6c36454b97a}{doublereal}}\ WORK[LWORK];}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00057}00057\ \ \ \textcolor{comment}{/*\ Solve\ eigenproblem\ */}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00058}00058\ \ \ dsyev(\ \&jobz,\ \&uplo,\ \&M,\ (\mbox{\hyperlink{lapack__wrapper_8c_a1e69afaa4e6077b67397e6c36454b97a}{doublereal}}*)A,\ \&LDA,\ W,\ WORK,\ \&LWORK,\ \&INFO\ );\ }
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00059}00059\ \}}
+\DoxyCodeLine{\Hypertarget{lapack__wrapper_8c_source_l00060}00060\ }
+
+\end{DoxyCode}

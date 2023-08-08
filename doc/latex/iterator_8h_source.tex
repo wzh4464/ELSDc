@@ -1,0 +1,50 @@
+\doxysection{iterator.\+h}
+\hypertarget{iterator_8h_source}{}\label{iterator_8h_source}\index{src/iterator.h@{src/iterator.h}}
+\mbox{\hyperlink{iterator_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00001}00001\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00002}00002\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00003}00003\ \textcolor{comment}{\ \ Copyright\ (c)\ 2007-\/2011\ rafael\ grompone\ von\ gioi\ (grompone@gmail.com)}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00004}00004\ \textcolor{comment}{\ \ Copyright\ (c)\ 2012-\/2014\ viorica\ patraucean\ (vpatrauc@gmail.com)}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00005}00005\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00006}00006\ \textcolor{comment}{\ \ This\ program\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00007}00007\ \textcolor{comment}{\ \ it\ under\ the\ terms\ of\ the\ GNU\ Affero\ General\ Public\ License\ as}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00008}00008\ \textcolor{comment}{\ \ published\ by\ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00009}00009\ \textcolor{comment}{\ \ License,\ or\ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00010}00010\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00011}00011\ \textcolor{comment}{\ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00012}00012\ \textcolor{comment}{\ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00013}00013\ \textcolor{comment}{\ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ See\ the}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00014}00014\ \textcolor{comment}{\ \ GNU\ Affero\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00015}00015\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00016}00016\ \textcolor{comment}{\ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ Affero\ General\ Public\ License}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00017}00017\ \textcolor{comment}{\ \ along\ with\ this\ program.\ If\ not,\ see\ <http://www.gnu.org/licenses/>.}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00018}00018\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00019}00019\ \textcolor{comment}{\ \ iterator.h\ -\/\ This\ file\ belongs\ to\ ELSDc\ project\ (Ellipse\ and\ Line\ Segment\ }}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00020}00020\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Detector\ with\ continuous\ validation).}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00021}00021\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ -\/\ It\ defines\ a\ data\ structure\ to\ scan\ points\ in\ a\ rectangular\ area,}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00022}00022\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ and\ prototypes\ for\ functions\ to\ use\ it.\ }}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00023}00023\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00024}00024\ \textcolor{comment}{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00027}00027\ \textcolor{preprocessor}{\#ifndef\ ITERATOR\_H}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00028}00028\ \textcolor{preprocessor}{\#define\ ITERATOR\_H}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00030}00030\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00033}\mbox{\hyperlink{structRectIter}{00033}}\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00034}00034\ \{}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00035}\mbox{\hyperlink{structRectIter_a8b14543be0e1e25098de7a0a6f9e8b5c}{00035}}\ \ \ \textcolor{keywordtype}{double}\ vx[4];}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00036}\mbox{\hyperlink{structRectIter_a32200ba3dee738c5005f3b12e8a4c5b7}{00036}}\ \ \ \textcolor{keywordtype}{double}\ vy[4];}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00037}\mbox{\hyperlink{structRectIter_a6daa5b14fcf6b3557da9371acadeab1f}{00037}}\ \ \ \textcolor{keywordtype}{double}\ ys,\ \mbox{\hyperlink{structRectIter_a6daa5b14fcf6b3557da9371acadeab1f}{ye}};}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00038}\mbox{\hyperlink{structRectIter_a6150e0515f7202e2fb518f7206ed97dc}{00038}}\ \ \ \textcolor{keywordtype}{int}\ \ \ \ \mbox{\hyperlink{structRectIter_a6150e0515f7202e2fb518f7206ed97dc}{x}},\ y;}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00039}00039\ \}\ \mbox{\hyperlink{structRectIter}{RectIter}};}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00041}00041\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{iterator_8h_a85d1536d02765e56ec37da19a90e7fda}{free\_RectIter}}(\ \mbox{\hyperlink{structRectIter}{RectIter}}\ *iter\ );}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00042}00042\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{iterator_8h_af7da6dcffa5131ae89a09928a735876c}{end\_RectIter}}(\ \mbox{\hyperlink{structRectIter}{RectIter}}\ *i\ );}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00043}00043\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{iterator_8h_a4c117221ffe49dc4f9e5f12638a29226}{inc\_RectIter}}(\ \mbox{\hyperlink{structRectIter}{RectIter}}\ *i\ );}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00044}00044\ \mbox{\hyperlink{structRectIter}{RectIter}}\ *\mbox{\hyperlink{iterator_8h_a10e0fc06c9d67303b68e6b4296dd692e}{ini\_RectIter}}(\ \mbox{\hyperlink{structRectangle}{Rectangle}}\ *r\ );}
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{iterator_8h_source_l00046}00046\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

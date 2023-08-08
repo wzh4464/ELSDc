@@ -1,0 +1,195 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_misc_8c" xml:lang="en-US">
+<title>src/misc.c File Reference</title>
+<indexterm><primary>src/misc.c</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &lt;stdio.h&gt;<?linebreak?>#include &lt;stdlib.h&gt;<?linebreak?>#include &lt;math.h&gt;<?linebreak?>#include &lt;float.h&gt;<?linebreak?>#include &lt;limits.h&gt;<?linebreak?>#include &quot;misc.h&quot;<?linebreak?></programlisting><simplesect>
+    <title>Macros    </title>
+        <itemizedlist>
+            <listitem><para>#define <link linkend="_misc_8c_1a5ee2ec8164c0157c7029ae8bfe74cb67">RELATIVE_ERROR_FACTOR</link>&#160;&#160;&#160;100.0</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>void <link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link> (char *msg)</para>
+</listitem>
+            <listitem><para>int <link linkend="_misc_8c_1a49d0391afab7c8872bbbfb86a814360b">double_equal</link> (double a, double b)</para>
+</listitem>
+            <listitem><para>int <link linkend="_misc_8c_1a9f29698bce67d856008e85a5c6b45b57">sign</link> (double val)</para>
+</listitem>
+            <listitem><para>double <link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link> (double x1, double y1, double x2, double y2)</para>
+</listitem>
+            <listitem><para>double <link linkend="_misc_8c_1a4e46bd783e4efe71bee053481afeb4a9">angle_diff</link> (double a, double b)</para>
+</listitem>
+            <listitem><para>double <link linkend="_misc_8c_1afc6d1f1cd19f4dfd5513632ab80322df">angle_diff_signed</link> (double a, double b)</para>
+</listitem>
+            <listitem><para>void <link linkend="_misc_8c_1a10ec5db73aebdd0d7508b49e72770ef4">swap_int</link> (int *a, int *b)</para>
+</listitem>
+            <listitem><para>void <link linkend="_misc_8c_1abfa4eebba539e060400a6a7fe746614e">swap_double</link> (double *a, double *b)</para>
+</listitem>
+            <listitem><para>void <link linkend="_misc_8c_1a3d503d641b82342adf77b51b2db53225">swap_ptr_pts</link> (<link linkend="_structPoint">Point</link> **a, <link linkend="_structPoint">Point</link> **b)</para>
+</listitem>
+            <listitem><para>double <link linkend="_misc_8c_1acbf3663dd6c05ce0f7f82f6d4b36c6a7">min_array</link> (double *v, int sz)</para>
+</listitem>
+            <listitem><para>double <link linkend="_misc_8c_1a6d6f434a2cc946f78f7916364ad14f38">min_array_pos</link> (double *v, int sz, int *pos)</para>
+</listitem>
+            <listitem><para>double <link linkend="_misc_8c_1a7b7aa8971ae07b4e29a61533909d098d">max_array_pos</link> (double *a, int sz, int *poz)</para>
+</listitem>
+            <listitem><para>int <link linkend="_misc_8c_1a5ff03a878859dab858f9fa1ce803e71f">in_interval</link> (double x, double a, double b)</para>
+</listitem>
+            <listitem><para>int <link linkend="_misc_8c_1a7bd5f9830327532b199607799edf7fe2">is_aligned</link> (double a, double theta, double prec)</para>
+</listitem>
+            <listitem><para>double <link linkend="_misc_8c_1a00b6a4c474bea7360859f586ae2e2dea">norm_angle_diff</link> (double a, double b)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Macro Definition Documentation</title>
+<anchor xml:id="_misc_8c_1a5ee2ec8164c0157c7029ae8bfe74cb67"/><section>
+    <title>RELATIVE_ERROR_FACTOR</title>
+<indexterm><primary>RELATIVE_ERROR_FACTOR</primary><secondary>misc.c</secondary></indexterm>
+<indexterm><primary>misc.c</primary><secondary>RELATIVE_ERROR_FACTOR</secondary></indexterm>
+<para><computeroutput>#define RELATIVE_ERROR_FACTOR&#160;&#160;&#160;100.0</computeroutput></para>
+<para>Check two double numbers for equality. </para>
+<para>
+Definition at line <link linkend="_misc_8c_source_1l00048">48</link> of file <link linkend="_misc_8c_source">misc.c</link>.</para>
+</section>
+</section>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="_misc_8c_1a4e46bd783e4efe71bee053481afeb4a9"/><section>
+    <title>angle_diff()</title>
+<indexterm><primary>angle_diff</primary><secondary>misc.c</secondary></indexterm>
+<indexterm><primary>misc.c</primary><secondary>angle_diff</secondary></indexterm>
+<para><computeroutput>double angle_diff (double a, double b)</computeroutput></para>
+<para>Absolute value angle difference. </para>
+<para>
+Definition at line <link linkend="_misc_8c_source_1l00093">93</link> of file <link linkend="_misc_8c_source">misc.c</link>.</para>
+</section>
+<anchor xml:id="_misc_8c_1afc6d1f1cd19f4dfd5513632ab80322df"/><section>
+    <title>angle_diff_signed()</title>
+<indexterm><primary>angle_diff_signed</primary><secondary>misc.c</secondary></indexterm>
+<indexterm><primary>misc.c</primary><secondary>angle_diff_signed</secondary></indexterm>
+<para><computeroutput>double angle_diff_signed (double a, double b)</computeroutput></para>
+<para>Signed angle difference. </para>
+<para>
+Definition at line <link linkend="_misc_8c_source_1l00106">106</link> of file <link linkend="_misc_8c_source">misc.c</link>.</para>
+</section>
+<anchor xml:id="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92"/><section>
+    <title>dist()</title>
+<indexterm><primary>dist</primary><secondary>misc.c</secondary></indexterm>
+<indexterm><primary>misc.c</primary><secondary>dist</secondary></indexterm>
+<para><computeroutput>double dist (double x1, double y1, double x2, double y2)</computeroutput></para>
+<para>Euclidean distance between two points (x1,y1) and (x2,y2). </para>
+<para>
+Definition at line <link linkend="_misc_8c_source_1l00084">84</link> of file <link linkend="_misc_8c_source">misc.c</link>.</para>
+</section>
+<anchor xml:id="_misc_8c_1a49d0391afab7c8872bbbfb86a814360b"/><section>
+    <title>double_equal()</title>
+<indexterm><primary>double_equal</primary><secondary>misc.c</secondary></indexterm>
+<indexterm><primary>misc.c</primary><secondary>double_equal</secondary></indexterm>
+<para><computeroutput>int double_equal (double a, double b)</computeroutput></para><para>
+Definition at line <link linkend="_misc_8c_source_1l00049">49</link> of file <link linkend="_misc_8c_source">misc.c</link>.</para>
+</section>
+<anchor xml:id="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5"/><section>
+    <title>error()</title>
+<indexterm><primary>error</primary><secondary>misc.c</secondary></indexterm>
+<indexterm><primary>misc.c</primary><secondary>error</secondary></indexterm>
+<para><computeroutput>void error (char * msg)</computeroutput></para>
+<para>Error or exception handling: print error message and exit. </para>
+<para>
+Definition at line <link linkend="_misc_8c_source_1l00038">38</link> of file <link linkend="_misc_8c_source">misc.c</link>.</para>
+</section>
+<anchor xml:id="_misc_8c_1a5ff03a878859dab858f9fa1ce803e71f"/><section>
+    <title>in_interval()</title>
+<indexterm><primary>in_interval</primary><secondary>misc.c</secondary></indexterm>
+<indexterm><primary>misc.c</primary><secondary>in_interval</secondary></indexterm>
+<para><computeroutput>int in_interval (double x, double a, double b)</computeroutput></para>
+<para>Check if a value is in a given range. Return TRUE or FALSE. </para>
+<para>
+Definition at line <link linkend="_misc_8c_source_1l00218">218</link> of file <link linkend="_misc_8c_source">misc.c</link>.</para>
+</section>
+<anchor xml:id="_misc_8c_1a7bd5f9830327532b199607799edf7fe2"/><section>
+    <title>is_aligned()</title>
+<indexterm><primary>is_aligned</primary><secondary>misc.c</secondary></indexterm>
+<indexterm><primary>misc.c</primary><secondary>is_aligned</secondary></indexterm>
+<para><computeroutput>int is_aligned (double a, double theta, double prec)</computeroutput></para>
+<para>Are two angles similar up to precision &apos;prec&apos;? </para>
+<para>
+Definition at line <link linkend="_misc_8c_source_1l00228">228</link> of file <link linkend="_misc_8c_source">misc.c</link>.</para>
+</section>
+<anchor xml:id="_misc_8c_1a7b7aa8971ae07b4e29a61533909d098d"/><section>
+    <title>max_array_pos()</title>
+<indexterm><primary>max_array_pos</primary><secondary>misc.c</secondary></indexterm>
+<indexterm><primary>misc.c</primary><secondary>max_array_pos</secondary></indexterm>
+<para><computeroutput>double max_array_pos (double * a, int sz, int * poz)</computeroutput></para>
+<para>Compute max element in an array and return the max value and its position. </para>
+<para>
+Definition at line <link linkend="_misc_8c_source_1l00197">197</link> of file <link linkend="_misc_8c_source">misc.c</link>.</para>
+</section>
+<anchor xml:id="_misc_8c_1acbf3663dd6c05ce0f7f82f6d4b36c6a7"/><section>
+    <title>min_array()</title>
+<indexterm><primary>min_array</primary><secondary>misc.c</secondary></indexterm>
+<indexterm><primary>misc.c</primary><secondary>min_array</secondary></indexterm>
+<para><computeroutput>double min_array (double * v, int sz)</computeroutput></para>
+<para>Compute the min value of an array of doubles. </para>
+<para>
+Definition at line <link linkend="_misc_8c_source_1l00154">154</link> of file <link linkend="_misc_8c_source">misc.c</link>.</para>
+</section>
+<anchor xml:id="_misc_8c_1a6d6f434a2cc946f78f7916364ad14f38"/><section>
+    <title>min_array_pos()</title>
+<indexterm><primary>min_array_pos</primary><secondary>misc.c</secondary></indexterm>
+<indexterm><primary>misc.c</primary><secondary>min_array_pos</secondary></indexterm>
+<para><computeroutput>double min_array_pos (double * v, int sz, int * pos)</computeroutput></para>
+<para>Compute the min value and its index in an array of doubles. </para>
+<para>
+Definition at line <link linkend="_misc_8c_source_1l00174">174</link> of file <link linkend="_misc_8c_source">misc.c</link>.</para>
+</section>
+<anchor xml:id="_misc_8c_1a00b6a4c474bea7360859f586ae2e2dea"/><section>
+    <title>norm_angle_diff()</title>
+<indexterm><primary>norm_angle_diff</primary><secondary>misc.c</secondary></indexterm>
+<indexterm><primary>misc.c</primary><secondary>norm_angle_diff</secondary></indexterm>
+<para><computeroutput>double norm_angle_diff (double a, double b)</computeroutput></para>
+<para>Normalised difference between two angles. </para>
+<para>
+Definition at line <link linkend="_misc_8c_source_1l00256">256</link> of file <link linkend="_misc_8c_source">misc.c</link>.</para>
+</section>
+<anchor xml:id="_misc_8c_1a9f29698bce67d856008e85a5c6b45b57"/><section>
+    <title>sign()</title>
+<indexterm><primary>sign</primary><secondary>misc.c</secondary></indexterm>
+<indexterm><primary>misc.c</primary><secondary>sign</secondary></indexterm>
+<para><computeroutput>int sign (double val)</computeroutput></para>
+<para>Return +1 for positive value, and -1 for strictly negative value. </para>
+<para>
+Definition at line <link linkend="_misc_8c_source_1l00074">74</link> of file <link linkend="_misc_8c_source">misc.c</link>.</para>
+</section>
+<anchor xml:id="_misc_8c_1abfa4eebba539e060400a6a7fe746614e"/><section>
+    <title>swap_double()</title>
+<indexterm><primary>swap_double</primary><secondary>misc.c</secondary></indexterm>
+<indexterm><primary>misc.c</primary><secondary>swap_double</secondary></indexterm>
+<para><computeroutput>void swap_double (double * a, double * b)</computeroutput></para>
+<para>Swap two double values. </para>
+<para>
+Definition at line <link linkend="_misc_8c_source_1l00128">128</link> of file <link linkend="_misc_8c_source">misc.c</link>.</para>
+</section>
+<anchor xml:id="_misc_8c_1a10ec5db73aebdd0d7508b49e72770ef4"/><section>
+    <title>swap_int()</title>
+<indexterm><primary>swap_int</primary><secondary>misc.c</secondary></indexterm>
+<indexterm><primary>misc.c</primary><secondary>swap_int</secondary></indexterm>
+<para><computeroutput>void swap_int (int * a, int * b)</computeroutput></para>
+<para>Swap two integer values. </para>
+<para>
+Definition at line <link linkend="_misc_8c_source_1l00118">118</link> of file <link linkend="_misc_8c_source">misc.c</link>.</para>
+</section>
+<anchor xml:id="_misc_8c_1a3d503d641b82342adf77b51b2db53225"/><section>
+    <title>swap_ptr_pts()</title>
+<indexterm><primary>swap_ptr_pts</primary><secondary>misc.c</secondary></indexterm>
+<indexterm><primary>misc.c</primary><secondary>swap_ptr_pts</secondary></indexterm>
+<para><computeroutput>void swap_ptr_pts (<link linkend="_structPoint">Point</link> ** a, <link linkend="_structPoint">Point</link> ** b)</computeroutput></para>
+<para>Swap pointers&apos; addresses for two arrays of points. </para>
+<para>
+Definition at line <link linkend="_misc_8c_source_1l00138">138</link> of file <link linkend="_misc_8c_source">misc.c</link>.</para>
+</section>
+</section>
+</section>

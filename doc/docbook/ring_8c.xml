@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_ring_8c" xml:lang="en-US">
+<title>src/ring.c File Reference</title>
+<indexterm><primary>src/ring.c</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &lt;stdio.h&gt;<?linebreak?>#include &lt;stdlib.h&gt;<?linebreak?>#include &lt;math.h&gt;<?linebreak?>#include &lt;float.h&gt;<?linebreak?>#include &quot;misc.h&quot;<?linebreak?>#include &quot;ring.h&quot;<?linebreak?></programlisting><simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>void <link linkend="_ring_8c_1aa22a2072f90b5e5ed51c29d5081c4faf">copy_ring</link> (<link linkend="_structRing">Ring</link> *in, <link linkend="_structRing">Ring</link> *out)</para>
+</listitem>
+            <listitem><para>void <link linkend="_ring_8c_1af4bd196833424dc0e04d7f4af80db9f6">swap_ring</link> (<link linkend="_structRing">Ring</link> *r)</para>
+</listitem>
+            <listitem><para>int <link linkend="_ring_8c_1a135c65c3fc6ffdec3f39ea806588958c">check_circ_ring</link> (<link linkend="_structRing">Ring</link> *cring)</para>
+</listitem>
+            <listitem><para>int <link linkend="_ring_8c_1aab09e6cf000c148dc5d6c8d3637bcbf1">check_ell_ring</link> (<link linkend="_structRing">Ring</link> *ering)</para>
+</listitem>
+            <listitem><para>int <link linkend="_ring_8c_1ac82b2076b8049f107782e813168db716">check_circ</link> (double *cparam)</para>
+</listitem>
+            <listitem><para>int <link linkend="_ring_8c_1ab53bff8abd49d5a5dd267e78c85366ab">check_ell</link> (double *eparam)</para>
+</listitem>
+            <listitem><para>int <link linkend="_ring_8c_1abc1b2fcb970026bac2c06de0423e6278">is_in_circ_ring</link> (<link linkend="_structRing">Ring</link> *r, int x, int y)</para>
+</listitem>
+            <listitem><para>int <link linkend="_ring_8c_1ad4da58ff04f79b272727c6bfaf9d433d">is_in_ell_ring</link> (<link linkend="_structRing">Ring</link> *r, int x, int y)</para>
+</listitem>
+            <listitem><para>void <link linkend="_ring_8c_1ab6d86c932ef1cfaf6816342e601cd1c6">rosin_point</link> (<link linkend="_structRing">Ring</link> *ering, int x, int y, double *xi, double *yi)</para>
+</listitem>
+            <listitem><para>double <link linkend="_ring_8c_1a4c056155bbee1a0da2b83bdc5457a530">d_rosin</link> (<link linkend="_structRing">Ring</link> *ering, double x, double y)</para>
+</listitem>
+            <listitem><para>void <link linkend="_ring_8c_1aa1ade41bae8dd56dcdf545f6ac7adf95">ellipse_foci</link> (double *param, double *foci)</para>
+</listitem>
+            <listitem><para>double <link linkend="_ring_8c_1ab1ba9a1926e5a5587e7f0f8ef583fb90">ellipse_normal_angle</link> (double x, double y, double *foci)</para>
+</listitem>
+            <listitem><para>int <link linkend="_ring_8c_1aa6025924df802bd4fad9009c72e4587c">get_ring</link> (<link linkend="_structPoint">Point</link> *reg, int reg_size, double ang, double *param, double *pext1, double *pext2, int conic, double spir, <link linkend="_structRing">Ring</link> *r, int *grad_dir, double *foci, int msize)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="_ring_8c_1ac82b2076b8049f107782e813168db716"/><section>
+    <title>check_circ()</title>
+<indexterm><primary>check_circ</primary><secondary>ring.c</secondary></indexterm>
+<indexterm><primary>ring.c</primary><secondary>check_circ</secondary></indexterm>
+<para><computeroutput>int check_circ (double * cparam)</computeroutput></para>
+<para>Check if circle is valid: radius must be positive. </para>
+<para>
+Definition at line <link linkend="_ring_8c_source_1l00109">109</link> of file <link linkend="_ring_8c_source">ring.c</link>.</para>
+</section>
+<anchor xml:id="_ring_8c_1a135c65c3fc6ffdec3f39ea806588958c"/><section>
+    <title>check_circ_ring()</title>
+<indexterm><primary>check_circ_ring</primary><secondary>ring.c</secondary></indexterm>
+<indexterm><primary>ring.c</primary><secondary>check_circ_ring</secondary></indexterm>
+<para><computeroutput>int check_circ_ring (<link linkend="_structRing">Ring</link> * cring)</computeroutput></para>
+<para>Check if circle is valid: radius must be positive. </para>
+<para>
+Definition at line <link linkend="_ring_8c_source_1l00079">79</link> of file <link linkend="_ring_8c_source">ring.c</link>.</para>
+</section>
+<anchor xml:id="_ring_8c_1ab53bff8abd49d5a5dd267e78c85366ab"/><section>
+    <title>check_ell()</title>
+<indexterm><primary>check_ell</primary><secondary>ring.c</secondary></indexterm>
+<indexterm><primary>ring.c</primary><secondary>check_ell</secondary></indexterm>
+<para><computeroutput>int check_ell (double * eparam)</computeroutput></para>
+<para>Check if ellipse is valid: axes must be positive; ensure big axis is first and orientation in [-pi/2, pi/2]. </para>
+<para>
+Definition at line <link linkend="_ring_8c_source_1l00126">126</link> of file <link linkend="_ring_8c_source">ring.c</link>.</para>
+</section>
+<anchor xml:id="_ring_8c_1aab09e6cf000c148dc5d6c8d3637bcbf1"/><section>
+    <title>check_ell_ring()</title>
+<indexterm><primary>check_ell_ring</primary><secondary>ring.c</secondary></indexterm>
+<indexterm><primary>ring.c</primary><secondary>check_ell_ring</secondary></indexterm>
+<para><computeroutput>int check_ell_ring (<link linkend="_structRing">Ring</link> * ering)</computeroutput></para>
+<para>Check if ellipse ring is valid: wmin and wmax have different signs and have reasonably small values. </para>
+<para>
+Definition at line <link linkend="_ring_8c_source_1l00094">94</link> of file <link linkend="_ring_8c_source">ring.c</link>.</para>
+</section>
+<anchor xml:id="_ring_8c_1aa22a2072f90b5e5ed51c29d5081c4faf"/><section>
+    <title>copy_ring()</title>
+<indexterm><primary>copy_ring</primary><secondary>ring.c</secondary></indexterm>
+<indexterm><primary>ring.c</primary><secondary>copy_ring</secondary></indexterm>
+<para><computeroutput>void copy_ring (<link linkend="_structRing">Ring</link> * in, <link linkend="_structRing">Ring</link> * out)</computeroutput></para>
+<para>Copy one ring structure to another. </para>
+<para>
+Definition at line <link linkend="_ring_8c_source_1l00038">38</link> of file <link linkend="_ring_8c_source">ring.c</link>.</para>
+</section>
+<anchor xml:id="_ring_8c_1a4c056155bbee1a0da2b83bdc5457a530"/><section>
+    <title>d_rosin()</title>
+<indexterm><primary>d_rosin</primary><secondary>ring.c</secondary></indexterm>
+<indexterm><primary>ring.c</primary><secondary>d_rosin</secondary></indexterm>
+<para><computeroutput>double d_rosin (<link linkend="_structRing">Ring</link> * ering, double x, double y)</computeroutput></para>
+<para>Approximate the distance between a point and an ellipse using Rosin distance. </para>
+<para>
+Definition at line <link linkend="_ring_8c_source_1l00262">262</link> of file <link linkend="_ring_8c_source">ring.c</link>.</para>
+</section>
+<anchor xml:id="_ring_8c_1aa1ade41bae8dd56dcdf545f6ac7adf95"/><section>
+    <title>ellipse_foci()</title>
+<indexterm><primary>ellipse_foci</primary><secondary>ring.c</secondary></indexterm>
+<indexterm><primary>ring.c</primary><secondary>ellipse_foci</secondary></indexterm>
+<para><computeroutput>void ellipse_foci (double * param, double * foci)</computeroutput></para>
+<para>Compute ellipse foci, given ellipse params. </para>
+<para>
+Definition at line <link linkend="_ring_8c_source_1l00300">300</link> of file <link linkend="_ring_8c_source">ring.c</link>.</para>
+</section>
+<anchor xml:id="_ring_8c_1ab1ba9a1926e5a5587e7f0f8ef583fb90"/><section>
+    <title>ellipse_normal_angle()</title>
+<indexterm><primary>ellipse_normal_angle</primary><secondary>ring.c</secondary></indexterm>
+<indexterm><primary>ring.c</primary><secondary>ellipse_normal_angle</secondary></indexterm>
+<para><computeroutput>double ellipse_normal_angle (double x, double y, double * foci)</computeroutput></para>
+<para>Compute the angle of the normal to a point belonging to an ellipse using the focal property. </para>
+<para>
+Definition at line <link linkend="_ring_8c_source_1l00319">319</link> of file <link linkend="_ring_8c_source">ring.c</link>.</para>
+</section>
+<anchor xml:id="_ring_8c_1aa6025924df802bd4fad9009c72e4587c"/><section>
+    <title>get_ring()</title>
+<indexterm><primary>get_ring</primary><secondary>ring.c</secondary></indexterm>
+<indexterm><primary>ring.c</primary><secondary>get_ring</secondary></indexterm>
+<para><computeroutput>int get_ring (<link linkend="_structPoint">Point</link> * reg, int reg_size, double ang, double * param, double * pext1, double * pext2, int conic, double spir, <link linkend="_structRing">Ring</link> * r, int * grad_dir, double * foci, int msize)</computeroutput></para>
+<para>Given conic parameters and extreme points, fill in all the ring parameters. If conic is 1, get circle ring, if 0 get ellipse ring. </para>
+<para>
+Definition at line <link linkend="_ring_8c_source_1l00427">427</link> of file <link linkend="_ring_8c_source">ring.c</link>.</para>
+</section>
+<anchor xml:id="_ring_8c_1abc1b2fcb970026bac2c06de0423e6278"/><section>
+    <title>is_in_circ_ring()</title>
+<indexterm><primary>is_in_circ_ring</primary><secondary>ring.c</secondary></indexterm>
+<indexterm><primary>ring.c</primary><secondary>is_in_circ_ring</secondary></indexterm>
+<para><computeroutput>int is_in_circ_ring (<link linkend="_structRing">Ring</link> * r, int x, int y)</computeroutput></para>
+<para>Test if a given point is inside a circular ring: (x,y) must be at a distance between [dmin,dmax] wrt centre at an angle between [&apos;ang_start&apos;,&apos;ang_end&apos;]. All angles are in [0 , 2pi]. </para>
+<para>
+Definition at line <link linkend="_ring_8c_source_1l00156">156</link> of file <link linkend="_ring_8c_source">ring.c</link>.</para>
+</section>
+<anchor xml:id="_ring_8c_1ad4da58ff04f79b272727c6bfaf9d433d"/><section>
+    <title>is_in_ell_ring()</title>
+<indexterm><primary>is_in_ell_ring</primary><secondary>ring.c</secondary></indexterm>
+<indexterm><primary>ring.c</primary><secondary>is_in_ell_ring</secondary></indexterm>
+<para><computeroutput>int is_in_ell_ring (<link linkend="_structRing">Ring</link> * r, int x, int y)</computeroutput></para>
+<para>Test if a given point is inside an elliptical ring: (x,y) must be at a distance between [dmin,dmax] wrt centre at an angle between [&apos;ang_start&apos;,&apos;ang_end&apos;]. All angles are expressed in [0 , 2pi]. </para>
+<para>
+Definition at line <link linkend="_ring_8c_source_1l00186">186</link> of file <link linkend="_ring_8c_source">ring.c</link>.</para>
+</section>
+<anchor xml:id="_ring_8c_1ab6d86c932ef1cfaf6816342e601cd1c6"/><section>
+    <title>rosin_point()</title>
+<indexterm><primary>rosin_point</primary><secondary>ring.c</secondary></indexterm>
+<indexterm><primary>ring.c</primary><secondary>rosin_point</secondary></indexterm>
+<para><computeroutput>void rosin_point (<link linkend="_structRing">Ring</link> * ering, int x, int y, double * xi, double * yi)</computeroutput></para>
+<para>Compute the point belonging to an ellipse, closest to a given point with integer coordinates. </para>
+<para>
+Definition at line <link linkend="_ring_8c_source_1l00214">214</link> of file <link linkend="_ring_8c_source">ring.c</link>.</para>
+</section>
+<anchor xml:id="_ring_8c_1af4bd196833424dc0e04d7f4af80db9f6"/><section>
+    <title>swap_ring()</title>
+<indexterm><primary>swap_ring</primary><secondary>ring.c</secondary></indexterm>
+<indexterm><primary>ring.c</primary><secondary>swap_ring</secondary></indexterm>
+<para><computeroutput>void swap_ring (<link linkend="_structRing">Ring</link> * r)</computeroutput></para>
+<para>Switch the delimiting points of the ring and set the switch flag. </para>
+<para>
+Definition at line <link linkend="_ring_8c_source_1l00065">65</link> of file <link linkend="_ring_8c_source">ring.c</link>.</para>
+</section>
+</section>
+</section>

@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_dir_68267d1309a1af8e8297ef4c3efbcdba" xml:lang="en-US">
+<title>src Directory Reference</title>
+<indexterm><primary>src Directory Reference</primary></indexterm>
+<simplesect>
+    <title>Files    </title>
+        <itemizedlist>
+            <listitem><para>file <link linkend="_curve__grow_8c">curve_grow.c</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_curve__grow_8h">curve_grow.h</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_ellipse__fit_8c">ellipse_fit.c</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_ellipse__fit_8h">ellipse_fit.h</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_elsdc_8c">elsdc.c</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_elsdc_8h">elsdc.h</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_gauss_8c">gauss.c</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_gauss_8h">gauss.h</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_image_8c">image.c</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_image_8h">image.h</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_iterator_8c">iterator.c</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_iterator_8h">iterator.h</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_lapack__wrapper_8c">lapack_wrapper.c</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_lapack__wrapper_8h">lapack_wrapper.h</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_main_8c">main.c</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_mexall_8m">mexall.m</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_mexELSDc_8c">mexELSDc.c</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_misc_8c">misc.c</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_misc_8h">misc.h</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_pgm_8c">pgm.c</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_pgm_8h">pgm.h</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_polygon_8c">polygon.c</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_polygon_8h">polygon.h</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_rectangle_8c">rectangle.c</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_rectangle_8h">rectangle.h</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_ring_8c">ring.c</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_ring_8h">ring.h</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_svg_8c">svg.c</link></para>
+</listitem>
+            <listitem><para>file <link linkend="_svg_8h">svg.h</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+</section>

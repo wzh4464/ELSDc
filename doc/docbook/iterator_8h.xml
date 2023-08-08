@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_iterator_8h" xml:lang="en-US">
+<title>src/iterator.h File Reference</title>
+<indexterm><primary>src/iterator.h</primary></indexterm>
+<simplesect>
+    <title>Data Structures    </title>
+        <itemizedlist>
+            <listitem><para>struct <link linkend="_structRectIter">RectIter</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>void <link linkend="_iterator_8h_1a85d1536d02765e56ec37da19a90e7fda">free_RectIter</link> (<link linkend="_structRectIter">RectIter</link> *iter)</para>
+</listitem>
+            <listitem><para>int <link linkend="_iterator_8h_1af7da6dcffa5131ae89a09928a735876c">end_RectIter</link> (<link linkend="_structRectIter">RectIter</link> *i)</para>
+</listitem>
+            <listitem><para>void <link linkend="_iterator_8h_1a4c117221ffe49dc4f9e5f12638a29226">inc_RectIter</link> (<link linkend="_structRectIter">RectIter</link> *i)</para>
+</listitem>
+            <listitem><para><link linkend="_structRectIter">RectIter</link> * <link linkend="_iterator_8h_1a10e0fc06c9d67303b68e6b4296dd692e">ini_RectIter</link> (<link linkend="_structRectangle">Rectangle</link> *r)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="_iterator_8h_1af7da6dcffa5131ae89a09928a735876c"/><section>
+    <title>end_RectIter()</title>
+<indexterm><primary>end_RectIter</primary><secondary>iterator.h</secondary></indexterm>
+<indexterm><primary>iterator.h</primary><secondary>end_RectIter</secondary></indexterm>
+<para><computeroutput>int end_RectIter (<link linkend="_structRectIter">RectIter</link> * i)</computeroutput></para>
+<para>Check if the iterator finished the full iteration. </para>
+<para>
+Definition at line <link linkend="_iterator_8c_source_1l00085">85</link> of file <link linkend="_iterator_8c_source">iterator.c</link>.</para>
+</section>
+<anchor xml:id="_iterator_8h_1a85d1536d02765e56ec37da19a90e7fda"/><section>
+    <title>free_RectIter()</title>
+<indexterm><primary>free_RectIter</primary><secondary>iterator.h</secondary></indexterm>
+<indexterm><primary>iterator.h</primary><secondary>free_RectIter</secondary></indexterm>
+<para><computeroutput>void free_RectIter (<link linkend="_structRectIter">RectIter</link> * iter)</computeroutput></para>
+<para>Free memory used by a rectangle iterator. </para>
+<para>
+Definition at line <link linkend="_iterator_8c_source_1l00074">74</link> of file <link linkend="_iterator_8c_source">iterator.c</link>.</para>
+</section>
+<anchor xml:id="_iterator_8h_1a4c117221ffe49dc4f9e5f12638a29226"/><section>
+    <title>inc_RectIter()</title>
+<indexterm><primary>inc_RectIter</primary><secondary>iterator.h</secondary></indexterm>
+<indexterm><primary>iterator.h</primary><secondary>inc_RectIter</secondary></indexterm>
+<para><computeroutput>void inc_RectIter (<link linkend="_structRectIter">RectIter</link> * i)</computeroutput></para>
+<para>Increment a rectangle iterator. </para>
+<para>
+Definition at line <link linkend="_iterator_8c_source_1l00096">96</link> of file <link linkend="_iterator_8c_source">iterator.c</link>.</para>
+</section>
+<anchor xml:id="_iterator_8h_1a10e0fc06c9d67303b68e6b4296dd692e"/><section>
+    <title>ini_RectIter()</title>
+<indexterm><primary>ini_RectIter</primary><secondary>iterator.h</secondary></indexterm>
+<indexterm><primary>iterator.h</primary><secondary>ini_RectIter</secondary></indexterm>
+<para><computeroutput><link linkend="_structRectIter">RectIter</link> * ini_RectIter (<link linkend="_structRectangle">Rectangle</link> * r)</computeroutput></para>
+<para>Create and initialize a rectangle iterator. </para>
+<para>
+Definition at line <link linkend="_iterator_8c_source_1l00130">130</link> of file <link linkend="_iterator_8c_source">iterator.c</link>.</para>
+</section>
+</section>
+</section>

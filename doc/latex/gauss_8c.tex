@@ -1,0 +1,28 @@
+\doxysection{src/gauss.c File Reference}
+\hypertarget{gauss_8c}{}\label{gauss_8c}\index{src/gauss.c@{src/gauss.c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$float.\+h$>$}\newline
+{\ttfamily \#include \"{}image.\+h\"{}}\newline
+{\ttfamily \#include \"{}gauss.\+h\"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} \mbox{\hyperlink{gauss_8c_a5e6f7e6e45933ad48a9c61dff80bb52e}{gaussian\+\_\+sampler}} (\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} in, double scale, double sigma\+\_\+scale)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{gauss_8c_a5e6f7e6e45933ad48a9c61dff80bb52e}\label{gauss_8c_a5e6f7e6e45933ad48a9c61dff80bb52e} 
+\index{gauss.c@{gauss.c}!gaussian\_sampler@{gaussian\_sampler}}
+\index{gaussian\_sampler@{gaussian\_sampler}!gauss.c@{gauss.c}}
+\doxysubsubsection{\texorpdfstring{gaussian\_sampler()}{gaussian\_sampler()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} gaussian\+\_\+sampler (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}}}]{in,  }\item[{double}]{scale,  }\item[{double}]{sigma\+\_\+scale }\end{DoxyParamCaption})}
+
+Subsample image \textquotesingle{}in\textquotesingle{} with Gaussian filtering, to a scale \textquotesingle{}scale\textquotesingle{} (for example, 0.\+8 will give a result at 80\% of the original size), using a standard deviation sigma given by\+:
+
+sigma = sigma\+\_\+scale / scale, if scale \texorpdfstring{$<$}{<} 1.\+0 sigma = sigma\+\_\+scale, if scale \texorpdfstring{$>$}{>}= 1.\+0 
+
+Definition at line \mbox{\hyperlink{gauss_8c_source_l00115}{115}} of file \mbox{\hyperlink{gauss_8c_source}{gauss.\+c}}.
+

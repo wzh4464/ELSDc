@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_rectangle_8c_source" xml:lang="en-US">
+<title>rectangle.c</title>
+<indexterm><primary>src/rectangle.c</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="_rectangle_8c_source_1l00001"/>00001 <emphasis role="comment">/*------------------------------------------------------------------------------</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00002"/>00002 <emphasis role="comment">&#32;&#32;</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00003"/>00003 <emphasis role="comment">&#32;&#32;Copyright&#32;(c)&#32;2007-2011&#32;rafael&#32;grompone&#32;von&#32;gioi&#32;(grompone@gmail.com)</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00004"/>00004 <emphasis role="comment">&#32;&#32;Copyright&#32;(c)&#32;2012-2014&#32;viorica&#32;patraucean&#32;(vpatrauc@gmail.com)</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00005"/>00005 <emphasis role="comment">&#32;&#32;</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00006"/>00006 <emphasis role="comment">&#32;&#32;This&#32;program&#32;is&#32;free&#32;software:&#32;you&#32;can&#32;redistribute&#32;it&#32;and/or&#32;modify</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00007"/>00007 <emphasis role="comment">&#32;&#32;it&#32;under&#32;the&#32;terms&#32;of&#32;the&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License&#32;as</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00008"/>00008 <emphasis role="comment">&#32;&#32;published&#32;by&#32;the&#32;Free&#32;Software&#32;Foundation,&#32;either&#32;version&#32;3&#32;of&#32;the</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00009"/>00009 <emphasis role="comment">&#32;&#32;License,&#32;or&#32;(at&#32;your&#32;option)&#32;any&#32;later&#32;version.</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00010"/>00010 <emphasis role="comment"></emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00011"/>00011 <emphasis role="comment">&#32;&#32;This&#32;program&#32;is&#32;distributed&#32;in&#32;the&#32;hope&#32;that&#32;it&#32;will&#32;be&#32;useful,</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00012"/>00012 <emphasis role="comment">&#32;&#32;but&#32;WITHOUT&#32;ANY&#32;WARRANTY;&#32;without&#32;even&#32;the&#32;implied&#32;warranty&#32;of</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00013"/>00013 <emphasis role="comment">&#32;&#32;MERCHANTABILITY&#32;or&#32;FITNESS&#32;FOR&#32;A&#32;PARTICULAR&#32;PURPOSE.&#32;See&#32;the</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00014"/>00014 <emphasis role="comment">&#32;&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License&#32;for&#32;more&#32;details.</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00015"/>00015 <emphasis role="comment"></emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00016"/>00016 <emphasis role="comment">&#32;&#32;You&#32;should&#32;have&#32;received&#32;a&#32;copy&#32;of&#32;the&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00017"/>00017 <emphasis role="comment">&#32;&#32;along&#32;with&#32;this&#32;program.&#32;If&#32;not,&#32;see&#32;&lt;http://www.gnu.org/licenses/&gt;.</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00018"/>00018 <emphasis role="comment"></emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00019"/>00019 <emphasis role="comment"></emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00020"/>00020 <emphasis role="comment">&#32;&#32;rectangle.c&#32;-&#32;This&#32;file&#32;belongs&#32;to&#32;ELSDc&#32;project&#32;(Ellipse&#32;and&#32;Line&#32;Segment&#32;</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00021"/>00021 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Detector&#32;with&#32;continuous&#32;validation).</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00022"/>00022 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;-&#32;It&#32;contains&#32;functions&#32;to&#32;work&#32;with&#32;rectangular&#32;connected&#32;</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00023"/>00023 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;regions&#32;of&#32;pixels.</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00024"/>00024 <emphasis role="comment"></emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00025"/>00025 <emphasis role="comment">------------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00026"/>00026 
+<anchor xml:id="_rectangle_8c_source_1l00027"/>00027 <emphasis role="preprocessor">#include&#32;&lt;stdio.h&gt;</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00028"/>00028 <emphasis role="preprocessor">#include&#32;&lt;stdlib.h&gt;</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00029"/>00029 <emphasis role="preprocessor">#include&#32;&lt;math.h&gt;</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00030"/>00030 <emphasis role="preprocessor">#include&#32;&lt;float.h&gt;</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00031"/>00031 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_misc_8h">misc.h</link>&quot;</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00032"/>00032 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_rectangle_8h">rectangle.h</link>&quot;</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00033"/>00033 
+<anchor xml:id="_rectangle_8c_source_1l00034"/>00034 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00037"/><link linkend="_rectangle_8c_1aa3b83f9baca390809a96c7b84f3a886a">00037</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_rectangle_8c_1aa3b83f9baca390809a96c7b84f3a886a">copy_rect</link>(&#32;<link linkend="_structRectangle">Rectangle</link>&#32;*in,&#32;<link linkend="_structRectangle">Rectangle</link>&#32;*out&#32;)
+<anchor xml:id="_rectangle_8c_source_1l00038"/>00038 {
+<anchor xml:id="_rectangle_8c_source_1l00039"/>00039 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(in&#32;==&#32;NULL)&#32;||&#32;(out&#32;==&#32;NULL)&#32;)&#32;
+<anchor xml:id="_rectangle_8c_source_1l00040"/>00040 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;copy_rect:&#32;invalid&#32;&apos;in&apos;&#32;or&#32;&apos;out&apos;.&quot;</emphasis>);
+<anchor xml:id="_rectangle_8c_source_1l00041"/>00041 &#32;&#32;out-&gt;<link linkend="_structRectangle_1ac75b803b570527306e1e744bfb7a604f">x1</link>&#32;=&#32;in-&gt;<link linkend="_structRectangle_1ac75b803b570527306e1e744bfb7a604f">x1</link>;
+<anchor xml:id="_rectangle_8c_source_1l00042"/>00042 &#32;&#32;out-&gt;<link linkend="_structRectangle_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>&#32;=&#32;in-&gt;<link linkend="_structRectangle_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>;
+<anchor xml:id="_rectangle_8c_source_1l00043"/>00043 &#32;&#32;out-&gt;<link linkend="_structRectangle_1adcf04f5f1964d18b332643939561da0d">x2</link>&#32;=&#32;in-&gt;<link linkend="_structRectangle_1adcf04f5f1964d18b332643939561da0d">x2</link>;
+<anchor xml:id="_rectangle_8c_source_1l00044"/>00044 &#32;&#32;out-&gt;<link linkend="_structRectangle_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>&#32;=&#32;in-&gt;<link linkend="_structRectangle_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>;
+<anchor xml:id="_rectangle_8c_source_1l00045"/>00045 &#32;&#32;out-&gt;<link linkend="_structRectangle_1ad4bd51cdbe6ba41894905207ed94974f">len</link>&#32;=&#32;in-&gt;<link linkend="_structRectangle_1ad4bd51cdbe6ba41894905207ed94974f">len</link>;
+<anchor xml:id="_rectangle_8c_source_1l00046"/>00046 &#32;&#32;out-&gt;<link linkend="_structRectangle_1a9df23e056f5d1a0388cd8190431c0e03">width</link>&#32;=&#32;in-&gt;<link linkend="_structRectangle_1a9df23e056f5d1a0388cd8190431c0e03">width</link>;
+<anchor xml:id="_rectangle_8c_source_1l00047"/>00047 &#32;&#32;out-&gt;<link linkend="_structRectangle_1ad1515daed95ba43fd919fddcf3144d1a">wmin</link>&#32;=&#32;in-&gt;<link linkend="_structRectangle_1ad1515daed95ba43fd919fddcf3144d1a">wmin</link>;
+<anchor xml:id="_rectangle_8c_source_1l00048"/>00048 &#32;&#32;out-&gt;<link linkend="_structRectangle_1a54612b6d232db5e1a58ae8b2f26b1df4">wmax</link>&#32;=&#32;in-&gt;<link linkend="_structRectangle_1a54612b6d232db5e1a58ae8b2f26b1df4">wmax</link>;
+<anchor xml:id="_rectangle_8c_source_1l00049"/>00049 &#32;&#32;out-&gt;<link linkend="_structRectangle_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>&#32;=&#32;in-&gt;<link linkend="_structRectangle_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>;
+<anchor xml:id="_rectangle_8c_source_1l00050"/>00050 &#32;&#32;out-&gt;<link linkend="_structRectangle_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>&#32;=&#32;in-&gt;<link linkend="_structRectangle_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>;
+<anchor xml:id="_rectangle_8c_source_1l00051"/>00051 &#32;&#32;out-&gt;<link linkend="_structRectangle_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>&#32;=&#32;in-&gt;<link linkend="_structRectangle_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>;
+<anchor xml:id="_rectangle_8c_source_1l00052"/>00052 &#32;&#32;out-&gt;<link linkend="_structRectangle_1a229d11aff11a7482259d1296b9b70b8a">dx</link>&#32;=&#32;in-&gt;<link linkend="_structRectangle_1a229d11aff11a7482259d1296b9b70b8a">dx</link>;
+<anchor xml:id="_rectangle_8c_source_1l00053"/>00053 &#32;&#32;out-&gt;<link linkend="_structRectangle_1a9deb6f886b19d50e714d890c3c268efc">dy</link>&#32;=&#32;in-&gt;<link linkend="_structRectangle_1a9deb6f886b19d50e714d890c3c268efc">dy</link>;
+<anchor xml:id="_rectangle_8c_source_1l00054"/>00054 &#32;&#32;out-&gt;<link linkend="_structRectangle_1aaa22d55a01e89d03ac81a5bbc95105aa">prec</link>&#32;=&#32;in-&gt;<link linkend="_structRectangle_1aaa22d55a01e89d03ac81a5bbc95105aa">prec</link>;
+<anchor xml:id="_rectangle_8c_source_1l00055"/>00055 }
+<anchor xml:id="_rectangle_8c_source_1l00056"/>00056 
+<anchor xml:id="_rectangle_8c_source_1l00057"/>00057 
+<anchor xml:id="_rectangle_8c_source_1l00058"/>00058 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_rectangle_8c_source_1l00061"/><link linkend="_rectangle_8c_1a85626f7f589faf73e5ce6432a2ccdde8">00061</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_rectangle_8c_1a85626f7f589faf73e5ce6432a2ccdde8">write_rectangle</link>(&#32;FILE&#32;*f,&#32;<link linkend="_structRectangle">Rectangle</link>&#32;*r&#32;)
+<anchor xml:id="_rectangle_8c_source_1l00062"/>00062 {
+<anchor xml:id="_rectangle_8c_source_1l00063"/>00063 &#32;&#32;fprintf(f,&#32;<emphasis role="stringliteral">&quot;%f&#32;%f&#32;%f&#32;%f&#32;%f&#32;%f&#32;%f&#32;%f\n&quot;</emphasis>,&#32;r-&gt;<link linkend="_structRectangle_1ac75b803b570527306e1e744bfb7a604f">x1</link>,&#32;r-&gt;<link linkend="_structRectangle_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>,&#32;r-&gt;<link linkend="_structRectangle_1adcf04f5f1964d18b332643939561da0d">x2</link>,&#32;r-&gt;<link linkend="_structRectangle_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>,&#32;
+<anchor xml:id="_rectangle_8c_source_1l00064"/>00064 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;r-&gt;<link linkend="_structRectangle_1a229d11aff11a7482259d1296b9b70b8a">dx</link>,&#32;r-&gt;<link linkend="_structRectangle_1a9deb6f886b19d50e714d890c3c268efc">dy</link>,&#32;r-&gt;<link linkend="_structRectangle_1a54612b6d232db5e1a58ae8b2f26b1df4">wmax</link>,&#32;r-&gt;<link linkend="_structRectangle_1ad1515daed95ba43fd919fddcf3144d1a">wmin</link>&#32;);&#32;
+<anchor xml:id="_rectangle_8c_source_1l00065"/>00065 }
+</programlisting></section>

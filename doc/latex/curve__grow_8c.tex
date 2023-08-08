@@ -1,0 +1,45 @@
+\doxysection{src/curve\+\_\+grow.c File Reference}
+\hypertarget{curve__grow_8c}{}\label{curve__grow_8c}\index{src/curve\_grow.c@{src/curve\_grow.c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$float.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \"{}misc.\+h\"{}}\newline
+{\ttfamily \#include \"{}image.\+h\"{}}\newline
+{\ttfamily \#include \"{}rectangle.\+h\"{}}\newline
+{\ttfamily \#include \"{}iterator.\+h\"{}}\newline
+{\ttfamily \#include \"{}polygon.\+h\"{}}\newline
+{\ttfamily \#include \"{}ring.\+h\"{}}\newline
+{\ttfamily \#include \"{}curve\+\_\+grow.\+h\"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{curve__grow_8c_a6309f2cc70e39c4d40bbe504844b4866}{region2rect}} (\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} gradmag, \mbox{\hyperlink{structPoint}{Point}} \texorpdfstring{$\ast$}{*}reg, int start, int end, double reg\+\_\+angle, \mbox{\hyperlink{structRectangle}{Rectangle}} \texorpdfstring{$\ast$}{*}rec, double prec)
+\item 
+int \mbox{\hyperlink{curve__grow_8c_a05a2be0b004173552b1178130d6c7369}{curve\+\_\+grow}} (\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} gradmag, \mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} angles, \mbox{\hyperlink{image_8h_ad2f6828b30c727a557c8c201c2913f0f}{PImage\+Int}} used, \mbox{\hyperlink{structPoint}{Point}} \texorpdfstring{$\ast$}{*}reg, int \texorpdfstring{$\ast$}{*}reg\+\_\+size, double density\+\_\+th, double prec, \mbox{\hyperlink{structPolyRect}{Poly\+Rect}} \texorpdfstring{$\ast$}{*}poly, int \texorpdfstring{$\ast$}{*}label, double \texorpdfstring{$\ast$}{*}pext1, double \texorpdfstring{$\ast$}{*}pext2, double \texorpdfstring{$\ast$}{*}spir)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{curve__grow_8c_a05a2be0b004173552b1178130d6c7369}\label{curve__grow_8c_a05a2be0b004173552b1178130d6c7369} 
+\index{curve\_grow.c@{curve\_grow.c}!curve\_grow@{curve\_grow}}
+\index{curve\_grow@{curve\_grow}!curve\_grow.c@{curve\_grow.c}}
+\doxysubsubsection{\texorpdfstring{curve\_grow()}{curve\_grow()}}
+{\footnotesize\ttfamily int curve\+\_\+grow (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}}}]{gradmag,  }\item[{\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}}}]{angles,  }\item[{\mbox{\hyperlink{image_8h_ad2f6828b30c727a557c8c201c2913f0f}{PImage\+Int}}}]{used,  }\item[{\mbox{\hyperlink{structPoint}{Point}} \texorpdfstring{$\ast$}{*}}]{reg,  }\item[{int \texorpdfstring{$\ast$}{*}}]{reg\+\_\+size,  }\item[{double}]{density\+\_\+th,  }\item[{double}]{prec,  }\item[{\mbox{\hyperlink{structPolyRect}{Poly\+Rect}} \texorpdfstring{$\ast$}{*}}]{poly,  }\item[{int \texorpdfstring{$\ast$}{*}}]{label,  }\item[{double \texorpdfstring{$\ast$}{*}}]{pext1,  }\item[{double \texorpdfstring{$\ast$}{*}}]{pext2,  }\item[{double \texorpdfstring{$\ast$}{*}}]{spir }\end{DoxyParamCaption})}
+
+Compute a polygonal approximation of a relatively smooth and convex curve, scanning in both directions starting from an initial rectangle. ~\newline
+ 
+
+Definition at line \mbox{\hyperlink{curve__grow_8c_source_l00672}{672}} of file \mbox{\hyperlink{curve__grow_8c_source}{curve\+\_\+grow.\+c}}.
+
+\Hypertarget{curve__grow_8c_a6309f2cc70e39c4d40bbe504844b4866}\label{curve__grow_8c_a6309f2cc70e39c4d40bbe504844b4866} 
+\index{curve\_grow.c@{curve\_grow.c}!region2rect@{region2rect}}
+\index{region2rect@{region2rect}!curve\_grow.c@{curve\_grow.c}}
+\doxysubsubsection{\texorpdfstring{region2rect()}{region2rect()}}
+{\footnotesize\ttfamily void region2rect (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}}}]{gradmag,  }\item[{\mbox{\hyperlink{structPoint}{Point}} \texorpdfstring{$\ast$}{*}}]{reg,  }\item[{int}]{start,  }\item[{int}]{end,  }\item[{double}]{reg\+\_\+angle,  }\item[{\mbox{\hyperlink{structRectangle}{Rectangle}} \texorpdfstring{$\ast$}{*}}]{rec,  }\item[{double}]{prec }\end{DoxyParamCaption})}
+
+Compute a rectangle that covers a connected region of points. A rectangle is defined by end points, center, orientation, width. Additional fields (precision of approximation) are useful for validation. 
+
+Definition at line \mbox{\hyperlink{curve__grow_8c_source_l00214}{214}} of file \mbox{\hyperlink{curve__grow_8c_source}{curve\+\_\+grow.\+c}}.
+

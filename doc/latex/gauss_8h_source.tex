@@ -1,0 +1,49 @@
+\doxysection{gauss.\+h}
+\hypertarget{gauss_8h_source}{}\label{gauss_8h_source}\index{src/gauss.h@{src/gauss.h}}
+\mbox{\hyperlink{gauss_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00001}00001\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00002}00002\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00003}00003\ \textcolor{comment}{\ \ Copyright\ (c)\ 2007-\/2011\ rafael\ grompone\ von\ gioi\ (grompone@gmail.com)\ }}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00004}00004\ \textcolor{comment}{\ \ Copyright\ (c)\ 2012-\/2014\ viorica\ patraucean\ (vpatrauc@gmail.com)}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00005}00005\ \textcolor{comment}{\ \ }}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00006}00006\ \textcolor{comment}{\ \ This\ program\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00007}00007\ \textcolor{comment}{\ \ it\ under\ the\ terms\ of\ the\ GNU\ Affero\ General\ Public\ License\ as}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00008}00008\ \textcolor{comment}{\ \ published\ by\ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00009}00009\ \textcolor{comment}{\ \ License,\ or\ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00010}00010\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00011}00011\ \textcolor{comment}{\ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00012}00012\ \textcolor{comment}{\ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00013}00013\ \textcolor{comment}{\ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ See\ the}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00014}00014\ \textcolor{comment}{\ \ GNU\ Affero\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00015}00015\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00016}00016\ \textcolor{comment}{\ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ Affero\ General\ Public\ License}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00017}00017\ \textcolor{comment}{\ \ along\ with\ this\ program.\ If\ not,\ see\ <http://www.gnu.org/licenses/>.}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00018}00018\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00019}00019\ \textcolor{comment}{\ \ gauss.h\ -\/\ This\ file\ belongs\ to\ ELSDc\ project\ (Ellipse\ and\ Line\ Segment\ }}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00020}00020\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ Detector\ with\ continuous\ validation).}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00021}00021\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ -\/\ It\ defines\ data\ structure\ for\ Gaussian\ filter\ and\ function\ }}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00022}00022\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ prototype\ for\ applying\ it.\ }}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00023}00023\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00024}00024\ \textcolor{comment}{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00027}00027\ \textcolor{preprocessor}{\#ifndef\ GAUSS\_H}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00028}00028\ \textcolor{preprocessor}{\#define\ GAUSS\_H}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00031}00031\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00035}\mbox{\hyperlink{structGaussFilter}{00035}}\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structGaussFilter}{GaussFilter}}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00036}00036\ \{}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00037}\mbox{\hyperlink{structGaussFilter_a70b5e28b5bc3d1b63a7435c5fe50b837}{00037}}\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structGaussFilter_a70b5e28b5bc3d1b63a7435c5fe50b837}{dim}};}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00038}\mbox{\hyperlink{structGaussFilter_a4ef930be9d7ab47d59cc0668d0d1fac8}{00038}}\ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{structGaussFilter_a4ef930be9d7ab47d59cc0668d0d1fac8}{sigma}};}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00039}\mbox{\hyperlink{structGaussFilter_abb40a2ee28b839fb572e161c68141faf}{00039}}\ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{structGaussFilter_abb40a2ee28b839fb572e161c68141faf}{mean}};}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00040}\mbox{\hyperlink{structGaussFilter_a2098158062e3e63fce7d2575b324c386}{00040}}\ \ \ \textcolor{keywordtype}{double}\ *\mbox{\hyperlink{structGaussFilter_a2098158062e3e63fce7d2575b324c386}{values}};}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00041}\mbox{\hyperlink{gauss_8h_a6ee94a16b020ba9e8c4f5574d2ef0110}{00041}}\ \}\ *\mbox{\hyperlink{gauss_8h_a6ee94a16b020ba9e8c4f5574d2ef0110}{PGaussFilter}};\ \textcolor{comment}{/*\ pointer\ to\ Gauss\ filter\ structure\ */}}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00043}00043\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ \mbox{\hyperlink{gauss_8h_a5e6f7e6e45933ad48a9c61dff80bb52e}{gaussian\_sampler}}(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ in,\ \textcolor{keywordtype}{double}\ scale,\ }
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00044}00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ sigma\_scale\ );}
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{gauss_8h_source_l00046}00046\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

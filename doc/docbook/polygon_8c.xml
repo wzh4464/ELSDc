@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_polygon_8c" xml:lang="en-US">
+<title>src/polygon.c File Reference</title>
+<indexterm><primary>src/polygon.c</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &lt;stdio.h&gt;<?linebreak?>#include &lt;stdlib.h&gt;<?linebreak?>#include &lt;float.h&gt;<?linebreak?>#include &quot;misc.h&quot;<?linebreak?>#include &quot;rectangle.h&quot;<?linebreak?>#include &quot;polygon.h&quot;<?linebreak?></programlisting><simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_structPolyRect">PolyRect</link> * <link linkend="_polygon_8c_1a6f6ebc705a3f6b7de7abc4c51f5c5e41">new_polyrect</link> (void)</para>
+</listitem>
+            <listitem><para>void <link linkend="_polygon_8c_1aba9f787d494579b057a533db04a3e79f">clear_polyrect</link> (<link linkend="_structPolyRect">PolyRect</link> *poly)</para>
+</listitem>
+            <listitem><para>void <link linkend="_polygon_8c_1a32839ef9cf401a79864fd0d3b9718dec">add_rect_to_polyrect</link> (<link linkend="_structPolyRect">PolyRect</link> *poly, <link linkend="_structRectangle">Rectangle</link> *r)</para>
+</listitem>
+            <listitem><para>void <link linkend="_polygon_8c_1ae802ef1e750a7539e7e8bcc4a5bee0d9">write_polyrect</link> (FILE *f, <link linkend="_structPolyRect">PolyRect</link> *poly)</para>
+</listitem>
+            <listitem><para>void <link linkend="_polygon_8c_1accef77c06a440cd1d9baf927ae7274f9">polyrect2polygon</link> (<link linkend="_structPolyRect">PolyRect</link> *poly, <link linkend="_structPolygon">Polygon</link> *p)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="_polygon_8c_1a32839ef9cf401a79864fd0d3b9718dec"/><section>
+    <title>add_rect_to_polyrect()</title>
+<indexterm><primary>add_rect_to_polyrect</primary><secondary>polygon.c</secondary></indexterm>
+<indexterm><primary>polygon.c</primary><secondary>add_rect_to_polyrect</secondary></indexterm>
+<para><computeroutput>void add_rect_to_polyrect (<link linkend="_structPolyRect">PolyRect</link> * poly, <link linkend="_structRectangle">Rectangle</link> * r)</computeroutput></para>
+<para>Add new rectangle to polygon. </para>
+<para>
+Definition at line <link linkend="_polygon_8c_source_1l00070">70</link> of file <link linkend="_polygon_8c_source">polygon.c</link>.</para>
+</section>
+<anchor xml:id="_polygon_8c_1aba9f787d494579b057a533db04a3e79f"/><section>
+    <title>clear_polyrect()</title>
+<indexterm><primary>clear_polyrect</primary><secondary>polygon.c</secondary></indexterm>
+<indexterm><primary>polygon.c</primary><secondary>clear_polyrect</secondary></indexterm>
+<para><computeroutput>void clear_polyrect (<link linkend="_structPolyRect">PolyRect</link> * poly)</computeroutput></para>
+<para>Reset a given polygon. </para>
+<para>
+Definition at line <link linkend="_polygon_8c_source_1l00053">53</link> of file <link linkend="_polygon_8c_source">polygon.c</link>.</para>
+</section>
+<anchor xml:id="_polygon_8c_1a6f6ebc705a3f6b7de7abc4c51f5c5e41"/><section>
+    <title>new_polyrect()</title>
+<indexterm><primary>new_polyrect</primary><secondary>polygon.c</secondary></indexterm>
+<indexterm><primary>polygon.c</primary><secondary>new_polyrect</secondary></indexterm>
+<para><computeroutput><link linkend="_structPolyRect">PolyRect</link> * new_polyrect (void )</computeroutput></para>
+<para>Add new rectangle to polygon. </para>
+<para>
+Definition at line <link linkend="_polygon_8c_source_1l00037">37</link> of file <link linkend="_polygon_8c_source">polygon.c</link>.</para>
+</section>
+<anchor xml:id="_polygon_8c_1accef77c06a440cd1d9baf927ae7274f9"/><section>
+    <title>polyrect2polygon()</title>
+<indexterm><primary>polyrect2polygon</primary><secondary>polygon.c</secondary></indexterm>
+<indexterm><primary>polygon.c</primary><secondary>polyrect2polygon</secondary></indexterm>
+<para><computeroutput>void polyrect2polygon (<link linkend="_structPolyRect">PolyRect</link> * poly, <link linkend="_structPolygon">Polygon</link> * p)</computeroutput></para>
+<para>Detect continuity breaks (e.g. corners) in tangent space: represent each segment of the polygon as a horizontal segment in a (length, angle) space, and verify the centres of 3 consecutive rectangles in the polygon for approximate colinearity. &apos;idx&apos;: indexes of the rectangles to check; &apos;order&apos;: 1 if consecutive rectangles, 0 otherwise; &apos;dim&apos; is the size of &apos;idx&apos;; Output: continuity score in [0,1]: 0 not smooth, 1 perfect smooth. Given a polygon as a list of rectangles, extract only the ending points. A polygon with &apos;dim&apos; segments will have &apos;2*dim&apos; ending points. <?linebreak?> </para>
+<para>
+Definition at line <link linkend="_polygon_8c_source_1l00140">140</link> of file <link linkend="_polygon_8c_source">polygon.c</link>.</para>
+</section>
+<anchor xml:id="_polygon_8c_1ae802ef1e750a7539e7e8bcc4a5bee0d9"/><section>
+    <title>write_polyrect()</title>
+<indexterm><primary>write_polyrect</primary><secondary>polygon.c</secondary></indexterm>
+<indexterm><primary>polygon.c</primary><secondary>write_polyrect</secondary></indexterm>
+<para><computeroutput>void write_polyrect (FILE * f, <link linkend="_structPolyRect">PolyRect</link> * poly)</computeroutput></para>
+<para>Write polygon to file; if file is NULL, write to stdout. </para>
+<para>
+Definition at line <link linkend="_polygon_8c_source_1l00093">93</link> of file <link linkend="_polygon_8c_source">polygon.c</link>.</para>
+</section>
+</section>
+</section>

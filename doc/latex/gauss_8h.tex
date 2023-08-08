@@ -1,0 +1,41 @@
+\doxysection{src/gauss.h File Reference}
+\hypertarget{gauss_8h}{}\label{gauss_8h}\index{src/gauss.h@{src/gauss.h}}
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structGaussFilter}{Gauss\+Filter}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \mbox{\hyperlink{structGaussFilter}{Gauss\+Filter}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{gauss_8h_a6ee94a16b020ba9e8c4f5574d2ef0110}{PGauss\+Filter}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} \mbox{\hyperlink{gauss_8h_a5e6f7e6e45933ad48a9c61dff80bb52e}{gaussian\+\_\+sampler}} (\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} in, double scale, double sigma\+\_\+scale)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\Hypertarget{gauss_8h_a6ee94a16b020ba9e8c4f5574d2ef0110}\label{gauss_8h_a6ee94a16b020ba9e8c4f5574d2ef0110} 
+\index{gauss.h@{gauss.h}!PGaussFilter@{PGaussFilter}}
+\index{PGaussFilter@{PGaussFilter}!gauss.h@{gauss.h}}
+\doxysubsubsection{\texorpdfstring{PGaussFilter}{PGaussFilter}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structGaussFilter}{Gauss\+Filter}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{gauss_8h_a6ee94a16b020ba9e8c4f5574d2ef0110}{PGauss\+Filter}}}
+
+Structure for defining the parameters of a Gaussian filter\+: dimension, mean, standard deviation, and actual values. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{gauss_8h_a5e6f7e6e45933ad48a9c61dff80bb52e}\label{gauss_8h_a5e6f7e6e45933ad48a9c61dff80bb52e} 
+\index{gauss.h@{gauss.h}!gaussian\_sampler@{gaussian\_sampler}}
+\index{gaussian\_sampler@{gaussian\_sampler}!gauss.h@{gauss.h}}
+\doxysubsubsection{\texorpdfstring{gaussian\_sampler()}{gaussian\_sampler()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} gaussian\+\_\+sampler (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}}}]{in,  }\item[{double}]{scale,  }\item[{double}]{sigma\+\_\+scale }\end{DoxyParamCaption})}
+
+Subsample image \textquotesingle{}in\textquotesingle{} with Gaussian filtering, to a scale \textquotesingle{}scale\textquotesingle{} (for example, 0.\+8 will give a result at 80\% of the original size), using a standard deviation sigma given by\+:
+
+sigma = sigma\+\_\+scale / scale, if scale \texorpdfstring{$<$}{<} 1.\+0 sigma = sigma\+\_\+scale, if scale \texorpdfstring{$>$}{>}= 1.\+0 
+
+Definition at line \mbox{\hyperlink{gauss_8c_source_l00115}{115}} of file \mbox{\hyperlink{gauss_8c_source}{gauss.\+c}}.
+

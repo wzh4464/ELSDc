@@ -1,0 +1,67 @@
+\doxysection{ring.\+h}
+\hypertarget{ring_8h_source}{}\label{ring_8h_source}\index{src/ring.h@{src/ring.h}}
+\mbox{\hyperlink{ring_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00001}00001\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00002}00002\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00003}00003\ \textcolor{comment}{\ \ Copyright\ (c)\ 2012-\/2014\ viorica\ patraucean\ (vpatrauc@gmail.com)}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00004}00004\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00005}00005\ \textcolor{comment}{\ \ This\ program\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00006}00006\ \textcolor{comment}{\ \ it\ under\ the\ terms\ of\ the\ GNU\ Affero\ General\ Public\ License\ as}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00007}00007\ \textcolor{comment}{\ \ published\ by\ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00008}00008\ \textcolor{comment}{\ \ License,\ or\ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00009}00009\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00010}00010\ \textcolor{comment}{\ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00011}00011\ \textcolor{comment}{\ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00012}00012\ \textcolor{comment}{\ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ See\ the}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00013}00013\ \textcolor{comment}{\ \ GNU\ Affero\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00014}00014\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00015}00015\ \textcolor{comment}{\ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ Affero\ General\ Public\ License}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00016}00016\ \textcolor{comment}{\ \ along\ with\ this\ program.\ If\ not,\ see\ <http://www.gnu.org/licenses/>.}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00017}00017\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00018}00018\ \textcolor{comment}{\ \ ring.h\ -\/\ This\ file\ belongs\ to\ ELSDc\ project\ (Ellipse\ and\ Line\ Segment\ }}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00019}00019\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ Detector\ with\ continuous\ validation).}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00020}00020\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ -\/\ It\ defines\ data\ structures\ to\ handle\ a\ connected\ region\ that\ }}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00021}00021\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ can\ be\ approximated\ by\ a\ circular\ or\ elliptical\ ring,\ and\ prototypes\ }}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00022}00022\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ for\ functions\ that\ handle\ rings\ (e.g.\ computing\ ring's\ parameters,\ }}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00023}00023\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ check\ validity,\ compute\ distance\ between\ a\ point\ and\ a\ ring\ etc).}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00024}00024\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00025}00025\ \textcolor{comment}{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00028}00028\ \textcolor{preprocessor}{\#ifndef\ RING\_H}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00029}00029\ \textcolor{preprocessor}{\#define\ RING\_H}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00031}\mbox{\hyperlink{ring_8h_a4a49761654ff508d856c6c1b4d132442}{00031}}\ \textcolor{preprocessor}{\#define\ CIRCLE\ 1}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00032}\mbox{\hyperlink{ring_8h_a4f234426a7c0a5fe82e44dc4c107c123}{00032}}\ \textcolor{preprocessor}{\#define\ ELLIPSE\ 0}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00033}00033\ }
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00034}00034\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00038}\mbox{\hyperlink{structRing}{00038}}\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00039}00039\ \{}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00040}\mbox{\hyperlink{structRing_ac75b803b570527306e1e744bfb7a604f}{00040}}\ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{structRing_ac75b803b570527306e1e744bfb7a604f}{x1}},\ y1,\ x2,\ y2;\ \ \ \ \ \textcolor{comment}{/*\ End\ points\ of\ the\ circle/ellipse\ arc\ */}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00041}\mbox{\hyperlink{structRing_a9df23e056f5d1a0388cd8190431c0e03}{00041}}\ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{structRing_a9df23e056f5d1a0388cd8190431c0e03}{width}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ ring\ width\ */}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00042}\mbox{\hyperlink{structRing_ac176cb816ac192bd8ec2f73c40b43309}{00042}}\ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{structRing_ac176cb816ac192bd8ec2f73c40b43309}{cx}},\ cy;\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ center\ of\ the\ circle/ellipse\ */}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00043}\mbox{\hyperlink{structRing_aca81c35c21e3a5f7f3a8d24504e76664}{00043}}\ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{structRing_aca81c35c21e3a5f7f3a8d24504e76664}{theta}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ ellipse\ orientation;\ 0\ for\ circle\ */}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00044}\mbox{\hyperlink{structRing_ab25a9c3dfa527c678adf73437cc49640}{00044}}\ \ \ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{structRing_ab25a9c3dfa527c678adf73437cc49640}{ax}},\ bx;\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ ellipse\ axes;\ ax=bx\ for\ circle\ */}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00045}\mbox{\hyperlink{structRing_a85eb98efd34c1332f888379ff2a30a43}{00045}}\ \ \ \textcolor{keywordtype}{double}\ ang\_start,\ \mbox{\hyperlink{structRing_a85eb98efd34c1332f888379ff2a30a43}{ang\_end}};\ \textcolor{comment}{/*\ delimiting\ angles\ */}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00046}\mbox{\hyperlink{structRing_a54612b6d232db5e1a58ae8b2f26b1df4}{00046}}\ \ \ \textcolor{keywordtype}{double}\ wmin,\ \mbox{\hyperlink{structRing_a54612b6d232db5e1a58ae8b2f26b1df4}{wmax}};\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ width\ towards\ interior\ and\ exterior\ */}\ }
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00047}\mbox{\hyperlink{structRing_a3a0e8c0939ab76b5866a0bbad1d338e6}{00047}}\ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{structRing_a3a0e8c0939ab76b5866a0bbad1d338e6}{full}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ if\ full\ ==\ 1,\ circle/ellipse\ complete,\ }}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00048}00048\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ used\ for\ display\ */}}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00049}00049\ \}\ \mbox{\hyperlink{structRing}{Ring}};}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00051}00051\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{ring_8h_aa22a2072f90b5e5ed51c29d5081c4faf}{copy\_ring}}(\ \mbox{\hyperlink{structRing}{Ring}}\ *in,\ \mbox{\hyperlink{structRing}{Ring}}\ *out\ );}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00052}00052\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{ring_8h_af4bd196833424dc0e04d7f4af80db9f6}{swap\_ring}}(\ \mbox{\hyperlink{structRing}{Ring}}\ *r\ );}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00053}00053\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{ring_8h_a135c65c3fc6ffdec3f39ea806588958c}{check\_circ\_ring}}(\ \mbox{\hyperlink{structRing}{Ring}}\ *cring\ );}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00054}00054\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{ring_8h_aab09e6cf000c148dc5d6c8d3637bcbf1}{check\_ell\_ring}}(\ \mbox{\hyperlink{structRing}{Ring}}\ *ering\ );}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00055}00055\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{ring_8h_abc1b2fcb970026bac2c06de0423e6278}{is\_in\_circ\_ring}}(\ \mbox{\hyperlink{structRing}{Ring}}\ *\ r,\ \textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y\ );}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00056}00056\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{ring_8h_ad4da58ff04f79b272727c6bfaf9d433d}{is\_in\_ell\_ring}}(\ \mbox{\hyperlink{structRing}{Ring}}\ *\ r,\ \textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y\ );}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00057}00057\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{ring_8h_ab6d86c932ef1cfaf6816342e601cd1c6}{rosin\_point}}(\ \mbox{\hyperlink{structRing}{Ring}}\ *ering,\ \textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{double}\ *xi,\ \textcolor{keywordtype}{double}\ *yi\ );}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00058}00058\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{ring_8h_a4c056155bbee1a0da2b83bdc5457a530}{d\_rosin}}(\ \mbox{\hyperlink{structRing}{Ring}}\ *ering,\ \textcolor{keywordtype}{double}\ x,\ \textcolor{keywordtype}{double}\ y\ );}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00059}00059\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{ring_8h_aa1ade41bae8dd56dcdf545f6ac7adf95}{ellipse\_foci}}(\ \textcolor{keywordtype}{double}\ *param,\ \textcolor{keywordtype}{double}\ *foci\ );}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00060}00060\ \textcolor{keywordtype}{double}\ \mbox{\hyperlink{ring_8h_ab1ba9a1926e5a5587e7f0f8ef583fb90}{ellipse\_normal\_angle}}(\ \textcolor{keywordtype}{double}\ x,\ \textcolor{keywordtype}{double}\ y,\ \textcolor{keywordtype}{double}\ *foci\ );}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00061}00061\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{ring_8h_aa6025924df802bd4fad9009c72e4587c}{get\_ring}}(\ \mbox{\hyperlink{structPoint}{Point}}\ *reg,\ \textcolor{keywordtype}{int}\ reg\_size,\ \textcolor{keywordtype}{double}\ ang,\ \textcolor{keywordtype}{double}\ *param,\ }
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ *pext1,\ \textcolor{keywordtype}{double}\ *pext2,\ \textcolor{keywordtype}{int}\ conic,\ \textcolor{keywordtype}{double}\ spir,\ \mbox{\hyperlink{structRing}{Ring}}\ *r,\ }
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00063}00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *grad\_dir,\ \textcolor{keywordtype}{double}\ *foci,\ \textcolor{keywordtype}{int}\ msize\ );}
+\DoxyCodeLine{\Hypertarget{ring_8h_source_l00064}00064\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

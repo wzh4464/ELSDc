@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_svg_8c_source" xml:lang="en-US">
+<title>svg.c</title>
+<indexterm><primary>src/svg.c</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="_svg_8c_source_1l00001"/>00001 <emphasis role="comment">/*------------------------------------------------------------------------------</emphasis>
+<anchor xml:id="_svg_8c_source_1l00002"/>00002 <emphasis role="comment"></emphasis>
+<anchor xml:id="_svg_8c_source_1l00003"/>00003 <emphasis role="comment">&#32;&#32;Copyright&#32;(c)&#32;2012-2014&#32;viorica&#32;patraucean&#32;(vpatrauc@gmail.com)</emphasis>
+<anchor xml:id="_svg_8c_source_1l00004"/>00004 <emphasis role="comment"></emphasis>
+<anchor xml:id="_svg_8c_source_1l00005"/>00005 <emphasis role="comment">&#32;&#32;This&#32;program&#32;is&#32;free&#32;software:&#32;you&#32;can&#32;redistribute&#32;it&#32;and/or&#32;modify</emphasis>
+<anchor xml:id="_svg_8c_source_1l00006"/>00006 <emphasis role="comment">&#32;&#32;it&#32;under&#32;the&#32;terms&#32;of&#32;the&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License&#32;as</emphasis>
+<anchor xml:id="_svg_8c_source_1l00007"/>00007 <emphasis role="comment">&#32;&#32;published&#32;by&#32;the&#32;Free&#32;Software&#32;Foundation,&#32;either&#32;version&#32;3&#32;of&#32;the</emphasis>
+<anchor xml:id="_svg_8c_source_1l00008"/>00008 <emphasis role="comment">&#32;&#32;License,&#32;or&#32;(at&#32;your&#32;option)&#32;any&#32;later&#32;version.</emphasis>
+<anchor xml:id="_svg_8c_source_1l00009"/>00009 <emphasis role="comment"></emphasis>
+<anchor xml:id="_svg_8c_source_1l00010"/>00010 <emphasis role="comment">&#32;&#32;This&#32;program&#32;is&#32;distributed&#32;in&#32;the&#32;hope&#32;that&#32;it&#32;will&#32;be&#32;useful,</emphasis>
+<anchor xml:id="_svg_8c_source_1l00011"/>00011 <emphasis role="comment">&#32;&#32;but&#32;WITHOUT&#32;ANY&#32;WARRANTY;&#32;without&#32;even&#32;the&#32;implied&#32;warranty&#32;of</emphasis>
+<anchor xml:id="_svg_8c_source_1l00012"/>00012 <emphasis role="comment">&#32;&#32;MERCHANTABILITY&#32;or&#32;FITNESS&#32;FOR&#32;A&#32;PARTICULAR&#32;PURPOSE.&#32;See&#32;the</emphasis>
+<anchor xml:id="_svg_8c_source_1l00013"/>00013 <emphasis role="comment">&#32;&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License&#32;for&#32;more&#32;details.</emphasis>
+<anchor xml:id="_svg_8c_source_1l00014"/>00014 <emphasis role="comment"></emphasis>
+<anchor xml:id="_svg_8c_source_1l00015"/>00015 <emphasis role="comment">&#32;&#32;You&#32;should&#32;have&#32;received&#32;a&#32;copy&#32;of&#32;the&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License</emphasis>
+<anchor xml:id="_svg_8c_source_1l00016"/>00016 <emphasis role="comment">&#32;&#32;along&#32;with&#32;this&#32;program.&#32;If&#32;not,&#32;see&#32;&lt;http://www.gnu.org/licenses/&gt;.</emphasis>
+<anchor xml:id="_svg_8c_source_1l00017"/>00017 <emphasis role="comment"></emphasis>
+<anchor xml:id="_svg_8c_source_1l00018"/>00018 <emphasis role="comment">&#32;&#32;svg.c&#32;-&#32;This&#32;file&#32;belongs&#32;to&#32;ELSDc&#32;project&#32;(Ellipse&#32;and&#32;Line&#32;Segment&#32;</emphasis>
+<anchor xml:id="_svg_8c_source_1l00019"/>00019 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Detector&#32;with&#32;continuous&#32;validation).</emphasis>
+<anchor xml:id="_svg_8c_source_1l00020"/>00020 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;-&#32;It&#32;contains&#32;functions&#32;to&#32;handle&#32;(initialize,&#32;close)&#32;an&#32;SVG&#32;file,&#32;and&#32;</emphasis>
+<anchor xml:id="_svg_8c_source_1l00021"/>00021 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;to&#32;write&#32;geometric&#32;shapes&#32;(lines,&#32;circles,&#32;ellipses,&#32;and&#32;arcs)&#32;in&#32;it.</emphasis>
+<anchor xml:id="_svg_8c_source_1l00022"/>00022 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;</emphasis>
+<anchor xml:id="_svg_8c_source_1l00023"/>00023 <emphasis role="comment">------------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00024"/>00024 
+<anchor xml:id="_svg_8c_source_1l00025"/>00025 
+<anchor xml:id="_svg_8c_source_1l00026"/>00026 <emphasis role="preprocessor">#include&#32;&lt;stdio.h&gt;</emphasis>
+<anchor xml:id="_svg_8c_source_1l00027"/>00027 <emphasis role="preprocessor">#include&#32;&lt;string.h&gt;</emphasis>
+<anchor xml:id="_svg_8c_source_1l00028"/>00028 <emphasis role="preprocessor">#include&#32;&lt;math.h&gt;</emphasis>
+<anchor xml:id="_svg_8c_source_1l00029"/>00029 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_polygon_8h">polygon.h</link>&quot;</emphasis>
+<anchor xml:id="_svg_8c_source_1l00030"/>00030 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_ring_8h">ring.h</link>&quot;</emphasis>
+<anchor xml:id="_svg_8c_source_1l00031"/>00031 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_svg_8h">svg.h</link>&quot;</emphasis>
+<anchor xml:id="_svg_8c_source_1l00032"/>00032 
+<anchor xml:id="_svg_8c_source_1l00033"/>00033 
+<anchor xml:id="_svg_8c_source_1l00034"/>00034 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00037"/><link linkend="_svg_8c_1a558582c3fc08d1b34b5773e8543704a7">00037</link> FILE&#32;*<link linkend="_svg_8c_1a558582c3fc08d1b34b5773e8543704a7">init_svg</link>(&#32;<emphasis role="keywordtype">char</emphasis>&#32;*filename,&#32;<emphasis role="keywordtype">unsigned</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;xsize,&#32;<emphasis role="keywordtype">unsigned</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;ysize&#32;)
+<anchor xml:id="_svg_8c_source_1l00038"/>00038 {
+<anchor xml:id="_svg_8c_source_1l00039"/>00039 &#32;&#32;FILE&#32;*fsvg;
+<anchor xml:id="_svg_8c_source_1l00040"/>00040 
+<anchor xml:id="_svg_8c_source_1l00041"/>00041 &#32;&#32;<emphasis role="comment">/*&#32;open&#32;file&#32;*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00042"/>00042 &#32;&#32;fsvg&#32;=&#32;fopen(&#32;filename,&#32;<emphasis role="stringliteral">&quot;w&quot;</emphasis>);
+<anchor xml:id="_svg_8c_source_1l00043"/>00043 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;fsvg&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;init_svg:&#32;unable&#32;to&#32;open&#32;SVG&#32;output&#32;file.&quot;</emphasis>);
+<anchor xml:id="_svg_8c_source_1l00044"/>00044 
+<anchor xml:id="_svg_8c_source_1l00045"/>00045 &#32;&#32;<emphasis role="comment">/*&#32;write&#32;SVG&#32;header&#32;*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00046"/>00046 &#32;&#32;fprintf(&#32;fsvg,<emphasis role="stringliteral">&quot;&lt;?xml&#32;version=\&quot;1.0\&quot;&#32;standalone=\&quot;no\&quot;?&gt;\n&quot;</emphasis>);
+<anchor xml:id="_svg_8c_source_1l00047"/>00047 &#32;&#32;fprintf(&#32;fsvg,<emphasis role="stringliteral">&quot;&lt;!DOCTYPE&#32;svg&#32;PUBLIC&#32;\&quot;-//W3C//DTD&#32;SVG&#32;1.1//EN\&quot;\n&quot;</emphasis>);
+<anchor xml:id="_svg_8c_source_1l00048"/>00048 &#32;&#32;fprintf(&#32;fsvg,<emphasis role="stringliteral">&quot;&#32;\&quot;http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\&quot;&gt;\n&quot;</emphasis>);
+<anchor xml:id="_svg_8c_source_1l00049"/>00049 &#32;&#32;fprintf(&#32;fsvg,<emphasis role="stringliteral">&quot;&lt;svg&#32;width=\&quot;%upx\&quot;&#32;height=\&quot;%upx\&quot;&#32;&quot;</emphasis>,xsize,ysize);
+<anchor xml:id="_svg_8c_source_1l00050"/>00050 &#32;&#32;fprintf(&#32;fsvg,<emphasis role="stringliteral">&quot;version=\&quot;1.1\&quot;\n&#32;xmlns=\&quot;http://www.w3.org/2000/svg\&quot;&#32;&quot;</emphasis>);
+<anchor xml:id="_svg_8c_source_1l00051"/>00051 &#32;&#32;fprintf(&#32;fsvg,<emphasis role="stringliteral">&quot;xmlns:xlink=\&quot;http://www.w3.org/1999/xlink\&quot;&gt;\n&quot;</emphasis>);
+<anchor xml:id="_svg_8c_source_1l00052"/>00052 
+<anchor xml:id="_svg_8c_source_1l00053"/>00053 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;fsvg;
+<anchor xml:id="_svg_8c_source_1l00054"/>00054 }
+<anchor xml:id="_svg_8c_source_1l00055"/>00055 
+<anchor xml:id="_svg_8c_source_1l00056"/>00056 
+<anchor xml:id="_svg_8c_source_1l00057"/>00057 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00060"/><link linkend="_svg_8c_1a248633af17855dac187670ce42897417">00060</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_svg_8c_1a248633af17855dac187670ce42897417">fclose_svg</link>(&#32;FILE&#32;*fsvg&#32;)
+<anchor xml:id="_svg_8c_source_1l00061"/>00061 {
+<anchor xml:id="_svg_8c_source_1l00062"/>00062 &#32;&#32;<emphasis role="comment">/*&#32;close&#32;SVG&#32;file&#32;*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00063"/>00063 &#32;&#32;fprintf(&#32;fsvg,<emphasis role="stringliteral">&quot;&lt;/svg&gt;\n&quot;</emphasis>);
+<anchor xml:id="_svg_8c_source_1l00064"/>00064 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;fclose(fsvg)&#32;==&#32;EOF&#32;)
+<anchor xml:id="_svg_8c_source_1l00065"/>00065 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;fclose_svg:&#32;unable&#32;to&#32;close&#32;file&#32;while&#32;writing&#32;SVG&#32;file.&quot;</emphasis>);
+<anchor xml:id="_svg_8c_source_1l00066"/>00066 }
+<anchor xml:id="_svg_8c_source_1l00067"/>00067 
+<anchor xml:id="_svg_8c_source_1l00068"/>00068 
+<anchor xml:id="_svg_8c_source_1l00069"/>00069 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00073"/><link linkend="_svg_8c_1a3a909bc27359f0f315f09797743d1863">00073</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_svg_8c_1a3a909bc27359f0f315f09797743d1863">write_svg_poly</link>(&#32;FILE&#32;*fsvg,&#32;<link linkend="_structPolygon">Polygon</link>&#32;*poly&#32;)
+<anchor xml:id="_svg_8c_source_1l00074"/>00074 {
+<anchor xml:id="_svg_8c_source_1l00075"/>00075 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;i;
+<anchor xml:id="_svg_8c_source_1l00076"/>00076 
+<anchor xml:id="_svg_8c_source_1l00077"/>00077 &#32;&#32;<emphasis role="comment">/*&#32;write&#32;polygon&#32;*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00078"/>00078 &#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(&#32;i=0;&#32;i&lt;poly-&gt;<link linkend="_structPolygon_1a70b5e28b5bc3d1b63a7435c5fe50b837">dim</link>;&#32;i+=2&#32;)
+<anchor xml:id="_svg_8c_source_1l00079"/>00079 &#32;&#32;&#32;&#32;{&#32;&#32;&#32;&#32;
+<anchor xml:id="_svg_8c_source_1l00080"/>00080 &#32;&#32;&#32;&#32;&#32;&#32;fprintf(&#32;fsvg,<emphasis role="stringliteral">&quot;&lt;line&#32;x1=\&quot;%f\&quot;&#32;y1=\&quot;%f\&quot;&#32;x2=\&quot;%f\&quot;&#32;y2=\&quot;%f\&quot;&#32;&quot;</emphasis>,
+<anchor xml:id="_svg_8c_source_1l00081"/>00081 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;poly-&gt;<link linkend="_structPolygon_1a168a3e336fd6cad67b6df7e6320d4b2e">pts</link>[i].<link linkend="_structPointD_1af88b946fb90d5f08b5fb740c70e98c10">x</link>,&#32;poly-&gt;<link linkend="_structPolygon_1a168a3e336fd6cad67b6df7e6320d4b2e">pts</link>[i].<link linkend="_structPointD_1ab927965981178aa1fba979a37168db2a">y</link>,&#32;poly-&gt;<link linkend="_structPolygon_1a168a3e336fd6cad67b6df7e6320d4b2e">pts</link>[i+1].<link linkend="_structPointD_1af88b946fb90d5f08b5fb740c70e98c10">x</link>,
+<anchor xml:id="_svg_8c_source_1l00082"/>00082 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;poly-&gt;<link linkend="_structPolygon_1a168a3e336fd6cad67b6df7e6320d4b2e">pts</link>[i+1].<link linkend="_structPointD_1ab927965981178aa1fba979a37168db2a">y</link>&#32;);
+<anchor xml:id="_svg_8c_source_1l00083"/>00083 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;define&#32;style:&#32;color&#32;and&#32;width&#32;*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00084"/>00084 &#32;&#32;&#32;&#32;&#32;&#32;fprintf(&#32;fsvg,<emphasis role="stringliteral">&quot;&#32;fill=\&quot;none\&quot;&#32;stroke&#32;=\&quot;blue\&quot;&#32;stroke-width=\&quot;%d\&quot;&#32;/&gt;\n&quot;</emphasis>
+<anchor xml:id="_svg_8c_source_1l00085"/>00085 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;,&#32;1&#32;);
+<anchor xml:id="_svg_8c_source_1l00086"/>00086 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_svg_8c_source_1l00087"/>00087 }
+<anchor xml:id="_svg_8c_source_1l00088"/>00088 
+<anchor xml:id="_svg_8c_source_1l00089"/>00089 
+<anchor xml:id="_svg_8c_source_1l00090"/>00090 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00094"/><link linkend="_svg_8c_1addecc5315e2b2bf715678d6169c29cd2">00094</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_svg_8c_1addecc5315e2b2bf715678d6169c29cd2">write_svg_circ_arc</link>(&#32;FILE&#32;*fsvg,&#32;<link linkend="_structRing">Ring</link>&#32;*cring&#32;)
+<anchor xml:id="_svg_8c_source_1l00095"/>00095 {
+<anchor xml:id="_svg_8c_source_1l00096"/>00096 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;fa,&#32;fs;
+<anchor xml:id="_svg_8c_source_1l00097"/>00097 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;ang_start,&#32;ang_end,&#32;C;
+<anchor xml:id="_svg_8c_source_1l00098"/>00098 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;x1,&#32;y1,&#32;x2,&#32;y2;
+<anchor xml:id="_svg_8c_source_1l00099"/>00099 
+<anchor xml:id="_svg_8c_source_1l00100"/>00100 &#32;&#32;<emphasis role="comment">/*&#32;consider&#32;small&#32;arc,&#32;in&#32;trigonometric&#32;sense&#32;*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00101"/>00101 &#32;&#32;fa=0;&#32;fs=1;
+<anchor xml:id="_svg_8c_source_1l00102"/>00102 &#32;&#32;
+<anchor xml:id="_svg_8c_source_1l00103"/>00103 &#32;&#32;<emphasis role="comment">/*&#32;compute&#32;angles&#32;delimiting&#32;the&#32;arc&#32;*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00104"/>00104 &#32;&#32;ang_start&#32;=&#32;atan2(&#32;cring-&gt;<link linkend="_structRing_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>&#32;-&#32;cring-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>,&#32;cring-&gt;<link linkend="_structRing_1ac75b803b570527306e1e744bfb7a604f">x1</link>&#32;-&#32;cring-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>);&#32;
+<anchor xml:id="_svg_8c_source_1l00105"/>00105 &#32;&#32;ang_end&#32;&#32;&#32;=&#32;atan2(&#32;cring-&gt;<link linkend="_structRing_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>&#32;-&#32;cring-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>,&#32;cring-&gt;<link linkend="_structRing_1adcf04f5f1964d18b332643939561da0d">x2</link>&#32;-&#32;cring-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>);
+<anchor xml:id="_svg_8c_source_1l00106"/>00106 &#32;&#32;
+<anchor xml:id="_svg_8c_source_1l00107"/>00107 <emphasis role="comment">/*&#32;if&#32;(almost)&#32;complete&#32;circle,&#32;write&#32;full&#32;circle,&#32;not&#32;an&#32;arc&#32;*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00108"/>00108 &#32;&#32;C&#32;=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>&#32;*&#32;cring-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>;
+<anchor xml:id="_svg_8c_source_1l00109"/>00109 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(cring-&gt;<link linkend="_structRing_1a3a0e8c0939ab76b5866a0bbad1d338e6">full</link>)&#32;||&#32;(&#32;(<link linkend="_misc_8c_1a4e46bd783e4efe71bee053481afeb4a9">angle_diff</link>(&#32;ang_start,&#32;ang_end&#32;)&#32;
+<anchor xml:id="_svg_8c_source_1l00110"/>00110 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&lt;&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>&#32;*&#32;<link linkend="_misc_8h_1a514396dd60fa0621c83072091fb2a0cd">SQRT2</link>&#32;/&#32;C)
+<anchor xml:id="_svg_8c_source_1l00111"/>00111 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&amp;&amp;&#32;(<link linkend="_misc_8c_1afc6d1f1cd19f4dfd5513632ab80322df">angle_diff_signed</link>(&#32;ang_start,&#32;ang_end)&gt;0)&#32;)&#32;)
+<anchor xml:id="_svg_8c_source_1l00112"/>00112 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_svg_8c_source_1l00113"/>00113 &#32;&#32;&#32;&#32;&#32;&#32;fprintf(&#32;fsvg,<emphasis role="stringliteral">&quot;&lt;ellipse&#32;cx=\&quot;%f\&quot;&#32;cy=\&quot;%f\&quot;&#32;rx=\&quot;%f\&quot;&#32;ry=\&quot;%f\&quot;&#32;stroke=&quot;</emphasis>
+<anchor xml:id="_svg_8c_source_1l00114"/>00114 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="stringliteral">&quot;\&quot;red\&quot;&#32;stroke-width=\&quot;%d\&quot;&#32;fill=\&quot;none\&quot;&#32;/&gt;&#32;\n&quot;</emphasis>,
+<anchor xml:id="_svg_8c_source_1l00115"/>00115 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;cring-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>,&#32;cring-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>,&#32;cring-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>,&#32;cring-&gt;<link linkend="_structRing_1a4f2308ba06a1f517e1f1babc5603d79a">bx</link>,&#32;1&#32;);&#32;
+<anchor xml:id="_svg_8c_source_1l00116"/>00116 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_svg_8c_source_1l00117"/>00117 &#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;&#32;<emphasis role="comment">/*&#32;write&#32;an&#32;arc&#32;*/</emphasis>&#32;
+<anchor xml:id="_svg_8c_source_1l00118"/>00118 &#32;&#32;&#32;&#32;{&#32;&#32;
+<anchor xml:id="_svg_8c_source_1l00119"/>00119 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;compute&#32;starting&#32;and&#32;ending&#32;points&#32;of&#32;the&#32;arc&#32;*/</emphasis>&#32;&#32;&#32;&#32;
+<anchor xml:id="_svg_8c_source_1l00120"/>00120 &#32;&#32;&#32;&#32;&#32;&#32;x1&#32;=&#32;cring-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>&#32;*&#32;cos(ang_start)&#32;+&#32;cring-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>;
+<anchor xml:id="_svg_8c_source_1l00121"/>00121 &#32;&#32;&#32;&#32;&#32;&#32;y1&#32;=&#32;cring-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>&#32;*&#32;sin(ang_start)&#32;+&#32;cring-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>;
+<anchor xml:id="_svg_8c_source_1l00122"/>00122 &#32;&#32;&#32;&#32;&#32;&#32;x2&#32;=&#32;cring-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>&#32;*&#32;cos(ang_end&#32;&#32;)&#32;+&#32;cring-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>;
+<anchor xml:id="_svg_8c_source_1l00123"/>00123 &#32;&#32;&#32;&#32;&#32;&#32;y2&#32;=&#32;cring-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>&#32;*&#32;sin(ang_end&#32;&#32;)&#32;+&#32;cring-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>;
+<anchor xml:id="_svg_8c_source_1l00124"/>00124 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(<link linkend="_misc_8c_1a49d0391afab7c8872bbbfb86a814360b">double_equal</link>(x1,x2)&#32;&amp;&amp;&#32;<link linkend="_misc_8c_1a49d0391afab7c8872bbbfb86a814360b">double_equal</link>(y1,y2))&#32;||&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(x1,y1,x2,y2)&#32;&lt;&#32;2.0&#32;)
+<anchor xml:id="_svg_8c_source_1l00125"/>00125 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_svg_8c_source_1l00126"/>00126 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;fprintf(&#32;fsvg,<emphasis role="stringliteral">&quot;&lt;ellipse&#32;cx=\&quot;%f\&quot;&#32;cy=\&quot;%f\&quot;&#32;rx=\&quot;%f\&quot;&#32;ry=\&quot;%f\&quot;&#32;stroke=&quot;</emphasis>
+<anchor xml:id="_svg_8c_source_1l00127"/>00127 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="stringliteral">&quot;\&quot;red\&quot;&#32;stroke-width=\&quot;%d\&quot;&#32;fill=\&quot;none\&quot;&#32;/&gt;&#32;\n&quot;</emphasis>,
+<anchor xml:id="_svg_8c_source_1l00128"/>00128 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;cring-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>,&#32;cring-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>,&#32;cring-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>,&#32;cring-&gt;<link linkend="_structRing_1a4f2308ba06a1f517e1f1babc5603d79a">bx</link>,&#32;1&#32;);
+<anchor xml:id="_svg_8c_source_1l00129"/>00129 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>;
+<anchor xml:id="_svg_8c_source_1l00130"/>00130 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_svg_8c_source_1l00131"/>00131 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;make&#32;sure&#32;delimiting&#32;angles&#32;are&#32;positive&#32;and&#32;ordered,&#32;to&#32;be&#32;able&#32;to&#32;</emphasis>
+<anchor xml:id="_svg_8c_source_1l00132"/>00132 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;choose&#32;between&#32;small/big&#32;arc&#32;*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00133"/>00133 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;ang_start&#32;&lt;&#32;0&#32;)&#32;ang_start&#32;+=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_svg_8c_source_1l00134"/>00134 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;ang_end&#32;&#32;&#32;&lt;&#32;0&#32;)&#32;ang_end&#32;&#32;&#32;+=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_svg_8c_source_1l00135"/>00135 &#32;&#32;
+<anchor xml:id="_svg_8c_source_1l00136"/>00136 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;ang_end&#32;&lt;&#32;ang_start&#32;)&#32;ang_end&#32;+=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_svg_8c_source_1l00137"/>00137 
+<anchor xml:id="_svg_8c_source_1l00138"/>00138 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(ang_end&#32;-&#32;ang_start)&#32;&gt;&#32;<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>)&#32;fa&#32;=&#32;1;
+<anchor xml:id="_svg_8c_source_1l00139"/>00139 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;write&#32;starting&#32;and&#32;ending&#32;points,&#32;axes,&#32;orientation,&#32;fa,&#32;fs&#32;*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00140"/>00140 &#32;&#32;&#32;&#32;&#32;&#32;fprintf(&#32;fsvg,<emphasis role="stringliteral">&quot;&lt;path&#32;d=\&quot;M&#32;%f,%f&#32;A%f,%f&#32;%f&#32;%d,%d&#32;%f,%f\&quot;&quot;</emphasis>,
+<anchor xml:id="_svg_8c_source_1l00141"/>00141 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;x1,&#32;y1,&#32;cring-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>,&#32;cring-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>,&#32;0.0,&#32;fa,&#32;fs,&#32;x2,&#32;y2&#32;);
+<anchor xml:id="_svg_8c_source_1l00142"/>00142 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;define&#32;style:&#32;color&#32;and&#32;width&#32;*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00143"/>00143 &#32;&#32;&#32;&#32;&#32;&#32;fprintf(fsvg,<emphasis role="stringliteral">&quot;&#32;fill=\&quot;none\&quot;&#32;stroke&#32;=\&quot;red\&quot;&#32;stroke-width=\&quot;%d\&quot;&#32;/&gt;\n&quot;</emphasis>,1);&#32;
+<anchor xml:id="_svg_8c_source_1l00144"/>00144 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_svg_8c_source_1l00145"/>00145 }
+<anchor xml:id="_svg_8c_source_1l00146"/>00146 
+<anchor xml:id="_svg_8c_source_1l00147"/>00147 
+<anchor xml:id="_svg_8c_source_1l00148"/>00148 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00152"/><link linkend="_svg_8c_1abfaad49171308ccbecd1f3023ac13c15">00152</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_svg_8c_1abfaad49171308ccbecd1f3023ac13c15">write_svg_ell_arc</link>(&#32;FILE&#32;*fsvg,&#32;<link linkend="_structRing">Ring</link>&#32;*ering&#32;)
+<anchor xml:id="_svg_8c_source_1l00153"/>00153 {
+<anchor xml:id="_svg_8c_source_1l00154"/>00154 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;fa,&#32;fs;
+<anchor xml:id="_svg_8c_source_1l00155"/>00155 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;ang_start,&#32;ang_end;
+<anchor xml:id="_svg_8c_source_1l00156"/>00156 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;x1,&#32;y1,&#32;x2,&#32;y2;
+<anchor xml:id="_svg_8c_source_1l00157"/>00157 &#32;
+<anchor xml:id="_svg_8c_source_1l00158"/>00158 &#32;&#32;<emphasis role="comment">/*&#32;consider&#32;small&#32;arc,&#32;in&#32;trigonometric&#32;sense&#32;*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00159"/>00159 &#32;&#32;fa=0;&#32;fs=1;
+<anchor xml:id="_svg_8c_source_1l00160"/>00160 &#32;&#32;
+<anchor xml:id="_svg_8c_source_1l00161"/>00161 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;ering-&gt;<link linkend="_structRing_1a3a0e8c0939ab76b5866a0bbad1d338e6">full</link>&#32;)&#32;<emphasis role="comment">/*&#32;if&#32;complete&#32;ellipse,&#32;write&#32;full&#32;ellipse,&#32;not&#32;an&#32;arc&#32;*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00162"/>00162 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_svg_8c_source_1l00163"/>00163 &#32;&#32;&#32;&#32;fprintf(fsvg,<emphasis role="stringliteral">&quot;&lt;ellipse&#32;transform=\&quot;translate(%f&#32;%f)&#32;rotate(%f)\&quot;&#32;rx=\&quot;%f\&quot;&#32;&quot;</emphasis>
+<anchor xml:id="_svg_8c_source_1l00164"/>00164 &#32;&#32;&#32;&#32;<emphasis role="stringliteral">&quot;ry=\&quot;%f\&quot;&#32;stroke=\&quot;red\&quot;&#32;fill=\&quot;none\&quot;&#32;stroke-width=\&quot;%d\&quot;&#32;/&gt;\n&quot;</emphasis>,
+<anchor xml:id="_svg_8c_source_1l00165"/>00165 &#32;&#32;&#32;&#32;ering-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>,&#32;ering-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>,&#32;(ering-&gt;<link linkend="_structRing_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>)*180/<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>,&#32;ering-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>,&#32;ering-&gt;<link linkend="_structRing_1a4f2308ba06a1f517e1f1babc5603d79a">bx</link>,&#32;1&#32;);&#32;&#32;&#32;&#32;
+<anchor xml:id="_svg_8c_source_1l00166"/>00166 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_svg_8c_source_1l00167"/>00167 &#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="comment">/*&#32;compute&#32;limits&#32;of&#32;the&#32;arc&#32;and&#32;write&#32;it&#32;*/</emphasis>&#32;
+<anchor xml:id="_svg_8c_source_1l00168"/>00168 &#32;&#32;&#32;&#32;{&#32;&#32;
+<anchor xml:id="_svg_8c_source_1l00169"/>00169 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;compute&#32;starting&#32;point&#32;*/</emphasis>&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_svg_8c_source_1l00170"/>00170 &#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_ring_8c_1ab6d86c932ef1cfaf6816342e601cd1c6">rosin_point</link>(&#32;ering,&#32;ering-&gt;<link linkend="_structRing_1ac75b803b570527306e1e744bfb7a604f">x1</link>,&#32;ering-&gt;<link linkend="_structRing_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>,&#32;&amp;x1,&#32;&amp;y1&#32;);
+<anchor xml:id="_svg_8c_source_1l00171"/>00171 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;compute&#32;ending&#32;point&#32;*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00172"/>00172 &#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_ring_8c_1ab6d86c932ef1cfaf6816342e601cd1c6">rosin_point</link>(&#32;ering,&#32;ering-&gt;<link linkend="_structRing_1adcf04f5f1964d18b332643939561da0d">x2</link>,&#32;ering-&gt;<link linkend="_structRing_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>,&#32;&amp;x2,&#32;&amp;y2&#32;);
+<anchor xml:id="_svg_8c_source_1l00173"/>00173 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(<link linkend="_misc_8c_1a49d0391afab7c8872bbbfb86a814360b">double_equal</link>(x1,x2)&#32;&amp;&amp;&#32;<link linkend="_misc_8c_1a49d0391afab7c8872bbbfb86a814360b">double_equal</link>(y1,y2))&#32;||&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(x1,y1,x2,y2)&#32;&lt;&#32;2.0&#32;)
+<anchor xml:id="_svg_8c_source_1l00174"/>00174 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_svg_8c_source_1l00175"/>00175 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;fprintf(fsvg,<emphasis role="stringliteral">&quot;&lt;ellipse&#32;transform=\&quot;translate(%f&#32;%f)&#32;rotate(%f)\&quot;&#32;rx=\&quot;%f\&quot;&#32;&quot;</emphasis>
+<anchor xml:id="_svg_8c_source_1l00176"/>00176 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="stringliteral">&quot;ry=\&quot;%f\&quot;&#32;stroke=\&quot;red\&quot;&#32;fill=\&quot;none\&quot;&#32;stroke-width=\&quot;%d\&quot;&#32;/&gt;\n&quot;</emphasis>,
+<anchor xml:id="_svg_8c_source_1l00177"/>00177 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ering-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>,&#32;ering-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>,&#32;(ering-&gt;<link linkend="_structRing_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>)*180/<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>,&#32;ering-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>,&#32;ering-&gt;<link linkend="_structRing_1a4f2308ba06a1f517e1f1babc5603d79a">bx</link>,&#32;1&#32;);
+<anchor xml:id="_svg_8c_source_1l00178"/>00178 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>;
+<anchor xml:id="_svg_8c_source_1l00179"/>00179 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_svg_8c_source_1l00180"/>00180 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;compute&#32;angles&#32;delimiting&#32;the&#32;arc&#32;*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00181"/>00181 &#32;&#32;&#32;&#32;&#32;&#32;ang_start&#32;=&#32;atan2(&#32;y1&#32;-&#32;ering-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>,&#32;x1&#32;-&#32;ering-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>&#32;);&#32;
+<anchor xml:id="_svg_8c_source_1l00182"/>00182 &#32;&#32;&#32;&#32;&#32;&#32;ang_end&#32;&#32;&#32;=&#32;atan2(&#32;y2&#32;-&#32;ering-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>,&#32;x2&#32;-&#32;ering-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>&#32;);&#32;
+<anchor xml:id="_svg_8c_source_1l00183"/>00183 
+<anchor xml:id="_svg_8c_source_1l00184"/>00184 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;make&#32;sure&#32;delimiting&#32;angles&#32;are&#32;positive&#32;and&#32;ordered,&#32;to&#32;be&#32;able&#32;to&#32;</emphasis>
+<anchor xml:id="_svg_8c_source_1l00185"/>00185 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;choose&#32;between&#32;small/big&#32;arc&#32;*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00186"/>00186 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;ang_start&#32;&lt;&#32;0&#32;)&#32;ang_start&#32;+=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_svg_8c_source_1l00187"/>00187 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;ang_end&#32;&#32;&#32;&lt;&#32;0&#32;)&#32;ang_end&#32;&#32;&#32;+=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_svg_8c_source_1l00188"/>00188 &#32;&#32;
+<anchor xml:id="_svg_8c_source_1l00189"/>00189 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;ang_end&#32;&lt;&#32;ang_start&#32;)&#32;ang_end&#32;+=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_svg_8c_source_1l00190"/>00190 &#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_svg_8c_source_1l00191"/>00191 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(ang_end&#32;-&#32;ang_start&#32;)&#32;&gt;&#32;<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>&#32;)&#32;fa&#32;=&#32;1;
+<anchor xml:id="_svg_8c_source_1l00192"/>00192 &#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_svg_8c_source_1l00193"/>00193 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;write&#32;starting&#32;and&#32;ending&#32;points,&#32;axes,&#32;orientation,&#32;fa,&#32;fs&#32;*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00194"/>00194 &#32;&#32;&#32;&#32;&#32;&#32;fprintf(&#32;fsvg,<emphasis role="stringliteral">&quot;&lt;path&#32;d=\&quot;M&#32;%f,%f&#32;A%f,%f&#32;%f&#32;%d,%d&#32;%f,%f\&quot;&quot;</emphasis>,
+<anchor xml:id="_svg_8c_source_1l00195"/>00195 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;x1,&#32;y1,&#32;ering-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>,&#32;ering-&gt;<link linkend="_structRing_1a4f2308ba06a1f517e1f1babc5603d79a">bx</link>,&#32;ering-&gt;<link linkend="_structRing_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>*180/<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>,&#32;
+<anchor xml:id="_svg_8c_source_1l00196"/>00196 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;fa,&#32;fs,&#32;x2,&#32;y2);
+<anchor xml:id="_svg_8c_source_1l00197"/>00197 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;define&#32;style:&#32;color&#32;and&#32;width&#32;*/</emphasis>
+<anchor xml:id="_svg_8c_source_1l00198"/>00198 &#32;&#32;&#32;&#32;&#32;&#32;fprintf(fsvg,<emphasis role="stringliteral">&quot;&#32;fill=\&quot;none\&quot;&#32;stroke&#32;=\&quot;red\&quot;&#32;stroke-width=\&quot;%d\&quot;&#32;/&gt;\n&quot;</emphasis>,1);&#32;&#32;&#32;
+<anchor xml:id="_svg_8c_source_1l00199"/>00199 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_svg_8c_source_1l00200"/>00200 }
+</programlisting></section>

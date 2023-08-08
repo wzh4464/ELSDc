@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_structRing" xml:lang="en-US">
+<title>Ring Struct Reference</title>
+<indexterm><primary>Ring</primary></indexterm>
+<para>
+<computeroutput>#include &lt;ring.h&gt;</computeroutput>
+</para>
+<simplesect>
+    <title>Data Fields    </title>
+        <itemizedlist>
+            <listitem><para>double <link linkend="_structRing_1ac75b803b570527306e1e744bfb7a604f">x1</link></para>
+</listitem>
+            <listitem><para>double <link linkend="_structRing_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link></para>
+</listitem>
+            <listitem><para>double <link linkend="_structRing_1adcf04f5f1964d18b332643939561da0d">x2</link></para>
+</listitem>
+            <listitem><para>double <link linkend="_structRing_1a5347e514ebe985fb371754ffd2b5ff83">y2</link></para>
+</listitem>
+            <listitem><para>double <link linkend="_structRing_1a9df23e056f5d1a0388cd8190431c0e03">width</link></para>
+</listitem>
+            <listitem><para>double <link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link></para>
+</listitem>
+            <listitem><para>double <link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link></para>
+</listitem>
+            <listitem><para>double <link linkend="_structRing_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link></para>
+</listitem>
+            <listitem><para>double <link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link></para>
+</listitem>
+            <listitem><para>double <link linkend="_structRing_1a4f2308ba06a1f517e1f1babc5603d79a">bx</link></para>
+</listitem>
+            <listitem><para>double <link linkend="_structRing_1a466b3f5f225ebc707bb596ac344baa7c">ang_start</link></para>
+</listitem>
+            <listitem><para>double <link linkend="_structRing_1a85eb98efd34c1332f888379ff2a30a43">ang_end</link></para>
+</listitem>
+            <listitem><para>double <link linkend="_structRing_1ad1515daed95ba43fd919fddcf3144d1a">wmin</link></para>
+</listitem>
+            <listitem><para>double <link linkend="_structRing_1a54612b6d232db5e1a58ae8b2f26b1df4">wmax</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_structRing_1a3a0e8c0939ab76b5866a0bbad1d338e6">full</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para>Elliptical/circular ring structure. A ring is defined by end points, width, center, orientation, axes, delimiting angles. </para>
+<para>
+Definition at line <link linkend="_ring_8h_source_1l00038">38</link> of file <link linkend="_ring_8h_source">ring.h</link>.</para>
+</section>
+<section>
+<title>Field Documentation</title>
+<anchor xml:id="_structRing_1a85eb98efd34c1332f888379ff2a30a43"/><section>
+    <title>ang_end</title>
+<indexterm><primary>ang_end</primary><secondary>Ring</secondary></indexterm>
+<indexterm><primary>Ring</primary><secondary>ang_end</secondary></indexterm>
+<para><computeroutput>double ang_end</computeroutput></para><para>
+Definition at line <link linkend="_ring_8h_source_1l00045">45</link> of file <link linkend="_ring_8h_source">ring.h</link>.</para>
+</section>
+<anchor xml:id="_structRing_1a466b3f5f225ebc707bb596ac344baa7c"/><section>
+    <title>ang_start</title>
+<indexterm><primary>ang_start</primary><secondary>Ring</secondary></indexterm>
+<indexterm><primary>Ring</primary><secondary>ang_start</secondary></indexterm>
+<para><computeroutput>double ang_start</computeroutput></para><para>
+Definition at line <link linkend="_ring_8h_source_1l00045">45</link> of file <link linkend="_ring_8h_source">ring.h</link>.</para>
+</section>
+<anchor xml:id="_structRing_1ab25a9c3dfa527c678adf73437cc49640"/><section>
+    <title>ax</title>
+<indexterm><primary>ax</primary><secondary>Ring</secondary></indexterm>
+<indexterm><primary>Ring</primary><secondary>ax</secondary></indexterm>
+<para><computeroutput>double ax</computeroutput></para><para>
+Definition at line <link linkend="_ring_8h_source_1l00044">44</link> of file <link linkend="_ring_8h_source">ring.h</link>.</para>
+</section>
+<anchor xml:id="_structRing_1a4f2308ba06a1f517e1f1babc5603d79a"/><section>
+    <title>bx</title>
+<indexterm><primary>bx</primary><secondary>Ring</secondary></indexterm>
+<indexterm><primary>Ring</primary><secondary>bx</secondary></indexterm>
+<para><computeroutput>double bx</computeroutput></para><para>
+Definition at line <link linkend="_ring_8h_source_1l00044">44</link> of file <link linkend="_ring_8h_source">ring.h</link>.</para>
+</section>
+<anchor xml:id="_structRing_1ac176cb816ac192bd8ec2f73c40b43309"/><section>
+    <title>cx</title>
+<indexterm><primary>cx</primary><secondary>Ring</secondary></indexterm>
+<indexterm><primary>Ring</primary><secondary>cx</secondary></indexterm>
+<para><computeroutput>double cx</computeroutput></para><para>
+Definition at line <link linkend="_ring_8h_source_1l00042">42</link> of file <link linkend="_ring_8h_source">ring.h</link>.</para>
+</section>
+<anchor xml:id="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9"/><section>
+    <title>cy</title>
+<indexterm><primary>cy</primary><secondary>Ring</secondary></indexterm>
+<indexterm><primary>Ring</primary><secondary>cy</secondary></indexterm>
+<para><computeroutput>double cy</computeroutput></para><para>
+Definition at line <link linkend="_ring_8h_source_1l00042">42</link> of file <link linkend="_ring_8h_source">ring.h</link>.</para>
+</section>
+<anchor xml:id="_structRing_1a3a0e8c0939ab76b5866a0bbad1d338e6"/><section>
+    <title>full</title>
+<indexterm><primary>full</primary><secondary>Ring</secondary></indexterm>
+<indexterm><primary>Ring</primary><secondary>full</secondary></indexterm>
+<para><computeroutput>int full</computeroutput></para><para>
+Definition at line <link linkend="_ring_8h_source_1l00047">47</link> of file <link linkend="_ring_8h_source">ring.h</link>.</para>
+</section>
+<anchor xml:id="_structRing_1aca81c35c21e3a5f7f3a8d24504e76664"/><section>
+    <title>theta</title>
+<indexterm><primary>theta</primary><secondary>Ring</secondary></indexterm>
+<indexterm><primary>Ring</primary><secondary>theta</secondary></indexterm>
+<para><computeroutput>double theta</computeroutput></para><para>
+Definition at line <link linkend="_ring_8h_source_1l00043">43</link> of file <link linkend="_ring_8h_source">ring.h</link>.</para>
+</section>
+<anchor xml:id="_structRing_1a9df23e056f5d1a0388cd8190431c0e03"/><section>
+    <title>width</title>
+<indexterm><primary>width</primary><secondary>Ring</secondary></indexterm>
+<indexterm><primary>Ring</primary><secondary>width</secondary></indexterm>
+<para><computeroutput>double width</computeroutput></para><para>
+Definition at line <link linkend="_ring_8h_source_1l00041">41</link> of file <link linkend="_ring_8h_source">ring.h</link>.</para>
+</section>
+<anchor xml:id="_structRing_1a54612b6d232db5e1a58ae8b2f26b1df4"/><section>
+    <title>wmax</title>
+<indexterm><primary>wmax</primary><secondary>Ring</secondary></indexterm>
+<indexterm><primary>Ring</primary><secondary>wmax</secondary></indexterm>
+<para><computeroutput>double wmax</computeroutput></para><para>
+Definition at line <link linkend="_ring_8h_source_1l00046">46</link> of file <link linkend="_ring_8h_source">ring.h</link>.</para>
+</section>
+<anchor xml:id="_structRing_1ad1515daed95ba43fd919fddcf3144d1a"/><section>
+    <title>wmin</title>
+<indexterm><primary>wmin</primary><secondary>Ring</secondary></indexterm>
+<indexterm><primary>Ring</primary><secondary>wmin</secondary></indexterm>
+<para><computeroutput>double wmin</computeroutput></para><para>
+Definition at line <link linkend="_ring_8h_source_1l00046">46</link> of file <link linkend="_ring_8h_source">ring.h</link>.</para>
+</section>
+<anchor xml:id="_structRing_1ac75b803b570527306e1e744bfb7a604f"/><section>
+    <title>x1</title>
+<indexterm><primary>x1</primary><secondary>Ring</secondary></indexterm>
+<indexterm><primary>Ring</primary><secondary>x1</secondary></indexterm>
+<para><computeroutput>double x1</computeroutput></para><para>
+Definition at line <link linkend="_ring_8h_source_1l00040">40</link> of file <link linkend="_ring_8h_source">ring.h</link>.</para>
+</section>
+<anchor xml:id="_structRing_1adcf04f5f1964d18b332643939561da0d"/><section>
+    <title>x2</title>
+<indexterm><primary>x2</primary><secondary>Ring</secondary></indexterm>
+<indexterm><primary>Ring</primary><secondary>x2</secondary></indexterm>
+<para><computeroutput>double x2</computeroutput></para><para>
+Definition at line <link linkend="_ring_8h_source_1l00040">40</link> of file <link linkend="_ring_8h_source">ring.h</link>.</para>
+</section>
+<anchor xml:id="_structRing_1ac3b72e5b77595ca2340ecf8ccfe5fd99"/><section>
+    <title>y1</title>
+<indexterm><primary>y1</primary><secondary>Ring</secondary></indexterm>
+<indexterm><primary>Ring</primary><secondary>y1</secondary></indexterm>
+<para><computeroutput>double y1</computeroutput></para><para>
+Definition at line <link linkend="_ring_8h_source_1l00040">40</link> of file <link linkend="_ring_8h_source">ring.h</link>.</para>
+</section>
+<anchor xml:id="_structRing_1a5347e514ebe985fb371754ffd2b5ff83"/><section>
+    <title>y2</title>
+<indexterm><primary>y2</primary><secondary>Ring</secondary></indexterm>
+<indexterm><primary>Ring</primary><secondary>y2</secondary></indexterm>
+<para><computeroutput>double y2</computeroutput></para><para>
+Definition at line <link linkend="_ring_8h_source_1l00040">40</link> of file <link linkend="_ring_8h_source">ring.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+src/<link linkend="_ring_8h">ring.h</link></section>
+</section>

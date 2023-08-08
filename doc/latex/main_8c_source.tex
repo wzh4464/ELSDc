@@ -1,0 +1,178 @@
+\doxysection{main.\+c}
+\hypertarget{main_8c_source}{}\label{main_8c_source}\index{src/main.c@{src/main.c}}
+\mbox{\hyperlink{main_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00001}00001\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00002}00002\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00003}00003\ \textcolor{comment}{\ \ Copyright\ (c)\ 2007-\/2011\ rafael\ grompone\ von\ gioi\ (grompone@gmail.com)\ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00004}00004\ \textcolor{comment}{\ \ Copyright\ (c)\ 2012-\/2014\ viorica\ patraucean\ (vpatrauc@gmail.com)}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00005}00005\ \textcolor{comment}{\ \ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00006}00006\ \textcolor{comment}{\ \ This\ program\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00007}00007\ \textcolor{comment}{\ \ it\ under\ the\ terms\ of\ the\ GNU\ Affero\ General\ Public\ License\ as}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00008}00008\ \textcolor{comment}{\ \ published\ by\ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00009}00009\ \textcolor{comment}{\ \ License,\ or\ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00010}00010\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00011}00011\ \textcolor{comment}{\ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00012}00012\ \textcolor{comment}{\ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00013}00013\ \textcolor{comment}{\ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ See\ the}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00014}00014\ \textcolor{comment}{\ \ GNU\ Affero\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00015}00015\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00016}00016\ \textcolor{comment}{\ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ Affero\ General\ Public\ License}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00017}00017\ \textcolor{comment}{\ \ along\ with\ this\ program.\ If\ not,\ see\ <http://www.gnu.org/licenses/>.}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00018}00018\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00019}00019\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00020}00020\ \textcolor{comment}{\ \ main.c\ -\/\ This\ file\ belongs\ to\ ELSDc\ project\ (Ellipse\ and\ Line\ Segment\ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00021}00021\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ Detector\ with\ continuous\ validation)}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00022}00022\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ -\/\ It\ contains\ the\ main\ function,\ which\ reads\ a\ pgm\ image,\ calls\ the\ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00023}00023\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ detector,\ and\ writes\ the\ result\ in\ ASCII\ and\ SVG\ form.}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00024}00024\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00025}00025\ \textcolor{comment}{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00028}00028\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00029}00029\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00030}00030\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{misc_8h}{misc.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00031}00031\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{pgm_8h}{pgm.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00032}00032\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{svg_8h}{svg.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00033}00033\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{polygon_8h}{polygon.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00034}00034\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{ring_8h}{ring.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00035}00035\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{elsdc_8h}{elsdc.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00037}00037\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00041}\mbox{\hyperlink{main_8c_a3c04138a5bfe5d72780bb7e82a18e627}{00041}}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{main_8c_a3c04138a5bfe5d72780bb7e82a18e627}{main}}(\ \textcolor{keywordtype}{int}\ argc,\ \textcolor{keywordtype}{char}\ **argv\ )}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00042}00042\ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00043}00043\ \ \ \textcolor{comment}{/*\ check\ arguments\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00044}00044\ \ \ \textcolor{keywordflow}{if}(\ argc\ <\ 2\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}usage:\ ./elsdc\ image\_name.pgm"{}});}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00046}00046\ \ \ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ in;\ \ \ \ \ \textcolor{comment}{/*\ input\ image\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00047}00047\ \ \ \mbox{\hyperlink{structImageInt}{PImageInt}}\ \ \ \ out;\ \ \ \ \textcolor{comment}{/*\ output\ image\ having\ the\ same\ size\ as\ 'in';\ the\ pixels}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00048}00048\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ supporting\ a\ certain\ geometric\ primitive\ are\ marked\ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00049}00049\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ with\ the\ same\ label\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00051}00051\ \ \ \textcolor{keywordtype}{int}\ ell\_count\ =\ 0;\ \ \ \textcolor{comment}{/*\ number\ of\ detected\ ellipses\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00052}00052\ \ \ \textcolor{keywordtype}{int}\ *ell\_labels=NULL;\textcolor{comment}{/*\ the\ pixels\ supporting\ a\ certain\ ellipse\ are\ marked\ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00053}00053\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ with\ the\ same\ unique\ label\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00054}00054\ \ \ \mbox{\hyperlink{structRing}{Ring}}\ *ell\_out\ =\ NULL;\textcolor{comment}{/*\ array\ containing\ the\ parameters\ of\ the\ detected\ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00055}00055\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ellipses;\ correlated\ with\ ell\_labels,\ i.e.\ the\ i-\/th}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00056}00056\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ element\ of\ ell\_labels\ is\ the\ label\ of\ the\ pixels\ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00057}00057\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ supporting\ the\ ellipse\ defined\ by\ the\ parameters\ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00058}00058\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ell[i]\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00059}00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00060}00060\ \ \ \textcolor{keywordtype}{int}\ poly\_count\ =\ 0;\ \ \textcolor{comment}{/*\ number\ of\ detected\ polygons\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00061}00061\ \ \ \textcolor{keywordtype}{int}\ *poly\_labels=NULL;\textcolor{comment}{/*\ the\ pixels\ supporting\ a\ certain\ polygon\ are\ marked\ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00062}00062\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ with\ the\ same\ unique\ label\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00063}00063\ \ \ \mbox{\hyperlink{structPolygon}{Polygon}}\ *poly\_out=NULL;\textcolor{comment}{/*\ array\ containing\ the\ parameters\ of\ the\ detected\ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00064}00064\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ polygons;\ correlated\ with\ poly\_labels,\ i.e.\ the\ i-\/th}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00065}00065\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ element\ of\ ell\_labels\ is\ the\ label\ of\ the\ pixels\ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00066}00066\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ supporting\ the\ polygon\ defined\ by\ the\ parameters}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00067}00067\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ poly[i]\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00068}00068\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00069}00069\ \ \ FILE\ *ell\_ascii;\ \ \ \ \ \textcolor{comment}{/*\ output\ file\ with\ the\ parameters\ of\ the\ detected\ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00070}00070\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ellipses\ -\/-\/\ ASCII\ format\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00071}00071\ \ \ FILE\ *poly\_ascii;\ \ \ \ \textcolor{comment}{/*\ output\ file\ with\ the\ parameters\ of\ the\ detected}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00072}00072\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ polygons\ -\/-\/\ ASCII\ format\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00073}00073\ \ \ FILE\ *fsvg;\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ output\ file\ with\ the\ detected\ ellipses\ and\ polygons\ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00074}00074\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ in\ vectorial\ form\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00075}00075\ \ \ \textcolor{keywordtype}{int}\ i,j;}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00076}00076\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00077}00077\ \ \ \textcolor{comment}{/*\ read\ input\ image;\ must\ be\ PGM\ form\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00078}00078\ \ \ in\ =\ \mbox{\hyperlink{pgm_8c_a9a98683fcb23d861dc3b3ac2437267bb}{read\_pgm\_image\_double}}(\ argv[1]\ );}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00079}00079\ \ \ \textcolor{keywordtype}{int}\ xsize\ =\ in-\/>\mbox{\hyperlink{structImageDouble_aa4b0263c533c5ce471067bd5ede24477}{xsize}},\ ysize\ =\ in-\/>\mbox{\hyperlink{structImageDouble_a7e7fdb6b4d76fd619024da6878c27d58}{ysize}};}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00080}00080\ \ \ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00081}00081\ \ \ \textcolor{comment}{/*\ create\ and\ initialize\ with\ 0\ output\ label\ image\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00082}00082\ \ \ out\ =\ \mbox{\hyperlink{image_8c_aa54fa4ed5a519b86fb3264668ff6655f}{new\_PImageInt\_ini}}(\ in-\/>\mbox{\hyperlink{structImageDouble_aa4b0263c533c5ce471067bd5ede24477}{xsize}},\ in-\/>\mbox{\hyperlink{structImageDouble_a7e7fdb6b4d76fd619024da6878c27d58}{ysize}},\ 0\ );\ \ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00083}00083\ \ \ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00084}00084\ \ \ \textcolor{comment}{/*\ call\ detection\ procedure\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00085}00085\ \ \ \mbox{\hyperlink{elsdc_8c_a622977efb42238086935cbcd5e6704ee}{ELSDc}}(\ in,\ \&ell\_count,\ \&ell\_out,\ \&ell\_labels,\ \&poly\_count,\ \&poly\_out,\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \&poly\_labels,\ out\ );}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00087}00087\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00088}00088\ \ \ \textcolor{comment}{/*\ write\ results\ in\ ASCII\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00089}00089\ \ \ \textcolor{comment}{/*\ Ellipse\ file:\ each\ line\ contains\ 1\ integer\ and\ 11\ doubles\ in\ the\ form}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00090}00090\ \textcolor{comment}{\ \ \ \ \ ell\_label\ x1\ y1\ x2\ y2\ cx\ cy\ ax\ bx\ theta\ ang\_start\ ang\_end}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00091}00091\ \textcolor{comment}{\ \ \ \ \ where:}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00092}00092\ \textcolor{comment}{\ \ \ \ \ ell\_label\ \ \ \ \ \ \ \ \ \ -\/-\/\ the\ label\ of\ the\ pixels\ supporting\ this\ ellipse\ in\ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00093}00093\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 'out'\ labels\ image\ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00094}00094\ \textcolor{comment}{\ \ \ \ \ x1,\ y1,\ x2,\ y2\ \ \ \ \ -\/-\/\ points\ delimiting\ the\ arc\ in\ trigonometric\ sense}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00095}00095\ \textcolor{comment}{\ \ \ \ \ cx,\ cy\ \ \ \ \ \ \ \ \ \ \ \ \ -\/-\/\ ellipse\ centre}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00096}00096\ \textcolor{comment}{\ \ \ \ \ ax,\ bx\ \ \ \ \ \ \ \ \ \ \ \ \ -\/-\/\ ellipse\ axes;\ ax\ is\ the\ greater\ axis}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00097}00097\ \textcolor{comment}{\ \ \ \ \ theta\ \ \ \ \ \ \ \ \ \ \ \ \ \ -\/-\/\ orientation\ of\ the\ ellipse}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00098}00098\ \textcolor{comment}{\ \ \ \ \ ang\_start,\ ang\_end\ -\/-\/\ angles\ delimiting\ the\ arc\ in\ trigonometric\ sense\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00099}00099\ \ \ \textcolor{keywordflow}{if}(\ ell\_out\ !=\ NULL\ )}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00100}00100\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00101}00101\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (ell\_ascii\ =\ fopen(\textcolor{stringliteral}{"{}out\_ellipse.txt"{}},\textcolor{stringliteral}{"{}w"{}}))\ ==\ NULL\ )}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00102}00102\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}main:\ can't\ open\ ellipse\ output\ file."{}});}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00103}00103\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ i=0;\ i<ell\_count;\ i++\ )}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00104}00104\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00105}00105\ \ \ \ \ \ \ \ \ \ \ fprintf(\ ell\_ascii,\textcolor{stringliteral}{"{}\%d\ "{}},\ ell\_labels[i]\ );}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00106}00106\ \ \ \ \ \ \ \ \ \ \ fprintf(\ ell\_ascii,\textcolor{stringliteral}{"{}\%lf\ \%lf\ \%lf\ \%lf\ \%lf\ \%lf\ \%lf\ \%lf\ \%lf\ \%lf\ \%lf\ \(\backslash\)n"{}},}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00107}00107\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ell\_out[i].x1,\ ell\_out[i].y1,\ ell\_out[i].x2,\ ell\_out[i].y2,\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00108}00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ell\_out[i].cx,\ ell\_out[i].cy,\ ell\_out[i].ax,\ ell\_out[i].bx,}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00109}00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ell\_out[i].theta,\ ell\_out[i].ang\_start,\ ell\_out[i].ang\_end\ );}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00110}00110\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00111}00111\ \ \ \ \ \ \ fclose(ell\_ascii);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00112}00112\ \ \ \ \ \}\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00113}00113\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00114}00114\ \ \ \textcolor{comment}{/*\ Polygon\ file:\ each\ line\ contains\ 2\ integers\ and\ a\ variable\ number\ of\ \ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00115}00115\ \textcolor{comment}{\ \ \ \ \ doubles\ in\ the\ form\ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00116}00116\ \textcolor{comment}{\ \ \ \ \ poly\_label\ n\ x1\ y1\ x2\ y2\ ...\ xn\ yn}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00117}00117\ \textcolor{comment}{\ \ \ \ \ where:}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00118}00118\ \textcolor{comment}{\ \ \ \ \ poly\_label\ \ \ \ \ \ -\/-\/\ the\ label\ of\ the\ pixels\ supporting\ this\ polygon\ in\ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00119}00119\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 'out'\ labels\ image}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00120}00120\ \textcolor{comment}{\ \ \ \ \ n\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ -\/-\/\ the\ number\ of\ points\ in\ the\ polygon;\ it\ is\ the\ double\ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00121}00121\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ of\ the\ number\ of\ segments}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00122}00122\ \textcolor{comment}{\ \ \ \ \ x1\ y1\ ...\ xn\ yn\ -\/-\/\ (x,y)\ coordinates\ of\ the\ ending\ points\ of\ each\ segment.}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00123}00123\ \textcolor{comment}{\ \ \ \ \ A\ polygon\ with\ n/2\ line\ segments\ has\ n\ points,\ given\ in\ consecutive\ order.}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00124}00124\ \textcolor{comment}{\ \ \ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00125}00125\ \ \ \textcolor{keywordflow}{if}(\ poly\_out\ !=\ NULL\ )}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00126}00126\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00127}00127\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (poly\_ascii\ =\ fopen(\textcolor{stringliteral}{"{}out\_polygon.txt"{}},\textcolor{stringliteral}{"{}w"{}}))\ ==\ NULL\ )}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00128}00128\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}main:\ can't\ open\ polygon\ output\ file."{}});}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00129}00129\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ i=0;\ i<poly\_count;\ i++\ )}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00130}00130\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00131}00131\ \ \ \ \ \ \ \ \ \ \ fprintf(\ poly\_ascii,\ \textcolor{stringliteral}{"{}\%d\ \%d\ "{}},\ poly\_labels[i],\ poly\_out[i].dim\ );}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00132}00132\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ j=0;\ j<poly\_out[i].\mbox{\hyperlink{structPolygon_a70b5e28b5bc3d1b63a7435c5fe50b837}{dim}};\ j++\ )}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00133}00133\ \ \ \ \ \ \ \ \ \ \ \ \ fprintf(\ poly\_ascii,\textcolor{stringliteral}{"{}\%lf\ \%lf\ "{}},\ poly\_out[i].pts[j].x,\ poly\_out[i].pts[j].y);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00134}00134\ \ \ \ \ \ \ \ \ \ \ fprintf(\ poly\_ascii,\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}}\ );}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00135}00135\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00136}00136\ \ \ \ \ \ \ fclose(poly\_ascii);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00137}00137\ \ \ \ \ \}\ \ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00138}00138\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00139}00139\ \ \ \textcolor{comment}{/*\ write\ vectorial\ output\ in\ SVG\ format\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00140}00140\ \ \ \textcolor{keywordflow}{if}(\ (ell\_out\ !=\ NULL)\ ||\ (poly\_out\ !=\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00141}00141\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00142}00142\ \ \ \ \ \ \ \textcolor{comment}{/*\ init\ svg\ file\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00143}00143\ \ \ \ \ \ \ fsvg\ =\ \mbox{\hyperlink{svg_8c_a558582c3fc08d1b34b5773e8543704a7}{init\_svg}}(\ \textcolor{stringliteral}{"{}output.svg"{}},\ xsize,\ ysize\ );}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00144}00144\ \ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00145}00145\ \ \ \ \ \ \ \textcolor{comment}{/*\ write\ ellipses\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00146}00146\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ i=0;\ i<ell\_count;\ i++)}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00147}00147\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ distinguish\ between\ circle\ and\ ellipse,\ because\ the\ procedures\ }}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00148}00148\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ to\ write\ them\ are\ different\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00149}00149\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (\mbox{\hyperlink{misc_8c_a49d0391afab7c8872bbbfb86a814360b}{double\_equal}}(\ ell\_out[i].ax,\ ell\_out[i].bx\ ))\ )\textcolor{comment}{/*\ \&\&\ (ell\_out[i].theta\ ==\ 0)\ )\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00150}00150\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{svg_8c_addecc5315e2b2bf715678d6169c29cd2}{write\_svg\_circ\_arc}}(\ fsvg,\ \&ell\_out[i]\ );}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00151}00151\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00152}00152\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{svg_8c_abfaad49171308ccbecd1f3023ac13c15}{write\_svg\_ell\_arc}}(\ fsvg,\ \&ell\_out[i]\ );}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00153}00153\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00154}00154\ \ \ \ \ \ \ \textcolor{comment}{/*\ write\ polygons\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00155}00155\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ i=0;\ i<poly\_count;\ i++\ )}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00156}00156\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{svg_8c_a3a909bc27359f0f315f09797743d1863}{write\_svg\_poly}}(\ fsvg,\ \&poly\_out[i]\ );}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00157}00157\ \ \ \ \ \ \ \textcolor{comment}{/*\ close\ svg\ file\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00158}00158\ \ \ \ \ \ \ \mbox{\hyperlink{svg_8c_a248633af17855dac187670ce42897417}{fclose\_svg}}(\ fsvg\ );}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00159}00159\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00160}00160\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00161}00161\ \ \ \textcolor{comment}{/*\ write\ labels\ image\ in\ pgm\ form\ */}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00162}00162\ \ \ \mbox{\hyperlink{pgm_8c_a94f252c634af4c81659315c4545be8b8}{write\_pgm\_image\_int}}(\ out-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}},\ out-\/>\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}},\ out-\/>\mbox{\hyperlink{structImageInt_a7e7fdb6b4d76fd619024da6878c27d58}{ysize}},\ \textcolor{stringliteral}{"{}labels.pgm"{}}\ );}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00163}00163\ \ \ \mbox{\hyperlink{image_8c_a6ee6bd84de84b9c43d96a7daf535ccd3}{free\_PImageInt}}(out);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00164}00164\ \ \ \textcolor{keywordflow}{if}(\ ell\_out\ !=\ NULL\ )\ \{free(ell\_out);\ free(ell\_labels);\}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00165}00165\ \ \ \textcolor{keywordflow}{if}(\ poly\_out\ !=\ NULL\ )\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00166}00166\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00167}00167\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ i=0;\ i<poly\_count;\ i++\ )}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00168}00168\ \ \ \ \ \ \ \ \ free(poly\_out[i].pts);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00169}00169\ \ \ \ \ \ \ free(poly\_out);\ }
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00170}00170\ \ \ \ \ \ \ free(poly\_labels);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00171}00171\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00172}00172\ \ \ printf(\textcolor{stringliteral}{"{}Number\ of\ ellipses\ detected\ =\ \%d\(\backslash\)n"{}},ell\_count);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00173}00173\ \ \ printf(\textcolor{stringliteral}{"{}Number\ of\ polygons\ detected\ =\ \%d\(\backslash\)n"{}},poly\_count);}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00174}00174\ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{main_8c_source_l00175}00175\ \}}
+
+\end{DoxyCode}

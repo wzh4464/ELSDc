@@ -1,0 +1,167 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_image_8c" xml:lang="en-US">
+<title>src/image.c File Reference</title>
+<indexterm><primary>src/image.c</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &lt;stdio.h&gt;<?linebreak?>#include &lt;stdlib.h&gt;<?linebreak?>#include &lt;ctype.h&gt;<?linebreak?>#include &lt;math.h&gt;<?linebreak?>#include &quot;misc.h&quot;<?linebreak?>#include &quot;image.h&quot;<?linebreak?></programlisting><simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>void <link linkend="_image_8c_1aa58f34a2b6c4700cbd956f820418bdee">free_PImageChar</link> (<link linkend="_image_8h_1abf368707b04976a0552dab4473f28b27">PImageChar</link> i)</para>
+</listitem>
+            <listitem><para><link linkend="_image_8h_1abf368707b04976a0552dab4473f28b27">PImageChar</link> <link linkend="_image_8c_1a7e4805b775ae0ce63216d5e7fac3d99b">new_PImageChar</link> (unsigned int xsize, unsigned int ysize)</para>
+</listitem>
+            <listitem><para><link linkend="_image_8h_1abf368707b04976a0552dab4473f28b27">PImageChar</link> <link linkend="_image_8c_1a93f3134419a437219c46bc206a210bbb">new_PImageChar_ini</link> (unsigned int xsize, unsigned int ysize, unsigned char fill_value)</para>
+</listitem>
+            <listitem><para>void <link linkend="_image_8c_1a6ee6bd84de84b9c43d96a7daf535ccd3">free_PImageInt</link> (<link linkend="_image_8h_1ad2f6828b30c727a557c8c201c2913f0f">PImageInt</link> i)</para>
+</listitem>
+            <listitem><para><link linkend="_image_8h_1ad2f6828b30c727a557c8c201c2913f0f">PImageInt</link> <link linkend="_image_8c_1a24e8904b30314d7539fdcc505a26cf07">new_PImageInt</link> (unsigned int xsize, unsigned int ysize)</para>
+</listitem>
+            <listitem><para><link linkend="_image_8h_1ad2f6828b30c727a557c8c201c2913f0f">PImageInt</link> <link linkend="_image_8c_1aa54fa4ed5a519b86fb3264668ff6655f">new_PImageInt_ini</link> (unsigned int xsize, unsigned int ysize, int fill_value)</para>
+</listitem>
+            <listitem><para>void <link linkend="_image_8c_1a65f922be2f5afbbcdb04645cb8f8bbfb">free_PImageDouble</link> (<link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> i)</para>
+</listitem>
+            <listitem><para><link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> <link linkend="_image_8c_1a5baadc47eb068cd9e3b2d52a5065e3c0">new_PImageDouble</link> (unsigned int xsize, unsigned int ysize)</para>
+</listitem>
+            <listitem><para><link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> <link linkend="_image_8c_1a366212b692e1b18885cb5b137c656a9d">new_PImageDouble_ini</link> (unsigned int xsize, unsigned int ysize, double fill_value)</para>
+</listitem>
+            <listitem><para><link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> <link linkend="_image_8c_1a51ef0a087c0699dffd084d8930fa7377">img_gradient_angle</link> (<link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> in, double threshold)</para>
+</listitem>
+            <listitem><para>void <link linkend="_image_8c_1a0312c9c68ef16da181121d5f105caf33">img_gradient_sort</link> (<link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> in, double threshold, <link linkend="_image_8h_1a9caa0284a00a0528cb868b69a5ad5370">CoordList</link> **list_p, void **mem_p, unsigned int n_bins, double max_grad, <link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> *angles, <link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> *gradmag, <link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> *gradx, <link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> *grady)</para>
+</listitem>
+            <listitem><para>void <link linkend="_image_8c_1a23026d70139f0859bae4a5723784f1fc">mark_img_pts</link> (<link linkend="_image_8h_1ad2f6828b30c727a557c8c201c2913f0f">PImageInt</link> im, <link linkend="_structPoint">Point</link> *pts, int start, int end, int label)</para>
+</listitem>
+            <listitem><para>int <link linkend="_image_8c_1a7d75c600cc492bd8efbc1cc0c3819d88">in_image</link> (int x, int y, unsigned int xsize, unsigned int ysize)</para>
+</listitem>
+            <listitem><para>int <link linkend="_image_8c_1a9d7c27ae8502d7bb6ef83ddd1e95df95">local_max</link> (<link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> im, int x, int y)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="_image_8c_1aa58f34a2b6c4700cbd956f820418bdee"/><section>
+    <title>free_PImageChar()</title>
+<indexterm><primary>free_PImageChar</primary><secondary>image.c</secondary></indexterm>
+<indexterm><primary>image.c</primary><secondary>free_PImageChar</secondary></indexterm>
+<para><computeroutput>void free_PImageChar (<link linkend="_image_8h_1abf368707b04976a0552dab4473f28b27">PImageChar</link> i)</computeroutput></para>
+<para>Free memory used in PImageChar &apos;i&apos;. </para>
+<para>
+Definition at line <link linkend="_image_8c_source_1l00038">38</link> of file <link linkend="_image_8c_source">image.c</link>.</para>
+</section>
+<anchor xml:id="_image_8c_1a65f922be2f5afbbcdb04645cb8f8bbfb"/><section>
+    <title>free_PImageDouble()</title>
+<indexterm><primary>free_PImageDouble</primary><secondary>image.c</secondary></indexterm>
+<indexterm><primary>image.c</primary><secondary>free_PImageDouble</secondary></indexterm>
+<para><computeroutput>void free_PImageDouble (<link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> i)</computeroutput></para>
+<para>Free memory used in PImageDouble &apos;i&apos;. </para>
+<para>
+Definition at line <link linkend="_image_8c_source_1l00159">159</link> of file <link linkend="_image_8c_source">image.c</link>.</para>
+</section>
+<anchor xml:id="_image_8c_1a6ee6bd84de84b9c43d96a7daf535ccd3"/><section>
+    <title>free_PImageInt()</title>
+<indexterm><primary>free_PImageInt</primary><secondary>image.c</secondary></indexterm>
+<indexterm><primary>image.c</primary><secondary>free_PImageInt</secondary></indexterm>
+<para><computeroutput>void free_PImageInt (<link linkend="_image_8h_1ad2f6828b30c727a557c8c201c2913f0f">PImageInt</link> i)</computeroutput></para>
+<para>Free memory used in PImageInt &apos;i&apos;. </para>
+<para>
+Definition at line <link linkend="_image_8c_source_1l00099">99</link> of file <link linkend="_image_8c_source">image.c</link>.</para>
+</section>
+<anchor xml:id="_image_8c_1a51ef0a087c0699dffd084d8930fa7377"/><section>
+    <title>img_gradient_angle()</title>
+<indexterm><primary>img_gradient_angle</primary><secondary>image.c</secondary></indexterm>
+<indexterm><primary>image.c</primary><secondary>img_gradient_angle</secondary></indexterm>
+<para><computeroutput><link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> img_gradient_angle (<link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> in, double threshold)</computeroutput></para>
+<para>Compute image gradient orientations. </para>
+<para>
+Definition at line <link linkend="_image_8c_source_1l00219">219</link> of file <link linkend="_image_8c_source">image.c</link>.</para>
+</section>
+<anchor xml:id="_image_8c_1a0312c9c68ef16da181121d5f105caf33"/><section>
+    <title>img_gradient_sort()</title>
+<indexterm><primary>img_gradient_sort</primary><secondary>image.c</secondary></indexterm>
+<indexterm><primary>image.c</primary><secondary>img_gradient_sort</secondary></indexterm>
+<para><computeroutput>void img_gradient_sort (<link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> in, double threshold, <link linkend="_image_8h_1a9caa0284a00a0528cb868b69a5ad5370">CoordList</link> ** list_p, void ** mem_p, unsigned int n_bins, double max_grad, <link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> * angles, <link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> * gradmag, <link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> * gradx, <link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> * grady)</computeroutput></para>
+<para>Compute image gradient (magnitude and orientation) and return also the list of points ordered by gradient magnitude. </para>
+<para>
+Definition at line <link linkend="_image_8c_source_1l00277">277</link> of file <link linkend="_image_8c_source">image.c</link>.</para>
+</section>
+<anchor xml:id="_image_8c_1a7d75c600cc492bd8efbc1cc0c3819d88"/><section>
+    <title>in_image()</title>
+<indexterm><primary>in_image</primary><secondary>image.c</secondary></indexterm>
+<indexterm><primary>image.c</primary><secondary>in_image</secondary></indexterm>
+<para><computeroutput>int in_image (int x, int y, unsigned int xsize, unsigned int ysize)</computeroutput></para>
+<para>Check if a given point is inside an image. </para>
+<para>
+Definition at line <link linkend="_image_8c_source_1l00426">426</link> of file <link linkend="_image_8c_source">image.c</link>.</para>
+</section>
+<anchor xml:id="_image_8c_1a9d7c27ae8502d7bb6ef83ddd1e95df95"/><section>
+    <title>local_max()</title>
+<indexterm><primary>local_max</primary><secondary>image.c</secondary></indexterm>
+<indexterm><primary>image.c</primary><secondary>local_max</secondary></indexterm>
+<para><computeroutput>int local_max (<link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> im, int x, int y)</computeroutput></para>
+<para>Check if a given point is a local maximum in an image. Consider 8-neighbourhood. </para>
+<para>
+Definition at line <link linkend="_image_8c_source_1l00441">441</link> of file <link linkend="_image_8c_source">image.c</link>.</para>
+</section>
+<anchor xml:id="_image_8c_1a23026d70139f0859bae4a5723784f1fc"/><section>
+    <title>mark_img_pts()</title>
+<indexterm><primary>mark_img_pts</primary><secondary>image.c</secondary></indexterm>
+<indexterm><primary>image.c</primary><secondary>mark_img_pts</secondary></indexterm>
+<para><computeroutput>void mark_img_pts (<link linkend="_image_8h_1ad2f6828b30c727a557c8c201c2913f0f">PImageInt</link> im, <link linkend="_structPoint">Point</link> * pts, int start, int end, int label)</computeroutput></para>
+<para>Mark with the given label the image pixels contained in &apos;pts&apos; between &apos;start&apos; and &apos;end&apos; index. </para>
+<para>
+Definition at line <link linkend="_image_8c_source_1l00407">407</link> of file <link linkend="_image_8c_source">image.c</link>.</para>
+</section>
+<anchor xml:id="_image_8c_1a7e4805b775ae0ce63216d5e7fac3d99b"/><section>
+    <title>new_PImageChar()</title>
+<indexterm><primary>new_PImageChar</primary><secondary>image.c</secondary></indexterm>
+<indexterm><primary>image.c</primary><secondary>new_PImageChar</secondary></indexterm>
+<para><computeroutput><link linkend="_image_8h_1abf368707b04976a0552dab4473f28b27">PImageChar</link> new_PImageChar (unsigned int xsize, unsigned int ysize)</computeroutput></para>
+<para>Create a new PImageChar of size &apos;xsize&apos; times &apos;ysize&apos;. </para>
+<para>
+Definition at line <link linkend="_image_8c_source_1l00051">51</link> of file <link linkend="_image_8c_source">image.c</link>.</para>
+</section>
+<anchor xml:id="_image_8c_1a93f3134419a437219c46bc206a210bbb"/><section>
+    <title>new_PImageChar_ini()</title>
+<indexterm><primary>new_PImageChar_ini</primary><secondary>image.c</secondary></indexterm>
+<indexterm><primary>image.c</primary><secondary>new_PImageChar_ini</secondary></indexterm>
+<para><computeroutput><link linkend="_image_8h_1abf368707b04976a0552dab4473f28b27">PImageChar</link> new_PImageChar_ini (unsigned int xsize, unsigned int ysize, unsigned char fill_value)</computeroutput></para>
+<para>Create a new PImageChar of size &apos;xsize&apos; times &apos;ysize&apos;, initialized to the value &apos;fill_value&apos;. </para>
+<para>
+Definition at line <link linkend="_image_8c_source_1l00078">78</link> of file <link linkend="_image_8c_source">image.c</link>.</para>
+</section>
+<anchor xml:id="_image_8c_1a5baadc47eb068cd9e3b2d52a5065e3c0"/><section>
+    <title>new_PImageDouble()</title>
+<indexterm><primary>new_PImageDouble</primary><secondary>image.c</secondary></indexterm>
+<indexterm><primary>image.c</primary><secondary>new_PImageDouble</secondary></indexterm>
+<para><computeroutput><link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> new_PImageDouble (unsigned int xsize, unsigned int ysize)</computeroutput></para>
+<para>Create a new PImageDouble of size &apos;xsize&apos; times &apos;ysize&apos;. </para>
+<para>
+Definition at line <link linkend="_image_8c_source_1l00172">172</link> of file <link linkend="_image_8c_source">image.c</link>.</para>
+</section>
+<anchor xml:id="_image_8c_1a366212b692e1b18885cb5b137c656a9d"/><section>
+    <title>new_PImageDouble_ini()</title>
+<indexterm><primary>new_PImageDouble_ini</primary><secondary>image.c</secondary></indexterm>
+<indexterm><primary>image.c</primary><secondary>new_PImageDouble_ini</secondary></indexterm>
+<para><computeroutput><link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> new_PImageDouble_ini (unsigned int xsize, unsigned int ysize, double fill_value)</computeroutput></para>
+<para>Create a new PImageDouble of size &apos;xsize&apos; times &apos;ysize&apos;, initialized to the value &apos;fill_value&apos;. </para>
+<para>
+Definition at line <link linkend="_image_8c_source_1l00198">198</link> of file <link linkend="_image_8c_source">image.c</link>.</para>
+</section>
+<anchor xml:id="_image_8c_1a24e8904b30314d7539fdcc505a26cf07"/><section>
+    <title>new_PImageInt()</title>
+<indexterm><primary>new_PImageInt</primary><secondary>image.c</secondary></indexterm>
+<indexterm><primary>image.c</primary><secondary>new_PImageInt</secondary></indexterm>
+<para><computeroutput><link linkend="_image_8h_1ad2f6828b30c727a557c8c201c2913f0f">PImageInt</link> new_PImageInt (unsigned int xsize, unsigned int ysize)</computeroutput></para>
+<para>Create a new PImageInt of size &apos;xsize&apos; times &apos;ysize&apos;. </para>
+<para>
+Definition at line <link linkend="_image_8c_source_1l00112">112</link> of file <link linkend="_image_8c_source">image.c</link>.</para>
+</section>
+<anchor xml:id="_image_8c_1aa54fa4ed5a519b86fb3264668ff6655f"/><section>
+    <title>new_PImageInt_ini()</title>
+<indexterm><primary>new_PImageInt_ini</primary><secondary>image.c</secondary></indexterm>
+<indexterm><primary>image.c</primary><secondary>new_PImageInt_ini</secondary></indexterm>
+<para><computeroutput><link linkend="_image_8h_1ad2f6828b30c727a557c8c201c2913f0f">PImageInt</link> new_PImageInt_ini (unsigned int xsize, unsigned int ysize, int fill_value)</computeroutput></para>
+<para>Create a new PImageInt of size &apos;xsize&apos; times &apos;ysize&apos;, initialized to the value &apos;fill_value&apos;. </para>
+<para>
+Definition at line <link linkend="_image_8c_source_1l00138">138</link> of file <link linkend="_image_8c_source">image.c</link>.</para>
+</section>
+</section>
+</section>

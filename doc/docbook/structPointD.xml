@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_structPointD" xml:lang="en-US">
+<title>PointD Struct Reference</title>
+<indexterm><primary>PointD</primary></indexterm>
+<para>
+<computeroutput>#include &lt;misc.h&gt;</computeroutput>
+</para>
+<simplesect>
+    <title>Data Fields    </title>
+        <itemizedlist>
+            <listitem><para>double <link linkend="_structPointD_1af88b946fb90d5f08b5fb740c70e98c10">x</link></para>
+</listitem>
+            <listitem><para>double <link linkend="_structPointD_1ab927965981178aa1fba979a37168db2a">y</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para>Double cartesian coordinates of a point. </para>
+<para>
+Definition at line <link linkend="_misc_8h_source_1l00075">75</link> of file <link linkend="_misc_8h_source">misc.h</link>.</para>
+</section>
+<section>
+<title>Field Documentation</title>
+<anchor xml:id="_structPointD_1af88b946fb90d5f08b5fb740c70e98c10"/><section>
+    <title>x</title>
+<indexterm><primary>x</primary><secondary>PointD</secondary></indexterm>
+<indexterm><primary>PointD</primary><secondary>x</secondary></indexterm>
+<para><computeroutput>double x</computeroutput></para><para>
+Definition at line <link linkend="_misc_8h_source_1l00077">77</link> of file <link linkend="_misc_8h_source">misc.h</link>.</para>
+</section>
+<anchor xml:id="_structPointD_1ab927965981178aa1fba979a37168db2a"/><section>
+    <title>y</title>
+<indexterm><primary>y</primary><secondary>PointD</secondary></indexterm>
+<indexterm><primary>PointD</primary><secondary>y</secondary></indexterm>
+<para><computeroutput>double y</computeroutput></para><para>
+Definition at line <link linkend="_misc_8h_source_1l00077">77</link> of file <link linkend="_misc_8h_source">misc.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+src/<link linkend="_misc_8h">misc.h</link></section>
+</section>

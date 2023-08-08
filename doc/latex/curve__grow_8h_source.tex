@@ -1,0 +1,41 @@
+\doxysection{curve\+\_\+grow.\+h}
+\hypertarget{curve__grow_8h_source}{}\label{curve__grow_8h_source}\index{src/curve\_grow.h@{src/curve\_grow.h}}
+\mbox{\hyperlink{curve__grow_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00001}00001\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00002}00002\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00003}00003\ \textcolor{comment}{\ \ Copyright\ (c)\ 2012-\/2014\ viorica\ patraucean\ (vpatrauc@gmail.com)}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00004}00004\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00005}00005\ \textcolor{comment}{\ \ This\ program\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00006}00006\ \textcolor{comment}{\ \ it\ under\ the\ terms\ of\ the\ GNU\ Affero\ General\ Public\ License\ as}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00007}00007\ \textcolor{comment}{\ \ published\ by\ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00008}00008\ \textcolor{comment}{\ \ License,\ or\ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00009}00009\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00010}00010\ \textcolor{comment}{\ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00011}00011\ \textcolor{comment}{\ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00012}00012\ \textcolor{comment}{\ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ See\ the}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00013}00013\ \textcolor{comment}{\ \ GNU\ Affero\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00014}00014\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00015}00015\ \textcolor{comment}{\ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ Affero\ General\ Public\ License}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00016}00016\ \textcolor{comment}{\ \ along\ with\ this\ program.\ If\ not,\ see\ <http://www.gnu.org/licenses/>.}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00017}00017\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00018}00018\ \textcolor{comment}{\ \ misc.h\ -\/\ This\ file\ belongs\ to\ ELSDc\ project\ (Ellipse\ and\ Line\ Segment\ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00019}00019\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ Detector\ with\ continuous\ validation).}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00020}00020\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ -\/\ It\ defines\ constants,\ data\ types,\ prototypes\ for\ misc\ functions\ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00021}00021\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ needed\ in\ different\ parts\ of\ the\ project.\ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00022}00022\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00023}00023\ \textcolor{comment}{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00026}00026\ \textcolor{preprocessor}{\#ifndef\ CURVE\_GROW\_H}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00027}00027\ \textcolor{preprocessor}{\#define\ CURVE\_GROW\_H}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00029}00029\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{curve__grow_8h_a6309f2cc70e39c4d40bbe504844b4866}{region2rect}}(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ gradmag,\ \mbox{\hyperlink{structPoint}{Point}}\ *reg,\ \textcolor{keywordtype}{int}\ start,\ \textcolor{keywordtype}{int}\ end,}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00030}00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ reg\_angle,\ \mbox{\hyperlink{structRectangle}{Rectangle}}\ *rec,\ \textcolor{keywordtype}{double}\ prec\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00031}00031\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{curve__grow_8h_a05a2be0b004173552b1178130d6c7369}{curve\_grow}}(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ gradmag,\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ angles,\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00032}00032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageInt}{PImageInt}}\ used,\ \mbox{\hyperlink{structPoint}{Point}}\ *reg,\ \textcolor{keywordtype}{int}\ *reg\_size,\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00033}00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ density\_th,\ \textcolor{keywordtype}{double}\ prec,\ \mbox{\hyperlink{structPolyRect}{PolyRect}}\ *poly,\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00034}00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *label,\ \textcolor{keywordtype}{double}\ *pext1,\ \textcolor{keywordtype}{double}\ *pext2,\ \textcolor{keywordtype}{double}\ *spir\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8h_source_l00035}00035\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

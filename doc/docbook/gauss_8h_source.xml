@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_gauss_8h_source" xml:lang="en-US">
+<title>gauss.h</title>
+<indexterm><primary>src/gauss.h</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="_gauss_8h_source_1l00001"/>00001 <emphasis role="comment">/*------------------------------------------------------------------------------</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00002"/>00002 <emphasis role="comment"></emphasis>
+<anchor xml:id="_gauss_8h_source_1l00003"/>00003 <emphasis role="comment">&#32;&#32;Copyright&#32;(c)&#32;2007-2011&#32;rafael&#32;grompone&#32;von&#32;gioi&#32;(grompone@gmail.com)&#32;</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00004"/>00004 <emphasis role="comment">&#32;&#32;Copyright&#32;(c)&#32;2012-2014&#32;viorica&#32;patraucean&#32;(vpatrauc@gmail.com)</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00005"/>00005 <emphasis role="comment">&#32;&#32;</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00006"/>00006 <emphasis role="comment">&#32;&#32;This&#32;program&#32;is&#32;free&#32;software:&#32;you&#32;can&#32;redistribute&#32;it&#32;and/or&#32;modify</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00007"/>00007 <emphasis role="comment">&#32;&#32;it&#32;under&#32;the&#32;terms&#32;of&#32;the&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License&#32;as</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00008"/>00008 <emphasis role="comment">&#32;&#32;published&#32;by&#32;the&#32;Free&#32;Software&#32;Foundation,&#32;either&#32;version&#32;3&#32;of&#32;the</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00009"/>00009 <emphasis role="comment">&#32;&#32;License,&#32;or&#32;(at&#32;your&#32;option)&#32;any&#32;later&#32;version.</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00010"/>00010 <emphasis role="comment"></emphasis>
+<anchor xml:id="_gauss_8h_source_1l00011"/>00011 <emphasis role="comment">&#32;&#32;This&#32;program&#32;is&#32;distributed&#32;in&#32;the&#32;hope&#32;that&#32;it&#32;will&#32;be&#32;useful,</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00012"/>00012 <emphasis role="comment">&#32;&#32;but&#32;WITHOUT&#32;ANY&#32;WARRANTY;&#32;without&#32;even&#32;the&#32;implied&#32;warranty&#32;of</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00013"/>00013 <emphasis role="comment">&#32;&#32;MERCHANTABILITY&#32;or&#32;FITNESS&#32;FOR&#32;A&#32;PARTICULAR&#32;PURPOSE.&#32;See&#32;the</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00014"/>00014 <emphasis role="comment">&#32;&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License&#32;for&#32;more&#32;details.</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00015"/>00015 <emphasis role="comment"></emphasis>
+<anchor xml:id="_gauss_8h_source_1l00016"/>00016 <emphasis role="comment">&#32;&#32;You&#32;should&#32;have&#32;received&#32;a&#32;copy&#32;of&#32;the&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00017"/>00017 <emphasis role="comment">&#32;&#32;along&#32;with&#32;this&#32;program.&#32;If&#32;not,&#32;see&#32;&lt;http://www.gnu.org/licenses/&gt;.</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00018"/>00018 <emphasis role="comment"></emphasis>
+<anchor xml:id="_gauss_8h_source_1l00019"/>00019 <emphasis role="comment">&#32;&#32;gauss.h&#32;-&#32;This&#32;file&#32;belongs&#32;to&#32;ELSDc&#32;project&#32;(Ellipse&#32;and&#32;Line&#32;Segment&#32;</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00020"/>00020 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Detector&#32;with&#32;continuous&#32;validation).</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00021"/>00021 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;-&#32;It&#32;defines&#32;data&#32;structure&#32;for&#32;Gaussian&#32;filter&#32;and&#32;function&#32;</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00022"/>00022 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;prototype&#32;for&#32;applying&#32;it.&#32;</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00023"/>00023 <emphasis role="comment"></emphasis>
+<anchor xml:id="_gauss_8h_source_1l00024"/>00024 <emphasis role="comment">------------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00025"/>00025 
+<anchor xml:id="_gauss_8h_source_1l00026"/>00026 
+<anchor xml:id="_gauss_8h_source_1l00027"/>00027 <emphasis role="preprocessor">#ifndef&#32;GAUSS_H</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00028"/>00028 <emphasis role="preprocessor">#define&#32;GAUSS_H</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00029"/>00029 
+<anchor xml:id="_gauss_8h_source_1l00030"/>00030 
+<anchor xml:id="_gauss_8h_source_1l00031"/>00031 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00035"/><link linkend="_structGaussFilter">00035</link> <emphasis role="keyword">typedef</emphasis>&#32;<emphasis role="keyword">struct&#32;</emphasis><link linkend="_structGaussFilter">GaussFilter</link>
+<anchor xml:id="_gauss_8h_source_1l00036"/>00036 {
+<anchor xml:id="_gauss_8h_source_1l00037"/><link linkend="_structGaussFilter_1a70b5e28b5bc3d1b63a7435c5fe50b837">00037</link> &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_structGaussFilter_1a70b5e28b5bc3d1b63a7435c5fe50b837">dim</link>;
+<anchor xml:id="_gauss_8h_source_1l00038"/><link linkend="_structGaussFilter_1a4ef930be9d7ab47d59cc0668d0d1fac8">00038</link> &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_structGaussFilter_1a4ef930be9d7ab47d59cc0668d0d1fac8">sigma</link>;
+<anchor xml:id="_gauss_8h_source_1l00039"/><link linkend="_structGaussFilter_1abb40a2ee28b839fb572e161c68141faf">00039</link> &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_structGaussFilter_1abb40a2ee28b839fb572e161c68141faf">mean</link>;
+<anchor xml:id="_gauss_8h_source_1l00040"/><link linkend="_structGaussFilter_1a2098158062e3e63fce7d2575b324c386">00040</link> &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;*<link linkend="_structGaussFilter_1a2098158062e3e63fce7d2575b324c386">values</link>;
+<anchor xml:id="_gauss_8h_source_1l00041"/><link linkend="_gauss_8h_1a6ee94a16b020ba9e8c4f5574d2ef0110">00041</link> }&#32;*<link linkend="_gauss_8h_1a6ee94a16b020ba9e8c4f5574d2ef0110">PGaussFilter</link>;&#32;<emphasis role="comment">/*&#32;pointer&#32;to&#32;Gauss&#32;filter&#32;structure&#32;*/</emphasis>
+<anchor xml:id="_gauss_8h_source_1l00042"/>00042 
+<anchor xml:id="_gauss_8h_source_1l00043"/>00043 <link linkend="_structImageDouble">PImageDouble</link>&#32;<link linkend="_gauss_8h_1a5e6f7e6e45933ad48a9c61dff80bb52e">gaussian_sampler</link>(&#32;<link linkend="_structImageDouble">PImageDouble</link>&#32;in,&#32;<emphasis role="keywordtype">double</emphasis>&#32;scale,&#32;
+<anchor xml:id="_gauss_8h_source_1l00044"/>00044 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;sigma_scale&#32;);
+<anchor xml:id="_gauss_8h_source_1l00045"/>00045 
+<anchor xml:id="_gauss_8h_source_1l00046"/>00046 <emphasis role="preprocessor">#endif</emphasis>
+</programlisting></section>

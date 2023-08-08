@@ -1,0 +1,725 @@
+\doxysection{curve\+\_\+grow.\+c}
+\hypertarget{curve__grow_8c_source}{}\label{curve__grow_8c_source}\index{src/curve\_grow.c@{src/curve\_grow.c}}
+\mbox{\hyperlink{curve__grow_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00001}00001\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00002}00002\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00003}00003\ \textcolor{comment}{\ \ Copyright\ (c)\ 2012-\/2014\ viorica\ patraucean\ (vpatrauc@gmail.com)}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00004}00004\ \textcolor{comment}{\ \ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00005}00005\ \textcolor{comment}{\ \ This\ program\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00006}00006\ \textcolor{comment}{\ \ it\ under\ the\ terms\ of\ the\ GNU\ Affero\ General\ Public\ License\ as}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00007}00007\ \textcolor{comment}{\ \ published\ by\ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00008}00008\ \textcolor{comment}{\ \ License,\ or\ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00009}00009\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00010}00010\ \textcolor{comment}{\ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00011}00011\ \textcolor{comment}{\ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00012}00012\ \textcolor{comment}{\ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ See\ the}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00013}00013\ \textcolor{comment}{\ \ GNU\ Affero\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00014}00014\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00015}00015\ \textcolor{comment}{\ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ Affero\ General\ Public\ License}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00016}00016\ \textcolor{comment}{\ \ along\ with\ this\ program.\ If\ not,\ see\ <http://www.gnu.org/licenses/>.}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00017}00017\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00018}00018\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00019}00019\ \textcolor{comment}{\ \ elsdc.c\ -\/\ This\ file\ belongs\ to\ ELSDc\ project\ (Ellipse\ and\ Line\ Segment\ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00020}00020\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ Detector\ with\ continuous\ validation).}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00021}00021\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ -\/\ It\ contains\ the\ main\ detection\ procedure:\ curve\ growing\ and\ curve}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00022}00022\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ validation.\ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00023}00023\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00024}00024\ \textcolor{comment}{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00027}00027\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00028}00028\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00029}00029\ \textcolor{preprocessor}{\#include\ <math.h>}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00030}00030\ \textcolor{preprocessor}{\#include\ <float.h>}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00031}00031\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00032}00032\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{misc_8h}{misc.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00033}00033\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{image_8h}{image.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00034}00034\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{rectangle_8h}{rectangle.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00035}00035\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{iterator_8h}{iterator.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00036}00036\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{polygon_8h}{polygon.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00037}00037\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{ring_8h}{ring.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00038}00038\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{curve__grow_8h}{curve\_grow.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00039}00039\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00041}00041\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00042}00042\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00049}00049\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ region\_grow(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ angles,\ \mbox{\hyperlink{structImageInt}{PImageInt}}\ used,\ \mbox{\hyperlink{structPoint}{Point}}\ *reg,\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00050}00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ start,\ \textcolor{keywordtype}{int}\ idx\_buff,\ \textcolor{keywordtype}{int}\ *end,\ \textcolor{keywordtype}{int}\ label,\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00051}00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ label\_start,\ \textcolor{keywordtype}{double}\ prec,\ \textcolor{keywordtype}{double}\ *reg\_angle\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00052}00052\ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00053}00053\ \ \ \textcolor{keywordtype}{double}\ sumdx\ =\ 0.0,\ sumdy\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00054}00054\ \ \ \textcolor{keywordtype}{double}\ ang;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00055}00055\ \ \ \textcolor{keywordtype}{int}\ xx,\ yy,\ i;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00056}00056\ \ \ \textcolor{keywordtype}{int}\ adr;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00057}00057\ \ \ \textcolor{comment}{/*\ check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00058}00058\ \ \ \textcolor{keywordflow}{if}(\ (angles\ ==\ NULL)\ ||\ (angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00059}00059\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}region\_grow:\ invalid\ image\ 'angles'."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00060}00060\ \ \ \textcolor{keywordflow}{if}(\ (used\ ==\ NULL)\ ||\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00061}00061\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}region\_grow:\ invalid\ image\ 'used'."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00062}00062\ \ \ \textcolor{keywordflow}{if}(\ reg\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}region\_grow:\ invalid\ input\ region."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00063}00063\ \ \ \textcolor{comment}{/*\ if(\ start\ >=\ *end\ )\ error("{}region\_grow:\ invalid\ indexes."{});*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00064}00064\ \ \ \textcolor{keywordflow}{if}(\ prec\ <\ 0.0\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}region\_grow:\ 'prec'\ must\ be\ positive."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00065}00065\ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00066}00066\ \ \ \textcolor{comment}{/*\ Initialise\ *reg\_angle\ with\ the\ value\ of\ the\ pixels\ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00067}00067\ \textcolor{comment}{\ \ \ \ \ orientations\ in\ the\ buffer\ part\ of\ reg.\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00068}00068\ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00069}00069\ \ \ \textcolor{keywordflow}{for}(\ i=start;\ i<idx\_buff;\ i++\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00070}00070\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00071}00071\ \ \ \ \ \ \ xx\ =\ reg[i].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}};\ yy\ =\ reg[i].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00072}00072\ \ \ \ \ \ \ adr\ =\ xx\ +\ yy*angles-\/>\mbox{\hyperlink{structImageDouble_aa4b0263c533c5ce471067bd5ede24477}{xsize}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00073}00073\ \ \ \ \ \ \ sumdx\ +=\ cos(\ angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[adr]\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00074}00074\ \ \ \ \ \ \ sumdy\ +=\ sin(\ angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[adr]\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00075}00075\ \ \ \ \ \ \ used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[adr]\ =\ label;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00076}00076\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00077}00077\ \ \ *reg\_angle\ =\ atan2(\ sumdy,\ sumdx\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00078}00078\ \ \ \textcolor{comment}{/*\ try\ neighbors\ as\ new\ region\ points\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00079}00079\ \ \ \textcolor{keywordflow}{for}(\ i=start;\ i<*end;\ i++\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00080}00080\ \ \ \ \ \textcolor{keywordflow}{for}(\ xx=reg[i].x-\/1;\ xx<=reg[i].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}+1;\ xx++\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00081}00081\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ yy=reg[i].y-\/1;\ yy<=reg[i].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}+1;\ yy++\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00082}00082\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ \mbox{\hyperlink{image_8c_a7d75c600cc492bd8efbc1cc0c3819d88}{in\_image}}(\ xx,\ yy,\ used-\/>\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}},\ used-\/>\mbox{\hyperlink{structImageInt_a7e7fdb6b4d76fd619024da6878c27d58}{ysize}}\ )\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00083}00083\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ adr\ =\ yy\ *\ angles-\/>\mbox{\hyperlink{structImageDouble_aa4b0263c533c5ce471067bd5ede24477}{xsize}}\ +\ xx;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00085}00085\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[adr]\ !=\ \mbox{\hyperlink{misc_8h_abcd0a22ee4346cad5706adb6d2119429}{USED}})\ \&\&\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[adr]\ !=\ label)\ \&\&\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[adr]\ <\ label\_start)\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00088}00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ang\ =\ angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[adr];}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (ang\ !=\ \mbox{\hyperlink{misc_8h_a18d9edd8c3bfc9c1837a10505dfa037c}{NOTDEF}}\ )\ \&\&\ (\mbox{\hyperlink{misc_8c_a7bd5f9830327532b199607799edf7fe2}{is\_aligned}}(\ ang,\ *reg\_angle,\ prec\ ))\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00091}00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ add\ point\ and\ mark\ as\ already\ visited\ in\ this\ call\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00092}00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[adr]\ =\ label;\ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00093}00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reg[*end].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ =\ xx;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00094}00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reg[*end].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ =\ yy;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00095}00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++(*end);\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00096}00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ update\ region's\ angle\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sumdx\ +=\ cos(ang);}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sumdy\ +=\ sin(ang);}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00099}00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *reg\_angle\ =\ atan2(\ sumdy,\ sumdx\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00100}00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00101}00101\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00102}00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00103}00103\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00104}00104\ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00105}00105\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00106}00106\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00107}00107\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00108}00108\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00109}00109\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00110}00110\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/\ FUNCTIONS\ FOR\ GATHERING\ CONNECTED\ CONVEX\ REGIONS\ OF\ PIXELS\ -\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00111}00111\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00112}00112\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00113}00113\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00114}00114\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ FUNCTIONS\ FOR\ RECTANGLE\ ESTIMATION\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00115}00115\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00116}00116\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00117}00117\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00123}00123\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ get\_theta(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ gradmag,\ \mbox{\hyperlink{structPoint}{Point}}\ *reg,\ \textcolor{keywordtype}{int}\ start,\ \textcolor{keywordtype}{int}\ end,\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ cx,\ \textcolor{keywordtype}{double}\ cy,\ \textcolor{keywordtype}{double}\ reg\_angle,\ \textcolor{keywordtype}{double}\ prec\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00125}00125\ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00126}00126\ \ \ \textcolor{keywordtype}{double}\ lambda1,\ lambda2,\ tmp,\ theta,\ weight,\ sum;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00127}00127\ \ \ \textcolor{keywordtype}{double}\ Ixx\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00128}00128\ \ \ \textcolor{keywordtype}{double}\ Iyy\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00129}00129\ \ \ \textcolor{keywordtype}{double}\ Ixy\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00130}00130\ \ \ \textcolor{keywordtype}{int}\ i;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00131}00131\ \ \ \textcolor{comment}{/*\ check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00132}00132\ \ \ \textcolor{keywordflow}{if}(\ reg\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}get\_theta:\ invalid\ input\ region."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00133}00133\ \ \ \textcolor{keywordflow}{if}(\ (gradmag\ ==\ NULL)\ ||\ (gradmag-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00134}00134\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}get\_theta:\ invalid\ image\ 'gradmag'."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00135}00135\ \ \ \textcolor{keywordflow}{if}(\ start\ >=\ end\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}get\_theta:\ invalid\ indexes."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00136}00136\ \ \ \textcolor{keywordflow}{if}(\ prec\ <\ 0.0\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}get\_theta:\ 'prec'\ must\ be\ positive."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00137}00137\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00138}00138\ \ \ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ theta\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00139}00139\ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00140}00140\ \textcolor{comment}{\ \ \ \ \ \ Region\ inertia\ matrix\ A:}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00141}00141\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ Ixx\ Ixy}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00142}00142\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ Ixy\ Iyy}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00143}00143\ \textcolor{comment}{\ \ \ \ \ \ where}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00144}00144\ \textcolor{comment}{\ \ \ \ \ \ \ \ Ixx\ =\ \(\backslash\)sum\_i\ y\_i\string^2}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00145}00145\ \textcolor{comment}{\ \ \ \ \ \ \ \ Iyy\ =\ \(\backslash\)sum\_i\ x\_i\string^2}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00146}00146\ \textcolor{comment}{\ \ \ \ \ \ \ \ Ixy\ =\ -\/\(\backslash\)sum\_i\ x\_i\ y\_i}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00147}00147\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00148}00148\ \textcolor{comment}{\ \ \ \ \ \ lambda1\ and\ lambda2\ are\ the\ eigenvalues,\ with\ lambda1\ >=\ lambda2.}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00149}00149\ \textcolor{comment}{\ \ \ \ \ \ They\ are\ found\ by\ solving\ the\ characteristic\ polynomial}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00150}00150\ \textcolor{comment}{\ \ \ \ \ \ det(\(\backslash\)lambda\ I\ -\/\ A)\ =\ 0.}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00151}00151\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00152}00152\ \textcolor{comment}{\ \ \ \ \ \ To\ get\ the\ line\ segment\ direction\ we\ want\ to\ get\ the\ eigenvector\ of}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00153}00153\ \textcolor{comment}{\ \ \ \ \ \ the\ smaller\ eigenvalue.\ We\ have\ to\ solve\ a,b\ in:}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00154}00154\ \textcolor{comment}{\ \ \ \ \ \ \ \ a.Ixx\ +\ b.Ixy\ =\ a.lambda2}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00155}00155\ \textcolor{comment}{\ \ \ \ \ \ \ \ a.Ixy\ +\ b.Iyy\ =\ b.lambda2}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00156}00156\ \textcolor{comment}{\ \ \ \ \ \ We\ want\ the\ angle\ theta\ =\ atan(b/a).\ I\ can\ be\ computed\ with}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00157}00157\ \textcolor{comment}{\ \ \ \ \ \ any\ of\ the\ two\ equations:}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00158}00158\ \textcolor{comment}{\ \ \ \ \ \ \ \ theta\ =\ atan(\ (lambda2-\/Ixx)\ /\ Ixy\ )}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00159}00159\ \textcolor{comment}{\ \ \ \ \ \ or}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00160}00160\ \textcolor{comment}{\ \ \ \ \ \ \ \ theta\ =\ atan(\ Ixy\ /\ (lambda2-\/Iyy)\ )}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00161}00161\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00162}00162\ \textcolor{comment}{\ \ \ \ \ \ When\ |Ixx|\ >\ |Iyy|\ we\ use\ the\ first,\ otherwise\ the\ second}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00163}00163\ \textcolor{comment}{\ \ \ \ \ \ (just\ to\ get\ better\ numeric\ precision).}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00164}00164\ \textcolor{comment}{\ \ \ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00165}00165\ \ \ sum\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00166}00166\ \ \ \textcolor{keywordflow}{for}(\ i=start;\ i<end;\ i++\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00167}00167\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00168}00168\ \ \ \ \ \ \ weight\ =\ gradmag-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[\ reg[i].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ +\ reg[i].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ *\ gradmag-\/>\mbox{\hyperlink{structImageDouble_aa4b0263c533c5ce471067bd5ede24477}{xsize}}\ ];}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00169}00169\ \ \ \ \ \ \ Ixx\ +=\ (\ (double)\ reg[i].y\ -\/\ cy\ )\ *\ (\ (double)\ reg[i].y\ -\/\ cy\ )\ *\ weight;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00170}00170\ \ \ \ \ \ \ Iyy\ +=\ (\ (double)\ reg[i].x\ -\/\ cx\ )\ *\ (\ (double)\ reg[i].x\ -\/\ cx\ )\ *\ weight;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00171}00171\ \ \ \ \ \ \ Ixy\ -\/=\ (\ (double)\ reg[i].x\ -\/\ cx\ )\ *\ (\ (double)\ reg[i].y\ -\/\ cy\ )\ *\ weight;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00172}00172\ \ \ \ \ \ \ sum\ +=\ weight;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00173}00173\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00174}00174\ \ \ \textcolor{keywordflow}{if}(\ sum\ <=\ 0.0\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}get\_theta:\ weights\ sum\ less\ or\ equal\ to\ zero."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00175}00175\ \ \ Ixx\ /=\ sum;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00176}00176\ \ \ Iyy\ /=\ sum;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00177}00177\ \ \ Ixy\ /=\ sum;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00178}00178\ \ \ lambda1\ =\ (\ Ixx\ +\ Iyy\ +\ sqrt(\ (Ixx-\/Iyy)*(Ixx-\/Iyy)\ +\ 4.0*Ixy*Ixy\ )\ )\ /\ 2.0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00179}00179\ \ \ lambda2\ =\ (\ Ixx\ +\ Iyy\ -\/\ sqrt(\ (Ixx-\/Iyy)*(Ixx-\/Iyy)\ +\ 4.0*Ixy*Ixy\ )\ )\ /\ 2.0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00180}00180\ \ \ \textcolor{keywordflow}{if}(\ fabs(lambda1)\ <\ fabs(lambda2)\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00181}00181\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00182}00182\ \ \ \ \ \ \ fprintf(stderr,\textcolor{stringliteral}{"{}Ixx\ \%g\ Iyy\ \%g\ Ixy\ \%g\ lamb1\ \%g\ lamb2\ \%g\ -\/\ lamb1\ <\ lamb2\(\backslash\)n"{}},}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00183}00183\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Ixx,\ Iyy,\ Ixy,\ lambda1,\ lambda2\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00184}00184\ \ \ \ \ \ \ tmp\ =\ lambda1;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00185}00185\ \ \ \ \ \ \ lambda1\ =\ lambda2;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00186}00186\ \ \ \ \ \ \ lambda2\ =\ tmp;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00187}00187\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00188}00188\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00189}00189\ \ \ \textcolor{keywordflow}{if}(\ fabs(Ixx)\ >\ fabs(Iyy)\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00190}00190\ \ \ \ \ theta\ =\ atan2(\ lambda2-\/Ixx,\ Ixy\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00191}00191\ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00192}00192\ \ \ \ \ theta\ =\ atan2(\ Ixy,\ lambda2-\/Iyy\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00193}00193\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00194}00194\ \ \ \textcolor{comment}{/*\ The\ previous\ procedure\ doesn't\ care\ about\ orientation,}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00195}00195\ \textcolor{comment}{\ \ \ \ \ so\ it\ could\ be\ wrong\ by\ 180\ degrees.\ Here\ is\ corrected\ if\ necessary.\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00196}00196\ \ \ \textcolor{keywordflow}{if}(\ \mbox{\hyperlink{misc_8c_a4e46bd783e4efe71bee053481afeb4a9}{angle\_diff}}(\ theta-\/\mbox{\hyperlink{misc_8h_ae11c01f236a7a89f767a7b34283da201}{M\_1\_2\_PI}},\ reg\_angle\ )\ >\ prec\ )\ theta\ +=\ \mbox{\hyperlink{misc_8h_ae71449b1cc6e6250b91f539153a7a0d3}{M\_PI}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00197}00197\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00198}00198\ \ \ \textcolor{comment}{/*\ If\ the\ estimated\ orientation\ is\ still\ very\ different\ wrt\ reg\_angle}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00199}00199\ \textcolor{comment}{\ \ \ \ \ (region\ is\ nearly\ square),\ return\ the\ orthogonal\ to\ original\ reg\_angle.\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00200}00200\ \ \ \textcolor{keywordflow}{if}(\ \mbox{\hyperlink{misc_8c_a4e46bd783e4efe71bee053481afeb4a9}{angle\_diff}}(\ theta-\/\mbox{\hyperlink{misc_8h_ae11c01f236a7a89f767a7b34283da201}{M\_1\_2\_PI}},\ reg\_angle\ )\ >\ prec\ )\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00201}00201\ \ \ \ \ theta\ =\ reg\_angle\ +\ \mbox{\hyperlink{misc_8h_ae11c01f236a7a89f767a7b34283da201}{M\_1\_2\_PI}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00202}00202\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00203}00203\ \ \ \textcolor{keywordflow}{while}(\ theta\ >\ \ \mbox{\hyperlink{misc_8h_ae71449b1cc6e6250b91f539153a7a0d3}{M\_PI}}\ )\ theta\ -\/=\ \mbox{\hyperlink{misc_8h_a8b5e22fbd5c798aac5298e80fc91b7fe}{M\_2\_\_PI}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00204}00204\ \ \ \textcolor{keywordflow}{while}(\ theta\ <\ -\/\mbox{\hyperlink{misc_8h_ae71449b1cc6e6250b91f539153a7a0d3}{M\_PI}}\ )\ theta\ +=\ \mbox{\hyperlink{misc_8h_a8b5e22fbd5c798aac5298e80fc91b7fe}{M\_2\_\_PI}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00205}00205\ \ \ \textcolor{keywordflow}{return}\ theta;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00206}00206\ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00207}00207\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00208}00208\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00209}00209\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00214}\mbox{\hyperlink{curve__grow_8c_a6309f2cc70e39c4d40bbe504844b4866}{00214}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{curve__grow_8c_a6309f2cc70e39c4d40bbe504844b4866}{region2rect}}(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ gradmag,\ \mbox{\hyperlink{structPoint}{Point}}\ *reg,\ \textcolor{keywordtype}{int}\ start,\ \textcolor{keywordtype}{int}\ end,}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00215}00215\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ reg\_angle,\ \mbox{\hyperlink{structRectangle}{Rectangle}}\ *rec,\ \textcolor{keywordtype}{double}\ prec\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00216}00216\ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00217}00217\ \ \ \textcolor{keywordtype}{double}\ cx,\ cy,\ dx,\ dy,\ l,\ w,\ theta;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00218}00218\ \ \ \textcolor{keywordtype}{double}\ weight,sum,l\_min,l\_max,w\_min,w\_max;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00219}00219\ \ \ \textcolor{keywordtype}{int}\ i,\ adr;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00220}00220\ \ \ \textcolor{comment}{/*\ Check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00221}00221\ \ \ \textcolor{keywordflow}{if}(\ (gradmag\ ==\ NULL)\ ||\ (gradmag-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00222}00222\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}region2rect:\ invalid\ image\ 'gradmag'."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00223}00223\ \ \ \textcolor{keywordflow}{if}(\ reg\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}region2rect:\ invalid\ input\ region."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00224}00224\ \ \ \textcolor{keywordflow}{if}(\ start\ >=\ end\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}region2rect:\ invalid\ indexes."{}});\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00225}00225\ \ \ \textcolor{keywordflow}{if}(\ rec\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}region2rect:\ invalid\ 'rec'."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00226}00226\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00227}00227\ \ \ \textcolor{comment}{/*\ Center\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00228}00228\ \ \ cx\ =\ cy\ =\ sum\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00229}00229\ \ \ \textcolor{keywordflow}{for}(\ i=start;\ i<end;\ i++\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00230}00230\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00231}00231\ \ \ \ \ \ \ adr\ =\ reg[i].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ +\ reg[i].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ *\ gradmag-\/>\mbox{\hyperlink{structImageDouble_aa4b0263c533c5ce471067bd5ede24477}{xsize}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00232}00232\ \ \ \ \ \ \ weight\ =\ gradmag-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[adr];}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00233}00233\ \ \ \ \ \ \ cx\ +=\ (double)\ reg[i].x\ *\ weight;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00234}00234\ \ \ \ \ \ \ cy\ +=\ (double)\ reg[i].y\ *\ weight;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00235}00235\ \ \ \ \ \ \ sum\ +=\ weight;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00236}00236\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00237}00237\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00238}00238\ \ \ cx\ /=\ sum;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00239}00239\ \ \ cy\ /=\ sum;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00240}00240\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00241}00241\ \ \ \textcolor{comment}{/*\ Orientation\ */}\ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00242}00242\ \ \ theta\ =\ get\_theta(\ gradmag,\ reg,\ start,\ end,\ cx,\ cy,\ reg\_angle,\ prec\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00243}00243\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00244}00244\ \ \ \textcolor{comment}{/*\ Length\ and\ width\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00245}00245\ \ \ dx\ =\ cos(theta);}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00246}00246\ \ \ dy\ =\ sin(theta);}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00247}00247\ \ \ l\_min\ =\ l\_max\ =\ w\_min\ =\ w\_max\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00248}00248\ \ \ \textcolor{keywordflow}{for}(\ i=start;\ i<end;\ i++\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00249}00249\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00250}00250\ \ \ \ \ \ \ l\ =\ \ (\ (double)\ reg[i].x\ -\/\ cx)\ *\ dx\ +\ (\ (double)\ reg[i].y\ -\/\ cy)\ *\ dy;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00251}00251\ \ \ \ \ \ \ w\ =\ -\/(\ (double)\ reg[i].x\ -\/\ cx)\ *\ dy\ +\ (\ (double)\ reg[i].y\ -\/\ cy)\ *\ dx;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00252}00252\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00253}00253\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ l\ >\ l\_max\ )\ l\_max\ =\ l;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00254}00254\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ l\ <\ l\_min\ )\ l\_min\ =\ l;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00255}00255\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ w\ >\ w\_max\ )\ w\_max\ =\ w;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00256}00256\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ w\ <\ w\_min\ )\ w\_min\ =\ w;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00257}00257\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00258}00258\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00259}00259\ \ \ \textcolor{comment}{/*\ Store\ values\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00260}00260\ \ \ rec-\/>\mbox{\hyperlink{structRectangle_ac75b803b570527306e1e744bfb7a604f}{x1}}\ =\ cx\ +\ l\_min\ *\ dx;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00261}00261\ \ \ rec-\/>\mbox{\hyperlink{structRectangle_ac3b72e5b77595ca2340ecf8ccfe5fd99}{y1}}\ =\ cy\ +\ l\_min\ *\ dy;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00262}00262\ \ \ rec-\/>\mbox{\hyperlink{structRectangle_adcf04f5f1964d18b332643939561da0d}{x2}}\ =\ cx\ +\ l\_max\ *\ dx;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00263}00263\ \ \ rec-\/>\mbox{\hyperlink{structRectangle_a5347e514ebe985fb371754ffd2b5ff83}{y2}}\ =\ cy\ +\ l\_max\ *\ dy;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00264}00264\ \ \ rec-\/>\mbox{\hyperlink{structRectangle_a9df23e056f5d1a0388cd8190431c0e03}{width}}\ =\ w\_max\ -\/\ w\_min;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00265}00265\ \ \ rec-\/>\mbox{\hyperlink{structRectangle_ad1515daed95ba43fd919fddcf3144d1a}{wmin}}\ =\ w\_min;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00266}00266\ \ \ rec-\/>\mbox{\hyperlink{structRectangle_a54612b6d232db5e1a58ae8b2f26b1df4}{wmax}}\ =\ w\_max;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00267}00267\ \ \ rec-\/>\mbox{\hyperlink{structRectangle_ac176cb816ac192bd8ec2f73c40b43309}{cx}}\ =\ cx;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00268}00268\ \ \ rec-\/>\mbox{\hyperlink{structRectangle_a2d6a093e4a6fe06658d3d01563d028c9}{cy}}\ =\ cy;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00269}00269\ \ \ rec-\/>\mbox{\hyperlink{structRectangle_aca81c35c21e3a5f7f3a8d24504e76664}{theta}}\ =\ theta;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00270}00270\ \ \ rec-\/>\mbox{\hyperlink{structRectangle_a229d11aff11a7482259d1296b9b70b8a}{dx}}\ =\ dx;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00271}00271\ \ \ rec-\/>\mbox{\hyperlink{structRectangle_a9deb6f886b19d50e714d890c3c268efc}{dy}}\ =\ dy;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00272}00272\ \ \ rec-\/>\mbox{\hyperlink{structRectangle_aaa22d55a01e89d03ac81a5bbc95105aa}{prec}}\ =\ prec;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00273}00273\ \ \ rec-\/>\mbox{\hyperlink{structRectangle_ad4bd51cdbe6ba41894905207ed94974f}{len}}\ =\ \mbox{\hyperlink{misc_8c_adce57df8ac5e5faa57d86a66535fdd92}{dist}}(\ rec-\/>\mbox{\hyperlink{structRectangle_ac75b803b570527306e1e744bfb7a604f}{x1}},\ rec-\/>\mbox{\hyperlink{structRectangle_ac3b72e5b77595ca2340ecf8ccfe5fd99}{y1}},\ rec-\/>\mbox{\hyperlink{structRectangle_adcf04f5f1964d18b332643939561da0d}{x2}},\ rec-\/>\mbox{\hyperlink{structRectangle_a5347e514ebe985fb371754ffd2b5ff83}{y2}}\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00274}00274\ \ \ \textcolor{comment}{/*\ Correct\ if\ rectangle\ too\ thin\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00275}00275\ \ \ \textcolor{keywordflow}{if}(\ rec-\/>\mbox{\hyperlink{structRectangle_a9df23e056f5d1a0388cd8190431c0e03}{width}}\ <\ 1.0\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00276}00276\ \ \ \ \ \{\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00277}00277\ \ \ \ \ \ \ rec-\/>\mbox{\hyperlink{structRectangle_a9df23e056f5d1a0388cd8190431c0e03}{width}}\ =\ 1.0;\ rec-\/>\mbox{\hyperlink{structRectangle_ad1515daed95ba43fd919fddcf3144d1a}{wmin}}\ =\ -\/0.5;\ rec-\/>\mbox{\hyperlink{structRectangle_a54612b6d232db5e1a58ae8b2f26b1df4}{wmax}}\ =\ 0.5;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00278}00278\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00279}00279\ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00280}00280\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00281}00281\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00282}00282\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00287}00287\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ reduce\_region\_radius(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ gradmag,\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ angles,}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00288}00288\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageInt}{PImageInt}}\ used,\ \mbox{\hyperlink{structPoint}{Point}}\ *reg,\ \textcolor{keywordtype}{int}\ start,\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00289}00289\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *end,\ \textcolor{keywordtype}{double}\ reg\_angle,\ \mbox{\hyperlink{structRectangle}{Rectangle}}\ *rec,\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00290}00290\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{double}\ density\_th,\ \textcolor{keywordtype}{double}\ prec\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00291}00291\ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00292}00292\ \ \ \textcolor{keywordtype}{double}\ density,\ rad1,\ rad2,\ rad;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00293}00293\ \ \ \textcolor{keywordtype}{int}\ i;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00294}00294\ \ \ \textcolor{comment}{/*\ Check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00295}00295\ \ \ \textcolor{keywordflow}{if}(\ (gradmag\ ==\ NULL)\ ||\ (gradmag-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00296}00296\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}reduce\_region\_radius:\ invalid\ image\ 'gradmag'."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00297}00297\ \ \ \textcolor{keywordflow}{if}(\ (angles\ ==\ NULL)\ ||\ (angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00298}00298\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}reduce\_region\_radius:\ invalid\ image\ 'angles'."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00299}00299\ \ \ \textcolor{keywordflow}{if}(\ (used\ ==\ NULL)\ ||\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00300}00300\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}reduce\_region\_radius:\ invalid\ image\ 'used'."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00301}00301\ \ \ \textcolor{keywordflow}{if}(\ reg\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}reduce\_region\_radius:\ invalid\ input\ region."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00302}00302\ \ \ \textcolor{keywordflow}{if}(\ start\ >=\ *end\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}reduce\_region\_radius:\ invalid\ indexes."{}});\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00303}00303\ \ \ \textcolor{keywordflow}{if}(\ rec\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}reduce\_region\_radius:\ invalid\ 'rec'."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00304}00304\ \ \ \textcolor{keywordflow}{if}(\ prec\ <\ 0.0\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}reduce\_region\_radius:\ 'prec'\ must\ be\ positive."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00305}00305\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00306}00306\ \ \ \textcolor{comment}{/*\ Compute\ region\ points\ density\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00307}00307\ \ \ density\ =\ (double)\ (*end\ -\/\ start)\ /}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00308}00308\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (\mbox{\hyperlink{misc_8c_adce57df8ac5e5faa57d86a66535fdd92}{dist}}(rec-\/>\mbox{\hyperlink{structRectangle_ac75b803b570527306e1e744bfb7a604f}{x1}},rec-\/>\mbox{\hyperlink{structRectangle_ac3b72e5b77595ca2340ecf8ccfe5fd99}{y1}},rec-\/>\mbox{\hyperlink{structRectangle_adcf04f5f1964d18b332643939561da0d}{x2}},rec-\/>\mbox{\hyperlink{structRectangle_a5347e514ebe985fb371754ffd2b5ff83}{y2}})\ *\ rec-\/>\mbox{\hyperlink{structRectangle_a9df23e056f5d1a0388cd8190431c0e03}{width}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00309}00309\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00310}00310\ \ \ \textcolor{keywordflow}{if}(\ density\ >=\ density\_th\ )\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{misc_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00311}00311\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00312}00312\ \ \ \textcolor{comment}{/*\ Compute\ region\ radius\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00313}00313\ \ \ rad1\ =\ \mbox{\hyperlink{misc_8c_adce57df8ac5e5faa57d86a66535fdd92}{dist}}(\ (\textcolor{keywordtype}{double})x,\ (\textcolor{keywordtype}{double})y,\ rec-\/>\mbox{\hyperlink{structRectangle_ac75b803b570527306e1e744bfb7a604f}{x1}},\ rec-\/>\mbox{\hyperlink{structRectangle_ac3b72e5b77595ca2340ecf8ccfe5fd99}{y1}}\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00314}00314\ \ \ rad2\ =\ \mbox{\hyperlink{misc_8c_adce57df8ac5e5faa57d86a66535fdd92}{dist}}(\ (\textcolor{keywordtype}{double})x,\ (\textcolor{keywordtype}{double})y,\ rec-\/>\mbox{\hyperlink{structRectangle_adcf04f5f1964d18b332643939561da0d}{x2}},\ rec-\/>\mbox{\hyperlink{structRectangle_a5347e514ebe985fb371754ffd2b5ff83}{y2}}\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00315}00315\ \ \ rad\ =\ rad1\ >\ rad2\ ?\ rad1\ :\ rad2;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00316}00316\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00317}00317\ \ \ \textcolor{keywordflow}{while}(\ density\ <\ density\_th\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00318}00318\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00319}00319\ \ \ \ \ \ \ rad\ *=\ 0.75;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00320}00320\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00321}00321\ \ \ \ \ \ \ \textcolor{comment}{/*\ Remove\ points\ from\ the\ region\ and\ update\ 'used'\ map\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00322}00322\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ i=start;\ i<*end;\ i++\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00323}00323\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ \mbox{\hyperlink{misc_8c_adce57df8ac5e5faa57d86a66535fdd92}{dist}}(\ x,\ y,\ (\textcolor{keywordtype}{double})\ reg[i].x,\ (\textcolor{keywordtype}{double})\ reg[i].y\ )\ >\ rad\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00324}00324\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00325}00325\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ Point\ not\ kept,\ mark\ it\ as\ NOTUSED\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00326}00326\ \ \ \ \ \ \ \ \ \ \ \ \ used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[\ reg[i].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ +\ reg[i].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ *\ used-\/>\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}}\ ]\ =\ \mbox{\hyperlink{misc_8h_a8a397aec99143b8dcf8e553c0115eb42}{NOTUSED}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00327}00327\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ Remove\ point\ from\ the\ region\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00328}00328\ \ \ \ \ \ \ \ \ \ \ \ \ reg[i].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ =\ reg[*end-\/1].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}};\ \textcolor{comment}{/*\ if\ i==*end-\/1\ copy\ itself\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00329}00329\ \ \ \ \ \ \ \ \ \ \ \ \ reg[i].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ =\ reg[*end-\/1].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00330}00330\ \ \ \ \ \ \ \ \ \ \ \ \ -\/-\/(*end);}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00331}00331\ \ \ \ \ \ \ \ \ \ \ \ \ -\/-\/i;\ \textcolor{comment}{/*\ to\ avoid\ skipping\ one\ point\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00332}00332\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00333}00333\ \ \ \ \ \ \ \textcolor{comment}{/*\ Reject\ if\ the\ region\ is\ too\ small.}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00334}00334\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ 2\ is\ the\ minimal\ region\ size\ for\ 'region2rect'\ to\ work.\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00335}00335\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00336}00336\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (*end\ -\/\ start)\ <\ 2\ )\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{misc_8h_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00337}00337\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00338}00338\ \ \ \ \ \ \ \textcolor{comment}{/*\ Re-\/compute\ rectangle\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00339}00339\ \ \ \ \ \ \ \mbox{\hyperlink{curve__grow_8c_a6309f2cc70e39c4d40bbe504844b4866}{region2rect}}(\ gradmag,\ reg,\ start,\ *end,\ reg\_angle,\ rec,\ prec\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00340}00340\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00341}00341\ \ \ \ \ \ \ \textcolor{comment}{/*\ Re-\/compute\ region\ points\ density\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00342}00342\ \ \ \ \ \ \ density\ =\ (double)\ (\ *end\ -\/\ start)\ /}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00343}00343\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (\ \mbox{\hyperlink{misc_8c_adce57df8ac5e5faa57d86a66535fdd92}{dist}}(\ rec-\/>\mbox{\hyperlink{structRectangle_ac75b803b570527306e1e744bfb7a604f}{x1}},\ rec-\/>\mbox{\hyperlink{structRectangle_ac3b72e5b77595ca2340ecf8ccfe5fd99}{y1}},\ rec-\/>\mbox{\hyperlink{structRectangle_adcf04f5f1964d18b332643939561da0d}{x2}},\ rec-\/>\mbox{\hyperlink{structRectangle_a5347e514ebe985fb371754ffd2b5ff83}{y2}}\ )\ *\ rec-\/>\mbox{\hyperlink{structRectangle_a9df23e056f5d1a0388cd8190431c0e03}{width}}\ );\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00344}00344\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00345}00345\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{misc_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00346}00346\ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00347}00347\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00348}00348\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00349}00349\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00358}00358\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ refine(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ gradmag,\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ angles,\ \mbox{\hyperlink{structImageInt}{PImageInt}}\ used,\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00359}00359\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ *reg,\ \textcolor{keywordtype}{int}\ start,\ \textcolor{keywordtype}{int}\ idx\_buff,\ \textcolor{keywordtype}{int}\ *end,\ \textcolor{keywordtype}{int}\ *label,}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00360}00360\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ label\_start,\ \mbox{\hyperlink{structRectangle}{Rectangle}}\ *rec,\ \textcolor{keywordtype}{double}\ density\_th,\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00361}00361\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ prec\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00362}00362\ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00363}00363\ \ \ \textcolor{keywordtype}{double}\ angle,\ ang\_d,\ mean\_angle,\ tau,\ density,\ ang\_c,\ sum,\ s\_sum,\ reg\_angle;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00364}00364\ \ \ \textcolor{keywordtype}{double}\ gradmax;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00365}00365\ \ \ \textcolor{keywordtype}{int}\ i,\ n,\ xx,\ yy;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00366}00366\ \ \ \textcolor{keywordtype}{int}\ xc,\ yc;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00367}00367\ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00368}00368\ \ \ \textcolor{comment}{/*\ Check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00369}00369\ \ \ \textcolor{keywordflow}{if}(\ (gradmag\ ==\ NULL)\ ||\ (gradmag-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00370}00370\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}refine:\ invalid\ image\ 'gradmag'."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00371}00371\ \ \ \textcolor{keywordflow}{if}(\ (angles\ ==\ NULL)\ ||\ (angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00372}00372\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}refine:\ invalid\ image\ 'angles'."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00373}00373\ \ \ \textcolor{keywordflow}{if}(\ (used\ ==\ NULL)\ ||\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}\ ==\ NULL)\ )\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00374}00374\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}refine:\ invalid\ image\ 'used'."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00375}00375\ \ \ \textcolor{keywordflow}{if}(\ reg\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}refine:\ invalid\ input\ region."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00376}00376\ \ \ \textcolor{keywordflow}{if}(\ start\ >=\ *end\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}refine:\ invalid\ indexes."{}});\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00377}00377\ \ \ \textcolor{keywordflow}{if}(\ *label\ <=\ 1\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}refine:\ forbidden\ label\ value."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00378}00378\ \ \ \textcolor{keywordflow}{if}(\ prec\ <\ 0.0\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}refine:\ 'prec'\ must\ be\ positive."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00379}00379\ \ \ \textcolor{keywordflow}{if}(\ rec\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}refine:\ invalid\ pointer\ 'rec'."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00380}00380\ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00381}00381\ \ \ \textcolor{comment}{/*\ Compute\ region\ points\ density\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00382}00382\ \ \ density\ =\ (double)\ (*end\ -\/\ start)\ /}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00383}00383\ \ \ \ \ \ \ \ \ \ \ \ \ (\ \mbox{\hyperlink{misc_8c_adce57df8ac5e5faa57d86a66535fdd92}{dist}}(rec-\/>\mbox{\hyperlink{structRectangle_ac75b803b570527306e1e744bfb7a604f}{x1}},rec-\/>\mbox{\hyperlink{structRectangle_ac3b72e5b77595ca2340ecf8ccfe5fd99}{y1}},rec-\/>\mbox{\hyperlink{structRectangle_adcf04f5f1964d18b332643939561da0d}{x2}},rec-\/>\mbox{\hyperlink{structRectangle_a5347e514ebe985fb371754ffd2b5ff83}{y2}})\ *\ rec-\/>\mbox{\hyperlink{structRectangle_a9df23e056f5d1a0388cd8190431c0e03}{width}}\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00384}00384\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00385}00385\ \ \ \textcolor{keywordflow}{if}(\ density\ >=\ density\_th\ )\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{misc_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00386}00386\ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00387}00387\ \ \ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/\ First\ try:\ reduce\ angle\ tolerance\ -\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00388}00388\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00389}00389\ \ \ \textcolor{comment}{/*\ Compute\ the\ new\ mean\ angle\ and\ tolerance\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00390}00390\ \ \ gradmax\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00391}00391\ \ \ xc\ =\ reg[start].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00392}00392\ \ \ yc\ =\ reg[start].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00393}00393\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00394}00394\ \ \ \textcolor{keywordflow}{for}(\ i=start;\ i<idx\_buff;\ i++\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00395}00395\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00396}00396\ \ \ \ \ \ \ xx\ =\ reg[i].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}};\ yy\ =\ reg[i].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00397}00397\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ gradmag-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[yy*gradmag-\/>\mbox{\hyperlink{structImageDouble_aa4b0263c533c5ce471067bd5ede24477}{xsize}}+xx]\ >\ gradmax\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00398}00398\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00399}00399\ \ \ \ \ \ \ \ \ \ \ xc\ =\ xx;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00400}00400\ \ \ \ \ \ \ \ \ \ \ yc\ =\ yy;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00401}00401\ \ \ \ \ \ \ \ \ \ \ gradmax\ =\ gradmag-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[yy*gradmag-\/>\mbox{\hyperlink{structImageDouble_aa4b0263c533c5ce471067bd5ede24477}{xsize}}+xx];}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00402}00402\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00403}00403\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00404}00404\ \ \ ang\_c\ =\ angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[\ xc\ +\ yc\ *\ angles-\/>\mbox{\hyperlink{structImageDouble_aa4b0263c533c5ce471067bd5ede24477}{xsize}}\ ];}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00405}00405\ \ \ sum\ =\ s\_sum\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00406}00406\ \ \ n\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00407}00407\ \ \ \textcolor{keywordflow}{for}(\ i=start;\ i<*end;\ i++\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00408}00408\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00409}00409\ \ \ \ \ \ \ used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[\ reg[i].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ +\ reg[i].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ *\ used-\/>\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}}\ ]\ =\ \mbox{\hyperlink{misc_8h_a8a397aec99143b8dcf8e553c0115eb42}{NOTUSED}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00410}00410\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ \mbox{\hyperlink{misc_8c_adce57df8ac5e5faa57d86a66535fdd92}{dist}}(\ (\textcolor{keywordtype}{double})xc,(\textcolor{keywordtype}{double})yc,(\textcolor{keywordtype}{double})reg[i].x,(\textcolor{keywordtype}{double})reg[i].y\ )\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00411}00411\ \ \ \ \ \ \ \ \ \ \ <\ rec-\/>\mbox{\hyperlink{structRectangle_a9df23e056f5d1a0388cd8190431c0e03}{width}}\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00412}00412\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00413}00413\ \ \ \ \ \ \ \ \ \ \ angle\ =\ angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[\ reg[i].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ +\ reg[i].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ *\ angles-\/>\mbox{\hyperlink{structImageDouble_aa4b0263c533c5ce471067bd5ede24477}{xsize}}\ ];}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00414}00414\ \ \ \ \ \ \ \ \ \ \ ang\_d\ =\ \mbox{\hyperlink{misc_8c_afc6d1f1cd19f4dfd5513632ab80322df}{angle\_diff\_signed}}(angle,ang\_c);}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00415}00415\ \ \ \ \ \ \ \ \ \ \ sum\ +=\ ang\_d;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00416}00416\ \ \ \ \ \ \ \ \ \ \ s\_sum\ +=\ ang\_d\ *ang\_d;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00417}00417\ \ \ \ \ \ \ \ \ \ \ ++n;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00418}00418\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00419}00419\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00420}00420\ \ \ mean\_angle\ =\ sum\ /\ (double)\ n;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00421}00421\ \ \ \textcolor{comment}{/*\ tau\ =\ 2\ *\ standard\ deviation\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00422}00422\ \ \ tau\ =\ \mbox{\hyperlink{misc_8h_a24e753bacac6be5f30e18f8a2bdefda4}{max}}(2.0\ *\ sqrt(\ (s\_sum\ -\/\ 2.0\ *\ mean\_angle\ *\ sum)\ /\ (\textcolor{keywordtype}{double})\ n}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00423}00423\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ +\ mean\_angle\ *\ mean\_angle\ ),0.2);\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00424}00424\ \ \ tau\ =\ \mbox{\hyperlink{misc_8h_a2d017cd3beb218080a7988e2deed2a11}{min}}(tau,prec);}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00425}00425\ \ \ \textcolor{comment}{/*tau\ =\ 2.0\ *\ sqrt(\ (s\_sum\ -\/\ 2.0\ *\ mean\_angle\ *\ sum)\ /\ (double)\ n}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00426}00426\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ +\ mean\_angle*mean\_angle\ );*/}\ \textcolor{comment}{/*\ 2\ *\ standard\ deviation\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00427}00427\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00428}00428\ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00429}00429\ \ \ \textcolor{comment}{/*\ Find\ a\ new\ region\ from\ the\ same\ starting\ point\ and\ new\ angle\ tolerance\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00430}00430\ \ \ *end\ =\ idx\_buff;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00431}00431\ \ \ (*label)++;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00432}00432\ \ \ region\_grow(\ angles,\ used,\ reg,\ start,\ idx\_buff,\ end,\ *label,\ label\_start,\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00433}00433\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tau,\ \&reg\_angle\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00434}00434\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00435}00435\ \ \ \textcolor{comment}{/*\ If\ the\ region\ is\ too\ small,\ reject\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00436}00436\ \ \ \textcolor{keywordflow}{if}(\ *end\ -\/\ start\ <=\ 2\ )\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{misc_8h_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00437}00437\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00438}00438\ \ \ \textcolor{comment}{/*\ Re-\/compute\ rectangle\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00439}00439\ \ \ \mbox{\hyperlink{curve__grow_8c_a6309f2cc70e39c4d40bbe504844b4866}{region2rect}}(\ gradmag,\ reg,\ start,\ *end,\ reg\_angle,\ rec,\ prec\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00440}00440\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00441}00441\ \ \ \textcolor{comment}{/*\ Re-\/compute\ region\ points\ density\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00442}00442\ \ \ density\ =\ (double)\ (*end\ -\/\ start)\ /}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00443}00443\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (\ \mbox{\hyperlink{misc_8c_adce57df8ac5e5faa57d86a66535fdd92}{dist}}(rec-\/>\mbox{\hyperlink{structRectangle_ac75b803b570527306e1e744bfb7a604f}{x1}},rec-\/>\mbox{\hyperlink{structRectangle_ac3b72e5b77595ca2340ecf8ccfe5fd99}{y1}},rec-\/>\mbox{\hyperlink{structRectangle_adcf04f5f1964d18b332643939561da0d}{x2}},rec-\/>\mbox{\hyperlink{structRectangle_a5347e514ebe985fb371754ffd2b5ff83}{y2}})\ *\ rec-\/>\mbox{\hyperlink{structRectangle_a9df23e056f5d1a0388cd8190431c0e03}{width}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00444}00444\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00445}00445\ \ \ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/\ Second\ try:\ reduce\ region\ radius\ -\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00446}00446\ \ \ \textcolor{keywordflow}{if}(\ density\ <\ density\_th\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00447}00447\ \ \ \ \ \textcolor{keywordflow}{return}\ reduce\_region\_radius(\ gradmag,\ angles,\ used,\ reg,\ start,\ end,\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00448}00448\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reg\_angle,\ rec,\ xc,\ yc,\ density\_th,\ prec\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00449}00449\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{misc_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00450}00450\ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00451}00451\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00452}00452\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00453}00453\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00454}00454\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ FUNCTIONS\ FOR\ POLYGON\ AND\ CURVE\ ESTIMATION\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00455}00455\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00456}00456\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00457}00457\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00458}00458\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00463}00463\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ px\_seed(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ angles,\ \mbox{\hyperlink{structImageInt}{PImageInt}}\ used,\ \mbox{\hyperlink{structRectangle}{Rectangle}}\ *rec,\ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00464}00464\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ *reg,\ \textcolor{keywordtype}{int}\ start,\ \textcolor{keywordtype}{int}\ *idx\_buff,\ \textcolor{keywordtype}{int}\ end,}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00465}00465\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ *pext,\ \textcolor{keywordtype}{double}\ prec,\ \textcolor{keywordtype}{int}\ label,\ \textcolor{keywordtype}{int}\ label\_start\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00466}00466\ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00467}00467\ \ \ \textcolor{keywordtype}{int}\ xx,\ yy,\ i;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00468}00468\ \ \ \textcolor{keywordtype}{int}\ adr;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00469}00469\ \ \ \textcolor{keywordtype}{int}\ idx\_buff0\ =\ *idx\_buff;\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00470}00470\ \ \ \textcolor{keywordtype}{double}\ width;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00471}00471\ \ \ \textcolor{keywordtype}{double}\ l1,\ l2,\ l;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00472}00472\ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00473}00473\ \ \ \textcolor{comment}{/*\ Check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00474}00474\ \ \ \textcolor{keywordflow}{if}(\ (angles\ ==\ NULL)\ ||\ (angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00475}00475\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}px\_seed:\ invalid\ input\ 'angles'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00476}00476\ \ \ \textcolor{keywordflow}{if}(\ (used\ ==\ NULL)\ ||\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00477}00477\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}px\_seed:\ invalid\ input\ 'used'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00478}00478\ \ \ \textcolor{keywordflow}{if}(\ rec\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}px\_seed:\ invalid\ input\ rectangle."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00479}00479\ \ \ \textcolor{keywordflow}{if}(\ reg\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}px\_seed:\ invalid\ input\ region."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00480}00480\ \ \ \textcolor{keywordflow}{if}(\ end\ <=\ start\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}px\_seed:\ invalid\ region\ size."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00481}00481\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00482}00482\ \ \ width\ =\ rec-\/>\mbox{\hyperlink{structRectangle_a9df23e056f5d1a0388cd8190431c0e03}{width}}/2.0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00483}00483\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00484}00484\ \ \ \textcolor{comment}{/*\ Distance\ between\ rectangle\ centre\ and\ extreme\ point;\ a\ new\ point\ can\ be\ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00485}00485\ \textcolor{comment}{\ \ \ \ \ a\ seed\ only\ if\ it\ is\ at\ a\ distance\ farther\ than\ this\ */}\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00486}00486\ \ \ l1\ =\ fabs(\ (pext[0]\ -\/\ rec-\/>\mbox{\hyperlink{structRectangle_ac176cb816ac192bd8ec2f73c40b43309}{cx}})\ *\ rec-\/>\mbox{\hyperlink{structRectangle_a229d11aff11a7482259d1296b9b70b8a}{dx}}\ +\ (pext[1]\ -\/\ rec-\/>\mbox{\hyperlink{structRectangle_a2d6a093e4a6fe06658d3d01563d028c9}{cy}})\ *\ rec-\/>\mbox{\hyperlink{structRectangle_a9deb6f886b19d50e714d890c3c268efc}{dy}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00487}00487\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00488}00488\ \ \ \textcolor{comment}{/*\ Scan\ previous\ region\ to\ find\ valid\ points\ that\ are\ close\ to\ the\ end\ of\ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00489}00489\ \textcolor{comment}{\ \ \ \ \ the\ rectangle;\ the\ new\ seed\ pixels\ will\ be\ among\ the\ neighbours\ of\ these\ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00490}00490\ \textcolor{comment}{\ \ \ \ \ points.\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00491}00491\ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00492}00492\ \ \ \textcolor{keywordflow}{for}(\ i=start;\ i<end;\ i++\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00493}00493\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00494}00494\ \ \ \ \ \ \ l\ =\ fabs(\ (\ (\textcolor{keywordtype}{double})reg[i].x\ -\/\ pext[0]\ )\ *\ rec-\/>\mbox{\hyperlink{structRectangle_a229d11aff11a7482259d1296b9b70b8a}{dx}}\ +\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00495}00495\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (\ (\textcolor{keywordtype}{double})reg[i].y\ -\/\ pext[1]\ )\ *\ rec-\/>\mbox{\hyperlink{structRectangle_a9deb6f886b19d50e714d890c3c268efc}{dy}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00496}00496\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00497}00497\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ l<width\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00498}00498\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ xx=reg[i].x-\/1;\ xx<=reg[i].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}+1;\ xx++\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00499}00499\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ yy=reg[i].y-\/1;\ yy<=reg[i].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}+1;\ yy++\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00500}00500\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00501}00501\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ If\ point\ in\ image\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00502}00502\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ \mbox{\hyperlink{image_8c_a7d75c600cc492bd8efbc1cc0c3819d88}{in\_image}}(\ xx,\ yy,\ used-\/>\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}},\ used-\/>\mbox{\hyperlink{structImageInt_a7e7fdb6b4d76fd619024da6878c27d58}{ysize}}\ )\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00503}00503\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00504}00504\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ adr\ =\ yy\ *\ used-\/>\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}}\ +\ xx;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00505}00505\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ If\ point\ not\ already\ used\ or\ visited\ or\ notdef\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00506}00506\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[adr]\ !=\ \mbox{\hyperlink{misc_8h_abcd0a22ee4346cad5706adb6d2119429}{USED}})\ \&\&\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[adr]\ !=\ label\ )\ \&\&}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00507}00507\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[adr]\ !=\ \mbox{\hyperlink{misc_8h_a18d9edd8c3bfc9c1837a10505dfa037c}{NOTDEF}})\ \&\&\ used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[adr]\ <\ label\_start\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00508}00508\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00509}00509\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ l2\ =\ fabs(\ (xx\ -\/\ rec-\/>\mbox{\hyperlink{structRectangle_ac176cb816ac192bd8ec2f73c40b43309}{cx}})\ *\ rec-\/>\mbox{\hyperlink{structRectangle_a229d11aff11a7482259d1296b9b70b8a}{dx}}\ +\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00510}00510\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (yy\ -\/\ rec-\/>\mbox{\hyperlink{structRectangle_a2d6a093e4a6fe06658d3d01563d028c9}{cy}})\ *\ rec-\/>\mbox{\hyperlink{structRectangle_a9deb6f886b19d50e714d890c3c268efc}{dy}}\ );\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00511}00511\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ If\ point's\ orientation\ is\ similar\ and\ the\ point\ is\ at}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00512}00512\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ an\ acceptable\ distance\ \ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00513}00513\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (\mbox{\hyperlink{misc_8c_a4e46bd783e4efe71bee053481afeb4a9}{angle\_diff}}(\ angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[adr],\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00514}00514\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rec-\/>\mbox{\hyperlink{structRectangle_aca81c35c21e3a5f7f3a8d24504e76664}{theta}}-\/\mbox{\hyperlink{misc_8h_ae11c01f236a7a89f767a7b34283da201}{M\_1\_2\_PI}}\ )\ <\ 3\ *\ prec\ )\ \&\&\ (l2\ >=\ l1-\/1)\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00515}00515\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00516}00516\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reg[\ *idx\_buff\ ].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ =\ xx;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00517}00517\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reg[\ *idx\_buff\ ].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ =\ yy;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00518}00518\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++(*idx\_buff);}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00519}00519\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[adr]\ =\ label;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00520}00520\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00521}00521\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00522}00522\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00523}00523\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00524}00524\ \ \ \ \ \}\ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00525}00525\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00526}00526\ \ \ \textcolor{comment}{/*\ If\ none\ of\ the\ visited\ pixels\ satisfy\ the\ conditions,\ take\ as\ seed\ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00527}00527\ \textcolor{comment}{\ \ \ \ \ the\ end\ of\ the\ rectangle,\ if\ it\ is\ inside\ the\ image\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00528}00528\ \ \ \textcolor{keywordflow}{if}(\ idx\_buff0\ ==\ *idx\_buff\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00529}00529\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00530}00530\ \ \ \ \ \ \ xx\ =\ floor(pext[0]);\ yy\ =\ floor(pext[1]);}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00531}00531\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ \mbox{\hyperlink{image_8c_a7d75c600cc492bd8efbc1cc0c3819d88}{in\_image}}(\ xx,\ yy,\ used-\/>\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}},\ used-\/>\mbox{\hyperlink{structImageInt_a7e7fdb6b4d76fd619024da6878c27d58}{ysize}}\ )\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00532}00532\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00533}00533\ \ \ \ \ \ \ \ \ \ \ reg[\ *idx\_buff\ ].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ =\ xx;\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00534}00534\ \ \ \ \ \ \ \ \ \ \ reg[\ *idx\_buff\ ].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ =\ yy;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00535}00535\ \ \ \ \ \ \ \ \ \ \ ++(*idx\_buff);}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00536}00536\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00537}00537\ \ \ \ \ \}\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00538}00538\ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00539}00539\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00540}00540\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00541}00541\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00547}00547\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ subcurve(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ angles,\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ gradmag,\ \mbox{\hyperlink{structImageInt}{PImageInt}}\ used,\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00548}00548\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPolyRect}{PolyRect}}\ *poly,\ \mbox{\hyperlink{structPoint}{Point}}\ *reg,\ \textcolor{keywordtype}{int}\ start,\ \textcolor{keywordtype}{int}\ idx\_buff,}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00549}00549\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *end,\ \textcolor{keywordtype}{double}\ *pext,\ \textcolor{keywordtype}{double}\ *spir,\ \textcolor{keywordtype}{double}\ density\_th,}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00550}00550\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ prec,\textcolor{keywordtype}{int}\ *sgn,\ \textcolor{keywordtype}{int}\ *label,\ \textcolor{keywordtype}{int}\ label\_start,\ \textcolor{keywordtype}{int}\ w\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00551}00551\ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00552}00552\ \ \ \textcolor{keywordtype}{int}\ convex\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00553}00553\ \ \ \textcolor{keywordtype}{double}\ reg\_angle,\ difang,\ ang\_prev;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00554}00554\ \ \ \textcolor{keywordtype}{double}\ lenrec,\ lenth;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00555}00555\ \ \ \textcolor{keywordtype}{int}\ buf\_tmp\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00556}00556\ \ \ \mbox{\hyperlink{structRectangle}{Rectangle}}\ rec;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00557}00557\ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00558}00558\ \ \ \textcolor{comment}{/*\ Check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00559}00559\ \ \ \textcolor{keywordflow}{if}(\ (angles\ ==\ NULL)\ ||\ (angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00560}00560\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}subcurve:\ invalid\ input\ 'angles'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00561}00561\ \ \ \textcolor{keywordflow}{if}(\ (gradmag\ ==\ NULL)\ ||\ (gradmag-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00562}00562\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}subcurve:\ invalid\ input\ 'gradmag'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00563}00563\ \ \ \textcolor{keywordflow}{if}(\ (used\ ==\ NULL)\ ||\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00564}00564\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}subcurve:\ invalid\ input\ 'used'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00565}00565\ \ \ \textcolor{keywordflow}{if}(\ reg\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}subcurve:\ invalid\ input\ region."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00566}00566\ \ \ \textcolor{keywordflow}{if}(\ *end\ <=\ start\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}subcurve:\ invalid\ region\ size."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00567}00567\ \ \ \textcolor{keywordflow}{if}(\ *label\ <=\ 1\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}subcurve:\ forbidden\ label\ value."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00568}00568\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00569}00569\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00570}00570\ \ \ \textcolor{comment}{/*\ Get\ length\ and\ angle\ of\ initial\ rectangle\ (stored\ in\ polygon\ on\ first\ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00571}00571\ \textcolor{comment}{\ \ \ \ \ position)\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00572}00572\ \ \ lenth\ =\ poly-\/>\mbox{\hyperlink{structPolyRect_aa6c235e6fd60e9c44d47b5ff669a4b07}{rectlist}}[0].\mbox{\hyperlink{structRectangle_ad4bd51cdbe6ba41894905207ed94974f}{len}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00573}00573\ \ \ ang\_prev\ =\ poly-\/>\mbox{\hyperlink{structPolyRect_aa6c235e6fd60e9c44d47b5ff669a4b07}{rectlist}}[0].\mbox{\hyperlink{structRectangle_aca81c35c21e3a5f7f3a8d24504e76664}{theta}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00574}00574\ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00575}00575\ \ \ \textcolor{comment}{/*\ Add\ new\ rectangles\ while\ the\ conditions\ of\ smoothness\ and\ convexity\ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00576}00576\ \textcolor{comment}{\ \ \ \ \ are\ satisfied\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00577}00577\ \ \ \textcolor{keywordflow}{while}(\ convex\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00578}00578\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00579}00579\ \ \ \ \ \ \ (*label)++;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00580}00580\ \ \ \ \ \ \ start\ =\ *end;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00581}00581\ \ \ \ \ \ \ *end\ =\ idx\_buff;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00582}00582\ \ \ \ \ \ \ buf\_tmp\ =\ *end\ -\/\ start;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00583}00583\ \ \ \ \ \ \ \textcolor{comment}{/*\ Start\ region\ grow\ at\ the\ end\ of\ the\ previous\ rectangle\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00584}00584\ \ \ \ \ \ \ region\_grow(\ angles,\ used,\ reg,\ start,\ idx\_buff,\ end,\ *label,\ label\_start,}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00585}00585\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ prec,\ \&reg\_angle\ );\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00586}00586\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ *end\ -\/\ start\ >\ buf\_tmp\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00587}00587\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00588}00588\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ Estimate\ and\ refine\ rectangle\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00589}00589\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{curve__grow_8c_a6309f2cc70e39c4d40bbe504844b4866}{region2rect}}(\ gradmag,\ reg,\ start,\ *end,\ reg\_angle,\ \&rec,\ prec\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00590}00590\ \ \ \ \ \ \ \ \ \ \ (*label)++;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00591}00591\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !refine(\ gradmag,\ angles,\ used,\ reg,\ start,\ idx\_buff,\ end,}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00592}00592\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ label,\ label\_start,\ \&rec,\ density\_th,\ prec)\ )\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00593}00593\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00594}00594\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ If\ operation\ not\ successful,\ clean\ last\ visited\ points\ and\ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00595}00595\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ return\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00596}00596\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{image_8c_a23026d70139f0859bae4a5723784f1fc}{mark\_img\_pts}}(\ used,\ reg,\ start,\ *end,\ \mbox{\hyperlink{misc_8h_a8a397aec99143b8dcf8e553c0115eb42}{NOTUSED}}\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00597}00597\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *end\ =\ start;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00598}00598\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00599}00599\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00600}00600\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ *end\ -\/\ start\ <=\ buf\_tmp\ )\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00601}00601\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00602}00602\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *end\ =\ start;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00603}00603\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00604}00604\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00605}00605\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00606}00606\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ Convexity\ rule\ imposes\ that\ consecutive\ rectangles\ turn\ in\ the\ same}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00607}00607\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ direction,\ hence\ must\ have\ the\ same\ sign\ for\ angle\ difference\ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00608}00608\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ between\ consecutive\ rectangles'\ orientation.\ If\ set,\ verify\ sign}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00609}00609\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ before\ adding\ a\ new\ rectangle.\ If\ not\ set\ (at\ first\ call),\ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00610}00610\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ then\ set\ sign.\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00611}00611\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ *sgn\ ==\ 0\ )\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00612}00612\ \ \ \ \ \ \ \ \ \ \ \ \ *sgn\ =\ \mbox{\hyperlink{misc_8c_a9f29698bce67d856008e85a5c6b45b57}{sign}}(\ \mbox{\hyperlink{misc_8c_afc6d1f1cd19f4dfd5513632ab80322df}{angle\_diff\_signed}}(\ rec.\mbox{\hyperlink{structRectangle_aca81c35c21e3a5f7f3a8d24504e76664}{theta}},\ ang\_prev\ )\ );\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00613}00613\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00614}00614\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ Get\ angle\ difference\ between\ current\ rectangle\ and\ previous\ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00615}00615\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ rectangle\ */}\ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00616}00616\ \ \ \ \ \ \ \ \ \ \ difang\ =\ \mbox{\hyperlink{misc_8c_afc6d1f1cd19f4dfd5513632ab80322df}{angle\_diff\_signed}}(\ rec.\mbox{\hyperlink{structRectangle_aca81c35c21e3a5f7f3a8d24504e76664}{theta}},\ ang\_prev\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00617}00617\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00618}00618\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ If\ consecutive\ rectangles\ don't\ have\ comparable\ lengths\ \ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00619}00619\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ (condition\ for\ smoothness):\ clean\ and\ return;\ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00620}00620\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ Special\ case:\ last\ rectangle\ that\ joins\ the\ ends\ of\ a\ full\ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00621}00621\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ chain\ can\ be\ shorter\ than\ previous.\ \ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00622}00622\ \ \ \ \ \ \ \ \ \ \ lenrec\ =\ rec.\mbox{\hyperlink{structRectangle_ad4bd51cdbe6ba41894905207ed94974f}{len}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00623}00623\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ lenrec\ >\ lenth*3.0\ ||\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00624}00624\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (lenrec\ <\ lenth/3.0\ \&\&\ (*spir\ +\ fabs(difang))\ <=\ 0.9*\mbox{\hyperlink{misc_8h_a8b5e22fbd5c798aac5298e80fc91b7fe}{M\_2\_\_PI}})\ )\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00625}00625\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00626}00626\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{image_8c_a23026d70139f0859bae4a5723784f1fc}{mark\_img\_pts}}(\ used,\ reg,\ start,\ *end,\ \mbox{\hyperlink{misc_8h_a8a397aec99143b8dcf8e553c0115eb42}{NOTUSED}}\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00627}00627\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *end\ =\ start;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00628}00628\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00629}00629\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00630}00630\ \ \ \ \ \ \ \ \ \ \ lenth\ =\ lenrec;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00631}00631\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00632}00632\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00633}00633\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ Convexity\ \&\ non-\/spiral\ check\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00634}00634\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (\mbox{\hyperlink{misc_8c_a9f29698bce67d856008e85a5c6b45b57}{sign}}(difang)\ ==\ *sgn)\ \&\&\ (fabs(difang)\ <\ (\mbox{\hyperlink{misc_8h_ae71449b1cc6e6250b91f539153a7a0d3}{M\_PI}}/3.0)\ )\ \&\&}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00635}00635\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (\ (*spir\ =\ *spir\ +\ fabs(difang))\ <=\ \mbox{\hyperlink{misc_8h_a8b5e22fbd5c798aac5298e80fc91b7fe}{M\_2\_\_PI}})\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00636}00636\ \ \ \ \ \ \ \ \ \ \ \ \ \{\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00637}00637\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ If\ all\ conditions\ are\ met,\ find\ next\ seed\ point,\ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00638}00638\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ and\ add\ rectangle\ to\ polygon\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00639}00639\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (*label)++;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00640}00640\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ idx\_buff\ =\ *end;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00641}00641\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ w==0\ )\ \{pext[0]\ =\ rec.\mbox{\hyperlink{structRectangle_ac75b803b570527306e1e744bfb7a604f}{x1}};\ pext[1]\ =\ rec.\mbox{\hyperlink{structRectangle_ac3b72e5b77595ca2340ecf8ccfe5fd99}{y1}};\}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00642}00642\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{pext[0]\ =\ rec.\mbox{\hyperlink{structRectangle_adcf04f5f1964d18b332643939561da0d}{x2}};\ pext[1]\ =\ rec.\mbox{\hyperlink{structRectangle_a5347e514ebe985fb371754ffd2b5ff83}{y2}};\}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00643}00643\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ px\_seed(\ angles,\ used,\ \&rec,\ reg,\ start,\ \&idx\_buff,\ *end,}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00644}00644\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pext,\ prec,\ *label,\ label\_start\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00645}00645\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00646}00646\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ Add\ rectangle\ to\ polygon\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00647}00647\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ poly-\/>\mbox{\hyperlink{structPolyRect_a70b5e28b5bc3d1b63a7435c5fe50b837}{dim}}++;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00648}00648\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{polygon_8c_a32839ef9cf401a79864fd0d3b9718dec}{add\_rect\_to\_polyrect}}(\ poly,\ \&rec\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00649}00649\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ang\_prev\ =\ rec.\mbox{\hyperlink{structRectangle_aca81c35c21e3a5f7f3a8d24504e76664}{theta}};\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00650}00650\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00651}00651\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{comment}{/*\ Not\ convex\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00652}00652\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00653}00653\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ convex\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00654}00654\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ Subtract\ the\ contribution\ of\ the\ last\ rectangle\ and\ clean\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00655}00655\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{image_8c_a23026d70139f0859bae4a5723784f1fc}{mark\_img\_pts}}(\ used,\ reg,\ start,\ *end,\ \mbox{\hyperlink{misc_8h_a8a397aec99143b8dcf8e553c0115eb42}{NOTUSED}}\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00656}00656\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *end\ =\ start;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00657}00657\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00658}00658\ \ \ \ \ \ \ \ \ \}\ \textcolor{comment}{/*\ !if(\ *end\ -\/\ start\ >\ 1\ )\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00659}00659\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00660}00660\ \ \ \ \ \ \ \ \ \{\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00661}00661\ \ \ \ \ \ \ \ \ \ \ convex\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00662}00662\ \ \ \ \ \ \ \ \ \ \ *end\ =\ start;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00663}00663\ \ \ \ \ \ \ \ \ \}\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00664}00664\ \ \ \ \ \}\ \ \textcolor{comment}{/*\ !while(convex)\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00665}00665\ \}\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00666}00666\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00667}00667\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00668}00668\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00672}\mbox{\hyperlink{curve__grow_8c_a05a2be0b004173552b1178130d6c7369}{00672}}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{curve__grow_8c_a05a2be0b004173552b1178130d6c7369}{curve\_grow}}(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ gradmag,\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ angles,\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00673}00673\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageInt}{PImageInt}}\ used,\ \mbox{\hyperlink{structPoint}{Point}}\ *reg,\ \textcolor{keywordtype}{int}\ *reg\_size,\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00674}00674\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ density\_th,\ \textcolor{keywordtype}{double}\ prec,\ \mbox{\hyperlink{structPolyRect}{PolyRect}}\ *poly,\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00675}00675\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *label,\ \textcolor{keywordtype}{double}\ *pext1,\ \textcolor{keywordtype}{double}\ *pext2,\ \textcolor{keywordtype}{double}\ *spir\ )\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00676}00676\ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00677}00677\ \ \ \textcolor{keywordtype}{int}\ sgn\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00678}00678\ \ \ \mbox{\hyperlink{structRectangle}{Rectangle}}\ rec;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00679}00679\ \ \ \textcolor{keywordtype}{int}\ size\_first\_reg\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00680}00680\ \ \ \textcolor{keywordtype}{int}\ label\_start;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00681}00681\ \ \ \textcolor{keywordtype}{int}\ start,\ idx\_buff;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00682}00682\ \ \ \textcolor{keywordtype}{double}\ reg\_angle;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00683}00683\ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00684}00684\ \ \ \textcolor{comment}{/*\ Check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00685}00685\ \ \ \textcolor{keywordflow}{if}(\ (gradmag\ ==\ NULL)\ ||\ (gradmag-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00686}00686\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}curve\_grow:\ invalid\ input\ 'gradmag'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00687}00687\ \ \ \textcolor{keywordflow}{if}(\ (angles\ ==\ NULL)\ ||\ (angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00688}00688\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}curve\_grow:\ invalid\ input\ 'angles'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00689}00689\ \ \ \textcolor{keywordflow}{if}(\ (used\ ==\ NULL)\ ||\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00690}00690\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}curve\_grow:\ invalid\ input\ 'used'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00691}00691\ \ \ \textcolor{keywordflow}{if}(\ reg\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}curve\_grow:\ invalid\ input\ region."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00692}00692\ \ \ \textcolor{keywordflow}{if}(\ *reg\_size\ <=0\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}curve\_grow:\ list\ must\ contain\ at\ least\ 1\ point."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00693}00693\ \ \ \textcolor{keywordflow}{if}(\ poly\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}curve\_grow:\ poly\ must\ be\ non\ null."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00694}00694\ \ \ \textcolor{keywordflow}{if}(\ *label\ <=\ 1\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}curve\_grow:\ forbidden\ label\ value."{}});}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00695}00695\ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00696}00696\ \ \ \textcolor{comment}{/*\ Init\ indexes\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00697}00697\ \ \ start\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00698}00698\ \ \ idx\_buff\ =\ *reg\_size;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00699}00699\ \ \ label\_start\ =\ (*label);}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00700}00700\ \ \ \textcolor{comment}{/*\ Perform\ initial\ region\ growing,\ to\ estimate\ first\ rectangle\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00701}00701\ \ \ region\_grow(\ angles,\ used,\ reg,\ start,\ idx\_buff,\ reg\_size,\ *label,\ label\_start,}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00702}00702\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ prec,\ \&reg\_angle\ );\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00703}00703\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00704}00704\ \ \ \textcolor{keywordflow}{if}(\ *reg\_size\ <=\ 2\ )\ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00705}00705\ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00706}00706\ \ \ \textcolor{comment}{/*\ Estimate\ initial\ rectangle\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00707}00707\ \ \ \mbox{\hyperlink{curve__grow_8c_a6309f2cc70e39c4d40bbe504844b4866}{region2rect}}(\ gradmag,\ reg,\ start,\ *reg\_size,\ reg\_angle,\ \&rec,\ prec\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00708}00708\ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00709}00709\ \ \ \textcolor{comment}{/*\ Refine\ rectangle\ if\ density\ of\ aligned\ points\ is\ less\ than\ density\ }}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00710}00710\ \textcolor{comment}{\ \ \ \ \ threshold\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00711}00711\ \ \ \textcolor{keywordflow}{if}(\ !refine(\ gradmag,\ angles,\ used,\ reg,\ start,\ idx\_buff,\ reg\_size,\ label,\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00712}00712\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ label\_start,\ \&rec,\ density\_th,\ prec\ )\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00713}00713\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00714}00714\ \ \ \ \ \ \ \mbox{\hyperlink{image_8c_a23026d70139f0859bae4a5723784f1fc}{mark\_img\_pts}}(\ used,\ reg,\ start,\ *reg\_size,\ \mbox{\hyperlink{misc_8h_a8a397aec99143b8dcf8e553c0115eb42}{NOTUSED}}\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00715}00715\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00716}00716\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00717}00717\ \ \ \textcolor{keywordflow}{if}(\ rec.\mbox{\hyperlink{structRectangle_ad4bd51cdbe6ba41894905207ed94974f}{len}}\ <=\ 2\ )\ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00718}00718\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00719}00719\ \ \ \textcolor{comment}{/*\ Save\ size\ of\ first\ region;\ useful\ to\ compute\ second\ seed,\ after\ scanning}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00720}00720\ \textcolor{comment}{\ \ \ \ \ first\ direction\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00721}00721\ \ \ size\_first\_reg\ =\ *reg\_size;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00722}00722\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00723}00723\ \ \ \textcolor{comment}{/*\ Add\ rectangle\ to\ poly\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00724}00724\ \ \ poly-\/>\mbox{\hyperlink{structPolyRect_a70b5e28b5bc3d1b63a7435c5fe50b837}{dim}}++;\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00725}00725\ \ \ \mbox{\hyperlink{polygon_8c_a32839ef9cf401a79864fd0d3b9718dec}{add\_rect\_to\_polyrect}}(\ poly,\ \&rec\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00726}00726\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00727}00727\ \ \ \textcolor{comment}{/*\ Compute\ first\ seed\ with\ the\ first\ end\ of\ the\ initial\ rectangle\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00728}00728\ \ \ pext1[0]\ =\ rec.\mbox{\hyperlink{structRectangle_adcf04f5f1964d18b332643939561da0d}{x2}};\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00729}00729\ \ \ pext1[1]\ =\ rec.\mbox{\hyperlink{structRectangle_a5347e514ebe985fb371754ffd2b5ff83}{y2}};}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00730}00730\ \ \ (*label)++;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00731}00731\ \ \ idx\_buff\ =\ *reg\_size;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00732}00732\ \ \ px\_seed(\ angles,\ used,\ \&rec,\ reg,\ start,\ \&idx\_buff,\ *reg\_size,\ pext1,\ prec,}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00733}00733\ \ \ \ \ \ \ \ \ \ \ \ *label,\ label\_start\ );\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00734}00734\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00735}00735\ \ \ \textcolor{comment}{/*\ Lauch\ scan\ in\ first\ direction\ */}\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00736}00736\ \ \ subcurve(\ angles,\ gradmag,\ used,\ poly,\ reg,\ start,\ idx\_buff,\ reg\_size,\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00737}00737\ \ \ \ \ \ \ \ \ \ \ \ \ pext1,\ spir,\ density\_th,\ prec,\ \&sgn,\ label,\ label\_start,\ 1\ );\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00738}00738\ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00739}00739\ \ \ \textcolor{comment}{/*\ Scan\ the\ other\ direction\ only\ if\ a\ complete\ tour\ was\ not\ scanned;\ this}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00740}00740\ \textcolor{comment}{\ \ \ \ \ condition\ is\ to\ avoid\ spiral\ curves\ */}}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00741}00741\ \ \ pext2[0]\ =\ rec.\mbox{\hyperlink{structRectangle_ac75b803b570527306e1e744bfb7a604f}{x1}};\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00742}00742\ \ \ pext2[1]\ =\ rec.\mbox{\hyperlink{structRectangle_ac3b72e5b77595ca2340ecf8ccfe5fd99}{y1}};\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00743}00743\ \ \ \textcolor{keywordflow}{if}(\ *spir\ <\ \mbox{\hyperlink{misc_8h_a8b5e22fbd5c798aac5298e80fc91b7fe}{M\_2\_\_PI}}\ )}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00744}00744\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00745}00745\ \ \ \ \ \ \ \textcolor{comment}{/*\ Compute\ second\ seed\ with\ the\ second\ end\ of\ the\ initial\ rectangle\ */}\ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00746}00746\ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00747}00747\ \ \ \ \ \ \ idx\_buff\ =\ *reg\_size;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00748}00748\ \ \ \ \ \ \ (*label)++;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00749}00749\ \ \ \ \ \ \ px\_seed(\ angles,\ used,\ \&rec,\ reg,\ 0,\ \&idx\_buff,\ size\_first\_reg,\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00750}00750\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pext2,\ prec,\ *label,\ label\_start\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00751}00751\ \ \ \ \ \ \ \textcolor{comment}{/*\ When\ scanning\ the\ other\ direction,\ the\ sign\ must\ be\ inverted\ */}\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00752}00752\ \ \ \ \ \ \ sgn\ =\ -\/sgn;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00753}00753\ \ \ \ \ \ \ \textcolor{comment}{/*\ Lauch\ scan\ in\ second\ direction\ */}\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00754}00754\ \ \ \ \ \ \ subcurve(\ angles,\ gradmag,\ used,\ poly,\ reg,\ start,\ idx\_buff,\ reg\_size,\ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00755}00755\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pext2,\ spir,\ density\_th,\ prec,\ \&sgn,\ label,\ label\_start,\ 0\ );}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00756}00756\ \ \ \ \ \}\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00757}00757\ \ \ \textcolor{keywordflow}{return}\ 1;}
+\DoxyCodeLine{\Hypertarget{curve__grow_8c_source_l00758}00758\ \}}
+
+\end{DoxyCode}

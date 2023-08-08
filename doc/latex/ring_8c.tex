@@ -1,0 +1,170 @@
+\doxysection{src/ring.c File Reference}
+\hypertarget{ring_8c}{}\label{ring_8c}\index{src/ring.c@{src/ring.c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$float.\+h$>$}\newline
+{\ttfamily \#include \"{}misc.\+h\"{}}\newline
+{\ttfamily \#include \"{}ring.\+h\"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{ring_8c_aa22a2072f90b5e5ed51c29d5081c4faf}{copy\+\_\+ring}} (\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}in, \mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}out)
+\item 
+void \mbox{\hyperlink{ring_8c_af4bd196833424dc0e04d7f4af80db9f6}{swap\+\_\+ring}} (\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}r)
+\item 
+int \mbox{\hyperlink{ring_8c_a135c65c3fc6ffdec3f39ea806588958c}{check\+\_\+circ\+\_\+ring}} (\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}cring)
+\item 
+int \mbox{\hyperlink{ring_8c_aab09e6cf000c148dc5d6c8d3637bcbf1}{check\+\_\+ell\+\_\+ring}} (\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}ering)
+\item 
+int \mbox{\hyperlink{ring_8c_ac82b2076b8049f107782e813168db716}{check\+\_\+circ}} (double \texorpdfstring{$\ast$}{*}cparam)
+\item 
+int \mbox{\hyperlink{ring_8c_ab53bff8abd49d5a5dd267e78c85366ab}{check\+\_\+ell}} (double \texorpdfstring{$\ast$}{*}eparam)
+\item 
+int \mbox{\hyperlink{ring_8c_abc1b2fcb970026bac2c06de0423e6278}{is\+\_\+in\+\_\+circ\+\_\+ring}} (\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}r, int x, int y)
+\item 
+int \mbox{\hyperlink{ring_8c_ad4da58ff04f79b272727c6bfaf9d433d}{is\+\_\+in\+\_\+ell\+\_\+ring}} (\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}r, int x, int y)
+\item 
+void \mbox{\hyperlink{ring_8c_ab6d86c932ef1cfaf6816342e601cd1c6}{rosin\+\_\+point}} (\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}ering, int x, int y, double \texorpdfstring{$\ast$}{*}xi, double \texorpdfstring{$\ast$}{*}yi)
+\item 
+double \mbox{\hyperlink{ring_8c_a4c056155bbee1a0da2b83bdc5457a530}{d\+\_\+rosin}} (\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}ering, double x, double y)
+\item 
+void \mbox{\hyperlink{ring_8c_aa1ade41bae8dd56dcdf545f6ac7adf95}{ellipse\+\_\+foci}} (double \texorpdfstring{$\ast$}{*}param, double \texorpdfstring{$\ast$}{*}foci)
+\item 
+double \mbox{\hyperlink{ring_8c_ab1ba9a1926e5a5587e7f0f8ef583fb90}{ellipse\+\_\+normal\+\_\+angle}} (double x, double y, double \texorpdfstring{$\ast$}{*}foci)
+\item 
+int \mbox{\hyperlink{ring_8c_aa6025924df802bd4fad9009c72e4587c}{get\+\_\+ring}} (\mbox{\hyperlink{structPoint}{Point}} \texorpdfstring{$\ast$}{*}reg, int reg\+\_\+size, double ang, double \texorpdfstring{$\ast$}{*}param, double \texorpdfstring{$\ast$}{*}pext1, double \texorpdfstring{$\ast$}{*}pext2, int conic, double spir, \mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}r, int \texorpdfstring{$\ast$}{*}grad\+\_\+dir, double \texorpdfstring{$\ast$}{*}foci, int msize)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{ring_8c_ac82b2076b8049f107782e813168db716}\label{ring_8c_ac82b2076b8049f107782e813168db716} 
+\index{ring.c@{ring.c}!check\_circ@{check\_circ}}
+\index{check\_circ@{check\_circ}!ring.c@{ring.c}}
+\doxysubsubsection{\texorpdfstring{check\_circ()}{check\_circ()}}
+{\footnotesize\ttfamily int check\+\_\+circ (\begin{DoxyParamCaption}\item[{double \texorpdfstring{$\ast$}{*}}]{cparam }\end{DoxyParamCaption})}
+
+Check if circle is valid\+: radius must be positive. 
+
+Definition at line \mbox{\hyperlink{ring_8c_source_l00109}{109}} of file \mbox{\hyperlink{ring_8c_source}{ring.\+c}}.
+
+\Hypertarget{ring_8c_a135c65c3fc6ffdec3f39ea806588958c}\label{ring_8c_a135c65c3fc6ffdec3f39ea806588958c} 
+\index{ring.c@{ring.c}!check\_circ\_ring@{check\_circ\_ring}}
+\index{check\_circ\_ring@{check\_circ\_ring}!ring.c@{ring.c}}
+\doxysubsubsection{\texorpdfstring{check\_circ\_ring()}{check\_circ\_ring()}}
+{\footnotesize\ttfamily int check\+\_\+circ\+\_\+ring (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}}]{cring }\end{DoxyParamCaption})}
+
+Check if circle is valid\+: radius must be positive. 
+
+Definition at line \mbox{\hyperlink{ring_8c_source_l00079}{79}} of file \mbox{\hyperlink{ring_8c_source}{ring.\+c}}.
+
+\Hypertarget{ring_8c_ab53bff8abd49d5a5dd267e78c85366ab}\label{ring_8c_ab53bff8abd49d5a5dd267e78c85366ab} 
+\index{ring.c@{ring.c}!check\_ell@{check\_ell}}
+\index{check\_ell@{check\_ell}!ring.c@{ring.c}}
+\doxysubsubsection{\texorpdfstring{check\_ell()}{check\_ell()}}
+{\footnotesize\ttfamily int check\+\_\+ell (\begin{DoxyParamCaption}\item[{double \texorpdfstring{$\ast$}{*}}]{eparam }\end{DoxyParamCaption})}
+
+Check if ellipse is valid\+: axes must be positive; ensure big axis is first and orientation in \mbox{[}-\/pi/2, pi/2\mbox{]}. 
+
+Definition at line \mbox{\hyperlink{ring_8c_source_l00126}{126}} of file \mbox{\hyperlink{ring_8c_source}{ring.\+c}}.
+
+\Hypertarget{ring_8c_aab09e6cf000c148dc5d6c8d3637bcbf1}\label{ring_8c_aab09e6cf000c148dc5d6c8d3637bcbf1} 
+\index{ring.c@{ring.c}!check\_ell\_ring@{check\_ell\_ring}}
+\index{check\_ell\_ring@{check\_ell\_ring}!ring.c@{ring.c}}
+\doxysubsubsection{\texorpdfstring{check\_ell\_ring()}{check\_ell\_ring()}}
+{\footnotesize\ttfamily int check\+\_\+ell\+\_\+ring (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}}]{ering }\end{DoxyParamCaption})}
+
+Check if ellipse ring is valid\+: wmin and wmax have different signs and have reasonably small values. 
+
+Definition at line \mbox{\hyperlink{ring_8c_source_l00094}{94}} of file \mbox{\hyperlink{ring_8c_source}{ring.\+c}}.
+
+\Hypertarget{ring_8c_aa22a2072f90b5e5ed51c29d5081c4faf}\label{ring_8c_aa22a2072f90b5e5ed51c29d5081c4faf} 
+\index{ring.c@{ring.c}!copy\_ring@{copy\_ring}}
+\index{copy\_ring@{copy\_ring}!ring.c@{ring.c}}
+\doxysubsubsection{\texorpdfstring{copy\_ring()}{copy\_ring()}}
+{\footnotesize\ttfamily void copy\+\_\+ring (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}}]{in,  }\item[{\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}}]{out }\end{DoxyParamCaption})}
+
+Copy one ring structure to another. 
+
+Definition at line \mbox{\hyperlink{ring_8c_source_l00038}{38}} of file \mbox{\hyperlink{ring_8c_source}{ring.\+c}}.
+
+\Hypertarget{ring_8c_a4c056155bbee1a0da2b83bdc5457a530}\label{ring_8c_a4c056155bbee1a0da2b83bdc5457a530} 
+\index{ring.c@{ring.c}!d\_rosin@{d\_rosin}}
+\index{d\_rosin@{d\_rosin}!ring.c@{ring.c}}
+\doxysubsubsection{\texorpdfstring{d\_rosin()}{d\_rosin()}}
+{\footnotesize\ttfamily double d\+\_\+rosin (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}}]{ering,  }\item[{double}]{x,  }\item[{double}]{y }\end{DoxyParamCaption})}
+
+Approximate the distance between a point and an ellipse using Rosin distance. 
+
+Definition at line \mbox{\hyperlink{ring_8c_source_l00262}{262}} of file \mbox{\hyperlink{ring_8c_source}{ring.\+c}}.
+
+\Hypertarget{ring_8c_aa1ade41bae8dd56dcdf545f6ac7adf95}\label{ring_8c_aa1ade41bae8dd56dcdf545f6ac7adf95} 
+\index{ring.c@{ring.c}!ellipse\_foci@{ellipse\_foci}}
+\index{ellipse\_foci@{ellipse\_foci}!ring.c@{ring.c}}
+\doxysubsubsection{\texorpdfstring{ellipse\_foci()}{ellipse\_foci()}}
+{\footnotesize\ttfamily void ellipse\+\_\+foci (\begin{DoxyParamCaption}\item[{double \texorpdfstring{$\ast$}{*}}]{param,  }\item[{double \texorpdfstring{$\ast$}{*}}]{foci }\end{DoxyParamCaption})}
+
+Compute ellipse foci, given ellipse params. 
+
+Definition at line \mbox{\hyperlink{ring_8c_source_l00300}{300}} of file \mbox{\hyperlink{ring_8c_source}{ring.\+c}}.
+
+\Hypertarget{ring_8c_ab1ba9a1926e5a5587e7f0f8ef583fb90}\label{ring_8c_ab1ba9a1926e5a5587e7f0f8ef583fb90} 
+\index{ring.c@{ring.c}!ellipse\_normal\_angle@{ellipse\_normal\_angle}}
+\index{ellipse\_normal\_angle@{ellipse\_normal\_angle}!ring.c@{ring.c}}
+\doxysubsubsection{\texorpdfstring{ellipse\_normal\_angle()}{ellipse\_normal\_angle()}}
+{\footnotesize\ttfamily double ellipse\+\_\+normal\+\_\+angle (\begin{DoxyParamCaption}\item[{double}]{x,  }\item[{double}]{y,  }\item[{double \texorpdfstring{$\ast$}{*}}]{foci }\end{DoxyParamCaption})}
+
+Compute the angle of the normal to a point belonging to an ellipse using the focal property. 
+
+Definition at line \mbox{\hyperlink{ring_8c_source_l00319}{319}} of file \mbox{\hyperlink{ring_8c_source}{ring.\+c}}.
+
+\Hypertarget{ring_8c_aa6025924df802bd4fad9009c72e4587c}\label{ring_8c_aa6025924df802bd4fad9009c72e4587c} 
+\index{ring.c@{ring.c}!get\_ring@{get\_ring}}
+\index{get\_ring@{get\_ring}!ring.c@{ring.c}}
+\doxysubsubsection{\texorpdfstring{get\_ring()}{get\_ring()}}
+{\footnotesize\ttfamily int get\+\_\+ring (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structPoint}{Point}} \texorpdfstring{$\ast$}{*}}]{reg,  }\item[{int}]{reg\+\_\+size,  }\item[{double}]{ang,  }\item[{double \texorpdfstring{$\ast$}{*}}]{param,  }\item[{double \texorpdfstring{$\ast$}{*}}]{pext1,  }\item[{double \texorpdfstring{$\ast$}{*}}]{pext2,  }\item[{int}]{conic,  }\item[{double}]{spir,  }\item[{\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}}]{r,  }\item[{int \texorpdfstring{$\ast$}{*}}]{grad\+\_\+dir,  }\item[{double \texorpdfstring{$\ast$}{*}}]{foci,  }\item[{int}]{msize }\end{DoxyParamCaption})}
+
+Given conic parameters and extreme points, fill in all the ring parameters. If conic is 1, get circle ring, if 0 get ellipse ring. 
+
+Definition at line \mbox{\hyperlink{ring_8c_source_l00427}{427}} of file \mbox{\hyperlink{ring_8c_source}{ring.\+c}}.
+
+\Hypertarget{ring_8c_abc1b2fcb970026bac2c06de0423e6278}\label{ring_8c_abc1b2fcb970026bac2c06de0423e6278} 
+\index{ring.c@{ring.c}!is\_in\_circ\_ring@{is\_in\_circ\_ring}}
+\index{is\_in\_circ\_ring@{is\_in\_circ\_ring}!ring.c@{ring.c}}
+\doxysubsubsection{\texorpdfstring{is\_in\_circ\_ring()}{is\_in\_circ\_ring()}}
+{\footnotesize\ttfamily int is\+\_\+in\+\_\+circ\+\_\+ring (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}}]{r,  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+Test if a given point is inside a circular ring\+: (x,y) must be at a distance between \mbox{[}dmin,dmax\mbox{]} wrt centre at an angle between \mbox{[}\textquotesingle{}ang\+\_\+start\textquotesingle{},\textquotesingle{}ang\+\_\+end\textquotesingle{}\mbox{]}. All angles are in \mbox{[}0 , 2pi\mbox{]}. 
+
+Definition at line \mbox{\hyperlink{ring_8c_source_l00156}{156}} of file \mbox{\hyperlink{ring_8c_source}{ring.\+c}}.
+
+\Hypertarget{ring_8c_ad4da58ff04f79b272727c6bfaf9d433d}\label{ring_8c_ad4da58ff04f79b272727c6bfaf9d433d} 
+\index{ring.c@{ring.c}!is\_in\_ell\_ring@{is\_in\_ell\_ring}}
+\index{is\_in\_ell\_ring@{is\_in\_ell\_ring}!ring.c@{ring.c}}
+\doxysubsubsection{\texorpdfstring{is\_in\_ell\_ring()}{is\_in\_ell\_ring()}}
+{\footnotesize\ttfamily int is\+\_\+in\+\_\+ell\+\_\+ring (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}}]{r,  }\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})}
+
+Test if a given point is inside an elliptical ring\+: (x,y) must be at a distance between \mbox{[}dmin,dmax\mbox{]} wrt centre at an angle between \mbox{[}\textquotesingle{}ang\+\_\+start\textquotesingle{},\textquotesingle{}ang\+\_\+end\textquotesingle{}\mbox{]}. All angles are expressed in \mbox{[}0 , 2pi\mbox{]}. 
+
+Definition at line \mbox{\hyperlink{ring_8c_source_l00186}{186}} of file \mbox{\hyperlink{ring_8c_source}{ring.\+c}}.
+
+\Hypertarget{ring_8c_ab6d86c932ef1cfaf6816342e601cd1c6}\label{ring_8c_ab6d86c932ef1cfaf6816342e601cd1c6} 
+\index{ring.c@{ring.c}!rosin\_point@{rosin\_point}}
+\index{rosin\_point@{rosin\_point}!ring.c@{ring.c}}
+\doxysubsubsection{\texorpdfstring{rosin\_point()}{rosin\_point()}}
+{\footnotesize\ttfamily void rosin\+\_\+point (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}}]{ering,  }\item[{int}]{x,  }\item[{int}]{y,  }\item[{double \texorpdfstring{$\ast$}{*}}]{xi,  }\item[{double \texorpdfstring{$\ast$}{*}}]{yi }\end{DoxyParamCaption})}
+
+Compute the point belonging to an ellipse, closest to a given point with integer coordinates. 
+
+Definition at line \mbox{\hyperlink{ring_8c_source_l00214}{214}} of file \mbox{\hyperlink{ring_8c_source}{ring.\+c}}.
+
+\Hypertarget{ring_8c_af4bd196833424dc0e04d7f4af80db9f6}\label{ring_8c_af4bd196833424dc0e04d7f4af80db9f6} 
+\index{ring.c@{ring.c}!swap\_ring@{swap\_ring}}
+\index{swap\_ring@{swap\_ring}!ring.c@{ring.c}}
+\doxysubsubsection{\texorpdfstring{swap\_ring()}{swap\_ring()}}
+{\footnotesize\ttfamily void swap\+\_\+ring (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRing}{Ring}} \texorpdfstring{$\ast$}{*}}]{r }\end{DoxyParamCaption})}
+
+Switch the delimiting points of the ring and set the switch flag. 
+
+Definition at line \mbox{\hyperlink{ring_8c_source_l00065}{65}} of file \mbox{\hyperlink{ring_8c_source}{ring.\+c}}.
+

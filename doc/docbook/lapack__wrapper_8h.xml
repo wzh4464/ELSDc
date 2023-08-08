@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_lapack__wrapper_8h" xml:lang="en-US">
+<title>src/lapack_wrapper.h File Reference</title>
+<indexterm><primary>src/lapack_wrapper.h</primary></indexterm>
+<simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>void <link linkend="_lapack__wrapper_8h_1a53c1f8d4a5a618f72e2a8cd71a707fc7">lap_eig</link> (double *a, int n)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="_lapack__wrapper_8h_1a53c1f8d4a5a618f72e2a8cd71a707fc7"/><section>
+    <title>lap_eig()</title>
+<indexterm><primary>lap_eig</primary><secondary>lapack_wrapper.h</secondary></indexterm>
+<indexterm><primary>lapack_wrapper.h</primary><secondary>lap_eig</secondary></indexterm>
+<para><computeroutput>void lap_eig (double * A, int n)</computeroutput></para>
+<para>Header of lapack function for computing the eigen-decomposition of a matrix of double. Solve linear system. &apos;n&apos; number of unknowns; &apos;A&apos; coefficients of the equations. </para>
+<para>
+Definition at line <link linkend="_lapack__wrapper_8c_source_1l00046">46</link> of file <link linkend="_lapack__wrapper_8c_source">lapack_wrapper.c</link>.</para>
+</section>
+</section>
+</section>

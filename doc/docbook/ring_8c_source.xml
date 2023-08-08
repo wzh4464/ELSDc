@@ -1,0 +1,452 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_ring_8c_source" xml:lang="en-US">
+<title>ring.c</title>
+<indexterm><primary>src/ring.c</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="_ring_8c_source_1l00001"/>00001 <emphasis role="comment">/*------------------------------------------------------------------------------</emphasis>
+<anchor xml:id="_ring_8c_source_1l00002"/>00002 <emphasis role="comment">&#32;&#32;</emphasis>
+<anchor xml:id="_ring_8c_source_1l00003"/>00003 <emphasis role="comment">&#32;&#32;Copyright&#32;(c)&#32;2012-2014&#32;viorica&#32;patraucean&#32;(vpatrauc@gmail.com)</emphasis>
+<anchor xml:id="_ring_8c_source_1l00004"/>00004 <emphasis role="comment">&#32;&#32;</emphasis>
+<anchor xml:id="_ring_8c_source_1l00005"/>00005 <emphasis role="comment">&#32;&#32;This&#32;program&#32;is&#32;free&#32;software:&#32;you&#32;can&#32;redistribute&#32;it&#32;and/or&#32;modify</emphasis>
+<anchor xml:id="_ring_8c_source_1l00006"/>00006 <emphasis role="comment">&#32;&#32;it&#32;under&#32;the&#32;terms&#32;of&#32;the&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License&#32;as</emphasis>
+<anchor xml:id="_ring_8c_source_1l00007"/>00007 <emphasis role="comment">&#32;&#32;published&#32;by&#32;the&#32;Free&#32;Software&#32;Foundation,&#32;either&#32;version&#32;3&#32;of&#32;the</emphasis>
+<anchor xml:id="_ring_8c_source_1l00008"/>00008 <emphasis role="comment">&#32;&#32;License,&#32;or&#32;(at&#32;your&#32;option)&#32;any&#32;later&#32;version.</emphasis>
+<anchor xml:id="_ring_8c_source_1l00009"/>00009 <emphasis role="comment"></emphasis>
+<anchor xml:id="_ring_8c_source_1l00010"/>00010 <emphasis role="comment">&#32;&#32;This&#32;program&#32;is&#32;distributed&#32;in&#32;the&#32;hope&#32;that&#32;it&#32;will&#32;be&#32;useful,</emphasis>
+<anchor xml:id="_ring_8c_source_1l00011"/>00011 <emphasis role="comment">&#32;&#32;but&#32;WITHOUT&#32;ANY&#32;WARRANTY;&#32;without&#32;even&#32;the&#32;implied&#32;warranty&#32;of</emphasis>
+<anchor xml:id="_ring_8c_source_1l00012"/>00012 <emphasis role="comment">&#32;&#32;MERCHANTABILITY&#32;or&#32;FITNESS&#32;FOR&#32;A&#32;PARTICULAR&#32;PURPOSE.&#32;See&#32;the</emphasis>
+<anchor xml:id="_ring_8c_source_1l00013"/>00013 <emphasis role="comment">&#32;&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License&#32;for&#32;more&#32;details.</emphasis>
+<anchor xml:id="_ring_8c_source_1l00014"/>00014 <emphasis role="comment"></emphasis>
+<anchor xml:id="_ring_8c_source_1l00015"/>00015 <emphasis role="comment">&#32;&#32;You&#32;should&#32;have&#32;received&#32;a&#32;copy&#32;of&#32;the&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License</emphasis>
+<anchor xml:id="_ring_8c_source_1l00016"/>00016 <emphasis role="comment">&#32;&#32;along&#32;with&#32;this&#32;program.&#32;If&#32;not,&#32;see&#32;&lt;http://www.gnu.org/licenses/&gt;.</emphasis>
+<anchor xml:id="_ring_8c_source_1l00017"/>00017 <emphasis role="comment"></emphasis>
+<anchor xml:id="_ring_8c_source_1l00018"/>00018 <emphasis role="comment"></emphasis>
+<anchor xml:id="_ring_8c_source_1l00019"/>00019 <emphasis role="comment">&#32;&#32;ring.c&#32;-&#32;This&#32;file&#32;belongs&#32;to&#32;ELSDc&#32;project&#32;(Ellipse&#32;and&#32;Line&#32;Segment&#32;</emphasis>
+<anchor xml:id="_ring_8c_source_1l00020"/>00020 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Detector&#32;with&#32;continuous&#32;validation).</emphasis>
+<anchor xml:id="_ring_8c_source_1l00021"/>00021 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;-&#32;It&#32;contains&#32;functions&#32;to&#32;work&#32;with&#32;connected&#32;regions&#32;of&#32;pixels,&#32;</emphasis>
+<anchor xml:id="_ring_8c_source_1l00022"/>00022 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;approximated&#32;by&#32;rings.</emphasis>
+<anchor xml:id="_ring_8c_source_1l00023"/>00023 <emphasis role="comment"></emphasis>
+<anchor xml:id="_ring_8c_source_1l00024"/>00024 <emphasis role="comment">------------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00025"/>00025 
+<anchor xml:id="_ring_8c_source_1l00026"/>00026 
+<anchor xml:id="_ring_8c_source_1l00027"/>00027 <emphasis role="preprocessor">#include&#32;&lt;stdio.h&gt;</emphasis>
+<anchor xml:id="_ring_8c_source_1l00028"/>00028 <emphasis role="preprocessor">#include&#32;&lt;stdlib.h&gt;</emphasis>
+<anchor xml:id="_ring_8c_source_1l00029"/>00029 <emphasis role="preprocessor">#include&#32;&lt;math.h&gt;</emphasis>
+<anchor xml:id="_ring_8c_source_1l00030"/>00030 <emphasis role="preprocessor">#include&#32;&lt;float.h&gt;</emphasis>
+<anchor xml:id="_ring_8c_source_1l00031"/>00031 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_misc_8h">misc.h</link>&quot;</emphasis>
+<anchor xml:id="_ring_8c_source_1l00032"/>00032 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_ring_8h">ring.h</link>&quot;</emphasis>
+<anchor xml:id="_ring_8c_source_1l00033"/>00033 
+<anchor xml:id="_ring_8c_source_1l00034"/>00034 
+<anchor xml:id="_ring_8c_source_1l00035"/>00035 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00038"/><link linkend="_ring_8c_1aa22a2072f90b5e5ed51c29d5081c4faf">00038</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_ring_8c_1aa22a2072f90b5e5ed51c29d5081c4faf">copy_ring</link>(&#32;<link linkend="_structRing">Ring</link>&#32;*in,&#32;<link linkend="_structRing">Ring</link>&#32;*out&#32;)
+<anchor xml:id="_ring_8c_source_1l00039"/>00039 {
+<anchor xml:id="_ring_8c_source_1l00040"/>00040 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00041"/>00041 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(in&#32;==&#32;NULL)&#32;||&#32;(out&#32;==&#32;NULL)&#32;)&#32;
+<anchor xml:id="_ring_8c_source_1l00042"/>00042 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;copy_ring:&#32;invalid&#32;&apos;in&apos;&#32;or&#32;&apos;out&apos;.&quot;</emphasis>);
+<anchor xml:id="_ring_8c_source_1l00043"/>00043 
+<anchor xml:id="_ring_8c_source_1l00044"/>00044 &#32;&#32;out-&gt;<link linkend="_structRing_1ac75b803b570527306e1e744bfb7a604f">x1</link>&#32;=&#32;in-&gt;<link linkend="_structRing_1ac75b803b570527306e1e744bfb7a604f">x1</link>;
+<anchor xml:id="_ring_8c_source_1l00045"/>00045 &#32;&#32;out-&gt;<link linkend="_structRing_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>&#32;=&#32;in-&gt;<link linkend="_structRing_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>;
+<anchor xml:id="_ring_8c_source_1l00046"/>00046 &#32;&#32;out-&gt;<link linkend="_structRing_1adcf04f5f1964d18b332643939561da0d">x2</link>&#32;=&#32;in-&gt;<link linkend="_structRing_1adcf04f5f1964d18b332643939561da0d">x2</link>;
+<anchor xml:id="_ring_8c_source_1l00047"/>00047 &#32;&#32;out-&gt;<link linkend="_structRing_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>&#32;=&#32;in-&gt;<link linkend="_structRing_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>;
+<anchor xml:id="_ring_8c_source_1l00048"/>00048 &#32;&#32;out-&gt;<link linkend="_structRing_1a9df23e056f5d1a0388cd8190431c0e03">width</link>&#32;=&#32;in-&gt;<link linkend="_structRing_1a9df23e056f5d1a0388cd8190431c0e03">width</link>;
+<anchor xml:id="_ring_8c_source_1l00049"/>00049 &#32;&#32;out-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>&#32;=&#32;in-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>;
+<anchor xml:id="_ring_8c_source_1l00050"/>00050 &#32;&#32;out-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>&#32;=&#32;in-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>;
+<anchor xml:id="_ring_8c_source_1l00051"/>00051 &#32;&#32;out-&gt;<link linkend="_structRing_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>&#32;=&#32;in-&gt;<link linkend="_structRing_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>;
+<anchor xml:id="_ring_8c_source_1l00052"/>00052 &#32;&#32;out-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>&#32;=&#32;in-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>;
+<anchor xml:id="_ring_8c_source_1l00053"/>00053 &#32;&#32;out-&gt;<link linkend="_structRing_1a4f2308ba06a1f517e1f1babc5603d79a">bx</link>&#32;=&#32;in-&gt;<link linkend="_structRing_1a4f2308ba06a1f517e1f1babc5603d79a">bx</link>;
+<anchor xml:id="_ring_8c_source_1l00054"/>00054 &#32;&#32;out-&gt;<link linkend="_structRing_1a466b3f5f225ebc707bb596ac344baa7c">ang_start</link>&#32;=&#32;in-&gt;<link linkend="_structRing_1a466b3f5f225ebc707bb596ac344baa7c">ang_start</link>;
+<anchor xml:id="_ring_8c_source_1l00055"/>00055 &#32;&#32;out-&gt;<link linkend="_structRing_1a85eb98efd34c1332f888379ff2a30a43">ang_end</link>&#32;&#32;&#32;=&#32;in-&gt;<link linkend="_structRing_1a85eb98efd34c1332f888379ff2a30a43">ang_end</link>;
+<anchor xml:id="_ring_8c_source_1l00056"/>00056 &#32;&#32;out-&gt;<link linkend="_structRing_1ad1515daed95ba43fd919fddcf3144d1a">wmin</link>&#32;=&#32;in-&gt;<link linkend="_structRing_1ad1515daed95ba43fd919fddcf3144d1a">wmin</link>;
+<anchor xml:id="_ring_8c_source_1l00057"/>00057 &#32;&#32;out-&gt;<link linkend="_structRing_1a54612b6d232db5e1a58ae8b2f26b1df4">wmax</link>&#32;=&#32;in-&gt;<link linkend="_structRing_1a54612b6d232db5e1a58ae8b2f26b1df4">wmax</link>;
+<anchor xml:id="_ring_8c_source_1l00058"/>00058 &#32;&#32;out-&gt;<link linkend="_structRing_1a3a0e8c0939ab76b5866a0bbad1d338e6">full</link>&#32;=&#32;in-&gt;<link linkend="_structRing_1a3a0e8c0939ab76b5866a0bbad1d338e6">full</link>;
+<anchor xml:id="_ring_8c_source_1l00059"/>00059 }
+<anchor xml:id="_ring_8c_source_1l00060"/>00060 
+<anchor xml:id="_ring_8c_source_1l00061"/>00061 
+<anchor xml:id="_ring_8c_source_1l00062"/>00062 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00065"/><link linkend="_ring_8c_1af4bd196833424dc0e04d7f4af80db9f6">00065</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_ring_8c_1af4bd196833424dc0e04d7f4af80db9f6">swap_ring</link>(&#32;<link linkend="_structRing">Ring</link>&#32;*r&#32;)
+<anchor xml:id="_ring_8c_source_1l00066"/>00066 {
+<anchor xml:id="_ring_8c_source_1l00067"/>00067 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00068"/>00068 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;r&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;swap_ring:&#32;invalid&#32;ring.&quot;</emphasis>);
+<anchor xml:id="_ring_8c_source_1l00069"/>00069 
+<anchor xml:id="_ring_8c_source_1l00070"/>00070 &#32;&#32;<link linkend="_misc_8c_1abfa4eebba539e060400a6a7fe746614e">swap_double</link>(&#32;&amp;(r-&gt;<link linkend="_structRing_1ac75b803b570527306e1e744bfb7a604f">x1</link>),&#32;&amp;(r-&gt;<link linkend="_structRing_1adcf04f5f1964d18b332643939561da0d">x2</link>)&#32;);
+<anchor xml:id="_ring_8c_source_1l00071"/>00071 &#32;&#32;<link linkend="_misc_8c_1abfa4eebba539e060400a6a7fe746614e">swap_double</link>(&#32;&amp;(r-&gt;<link linkend="_structRing_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>),&#32;&amp;(r-&gt;<link linkend="_structRing_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>)&#32;);
+<anchor xml:id="_ring_8c_source_1l00072"/>00072 &#32;&#32;<link linkend="_misc_8c_1abfa4eebba539e060400a6a7fe746614e">swap_double</link>(&#32;&amp;(r-&gt;<link linkend="_structRing_1a466b3f5f225ebc707bb596ac344baa7c">ang_start</link>),&#32;&amp;(r-&gt;<link linkend="_structRing_1a85eb98efd34c1332f888379ff2a30a43">ang_end</link>)&#32;);
+<anchor xml:id="_ring_8c_source_1l00073"/>00073 &#32;&#32;r-&gt;<link linkend="_structRing_1a3a0e8c0939ab76b5866a0bbad1d338e6">full</link>&#32;=&#32;1;
+<anchor xml:id="_ring_8c_source_1l00074"/>00074 }
+<anchor xml:id="_ring_8c_source_1l00075"/>00075 
+<anchor xml:id="_ring_8c_source_1l00076"/>00076 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00079"/><link linkend="_ring_8c_1a135c65c3fc6ffdec3f39ea806588958c">00079</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_ring_8c_1a135c65c3fc6ffdec3f39ea806588958c">check_circ_ring</link>(&#32;<link linkend="_structRing">Ring</link>&#32;*cring&#32;)
+<anchor xml:id="_ring_8c_source_1l00080"/>00080 {
+<anchor xml:id="_ring_8c_source_1l00081"/>00081 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00082"/>00082 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;cring&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;check_circ_ring:&#32;invalid&#32;ring.&quot;</emphasis>);
+<anchor xml:id="_ring_8c_source_1l00083"/>00083 
+<anchor xml:id="_ring_8c_source_1l00084"/>00084 &#32;&#32;<emphasis role="comment">/*&#32;reject&#32;if&#32;degenerate&#32;ellipse&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00085"/>00085 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;cring-&gt;<link linkend="_structRing_1ad1515daed95ba43fd919fddcf3144d1a">wmin</link>*cring-&gt;<link linkend="_structRing_1a54612b6d232db5e1a58ae8b2f26b1df4">wmax</link>&#32;&gt;&#32;0&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa93f0eb578d23995850d61f7d61c55c1">FALSE</link>;
+<anchor xml:id="_ring_8c_source_1l00086"/>00086 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</link>;
+<anchor xml:id="_ring_8c_source_1l00087"/>00087 }
+<anchor xml:id="_ring_8c_source_1l00088"/>00088 
+<anchor xml:id="_ring_8c_source_1l00089"/>00089 
+<anchor xml:id="_ring_8c_source_1l00090"/>00090 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00094"/><link linkend="_ring_8c_1aab09e6cf000c148dc5d6c8d3637bcbf1">00094</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_ring_8c_1aab09e6cf000c148dc5d6c8d3637bcbf1">check_ell_ring</link>(&#32;<link linkend="_structRing">Ring</link>&#32;*ering&#32;)
+<anchor xml:id="_ring_8c_source_1l00095"/>00095 {
+<anchor xml:id="_ring_8c_source_1l00096"/>00096 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00097"/>00097 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;ering&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;check_ell_ring:&#32;invalid&#32;ring.&quot;</emphasis>);
+<anchor xml:id="_ring_8c_source_1l00098"/>00098 
+<anchor xml:id="_ring_8c_source_1l00099"/>00099 &#32;&#32;<emphasis role="comment">/*&#32;reject&#32;if&#32;degenerate&#32;ellipse&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00100"/>00100 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;ering-&gt;<link linkend="_structRing_1ad1515daed95ba43fd919fddcf3144d1a">wmin</link>*ering-&gt;<link linkend="_structRing_1a54612b6d232db5e1a58ae8b2f26b1df4">wmax</link>&#32;&gt;&#32;0&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa93f0eb578d23995850d61f7d61c55c1">FALSE</link>;
+<anchor xml:id="_ring_8c_source_1l00101"/>00101 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</link>;
+<anchor xml:id="_ring_8c_source_1l00102"/>00102 }
+<anchor xml:id="_ring_8c_source_1l00103"/>00103 
+<anchor xml:id="_ring_8c_source_1l00104"/>00104 
+<anchor xml:id="_ring_8c_source_1l00105"/>00105 
+<anchor xml:id="_ring_8c_source_1l00106"/>00106 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00109"/><link linkend="_ring_8c_1ac82b2076b8049f107782e813168db716">00109</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_ring_8c_1ac82b2076b8049f107782e813168db716">check_circ</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;*cparam&#32;)
+<anchor xml:id="_ring_8c_source_1l00110"/>00110 {
+<anchor xml:id="_ring_8c_source_1l00111"/>00111 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00112"/>00112 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;cparam&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;check_circ:&#32;invalid&#32;circle.&quot;</emphasis>);
+<anchor xml:id="_ring_8c_source_1l00113"/>00113 
+<anchor xml:id="_ring_8c_source_1l00114"/>00114 &#32;&#32;<emphasis role="comment">/*&#32;reject&#32;if&#32;degenerate&#32;circle&#32;(negative&#32;or&#32;close&#32;to&#32;0&#32;radius)&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00115"/>00115 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;cparam[2]&#32;&lt;=&#32;1&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa93f0eb578d23995850d61f7d61c55c1">FALSE</link>;
+<anchor xml:id="_ring_8c_source_1l00116"/>00116 &#32;&#32;<emphasis role="comment">/*&#32;reject&#32;directly&#32;if&#32;very&#32;small&#32;arc,&#32;to&#32;win&#32;time&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00117"/>00117 &#32;&#32;<emphasis role="comment">/*&#32;if(&#32;angle_diff(&#32;cring-&gt;ang_end,&#32;cring-&gt;ang_start)&#32;&lt;&#32;0.14&#32;)&#32;return&#32;FALSE;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00118"/>00118 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</link>;
+<anchor xml:id="_ring_8c_source_1l00119"/>00119 }
+<anchor xml:id="_ring_8c_source_1l00120"/>00120 
+<anchor xml:id="_ring_8c_source_1l00121"/>00121 
+<anchor xml:id="_ring_8c_source_1l00122"/>00122 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00126"/><link linkend="_ring_8c_1ab53bff8abd49d5a5dd267e78c85366ab">00126</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_ring_8c_1ab53bff8abd49d5a5dd267e78c85366ab">check_ell</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;*eparam&#32;)
+<anchor xml:id="_ring_8c_source_1l00127"/>00127 {
+<anchor xml:id="_ring_8c_source_1l00128"/>00128 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00129"/>00129 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;eparam&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;check_ell:&#32;invalid&#32;ellipse.&quot;</emphasis>);
+<anchor xml:id="_ring_8c_source_1l00130"/>00130 
+<anchor xml:id="_ring_8c_source_1l00131"/>00131 &#32;&#32;<emphasis role="comment">/*&#32;reject&#32;if&#32;degenerate&#32;ellipse&#32;(negative&#32;axes)&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00132"/>00132 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(eparam[2]&#32;&lt;=&#32;1)&#32;||&#32;(eparam[3]&#32;&lt;=&#32;1)&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa93f0eb578d23995850d61f7d61c55c1">FALSE</link>;
+<anchor xml:id="_ring_8c_source_1l00133"/>00133 &#32;&#32;<emphasis role="comment">/*&#32;make&#32;sure&#32;&apos;ax&apos;&#32;is&#32;the&#32;greater&#32;axis&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00134"/>00134 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;eparam[2]&#32;&lt;&#32;eparam[3]&#32;)
+<anchor xml:id="_ring_8c_source_1l00135"/>00135 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_ring_8c_source_1l00136"/>00136 &#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_misc_8c_1abfa4eebba539e060400a6a7fe746614e">swap_double</link>(&#32;&amp;(eparam[2]),&#32;&amp;(eparam[3])&#32;);
+<anchor xml:id="_ring_8c_source_1l00137"/>00137 &#32;&#32;&#32;&#32;&#32;&#32;eparam[4]&#32;+=&#32;<link linkend="_misc_8h_1ae11c01f236a7a89f767a7b34283da201">M_1_2_PI</link>;
+<anchor xml:id="_ring_8c_source_1l00138"/>00138 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_ring_8c_source_1l00139"/>00139 &#32;&#32;<emphasis role="comment">/*&#32;reject&#32;directly&#32;if&#32;very&#32;thin&#32;ellipse,&#32;to&#32;win&#32;time&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00140"/>00140 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;eparam[2]&#32;/&#32;eparam[3]&#32;&gt;&#32;100&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa93f0eb578d23995850d61f7d61c55c1">FALSE</link>;
+<anchor xml:id="_ring_8c_source_1l00141"/>00141 
+<anchor xml:id="_ring_8c_source_1l00142"/>00142 &#32;&#32;<emphasis role="comment">/*&#32;make&#32;sure&#32;orientation&#32;belongs&#32;to&#32;[-pi/2,&#32;pi/2]&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00143"/>00143 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;eparam[4]&#32;&gt;&#32;<link linkend="_misc_8h_1ae11c01f236a7a89f767a7b34283da201">M_1_2_PI</link>&#32;)&#32;eparam[4]&#32;-=&#32;<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>;
+<anchor xml:id="_ring_8c_source_1l00144"/>00144 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;eparam[4]&#32;&gt;&#32;<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>&#32;)&#32;eparam[4]&#32;-=&#32;<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>;
+<anchor xml:id="_ring_8c_source_1l00145"/>00145 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;eparam[4]&#32;&lt;&#32;-<link linkend="_misc_8h_1ae11c01f236a7a89f767a7b34283da201">M_1_2_PI</link>&#32;)&#32;eparam[4]&#32;+=&#32;<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>;
+<anchor xml:id="_ring_8c_source_1l00146"/>00146 
+<anchor xml:id="_ring_8c_source_1l00147"/>00147 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</link>;
+<anchor xml:id="_ring_8c_source_1l00148"/>00148 }
+<anchor xml:id="_ring_8c_source_1l00149"/>00149 
+<anchor xml:id="_ring_8c_source_1l00150"/>00150 
+<anchor xml:id="_ring_8c_source_1l00151"/>00151 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00156"/><link linkend="_ring_8c_1abc1b2fcb970026bac2c06de0423e6278">00156</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_ring_8c_1abc1b2fcb970026bac2c06de0423e6278">is_in_circ_ring</link>(&#32;<link linkend="_structRing">Ring</link>&#32;*&#32;r,&#32;<emphasis role="keywordtype">int</emphasis>&#32;x,&#32;<emphasis role="keywordtype">int</emphasis>&#32;y&#32;)
+<anchor xml:id="_ring_8c_source_1l00157"/>00157 {
+<anchor xml:id="_ring_8c_source_1l00158"/>00158 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00159"/>00159 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;r&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;is_in_ring:&#32;invalid&#32;input&#32;ring.&quot;</emphasis>);
+<anchor xml:id="_ring_8c_source_1l00160"/>00160 
+<anchor xml:id="_ring_8c_source_1l00161"/>00161 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;d&#32;=&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(&#32;x,&#32;y,&#32;r-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>,&#32;r-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>)&#32;-&#32;r-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>;
+<anchor xml:id="_ring_8c_source_1l00162"/>00162 
+<anchor xml:id="_ring_8c_source_1l00163"/>00163 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;theta&#32;=&#32;atan2(&#32;(<emphasis role="keywordtype">double</emphasis>)y&#32;-&#32;r-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>,&#32;(<emphasis role="keywordtype">double</emphasis>)x&#32;-&#32;r-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>);
+<anchor xml:id="_ring_8c_source_1l00164"/>00164 
+<anchor xml:id="_ring_8c_source_1l00165"/>00165 &#32;&#32;<emphasis role="comment">/*&#32;make&#32;sure&#32;angle&#32;in&#32;[0,&#32;2pi]&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00166"/>00166 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;theta&lt;0&#32;)&#32;theta&#32;+=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_ring_8c_source_1l00167"/>00167 
+<anchor xml:id="_ring_8c_source_1l00168"/>00168 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;r-&gt;<link linkend="_structRing_1a85eb98efd34c1332f888379ff2a30a43">ang_end</link>&#32;&gt;&#32;r-&gt;<link linkend="_structRing_1a466b3f5f225ebc707bb596ac344baa7c">ang_start</link>&#32;)&#32;
+<anchor xml:id="_ring_8c_source_1l00169"/>00169 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_ring_8c_source_1l00170"/>00170 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(theta&#32;&lt;&#32;r-&gt;ang_start)&#32;||&#32;(theta&#32;&gt;&#32;r-&gt;<link linkend="_structRing_1a85eb98efd34c1332f888379ff2a30a43">ang_end</link>)&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa93f0eb578d23995850d61f7d61c55c1">FALSE</link>;
+<anchor xml:id="_ring_8c_source_1l00171"/>00171 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_ring_8c_source_1l00172"/>00172 &#32;&#32;<emphasis role="keywordflow">else</emphasis>
+<anchor xml:id="_ring_8c_source_1l00173"/>00173 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(theta&#32;&lt;&#32;r-&gt;ang_start)&#32;&amp;&amp;&#32;(theta&#32;&gt;&#32;r-&gt;<link linkend="_structRing_1a85eb98efd34c1332f888379ff2a30a43">ang_end</link>)&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa93f0eb578d23995850d61f7d61c55c1">FALSE</link>;
+<anchor xml:id="_ring_8c_source_1l00174"/>00174 
+<anchor xml:id="_ring_8c_source_1l00175"/>00175 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(d&#32;&lt;&#32;r-&gt;wmin)&#32;||&#32;(d&#32;&gt;&#32;r-&gt;<link linkend="_structRing_1a54612b6d232db5e1a58ae8b2f26b1df4">wmax</link>)&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa93f0eb578d23995850d61f7d61c55c1">FALSE</link>;
+<anchor xml:id="_ring_8c_source_1l00176"/>00176 &#32;&#32;
+<anchor xml:id="_ring_8c_source_1l00177"/>00177 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</link>;
+<anchor xml:id="_ring_8c_source_1l00178"/>00178 }
+<anchor xml:id="_ring_8c_source_1l00179"/>00179 
+<anchor xml:id="_ring_8c_source_1l00180"/>00180 
+<anchor xml:id="_ring_8c_source_1l00181"/>00181 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00186"/><link linkend="_ring_8c_1ad4da58ff04f79b272727c6bfaf9d433d">00186</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_ring_8c_1ad4da58ff04f79b272727c6bfaf9d433d">is_in_ell_ring</link>(&#32;<link linkend="_structRing">Ring</link>&#32;*&#32;r,&#32;<emphasis role="keywordtype">int</emphasis>&#32;x,&#32;<emphasis role="keywordtype">int</emphasis>&#32;y&#32;)
+<anchor xml:id="_ring_8c_source_1l00187"/>00187 {
+<anchor xml:id="_ring_8c_source_1l00188"/>00188 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00189"/>00189 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;r&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;is_in_ring:&#32;invalid&#32;input&#32;ring.&quot;</emphasis>);
+<anchor xml:id="_ring_8c_source_1l00190"/>00190 
+<anchor xml:id="_ring_8c_source_1l00191"/>00191 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;d&#32;=&#32;<link linkend="_ring_8c_1a4c056155bbee1a0da2b83bdc5457a530">d_rosin</link>(&#32;r,&#32;(<emphasis role="keywordtype">double</emphasis>)x,&#32;(<emphasis role="keywordtype">double</emphasis>)y&#32;);
+<anchor xml:id="_ring_8c_source_1l00192"/>00192 
+<anchor xml:id="_ring_8c_source_1l00193"/>00193 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;theta&#32;=&#32;atan2(&#32;(<emphasis role="keywordtype">double</emphasis>)y&#32;-&#32;r-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>,&#32;(<emphasis role="keywordtype">double</emphasis>)x&#32;-&#32;r-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>);
+<anchor xml:id="_ring_8c_source_1l00194"/>00194 
+<anchor xml:id="_ring_8c_source_1l00195"/>00195 &#32;&#32;<emphasis role="comment">/*&#32;make&#32;sure&#32;angle&#32;in&#32;[0,&#32;2pi]&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00196"/>00196 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;theta&#32;&lt;&#32;0&#32;)&#32;theta&#32;+=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_ring_8c_source_1l00197"/>00197 &#32;&#32;
+<anchor xml:id="_ring_8c_source_1l00198"/>00198 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;r-&gt;<link linkend="_structRing_1a85eb98efd34c1332f888379ff2a30a43">ang_end</link>&#32;&gt;&#32;r-&gt;<link linkend="_structRing_1a466b3f5f225ebc707bb596ac344baa7c">ang_start</link>&#32;)&#32;
+<anchor xml:id="_ring_8c_source_1l00199"/>00199 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_ring_8c_source_1l00200"/>00200 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(theta&#32;&lt;&#32;r-&gt;ang_start)&#32;||&#32;(theta&#32;&gt;&#32;r-&gt;<link linkend="_structRing_1a85eb98efd34c1332f888379ff2a30a43">ang_end</link>)&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa93f0eb578d23995850d61f7d61c55c1">FALSE</link>;
+<anchor xml:id="_ring_8c_source_1l00201"/>00201 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_ring_8c_source_1l00202"/>00202 &#32;&#32;<emphasis role="keywordflow">else</emphasis>
+<anchor xml:id="_ring_8c_source_1l00203"/>00203 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(theta&#32;&lt;&#32;r-&gt;ang_start)&#32;&amp;&amp;&#32;(theta&#32;&gt;&#32;r-&gt;<link linkend="_structRing_1a85eb98efd34c1332f888379ff2a30a43">ang_end</link>)&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa93f0eb578d23995850d61f7d61c55c1">FALSE</link>;
+<anchor xml:id="_ring_8c_source_1l00204"/>00204 
+<anchor xml:id="_ring_8c_source_1l00205"/>00205 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(d&#32;&lt;&#32;r-&gt;wmin)&#32;||&#32;(d&#32;&gt;&#32;r-&gt;<link linkend="_structRing_1a54612b6d232db5e1a58ae8b2f26b1df4">wmax</link>)&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa93f0eb578d23995850d61f7d61c55c1">FALSE</link>;
+<anchor xml:id="_ring_8c_source_1l00206"/>00206 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</link>;
+<anchor xml:id="_ring_8c_source_1l00207"/>00207 }
+<anchor xml:id="_ring_8c_source_1l00208"/>00208 
+<anchor xml:id="_ring_8c_source_1l00209"/>00209 
+<anchor xml:id="_ring_8c_source_1l00210"/>00210 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00214"/><link linkend="_ring_8c_1ab6d86c932ef1cfaf6816342e601cd1c6">00214</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_ring_8c_1ab6d86c932ef1cfaf6816342e601cd1c6">rosin_point</link>(&#32;<link linkend="_structRing">Ring</link>&#32;*ering,&#32;<emphasis role="keywordtype">int</emphasis>&#32;x,&#32;<emphasis role="keywordtype">int</emphasis>&#32;y,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*xi,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*yi&#32;)
+<anchor xml:id="_ring_8c_source_1l00215"/>00215 {&#32;&#32;
+<anchor xml:id="_ring_8c_source_1l00216"/>00216 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;xtmp,&#32;ytmp;
+<anchor xml:id="_ring_8c_source_1l00217"/>00217 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;ae2,&#32;be2,&#32;fe2;&#32;
+<anchor xml:id="_ring_8c_source_1l00218"/>00218 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;xp,&#32;yp,&#32;xp2,&#32;yp2,&#32;xx,&#32;yy;&#32;&#32;
+<anchor xml:id="_ring_8c_source_1l00219"/>00219 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;delta,&#32;A,&#32;ah,&#32;bh2,&#32;term;
+<anchor xml:id="_ring_8c_source_1l00220"/>00220 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;d[4];
+<anchor xml:id="_ring_8c_source_1l00221"/>00221 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;pos;
+<anchor xml:id="_ring_8c_source_1l00222"/>00222 &#32;&#32;xtmp&#32;=&#32;x&#32;-&#32;ering-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>;
+<anchor xml:id="_ring_8c_source_1l00223"/>00223 &#32;&#32;ytmp&#32;=&#32;y&#32;-&#32;ering-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>;
+<anchor xml:id="_ring_8c_source_1l00224"/>00224 &#32;&#32;ae2&#32;&#32;=&#32;ering-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>&#32;*&#32;ering-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>;
+<anchor xml:id="_ring_8c_source_1l00225"/>00225 &#32;&#32;be2&#32;&#32;=&#32;ering-&gt;<link linkend="_structRing_1a4f2308ba06a1f517e1f1babc5603d79a">bx</link>&#32;*&#32;ering-&gt;<link linkend="_structRing_1a4f2308ba06a1f517e1f1babc5603d79a">bx</link>;
+<anchor xml:id="_ring_8c_source_1l00226"/>00226 &#32;&#32;fe2&#32;=&#32;ae2&#32;-&#32;be2;
+<anchor xml:id="_ring_8c_source_1l00227"/>00227 &#32;&#32;xp&#32;=&#32;xtmp&#32;*&#32;cos(-ering-&gt;<link linkend="_structRing_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>)&#32;-&#32;ytmp&#32;*&#32;sin(-ering-&gt;<link linkend="_structRing_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>);
+<anchor xml:id="_ring_8c_source_1l00228"/>00228 &#32;&#32;yp&#32;=&#32;xtmp&#32;*&#32;sin(-ering-&gt;<link linkend="_structRing_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>)&#32;+&#32;ytmp&#32;*&#32;cos(-ering-&gt;<link linkend="_structRing_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>);
+<anchor xml:id="_ring_8c_source_1l00229"/>00229 &#32;&#32;xp2&#32;=&#32;xp&#32;*&#32;xp;
+<anchor xml:id="_ring_8c_source_1l00230"/>00230 &#32;&#32;yp2&#32;=&#32;yp&#32;*&#32;yp;
+<anchor xml:id="_ring_8c_source_1l00231"/>00231 &#32;&#32;delta&#32;=&#32;(xp2&#32;+&#32;yp2&#32;+&#32;fe2)&#32;*&#32;(xp2&#32;+&#32;yp2&#32;+&#32;fe2)&#32;-&#32;4&#32;*&#32;xp2&#32;*&#32;fe2;
+<anchor xml:id="_ring_8c_source_1l00232"/>00232 &#32;&#32;A&#32;=&#32;(xp2&#32;+&#32;yp2&#32;+&#32;fe2&#32;-&#32;sqrt(delta))/2.0;&#32;
+<anchor xml:id="_ring_8c_source_1l00233"/>00233 &#32;&#32;ah&#32;=&#32;sqrt(A);
+<anchor xml:id="_ring_8c_source_1l00234"/>00234 &#32;&#32;bh2&#32;=&#32;fe2&#32;-&#32;A;
+<anchor xml:id="_ring_8c_source_1l00235"/>00235 &#32;&#32;term&#32;=&#32;(A&#32;*&#32;be2&#32;+&#32;ae2&#32;*&#32;bh2);
+<anchor xml:id="_ring_8c_source_1l00236"/>00236 &#32;&#32;xx&#32;=&#32;ah&#32;*&#32;sqrt(&#32;ae2&#32;*&#32;(be2&#32;+&#32;bh2)&#32;/&#32;term&#32;);
+<anchor xml:id="_ring_8c_source_1l00237"/>00237 &#32;&#32;yy&#32;=&#32;ering-&gt;<link linkend="_structRing_1a4f2308ba06a1f517e1f1babc5603d79a">bx</link>&#32;*&#32;sqrt(&#32;bh2&#32;*&#32;(ae2&#32;-&#32;A)&#32;/&#32;term&#32;);
+<anchor xml:id="_ring_8c_source_1l00238"/>00238 
+<anchor xml:id="_ring_8c_source_1l00239"/>00239 &#32;&#32;d[0]&#32;=&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(&#32;xp,&#32;yp,&#32;xx,&#32;yy&#32;);
+<anchor xml:id="_ring_8c_source_1l00240"/>00240 &#32;&#32;d[1]&#32;=&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(&#32;xp,&#32;yp,&#32;xx,-yy&#32;);
+<anchor xml:id="_ring_8c_source_1l00241"/>00241 &#32;&#32;d[2]&#32;=&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(&#32;xp,&#32;yp,-xx,&#32;yy&#32;);
+<anchor xml:id="_ring_8c_source_1l00242"/>00242 &#32;&#32;d[3]&#32;=&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(&#32;xp,&#32;yp,-xx,-yy&#32;);
+<anchor xml:id="_ring_8c_source_1l00243"/>00243 
+<anchor xml:id="_ring_8c_source_1l00244"/>00244 &#32;&#32;<link linkend="_misc_8c_1a6d6f434a2cc946f78f7916364ad14f38">min_array_pos</link>(&#32;d,&#32;4,&#32;&amp;pos&#32;);
+<anchor xml:id="_ring_8c_source_1l00245"/>00245 &#32;&#32;<emphasis role="keywordflow">switch</emphasis>(pos)
+<anchor xml:id="_ring_8c_source_1l00246"/>00246 &#32;&#32;&#32;&#32;{&#32;
+<anchor xml:id="_ring_8c_source_1l00247"/>00247 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;0:&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_ring_8c_source_1l00248"/>00248 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;1:&#32;yy&#32;=&#32;-yy;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_ring_8c_source_1l00249"/>00249 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;2:&#32;xx&#32;=&#32;-xx;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_ring_8c_source_1l00250"/>00250 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">case</emphasis>&#32;3:&#32;xx&#32;=&#32;-xx;&#32;yy&#32;=&#32;-yy;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_ring_8c_source_1l00251"/>00251 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">default</emphasis>:&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_ring_8c_source_1l00252"/>00252 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_ring_8c_source_1l00253"/>00253 &#32;&#32;*xi&#32;=&#32;xx&#32;*&#32;cos(ering-&gt;<link linkend="_structRing_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>)&#32;-&#32;yy&#32;*&#32;sin(ering-&gt;<link linkend="_structRing_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>)&#32;+&#32;ering-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>;
+<anchor xml:id="_ring_8c_source_1l00254"/>00254 &#32;&#32;*yi&#32;=&#32;xx&#32;*&#32;sin(ering-&gt;<link linkend="_structRing_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>)&#32;+&#32;yy&#32;*&#32;cos(ering-&gt;<link linkend="_structRing_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>)&#32;+&#32;ering-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>;
+<anchor xml:id="_ring_8c_source_1l00255"/>00255 }
+<anchor xml:id="_ring_8c_source_1l00256"/>00256 
+<anchor xml:id="_ring_8c_source_1l00257"/>00257 
+<anchor xml:id="_ring_8c_source_1l00258"/>00258 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00262"/><link linkend="_ring_8c_1a4c056155bbee1a0da2b83bdc5457a530">00262</link> <emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_ring_8c_1a4c056155bbee1a0da2b83bdc5457a530">d_rosin</link>(&#32;<link linkend="_structRing">Ring</link>&#32;*ering,&#32;<emphasis role="keywordtype">double</emphasis>&#32;x,&#32;<emphasis role="keywordtype">double</emphasis>&#32;y&#32;)
+<anchor xml:id="_ring_8c_source_1l00263"/>00263 {&#32;
+<anchor xml:id="_ring_8c_source_1l00264"/>00264 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;xtmp,&#32;ytmp;
+<anchor xml:id="_ring_8c_source_1l00265"/>00265 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;ae2,&#32;be2,&#32;fe2;&#32;
+<anchor xml:id="_ring_8c_source_1l00266"/>00266 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;xp,&#32;yp,&#32;xp2,&#32;yp2,&#32;xx,&#32;yy;&#32;&#32;
+<anchor xml:id="_ring_8c_source_1l00267"/>00267 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;delta,&#32;A,&#32;ah,&#32;bh2,&#32;term;
+<anchor xml:id="_ring_8c_source_1l00268"/>00268 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;d[4];
+<anchor xml:id="_ring_8c_source_1l00269"/>00269 
+<anchor xml:id="_ring_8c_source_1l00270"/>00270 &#32;&#32;xtmp&#32;=&#32;x&#32;-&#32;ering-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>;
+<anchor xml:id="_ring_8c_source_1l00271"/>00271 &#32;&#32;ytmp&#32;=&#32;y&#32;-&#32;ering-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>;
+<anchor xml:id="_ring_8c_source_1l00272"/>00272 &#32;&#32;ae2&#32;&#32;=&#32;ering-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>&#32;*&#32;ering-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>;
+<anchor xml:id="_ring_8c_source_1l00273"/>00273 &#32;&#32;be2&#32;&#32;=&#32;ering-&gt;<link linkend="_structRing_1a4f2308ba06a1f517e1f1babc5603d79a">bx</link>&#32;*&#32;ering-&gt;<link linkend="_structRing_1a4f2308ba06a1f517e1f1babc5603d79a">bx</link>;
+<anchor xml:id="_ring_8c_source_1l00274"/>00274 &#32;&#32;fe2&#32;=&#32;ae2&#32;-&#32;be2;
+<anchor xml:id="_ring_8c_source_1l00275"/>00275 &#32;&#32;xp&#32;=&#32;xtmp&#32;*&#32;cos(-ering-&gt;<link linkend="_structRing_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>)&#32;-&#32;ytmp&#32;*&#32;sin(-ering-&gt;<link linkend="_structRing_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>);
+<anchor xml:id="_ring_8c_source_1l00276"/>00276 &#32;&#32;yp&#32;=&#32;xtmp&#32;*&#32;sin(-ering-&gt;<link linkend="_structRing_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>)&#32;+&#32;ytmp&#32;*&#32;cos(-ering-&gt;<link linkend="_structRing_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>);
+<anchor xml:id="_ring_8c_source_1l00277"/>00277 &#32;&#32;xp2&#32;=&#32;xp&#32;*&#32;xp;
+<anchor xml:id="_ring_8c_source_1l00278"/>00278 &#32;&#32;yp2&#32;=&#32;yp&#32;*&#32;yp;
+<anchor xml:id="_ring_8c_source_1l00279"/>00279 &#32;&#32;delta&#32;=&#32;(xp2&#32;+&#32;yp2&#32;+&#32;fe2)&#32;*&#32;(xp2&#32;+&#32;yp2&#32;+&#32;fe2)&#32;-&#32;4&#32;*&#32;xp2&#32;*&#32;fe2;
+<anchor xml:id="_ring_8c_source_1l00280"/>00280 &#32;&#32;A&#32;=&#32;(xp2&#32;+&#32;yp2&#32;+&#32;fe2&#32;-&#32;sqrt(delta))/2.0;&#32;
+<anchor xml:id="_ring_8c_source_1l00281"/>00281 &#32;&#32;ah&#32;=&#32;sqrt(A);
+<anchor xml:id="_ring_8c_source_1l00282"/>00282 &#32;&#32;bh2&#32;=&#32;fe2&#32;-&#32;A;
+<anchor xml:id="_ring_8c_source_1l00283"/>00283 &#32;&#32;term&#32;=&#32;(A&#32;*&#32;be2&#32;+&#32;ae2&#32;*&#32;bh2);
+<anchor xml:id="_ring_8c_source_1l00284"/>00284 &#32;&#32;xx&#32;=&#32;ah&#32;*&#32;sqrt(&#32;ae2&#32;*&#32;(be2&#32;+&#32;bh2)&#32;/&#32;term&#32;);
+<anchor xml:id="_ring_8c_source_1l00285"/>00285 &#32;&#32;yy&#32;=&#32;ering-&gt;<link linkend="_structRing_1a4f2308ba06a1f517e1f1babc5603d79a">bx</link>&#32;*&#32;sqrt(&#32;bh2&#32;*&#32;(ae2&#32;-&#32;A)&#32;/&#32;term&#32;);
+<anchor xml:id="_ring_8c_source_1l00286"/>00286 
+<anchor xml:id="_ring_8c_source_1l00287"/>00287 &#32;&#32;d[0]&#32;=&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(&#32;xp,&#32;yp,&#32;xx,&#32;yy);
+<anchor xml:id="_ring_8c_source_1l00288"/>00288 &#32;&#32;d[1]&#32;=&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(&#32;xp,&#32;yp,&#32;xx,-yy);
+<anchor xml:id="_ring_8c_source_1l00289"/>00289 &#32;&#32;d[2]&#32;=&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(&#32;xp,&#32;yp,-xx,&#32;yy);
+<anchor xml:id="_ring_8c_source_1l00290"/>00290 &#32;&#32;d[3]&#32;=&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(&#32;xp,&#32;yp,-xx,-yy);
+<anchor xml:id="_ring_8c_source_1l00291"/>00291 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;dmin&#32;=&#32;<link linkend="_misc_8c_1acbf3663dd6c05ce0f7f82f6d4b36c6a7">min_array</link>(d,4);&#32;
+<anchor xml:id="_ring_8c_source_1l00292"/>00292 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;xp2+yp2&#32;&gt;&#32;xx*xx+yy*yy&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;dmin;
+<anchor xml:id="_ring_8c_source_1l00293"/>00293 &#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;-dmin;&#32;
+<anchor xml:id="_ring_8c_source_1l00294"/>00294 }
+<anchor xml:id="_ring_8c_source_1l00295"/>00295 
+<anchor xml:id="_ring_8c_source_1l00296"/>00296 
+<anchor xml:id="_ring_8c_source_1l00297"/>00297 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00300"/><link linkend="_ring_8c_1aa1ade41bae8dd56dcdf545f6ac7adf95">00300</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_ring_8c_1aa1ade41bae8dd56dcdf545f6ac7adf95">ellipse_foci</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;*param,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*foci&#32;)
+<anchor xml:id="_ring_8c_source_1l00301"/>00301 {
+<anchor xml:id="_ring_8c_source_1l00302"/>00302 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;f;
+<anchor xml:id="_ring_8c_source_1l00303"/>00303 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00304"/>00304 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;param&#32;==&#32;NULL)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;ellipse_foci:&#32;invalid&#32;input&#32;ellipse.&quot;</emphasis>);
+<anchor xml:id="_ring_8c_source_1l00305"/>00305 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;foci&#32;==&#32;NULL)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;ellipse_foci:&#32;&apos;foci&apos;&#32;must&#32;be&#32;non&#32;null.&quot;</emphasis>);
+<anchor xml:id="_ring_8c_source_1l00306"/>00306 
+<anchor xml:id="_ring_8c_source_1l00307"/>00307 &#32;&#32;f&#32;=&#32;sqrt(&#32;param[2]&#32;*&#32;param[2]&#32;-&#32;param[3]&#32;*&#32;param[3]&#32;);
+<anchor xml:id="_ring_8c_source_1l00308"/>00308 &#32;&#32;foci[0]&#32;=&#32;param[0]&#32;+&#32;f&#32;*&#32;cos(param[4]);
+<anchor xml:id="_ring_8c_source_1l00309"/>00309 &#32;&#32;foci[1]&#32;=&#32;param[1]&#32;+&#32;f&#32;*&#32;sin(param[4]);
+<anchor xml:id="_ring_8c_source_1l00310"/>00310 &#32;&#32;foci[2]&#32;=&#32;param[0]&#32;-&#32;f&#32;*&#32;cos(param[4]);
+<anchor xml:id="_ring_8c_source_1l00311"/>00311 &#32;&#32;foci[3]&#32;=&#32;param[1]&#32;-&#32;f&#32;*&#32;sin(param[4]);
+<anchor xml:id="_ring_8c_source_1l00312"/>00312 }
+<anchor xml:id="_ring_8c_source_1l00313"/>00313 
+<anchor xml:id="_ring_8c_source_1l00314"/>00314 
+<anchor xml:id="_ring_8c_source_1l00315"/>00315 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00319"/><link linkend="_ring_8c_1ab1ba9a1926e5a5587e7f0f8ef583fb90">00319</link> <emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_ring_8c_1ab1ba9a1926e5a5587e7f0f8ef583fb90">ellipse_normal_angle</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;x,&#32;<emphasis role="keywordtype">double</emphasis>&#32;y,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*foci&#32;)
+<anchor xml:id="_ring_8c_source_1l00320"/>00320 {
+<anchor xml:id="_ring_8c_source_1l00321"/>00321 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;tmp1,&#32;tmp2,&#32;tmp3,&#32;theta;
+<anchor xml:id="_ring_8c_source_1l00322"/>00322 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00323"/>00323 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;foci&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;ellipse_normal_angle:&#32;&apos;foci&apos;&#32;must&#32;be&#32;non&#32;null&quot;</emphasis>);
+<anchor xml:id="_ring_8c_source_1l00324"/>00324 
+<anchor xml:id="_ring_8c_source_1l00325"/>00325 &#32;&#32;tmp1&#32;=&#32;atan2(&#32;y-foci[1],&#32;x-foci[0]);
+<anchor xml:id="_ring_8c_source_1l00326"/>00326 &#32;&#32;tmp2&#32;=&#32;atan2(&#32;y-foci[3],&#32;x-foci[2]);
+<anchor xml:id="_ring_8c_source_1l00327"/>00327 &#32;&#32;tmp3&#32;=&#32;<link linkend="_misc_8c_1afc6d1f1cd19f4dfd5513632ab80322df">angle_diff_signed</link>(&#32;tmp1,&#32;tmp2&#32;);
+<anchor xml:id="_ring_8c_source_1l00328"/>00328 
+<anchor xml:id="_ring_8c_source_1l00329"/>00329 &#32;&#32;theta&#32;=&#32;tmp1&#32;-&#32;tmp3/2.0;
+<anchor xml:id="_ring_8c_source_1l00330"/>00330 &#32;&#32;<emphasis role="keywordflow">while</emphasis>(&#32;theta&#32;&lt;=&#32;-<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>&#32;)&#32;theta&#32;+=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_ring_8c_source_1l00331"/>00331 &#32;&#32;<emphasis role="keywordflow">while</emphasis>(&#32;theta&#32;&gt;&#32;&#32;&#32;<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>&#32;)&#32;theta&#32;-=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_ring_8c_source_1l00332"/>00332 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;theta;
+<anchor xml:id="_ring_8c_source_1l00333"/>00333 }
+<anchor xml:id="_ring_8c_source_1l00334"/>00334 
+<anchor xml:id="_ring_8c_source_1l00335"/>00335 
+<anchor xml:id="_ring_8c_source_1l00336"/>00336 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00341"/>00341 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;dir_gradient_circ(&#32;<emphasis role="keywordtype">int</emphasis>&#32;px,&#32;<emphasis role="keywordtype">int</emphasis>&#32;py,&#32;<emphasis role="keywordtype">double</emphasis>&#32;ang,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*param&#32;)
+<anchor xml:id="_ring_8c_source_1l00342"/>00342 {
+<anchor xml:id="_ring_8c_source_1l00343"/>00343 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;a;
+<anchor xml:id="_ring_8c_source_1l00344"/>00344 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;dir&#32;=&#32;0;
+<anchor xml:id="_ring_8c_source_1l00345"/>00345 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00346"/>00346 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;param&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;dir_gradient_circ:&#32;invalid&#32;param.&quot;</emphasis>);
+<anchor xml:id="_ring_8c_source_1l00347"/>00347 
+<anchor xml:id="_ring_8c_source_1l00348"/>00348 &#32;&#32;a&#32;=&#32;atan2(&#32;py-&#32;param[1],&#32;px-param[0]&#32;);
+<anchor xml:id="_ring_8c_source_1l00349"/>00349 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;<link linkend="_misc_8c_1a4e46bd783e4efe71bee053481afeb4a9">angle_diff</link>(&#32;a,&#32;ang&#32;)&#32;&lt;&#32;<link linkend="_misc_8h_1ae11c01f236a7a89f767a7b34283da201">M_1_2_PI</link>&#32;)
+<anchor xml:id="_ring_8c_source_1l00350"/>00350 &#32;&#32;&#32;&#32;dir&#32;=&#32;1;
+<anchor xml:id="_ring_8c_source_1l00351"/>00351 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;dir;
+<anchor xml:id="_ring_8c_source_1l00352"/>00352 }
+<anchor xml:id="_ring_8c_source_1l00353"/>00353 
+<anchor xml:id="_ring_8c_source_1l00354"/>00354 
+<anchor xml:id="_ring_8c_source_1l00355"/>00355 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00360"/>00360 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;dir_gradient_ell(&#32;<emphasis role="keywordtype">int</emphasis>&#32;px,&#32;<emphasis role="keywordtype">int</emphasis>&#32;py,&#32;<emphasis role="keywordtype">double</emphasis>&#32;ang,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*foci&#32;)
+<anchor xml:id="_ring_8c_source_1l00361"/>00361 {
+<anchor xml:id="_ring_8c_source_1l00362"/>00362 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;a;
+<anchor xml:id="_ring_8c_source_1l00363"/>00363 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;dir&#32;=&#32;0;
+<anchor xml:id="_ring_8c_source_1l00364"/>00364 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00365"/>00365 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;foci&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;dir_gradient_ell:&#32;invalid&#32;ellipse.&quot;</emphasis>);
+<anchor xml:id="_ring_8c_source_1l00366"/>00366 &#32;&#32;a&#32;=&#32;<link linkend="_ring_8c_1ab1ba9a1926e5a5587e7f0f8ef583fb90">ellipse_normal_angle</link>(&#32;(<emphasis role="keywordtype">double</emphasis>)px,&#32;(<emphasis role="keywordtype">double</emphasis>)py,&#32;foci&#32;);
+<anchor xml:id="_ring_8c_source_1l00367"/>00367 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;<link linkend="_misc_8c_1a4e46bd783e4efe71bee053481afeb4a9">angle_diff</link>(&#32;a,&#32;ang&#32;)&#32;&lt;&#32;<link linkend="_misc_8h_1ae11c01f236a7a89f767a7b34283da201">M_1_2_PI</link>&#32;)
+<anchor xml:id="_ring_8c_source_1l00368"/>00368 &#32;&#32;&#32;&#32;dir&#32;=&#32;1;
+<anchor xml:id="_ring_8c_source_1l00369"/>00369 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;dir;
+<anchor xml:id="_ring_8c_source_1l00370"/>00370 }
+<anchor xml:id="_ring_8c_source_1l00371"/>00371 
+<anchor xml:id="_ring_8c_source_1l00372"/>00372 
+<anchor xml:id="_ring_8c_source_1l00373"/>00373 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00377"/>00377 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;circ_ring_width(&#32;<link linkend="_structPoint">Point</link>&#32;*reg,&#32;<emphasis role="keywordtype">int</emphasis>&#32;reg_size,&#32;<link linkend="_structRing">Ring</link>&#32;*cring&#32;)
+<anchor xml:id="_ring_8c_source_1l00378"/>00378 {
+<anchor xml:id="_ring_8c_source_1l00379"/>00379 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;i;
+<anchor xml:id="_ring_8c_source_1l00380"/>00380 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;w;
+<anchor xml:id="_ring_8c_source_1l00381"/>00381 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;wmin&#32;=&#32;DBL_MAX;
+<anchor xml:id="_ring_8c_source_1l00382"/>00382 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;wmax&#32;=&#32;-DBL_MAX;
+<anchor xml:id="_ring_8c_source_1l00383"/>00383 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00384"/>00384 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;reg&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;circ_ring_width:&#32;invalid&#32;region.&quot;</emphasis>);
+<anchor xml:id="_ring_8c_source_1l00385"/>00385 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;cring&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;circ_ring_width:&#32;invalid&#32;ring.&quot;</emphasis>);
+<anchor xml:id="_ring_8c_source_1l00386"/>00386 &#32;&#32;
+<anchor xml:id="_ring_8c_source_1l00387"/>00387 &#32;&#32;<emphasis role="comment">/*&#32;compute&#32;widths&#32;*/</emphasis>&#32;
+<anchor xml:id="_ring_8c_source_1l00388"/>00388 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=0;&#32;i&lt;reg_size;&#32;i++&#32;)
+<anchor xml:id="_ring_8c_source_1l00389"/>00389 &#32;&#32;&#32;&#32;{&#32;&#32;
+<anchor xml:id="_ring_8c_source_1l00390"/>00390 &#32;&#32;&#32;&#32;&#32;&#32;w&#32;=&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(&#32;reg[i].x,&#32;reg[i].y,&#32;cring-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>,&#32;cring-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>)&#32;-&#32;cring-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>;&#32;&#32;&#32;&#32;
+<anchor xml:id="_ring_8c_source_1l00391"/>00391 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;w&lt;wmin&#32;)&#32;wmin&#32;=&#32;w;
+<anchor xml:id="_ring_8c_source_1l00392"/>00392 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;w&gt;wmax&#32;)&#32;wmax&#32;=&#32;w;
+<anchor xml:id="_ring_8c_source_1l00393"/>00393 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_ring_8c_source_1l00394"/>00394 &#32;&#32;cring-&gt;<link linkend="_structRing_1ad1515daed95ba43fd919fddcf3144d1a">wmin</link>&#32;=&#32;wmin;&#32;cring-&gt;<link linkend="_structRing_1a54612b6d232db5e1a58ae8b2f26b1df4">wmax</link>&#32;=&#32;wmax;
+<anchor xml:id="_ring_8c_source_1l00395"/>00395 }
+<anchor xml:id="_ring_8c_source_1l00396"/>00396 
+<anchor xml:id="_ring_8c_source_1l00397"/>00397 
+<anchor xml:id="_ring_8c_source_1l00398"/>00398 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00402"/>00402 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;ell_ring_width(&#32;<link linkend="_structPoint">Point</link>&#32;*reg,&#32;<emphasis role="keywordtype">int</emphasis>&#32;reg_size,&#32;<link linkend="_structRing">Ring</link>&#32;*ering&#32;)
+<anchor xml:id="_ring_8c_source_1l00403"/>00403 {
+<anchor xml:id="_ring_8c_source_1l00404"/>00404 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;i;
+<anchor xml:id="_ring_8c_source_1l00405"/>00405 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;w;
+<anchor xml:id="_ring_8c_source_1l00406"/>00406 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;wmin&#32;=&#32;DBL_MAX;
+<anchor xml:id="_ring_8c_source_1l00407"/>00407 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;wmax&#32;=&#32;-DBL_MAX;
+<anchor xml:id="_ring_8c_source_1l00408"/>00408 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00409"/>00409 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;reg&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;ell_ring_width:&#32;invalid&#32;region.&quot;</emphasis>);
+<anchor xml:id="_ring_8c_source_1l00410"/>00410 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;ering&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;ell_ring_width:&#32;invalid&#32;ring.&quot;</emphasis>);
+<anchor xml:id="_ring_8c_source_1l00411"/>00411 &#32;&#32;
+<anchor xml:id="_ring_8c_source_1l00412"/>00412 &#32;&#32;<emphasis role="comment">/*&#32;compute&#32;widths&#32;*/</emphasis>&#32;
+<anchor xml:id="_ring_8c_source_1l00413"/>00413 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=0;&#32;i&lt;reg_size;&#32;i++&#32;)
+<anchor xml:id="_ring_8c_source_1l00414"/>00414 &#32;&#32;&#32;&#32;{&#32;&#32;
+<anchor xml:id="_ring_8c_source_1l00415"/>00415 &#32;&#32;&#32;&#32;&#32;&#32;w&#32;=&#32;<link linkend="_ring_8c_1a4c056155bbee1a0da2b83bdc5457a530">d_rosin</link>(&#32;ering,&#32;(<emphasis role="keywordtype">double</emphasis>)reg[i].x,&#32;(<emphasis role="keywordtype">double</emphasis>)reg[i].y&#32;);
+<anchor xml:id="_ring_8c_source_1l00416"/>00416 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;w&lt;wmin&#32;)&#32;wmin&#32;=&#32;w;
+<anchor xml:id="_ring_8c_source_1l00417"/>00417 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;w&gt;wmax&#32;)&#32;wmax&#32;=&#32;w;
+<anchor xml:id="_ring_8c_source_1l00418"/>00418 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_ring_8c_source_1l00419"/>00419 &#32;&#32;ering-&gt;<link linkend="_structRing_1ad1515daed95ba43fd919fddcf3144d1a">wmin</link>&#32;=&#32;wmin;&#32;ering-&gt;<link linkend="_structRing_1a54612b6d232db5e1a58ae8b2f26b1df4">wmax</link>&#32;=&#32;wmax;
+<anchor xml:id="_ring_8c_source_1l00420"/>00420 }
+<anchor xml:id="_ring_8c_source_1l00421"/>00421 
+<anchor xml:id="_ring_8c_source_1l00422"/>00422 
+<anchor xml:id="_ring_8c_source_1l00423"/>00423 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00427"/><link linkend="_ring_8c_1aa6025924df802bd4fad9009c72e4587c">00427</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_ring_8c_1aa6025924df802bd4fad9009c72e4587c">get_ring</link>(&#32;<link linkend="_structPoint">Point</link>&#32;*reg,&#32;<emphasis role="keywordtype">int</emphasis>&#32;reg_size,&#32;<emphasis role="keywordtype">double</emphasis>&#32;ang,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*param,&#32;
+<anchor xml:id="_ring_8c_source_1l00428"/>00428 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;*pext1,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*pext2,&#32;<emphasis role="keywordtype">int</emphasis>&#32;conic,&#32;<emphasis role="keywordtype">double</emphasis>&#32;spir,&#32;<link linkend="_structRing">Ring</link>&#32;*r,&#32;
+<anchor xml:id="_ring_8c_source_1l00429"/>00429 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;*grad_dir,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*foci,&#32;<emphasis role="keywordtype">int</emphasis>&#32;msize&#32;)
+<anchor xml:id="_ring_8c_source_1l00430"/>00430 {
+<anchor xml:id="_ring_8c_source_1l00431"/>00431 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;tang;
+<anchor xml:id="_ring_8c_source_1l00432"/>00432 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00433"/>00433 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;reg&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;get_ring:&#32;invalid&#32;region.&quot;</emphasis>);&#32;
+<anchor xml:id="_ring_8c_source_1l00434"/>00434 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;param&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;get_ring:&#32;invalid&#32;conic&#32;parameters.&quot;</emphasis>);&#32;
+<anchor xml:id="_ring_8c_source_1l00435"/>00435 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;r&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;get_ring:&#32;ring&#32;must&#32;be&#32;non&#32;null.&quot;</emphasis>);
+<anchor xml:id="_ring_8c_source_1l00436"/>00436 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;foci&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;get_ring:&#32;foci&#32;must&#32;be&#32;non&#32;null.&quot;</emphasis>);&#32;
+<anchor xml:id="_ring_8c_source_1l00437"/>00437 &#32;&#32;
+<anchor xml:id="_ring_8c_source_1l00438"/>00438 &#32;&#32;<emphasis role="comment">/*&#32;fill&#32;in&#32;centre&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00439"/>00439 &#32;&#32;r-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>&#32;=&#32;param[0];&#32;r-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>&#32;=&#32;param[1];
+<anchor xml:id="_ring_8c_source_1l00440"/>00440 
+<anchor xml:id="_ring_8c_source_1l00441"/>00441 &#32;&#32;<emphasis role="comment">/*&#32;Init&#32;&apos;full&apos;&#32;flag;&#32;by&#32;default,&#32;set&#32;to&#32;0.&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00442"/>00442 &#32;&#32;r-&gt;<link linkend="_structRing_1a3a0e8c0939ab76b5866a0bbad1d338e6">full</link>&#32;=&#32;0;
+<anchor xml:id="_ring_8c_source_1l00443"/>00443 
+<anchor xml:id="_ring_8c_source_1l00444"/>00444 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;conic&#32;==&#32;<link linkend="_ring_8h_1a4a49761654ff508d856c6c1b4d132442">CIRCLE</link>&#32;)&#32;
+<anchor xml:id="_ring_8c_source_1l00445"/>00445 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_ring_8c_source_1l00446"/>00446 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;!<link linkend="_ring_8c_1ac82b2076b8049f107782e813168db716">check_circ</link>(param)&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa93f0eb578d23995850d61f7d61c55c1">FALSE</link>;
+<anchor xml:id="_ring_8c_source_1l00447"/>00447 &#32;&#32;&#32;&#32;&#32;&#32;*grad_dir&#32;=&#32;dir_gradient_circ(&#32;reg[0].x,&#32;reg[0].y,&#32;ang,&#32;param&#32;);&#32;&#32;&#32;
+<anchor xml:id="_ring_8c_source_1l00448"/>00448 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_ring_8c_source_1l00449"/>00449 &#32;&#32;<emphasis role="keywordflow">else</emphasis>
+<anchor xml:id="_ring_8c_source_1l00450"/>00450 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_ring_8c_source_1l00451"/>00451 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;!<link linkend="_ring_8c_1ab53bff8abd49d5a5dd267e78c85366ab">check_ell</link>(param)&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa93f0eb578d23995850d61f7d61c55c1">FALSE</link>;
+<anchor xml:id="_ring_8c_source_1l00452"/>00452 &#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_ring_8c_1aa1ade41bae8dd56dcdf545f6ac7adf95">ellipse_foci</link>(&#32;param,&#32;foci&#32;);
+<anchor xml:id="_ring_8c_source_1l00453"/>00453 &#32;&#32;&#32;&#32;&#32;&#32;*grad_dir&#32;=&#32;dir_gradient_ell(&#32;reg[0].x,&#32;reg[0].y,&#32;ang,&#32;foci&#32;);
+<anchor xml:id="_ring_8c_source_1l00454"/>00454 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_ring_8c_source_1l00455"/>00455 &#32;&#32;<emphasis role="comment">/*&#32;fill&#32;in&#32;axes&#32;and&#32;orientation:&#32;this&#32;must&#32;be&#32;done&#32;after&#32;check,&#32;as&#32;for&#32;the&#32;</emphasis>
+<anchor xml:id="_ring_8c_source_1l00456"/>00456 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;ellipse&#32;the&#32;axes&#32;might&#32;have&#32;been&#32;swapped,&#32;and&#32;orientation&#32;normalized&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00457"/>00457 &#32;&#32;r-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>&#32;=&#32;param[2];&#32;r-&gt;<link linkend="_structRing_1a4f2308ba06a1f517e1f1babc5603d79a">bx</link>&#32;=&#32;param[3];
+<anchor xml:id="_ring_8c_source_1l00458"/>00458 &#32;&#32;r-&gt;<link linkend="_structRing_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>&#32;=&#32;param[4];
+<anchor xml:id="_ring_8c_source_1l00459"/>00459 
+<anchor xml:id="_ring_8c_source_1l00460"/>00460 &#32;&#32;<emphasis role="comment">/*&#32;fill&#32;in&#32;extremal&#32;points&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00461"/>00461 &#32;&#32;r-&gt;<link linkend="_structRing_1ac75b803b570527306e1e744bfb7a604f">x1</link>&#32;=&#32;pext1[0];&#32;r-&gt;<link linkend="_structRing_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>&#32;=&#32;pext1[1];
+<anchor xml:id="_ring_8c_source_1l00462"/>00462 &#32;&#32;r-&gt;<link linkend="_structRing_1adcf04f5f1964d18b332643939561da0d">x2</link>&#32;=&#32;pext2[0];&#32;r-&gt;<link linkend="_structRing_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>&#32;=&#32;pext2[1];&#32;
+<anchor xml:id="_ring_8c_source_1l00463"/>00463 &#32;&#32;
+<anchor xml:id="_ring_8c_source_1l00464"/>00464 &#32;&#32;<emphasis role="comment">/*&#32;if&#32;gradient&#32;converges,&#32;interchange&#32;the&#32;extremal&#32;points&#32;to&#32;keep&#32;</emphasis>
+<anchor xml:id="_ring_8c_source_1l00465"/>00465 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;trigonometric&#32;sense&#32;*/</emphasis>&#32;&#32;&#32;&#32;
+<anchor xml:id="_ring_8c_source_1l00466"/>00466 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;*grad_dir&#32;==&#32;0&#32;)
+<anchor xml:id="_ring_8c_source_1l00467"/>00467 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_ring_8c_source_1l00468"/>00468 &#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_misc_8c_1abfa4eebba539e060400a6a7fe746614e">swap_double</link>(&#32;&amp;(r-&gt;<link linkend="_structRing_1ac75b803b570527306e1e744bfb7a604f">x1</link>),&#32;&amp;(r-&gt;<link linkend="_structRing_1adcf04f5f1964d18b332643939561da0d">x2</link>)&#32;);
+<anchor xml:id="_ring_8c_source_1l00469"/>00469 &#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_misc_8c_1abfa4eebba539e060400a6a7fe746614e">swap_double</link>(&#32;&amp;(r-&gt;<link linkend="_structRing_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>),&#32;&amp;(r-&gt;<link linkend="_structRing_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>)&#32;);
+<anchor xml:id="_ring_8c_source_1l00470"/>00470 &#32;&#32;&#32;&#32;}&#32;
+<anchor xml:id="_ring_8c_source_1l00471"/>00471 &#32;&#32;
+<anchor xml:id="_ring_8c_source_1l00472"/>00472 &#32;&#32;<emphasis role="comment">/*&#32;set&#32;delimiting&#32;angles&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00473"/>00473 &#32;&#32;r-&gt;<link linkend="_structRing_1a466b3f5f225ebc707bb596ac344baa7c">ang_start</link>&#32;=&#32;atan2(&#32;r-&gt;<link linkend="_structRing_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>&#32;-&#32;r-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>,&#32;r-&gt;<link linkend="_structRing_1ac75b803b570527306e1e744bfb7a604f">x1</link>&#32;-&#32;r-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>&#32;);
+<anchor xml:id="_ring_8c_source_1l00474"/>00474 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;r-&gt;<link linkend="_structRing_1a466b3f5f225ebc707bb596ac344baa7c">ang_start</link>&#32;&lt;&#32;0&#32;)&#32;r-&gt;<link linkend="_structRing_1a466b3f5f225ebc707bb596ac344baa7c">ang_start</link>&#32;+=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;&#32;
+<anchor xml:id="_ring_8c_source_1l00475"/>00475 &#32;&#32;r-&gt;<link linkend="_structRing_1a85eb98efd34c1332f888379ff2a30a43">ang_end</link>&#32;=&#32;atan2(&#32;r-&gt;<link linkend="_structRing_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>&#32;-&#32;r-&gt;<link linkend="_structRing_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>,&#32;r-&gt;<link linkend="_structRing_1adcf04f5f1964d18b332643939561da0d">x2</link>&#32;-&#32;r-&gt;<link linkend="_structRing_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>&#32;);
+<anchor xml:id="_ring_8c_source_1l00476"/>00476 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;r-&gt;<link linkend="_structRing_1a85eb98efd34c1332f888379ff2a30a43">ang_end</link>&#32;&lt;&#32;0&#32;)&#32;r-&gt;<link linkend="_structRing_1a85eb98efd34c1332f888379ff2a30a43">ang_end</link>&#32;+=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_ring_8c_source_1l00477"/>00477 
+<anchor xml:id="_ring_8c_source_1l00478"/>00478 &#32;&#32;<emphasis role="comment">/*&#32;if&#32;the&#32;ends&#32;of&#32;the&#32;last&#32;rectangles&#32;got&#32;interwined,&#32;swap&#32;the&#32;ends&#32;</emphasis>
+<anchor xml:id="_ring_8c_source_1l00479"/>00479 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;of&#32;the&#32;ring&#32;&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00480"/>00480 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;r-&gt;<link linkend="_structRing_1a466b3f5f225ebc707bb596ac344baa7c">ang_start</link>&#32;&gt;&#32;r-&gt;<link linkend="_structRing_1a85eb98efd34c1332f888379ff2a30a43">ang_end</link>&#32;)&#32;tang&#32;=&#32;r-&gt;<link linkend="_structRing_1a85eb98efd34c1332f888379ff2a30a43">ang_end</link>&#32;+&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_ring_8c_source_1l00481"/>00481 &#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;tang&#32;=&#32;r-&gt;<link linkend="_structRing_1a85eb98efd34c1332f888379ff2a30a43">ang_end</link>;&#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_ring_8c_source_1l00482"/>00482 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(spir&#32;&gt;&#32;<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>)&#32;&amp;&amp;&#32;(tang&#32;-&#32;r-&gt;<link linkend="_structRing_1a466b3f5f225ebc707bb596ac344baa7c">ang_start</link>&#32;&lt;&#32;<link linkend="_misc_8h_1ae11c01f236a7a89f767a7b34283da201">M_1_2_PI</link>/2.0)&#32;)&#32;
+<anchor xml:id="_ring_8c_source_1l00483"/>00483 &#32;&#32;&#32;&#32;<link linkend="_ring_8c_1af4bd196833424dc0e04d7f4af80db9f6">swap_ring</link>(&#32;r&#32;);
+<anchor xml:id="_ring_8c_source_1l00484"/>00484 &#32;&#32;
+<anchor xml:id="_ring_8c_source_1l00485"/>00485 &#32;&#32;<emphasis role="comment">/*&#32;set&#32;ring&#32;widths&#32;*/</emphasis>
+<anchor xml:id="_ring_8c_source_1l00486"/>00486 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;conic&#32;==&#32;<link linkend="_ring_8h_1a4a49761654ff508d856c6c1b4d132442">CIRCLE</link>&#32;)&#32;
+<anchor xml:id="_ring_8c_source_1l00487"/>00487 &#32;&#32;&#32;&#32;circ_ring_width(&#32;reg,&#32;reg_size,&#32;r&#32;);
+<anchor xml:id="_ring_8c_source_1l00488"/>00488 &#32;&#32;<emphasis role="keywordflow">else</emphasis>
+<anchor xml:id="_ring_8c_source_1l00489"/>00489 &#32;&#32;&#32;&#32;ell_ring_width(&#32;reg,&#32;reg_size,&#32;r&#32;);
+<anchor xml:id="_ring_8c_source_1l00490"/>00490 
+<anchor xml:id="_ring_8c_source_1l00491"/>00491 &#32;&#32;<emphasis role="comment">/*&#32;abnormal&#32;case:&#32;width&#32;of&#32;the&#32;ring&#32;is&#32;bigger&#32;than&#32;little&#32;axis&#32;-&gt;&#32;</emphasis>
+<anchor xml:id="_ring_8c_source_1l00492"/>00492 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;discard&#32;ring&#32;*/</emphasis>&#32;&#32;
+<anchor xml:id="_ring_8c_source_1l00493"/>00493 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;r-&gt;<link linkend="_structRing_1a54612b6d232db5e1a58ae8b2f26b1df4">wmax</link>&#32;-&#32;r-&gt;<link linkend="_structRing_1ad1515daed95ba43fd919fddcf3144d1a">wmin</link>&#32;&gt;&#32;r-&gt;<link linkend="_structRing_1a4f2308ba06a1f517e1f1babc5603d79a">bx</link>&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa93f0eb578d23995850d61f7d61c55c1">FALSE</link>;
+<anchor xml:id="_ring_8c_source_1l00494"/>00494 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;r-&gt;<link linkend="_structRing_1ab25a9c3dfa527c678adf73437cc49640">ax</link>&#32;&gt;&#32;msize&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa93f0eb578d23995850d61f7d61c55c1">FALSE</link>;
+<anchor xml:id="_ring_8c_source_1l00495"/>00495 &#32;&#32;
+<anchor xml:id="_ring_8c_source_1l00496"/>00496 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</link>;
+<anchor xml:id="_ring_8c_source_1l00497"/>00497 }
+</programlisting></section>

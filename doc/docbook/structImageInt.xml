@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_structImageInt" xml:lang="en-US">
+<title>ImageInt Struct Reference</title>
+<indexterm><primary>ImageInt</primary></indexterm>
+<para>
+<computeroutput>#include &lt;image.h&gt;</computeroutput>
+</para>
+<simplesect>
+    <title>Data Fields    </title>
+        <itemizedlist>
+            <listitem><para>int * <link linkend="_structImageInt_1ac103627c1ad15cbec2f22d0abe6d54b6">data</link></para>
+</listitem>
+            <listitem><para>unsigned int <link linkend="_structImageInt_1aa4b0263c533c5ce471067bd5ede24477">xsize</link></para>
+</listitem>
+            <listitem><para>unsigned int <link linkend="_structImageInt_1a7e7fdb6b4d76fd619024da6878c27d58">ysize</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para>int image data type. </para>
+<para>
+Definition at line <link linkend="_image_8h_source_1l00050">50</link> of file <link linkend="_image_8h_source">image.h</link>.</para>
+</section>
+<section>
+<title>Field Documentation</title>
+<anchor xml:id="_structImageInt_1ac103627c1ad15cbec2f22d0abe6d54b6"/><section>
+    <title>data</title>
+<indexterm><primary>data</primary><secondary>ImageInt</secondary></indexterm>
+<indexterm><primary>ImageInt</primary><secondary>data</secondary></indexterm>
+<para><computeroutput>int* data</computeroutput></para><para>
+Definition at line <link linkend="_image_8h_source_1l00052">52</link> of file <link linkend="_image_8h_source">image.h</link>.</para>
+</section>
+<anchor xml:id="_structImageInt_1aa4b0263c533c5ce471067bd5ede24477"/><section>
+    <title>xsize</title>
+<indexterm><primary>xsize</primary><secondary>ImageInt</secondary></indexterm>
+<indexterm><primary>ImageInt</primary><secondary>xsize</secondary></indexterm>
+<para><computeroutput>unsigned int xsize</computeroutput></para><para>
+Definition at line <link linkend="_image_8h_source_1l00053">53</link> of file <link linkend="_image_8h_source">image.h</link>.</para>
+</section>
+<anchor xml:id="_structImageInt_1a7e7fdb6b4d76fd619024da6878c27d58"/><section>
+    <title>ysize</title>
+<indexterm><primary>ysize</primary><secondary>ImageInt</secondary></indexterm>
+<indexterm><primary>ImageInt</primary><secondary>ysize</secondary></indexterm>
+<para><computeroutput>unsigned int ysize</computeroutput></para><para>
+Definition at line <link linkend="_image_8h_source_1l00053">53</link> of file <link linkend="_image_8h_source">image.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+src/<link linkend="_image_8h">image.h</link></section>
+</section>

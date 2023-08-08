@@ -1,0 +1,381 @@
+\doxysection{src/misc.h File Reference}
+\hypertarget{misc_8h}{}\label{misc_8h}\index{src/misc.h@{src/misc.h}}
+\doxysubsubsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structPoint}{Point}}
+\item 
+struct \mbox{\hyperlink{structPointD}{PointD}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{misc_8h_a0a53871497a155afe91424c28a8ec3c4}{M\+\_\+\+LN10}}~2.\+30258509299404568402
+\item 
+\#define \mbox{\hyperlink{misc_8h_ae71449b1cc6e6250b91f539153a7a0d3}{M\+\_\+\+PI}}~3.\+14159265358979323846
+\item 
+\#define \mbox{\hyperlink{misc_8h_aa93f0eb578d23995850d61f7d61c55c1}{FALSE}}~0
+\item 
+\#define \mbox{\hyperlink{misc_8h_aa8cecfc5c5c054d2875c03e77b7be15d}{TRUE}}~1
+\item 
+\#define \mbox{\hyperlink{misc_8h_a18d9edd8c3bfc9c1837a10505dfa037c}{NOTDEF}}~-\/1024.\+0
+\item 
+\#define \mbox{\hyperlink{misc_8h_ae82255d0b75d68c1cd14d4019443a14d}{M\+\_\+3\+\_\+2\+\_\+\+PI}}~4.\+71238898038
+\item 
+\#define \mbox{\hyperlink{misc_8h_ae11c01f236a7a89f767a7b34283da201}{M\+\_\+1\+\_\+2\+\_\+\+PI}}~1.\+57079632679
+\item 
+\#define \mbox{\hyperlink{misc_8h_a8b5e22fbd5c798aac5298e80fc91b7fe}{M\+\_\+2\+\_\+\+\_\+\+PI}}~6.\+28318530718
+\item 
+\#define \mbox{\hyperlink{misc_8h_a514396dd60fa0621c83072091fb2a0cd}{SQRT2}}~1.\+41421356237
+\item 
+\#define \mbox{\hyperlink{misc_8h_a3db2b368b81b5e26dbd97b5f47ac979d}{LOG10\+\_\+2}}~0.\+30102999566
+\item 
+\#define \mbox{\hyperlink{misc_8h_a77cf8b4c639f547ffdf219b26ecd79a7}{LOG10\+\_\+9}}~0.\+95424250944
+\item 
+\#define \mbox{\hyperlink{misc_8h_a8a397aec99143b8dcf8e553c0115eb42}{NOTUSED}}~0
+\item 
+\#define \mbox{\hyperlink{misc_8h_abcd0a22ee4346cad5706adb6d2119429}{USED}}~1
+\item 
+\#define \mbox{\hyperlink{misc_8h_a24e753bacac6be5f30e18f8a2bdefda4}{max}}(A,  B)~(((A)$>$(B))?(A)\+:(B))
+\item 
+\#define \mbox{\hyperlink{misc_8h_a2d017cd3beb218080a7988e2deed2a11}{min}}(A,  B)~(((A)$<$(B))?(A)\+:(B))
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{misc_8h_aad9796c174f7ef5d226cd169f2520fd5}{error}} (char \texorpdfstring{$\ast$}{*}msg)
+\item 
+int \mbox{\hyperlink{misc_8h_a49d0391afab7c8872bbbfb86a814360b}{double\+\_\+equal}} (double a, double b)
+\item 
+int \mbox{\hyperlink{misc_8h_a9f29698bce67d856008e85a5c6b45b57}{sign}} (double val)
+\item 
+double \mbox{\hyperlink{misc_8h_adce57df8ac5e5faa57d86a66535fdd92}{dist}} (double x1, double y1, double x2, double y2)
+\item 
+double \mbox{\hyperlink{misc_8h_a4e46bd783e4efe71bee053481afeb4a9}{angle\+\_\+diff}} (double a, double b)
+\item 
+double \mbox{\hyperlink{misc_8h_afc6d1f1cd19f4dfd5513632ab80322df}{angle\+\_\+diff\+\_\+signed}} (double a, double b)
+\item 
+void \mbox{\hyperlink{misc_8h_a10ec5db73aebdd0d7508b49e72770ef4}{swap\+\_\+int}} (int \texorpdfstring{$\ast$}{*}a, int \texorpdfstring{$\ast$}{*}b)
+\item 
+void \mbox{\hyperlink{misc_8h_abfa4eebba539e060400a6a7fe746614e}{swap\+\_\+double}} (double \texorpdfstring{$\ast$}{*}a, double \texorpdfstring{$\ast$}{*}b)
+\item 
+void \mbox{\hyperlink{misc_8h_a3d503d641b82342adf77b51b2db53225}{swap\+\_\+ptr\+\_\+pts}} (\mbox{\hyperlink{structPoint}{Point}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}a, \mbox{\hyperlink{structPoint}{Point}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}b)
+\item 
+double \mbox{\hyperlink{misc_8h_acbf3663dd6c05ce0f7f82f6d4b36c6a7}{min\+\_\+array}} (double \texorpdfstring{$\ast$}{*}v, int sz)
+\item 
+double \mbox{\hyperlink{misc_8h_a6d6f434a2cc946f78f7916364ad14f38}{min\+\_\+array\+\_\+pos}} (double \texorpdfstring{$\ast$}{*}v, int sz, int \texorpdfstring{$\ast$}{*}pos)
+\item 
+double \mbox{\hyperlink{misc_8h_a7b7aa8971ae07b4e29a61533909d098d}{max\+\_\+array\+\_\+pos}} (double \texorpdfstring{$\ast$}{*}a, int sz, int \texorpdfstring{$\ast$}{*}poz)
+\item 
+int \mbox{\hyperlink{misc_8h_a5ff03a878859dab858f9fa1ce803e71f}{in\+\_\+interval}} (double x, double a, double b)
+\item 
+int \mbox{\hyperlink{misc_8h_a7bd5f9830327532b199607799edf7fe2}{is\+\_\+aligned}} (double a, double theta, double prec)
+\item 
+double \mbox{\hyperlink{misc_8h_a00b6a4c474bea7360859f586ae2e2dea}{norm\+\_\+angle\+\_\+diff}} (double a, double b)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{misc_8h_aa93f0eb578d23995850d61f7d61c55c1}\label{misc_8h_aa93f0eb578d23995850d61f7d61c55c1} 
+\index{misc.h@{misc.h}!FALSE@{FALSE}}
+\index{FALSE@{FALSE}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{FALSE}{FALSE}}
+{\footnotesize\ttfamily \#define FALSE~0}
+
+
+
+Definition at line \mbox{\hyperlink{misc_8h_source_l00042}{42}} of file \mbox{\hyperlink{misc_8h_source}{misc.\+h}}.
+
+\Hypertarget{misc_8h_a3db2b368b81b5e26dbd97b5f47ac979d}\label{misc_8h_a3db2b368b81b5e26dbd97b5f47ac979d} 
+\index{misc.h@{misc.h}!LOG10\_2@{LOG10\_2}}
+\index{LOG10\_2@{LOG10\_2}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{LOG10\_2}{LOG10\_2}}
+{\footnotesize\ttfamily \#define LOG10\+\_\+2~0.\+30102999566}
+
+
+
+Definition at line \mbox{\hyperlink{misc_8h_source_l00054}{54}} of file \mbox{\hyperlink{misc_8h_source}{misc.\+h}}.
+
+\Hypertarget{misc_8h_a77cf8b4c639f547ffdf219b26ecd79a7}\label{misc_8h_a77cf8b4c639f547ffdf219b26ecd79a7} 
+\index{misc.h@{misc.h}!LOG10\_9@{LOG10\_9}}
+\index{LOG10\_9@{LOG10\_9}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{LOG10\_9}{LOG10\_9}}
+{\footnotesize\ttfamily \#define LOG10\+\_\+9~0.\+95424250944}
+
+
+
+Definition at line \mbox{\hyperlink{misc_8h_source_l00055}{55}} of file \mbox{\hyperlink{misc_8h_source}{misc.\+h}}.
+
+\Hypertarget{misc_8h_ae11c01f236a7a89f767a7b34283da201}\label{misc_8h_ae11c01f236a7a89f767a7b34283da201} 
+\index{misc.h@{misc.h}!M\_1\_2\_PI@{M\_1\_2\_PI}}
+\index{M\_1\_2\_PI@{M\_1\_2\_PI}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{M\_1\_2\_PI}{M\_1\_2\_PI}}
+{\footnotesize\ttfamily \#define M\+\_\+1\+\_\+2\+\_\+\+PI~1.\+57079632679}
+
+
+
+Definition at line \mbox{\hyperlink{misc_8h_source_l00051}{51}} of file \mbox{\hyperlink{misc_8h_source}{misc.\+h}}.
+
+\Hypertarget{misc_8h_a8b5e22fbd5c798aac5298e80fc91b7fe}\label{misc_8h_a8b5e22fbd5c798aac5298e80fc91b7fe} 
+\index{misc.h@{misc.h}!M\_2\_\_PI@{M\_2\_\_PI}}
+\index{M\_2\_\_PI@{M\_2\_\_PI}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{M\_2\_\_PI}{M\_2\_\_PI}}
+{\footnotesize\ttfamily \#define M\+\_\+2\+\_\+\+\_\+\+PI~6.\+28318530718}
+
+
+
+Definition at line \mbox{\hyperlink{misc_8h_source_l00052}{52}} of file \mbox{\hyperlink{misc_8h_source}{misc.\+h}}.
+
+\Hypertarget{misc_8h_ae82255d0b75d68c1cd14d4019443a14d}\label{misc_8h_ae82255d0b75d68c1cd14d4019443a14d} 
+\index{misc.h@{misc.h}!M\_3\_2\_PI@{M\_3\_2\_PI}}
+\index{M\_3\_2\_PI@{M\_3\_2\_PI}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{M\_3\_2\_PI}{M\_3\_2\_PI}}
+{\footnotesize\ttfamily \#define M\+\_\+3\+\_\+2\+\_\+\+PI~4.\+71238898038}
+
+
+
+Definition at line \mbox{\hyperlink{misc_8h_source_l00050}{50}} of file \mbox{\hyperlink{misc_8h_source}{misc.\+h}}.
+
+\Hypertarget{misc_8h_a0a53871497a155afe91424c28a8ec3c4}\label{misc_8h_a0a53871497a155afe91424c28a8ec3c4} 
+\index{misc.h@{misc.h}!M\_LN10@{M\_LN10}}
+\index{M\_LN10@{M\_LN10}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{M\_LN10}{M\_LN10}}
+{\footnotesize\ttfamily \#define M\+\_\+\+LN10~2.\+30258509299404568402}
+
+Useful constants and macros. 
+
+Definition at line \mbox{\hyperlink{misc_8h_source_l00034}{34}} of file \mbox{\hyperlink{misc_8h_source}{misc.\+h}}.
+
+\Hypertarget{misc_8h_ae71449b1cc6e6250b91f539153a7a0d3}\label{misc_8h_ae71449b1cc6e6250b91f539153a7a0d3} 
+\index{misc.h@{misc.h}!M\_PI@{M\_PI}}
+\index{M\_PI@{M\_PI}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{M\_PI}{M\_PI}}
+{\footnotesize\ttfamily \#define M\+\_\+\+PI~3.\+14159265358979323846}
+
+
+
+Definition at line \mbox{\hyperlink{misc_8h_source_l00038}{38}} of file \mbox{\hyperlink{misc_8h_source}{misc.\+h}}.
+
+\Hypertarget{misc_8h_a24e753bacac6be5f30e18f8a2bdefda4}\label{misc_8h_a24e753bacac6be5f30e18f8a2bdefda4} 
+\index{misc.h@{misc.h}!max@{max}}
+\index{max@{max}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{max}{max}}
+{\footnotesize\ttfamily \#define max(\begin{DoxyParamCaption}\item[{}]{A,  }\item[{}]{B }\end{DoxyParamCaption})~(((A)$>$(B))?(A)\+:(B))}
+
+
+
+Definition at line \mbox{\hyperlink{misc_8h_source_l00060}{60}} of file \mbox{\hyperlink{misc_8h_source}{misc.\+h}}.
+
+\Hypertarget{misc_8h_a2d017cd3beb218080a7988e2deed2a11}\label{misc_8h_a2d017cd3beb218080a7988e2deed2a11} 
+\index{misc.h@{misc.h}!min@{min}}
+\index{min@{min}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{min}{min}}
+{\footnotesize\ttfamily \#define min(\begin{DoxyParamCaption}\item[{}]{A,  }\item[{}]{B }\end{DoxyParamCaption})~(((A)$<$(B))?(A)\+:(B))}
+
+
+
+Definition at line \mbox{\hyperlink{misc_8h_source_l00061}{61}} of file \mbox{\hyperlink{misc_8h_source}{misc.\+h}}.
+
+\Hypertarget{misc_8h_a18d9edd8c3bfc9c1837a10505dfa037c}\label{misc_8h_a18d9edd8c3bfc9c1837a10505dfa037c} 
+\index{misc.h@{misc.h}!NOTDEF@{NOTDEF}}
+\index{NOTDEF@{NOTDEF}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{NOTDEF}{NOTDEF}}
+{\footnotesize\ttfamily \#define NOTDEF~-\/1024.\+0}
+
+
+
+Definition at line \mbox{\hyperlink{misc_8h_source_l00049}{49}} of file \mbox{\hyperlink{misc_8h_source}{misc.\+h}}.
+
+\Hypertarget{misc_8h_a8a397aec99143b8dcf8e553c0115eb42}\label{misc_8h_a8a397aec99143b8dcf8e553c0115eb42} 
+\index{misc.h@{misc.h}!NOTUSED@{NOTUSED}}
+\index{NOTUSED@{NOTUSED}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{NOTUSED}{NOTUSED}}
+{\footnotesize\ttfamily \#define NOTUSED~0}
+
+
+
+Definition at line \mbox{\hyperlink{misc_8h_source_l00057}{57}} of file \mbox{\hyperlink{misc_8h_source}{misc.\+h}}.
+
+\Hypertarget{misc_8h_a514396dd60fa0621c83072091fb2a0cd}\label{misc_8h_a514396dd60fa0621c83072091fb2a0cd} 
+\index{misc.h@{misc.h}!SQRT2@{SQRT2}}
+\index{SQRT2@{SQRT2}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{SQRT2}{SQRT2}}
+{\footnotesize\ttfamily \#define SQRT2~1.\+41421356237}
+
+
+
+Definition at line \mbox{\hyperlink{misc_8h_source_l00053}{53}} of file \mbox{\hyperlink{misc_8h_source}{misc.\+h}}.
+
+\Hypertarget{misc_8h_aa8cecfc5c5c054d2875c03e77b7be15d}\label{misc_8h_aa8cecfc5c5c054d2875c03e77b7be15d} 
+\index{misc.h@{misc.h}!TRUE@{TRUE}}
+\index{TRUE@{TRUE}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{TRUE}{TRUE}}
+{\footnotesize\ttfamily \#define TRUE~1}
+
+
+
+Definition at line \mbox{\hyperlink{misc_8h_source_l00046}{46}} of file \mbox{\hyperlink{misc_8h_source}{misc.\+h}}.
+
+\Hypertarget{misc_8h_abcd0a22ee4346cad5706adb6d2119429}\label{misc_8h_abcd0a22ee4346cad5706adb6d2119429} 
+\index{misc.h@{misc.h}!USED@{USED}}
+\index{USED@{USED}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{USED}{USED}}
+{\footnotesize\ttfamily \#define USED~1}
+
+
+
+Definition at line \mbox{\hyperlink{misc_8h_source_l00058}{58}} of file \mbox{\hyperlink{misc_8h_source}{misc.\+h}}.
+
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{misc_8h_a4e46bd783e4efe71bee053481afeb4a9}\label{misc_8h_a4e46bd783e4efe71bee053481afeb4a9} 
+\index{misc.h@{misc.h}!angle\_diff@{angle\_diff}}
+\index{angle\_diff@{angle\_diff}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{angle\_diff()}{angle\_diff()}}
+{\footnotesize\ttfamily double angle\+\_\+diff (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b }\end{DoxyParamCaption})}
+
+Absolute value angle difference. 
+
+Definition at line \mbox{\hyperlink{misc_8c_source_l00093}{93}} of file \mbox{\hyperlink{misc_8c_source}{misc.\+c}}.
+
+\Hypertarget{misc_8h_afc6d1f1cd19f4dfd5513632ab80322df}\label{misc_8h_afc6d1f1cd19f4dfd5513632ab80322df} 
+\index{misc.h@{misc.h}!angle\_diff\_signed@{angle\_diff\_signed}}
+\index{angle\_diff\_signed@{angle\_diff\_signed}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{angle\_diff\_signed()}{angle\_diff\_signed()}}
+{\footnotesize\ttfamily double angle\+\_\+diff\+\_\+signed (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b }\end{DoxyParamCaption})}
+
+Signed angle difference. 
+
+Definition at line \mbox{\hyperlink{misc_8c_source_l00106}{106}} of file \mbox{\hyperlink{misc_8c_source}{misc.\+c}}.
+
+\Hypertarget{misc_8h_adce57df8ac5e5faa57d86a66535fdd92}\label{misc_8h_adce57df8ac5e5faa57d86a66535fdd92} 
+\index{misc.h@{misc.h}!dist@{dist}}
+\index{dist@{dist}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{dist()}{dist()}}
+{\footnotesize\ttfamily double dist (\begin{DoxyParamCaption}\item[{double}]{x1,  }\item[{double}]{y1,  }\item[{double}]{x2,  }\item[{double}]{y2 }\end{DoxyParamCaption})}
+
+Euclidean distance between two points (x1,y1) and (x2,y2). 
+
+Definition at line \mbox{\hyperlink{misc_8c_source_l00084}{84}} of file \mbox{\hyperlink{misc_8c_source}{misc.\+c}}.
+
+\Hypertarget{misc_8h_a49d0391afab7c8872bbbfb86a814360b}\label{misc_8h_a49d0391afab7c8872bbbfb86a814360b} 
+\index{misc.h@{misc.h}!double\_equal@{double\_equal}}
+\index{double\_equal@{double\_equal}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{double\_equal()}{double\_equal()}}
+{\footnotesize\ttfamily int double\+\_\+equal (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b }\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{misc_8c_source_l00049}{49}} of file \mbox{\hyperlink{misc_8c_source}{misc.\+c}}.
+
+\Hypertarget{misc_8h_aad9796c174f7ef5d226cd169f2520fd5}\label{misc_8h_aad9796c174f7ef5d226cd169f2520fd5} 
+\index{misc.h@{misc.h}!error@{error}}
+\index{error@{error}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{error()}{error()}}
+{\footnotesize\ttfamily void error (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{msg }\end{DoxyParamCaption})}
+
+Error or exception handling\+: print error message and exit. 
+
+Definition at line \mbox{\hyperlink{misc_8c_source_l00038}{38}} of file \mbox{\hyperlink{misc_8c_source}{misc.\+c}}.
+
+\Hypertarget{misc_8h_a5ff03a878859dab858f9fa1ce803e71f}\label{misc_8h_a5ff03a878859dab858f9fa1ce803e71f} 
+\index{misc.h@{misc.h}!in\_interval@{in\_interval}}
+\index{in\_interval@{in\_interval}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{in\_interval()}{in\_interval()}}
+{\footnotesize\ttfamily int in\+\_\+interval (\begin{DoxyParamCaption}\item[{double}]{x,  }\item[{double}]{a,  }\item[{double}]{b }\end{DoxyParamCaption})}
+
+Check if a value is in a given range. Return TRUE or FALSE. 
+
+Definition at line \mbox{\hyperlink{misc_8c_source_l00218}{218}} of file \mbox{\hyperlink{misc_8c_source}{misc.\+c}}.
+
+\Hypertarget{misc_8h_a7bd5f9830327532b199607799edf7fe2}\label{misc_8h_a7bd5f9830327532b199607799edf7fe2} 
+\index{misc.h@{misc.h}!is\_aligned@{is\_aligned}}
+\index{is\_aligned@{is\_aligned}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{is\_aligned()}{is\_aligned()}}
+{\footnotesize\ttfamily int is\+\_\+aligned (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{theta,  }\item[{double}]{prec }\end{DoxyParamCaption})}
+
+Are two angles similar up to precision \textquotesingle{}prec\textquotesingle{}? 
+
+Definition at line \mbox{\hyperlink{misc_8c_source_l00228}{228}} of file \mbox{\hyperlink{misc_8c_source}{misc.\+c}}.
+
+\Hypertarget{misc_8h_a7b7aa8971ae07b4e29a61533909d098d}\label{misc_8h_a7b7aa8971ae07b4e29a61533909d098d} 
+\index{misc.h@{misc.h}!max\_array\_pos@{max\_array\_pos}}
+\index{max\_array\_pos@{max\_array\_pos}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{max\_array\_pos()}{max\_array\_pos()}}
+{\footnotesize\ttfamily double max\+\_\+array\+\_\+pos (\begin{DoxyParamCaption}\item[{double \texorpdfstring{$\ast$}{*}}]{a,  }\item[{int}]{sz,  }\item[{int \texorpdfstring{$\ast$}{*}}]{poz }\end{DoxyParamCaption})}
+
+Compute max element in an array and return the max value and its position. 
+
+Definition at line \mbox{\hyperlink{misc_8c_source_l00197}{197}} of file \mbox{\hyperlink{misc_8c_source}{misc.\+c}}.
+
+\Hypertarget{misc_8h_acbf3663dd6c05ce0f7f82f6d4b36c6a7}\label{misc_8h_acbf3663dd6c05ce0f7f82f6d4b36c6a7} 
+\index{misc.h@{misc.h}!min\_array@{min\_array}}
+\index{min\_array@{min\_array}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{min\_array()}{min\_array()}}
+{\footnotesize\ttfamily double min\+\_\+array (\begin{DoxyParamCaption}\item[{double \texorpdfstring{$\ast$}{*}}]{v,  }\item[{int}]{sz }\end{DoxyParamCaption})}
+
+Compute the min value of an array of doubles. 
+
+Definition at line \mbox{\hyperlink{misc_8c_source_l00154}{154}} of file \mbox{\hyperlink{misc_8c_source}{misc.\+c}}.
+
+\Hypertarget{misc_8h_a6d6f434a2cc946f78f7916364ad14f38}\label{misc_8h_a6d6f434a2cc946f78f7916364ad14f38} 
+\index{misc.h@{misc.h}!min\_array\_pos@{min\_array\_pos}}
+\index{min\_array\_pos@{min\_array\_pos}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{min\_array\_pos()}{min\_array\_pos()}}
+{\footnotesize\ttfamily double min\+\_\+array\+\_\+pos (\begin{DoxyParamCaption}\item[{double \texorpdfstring{$\ast$}{*}}]{v,  }\item[{int}]{sz,  }\item[{int \texorpdfstring{$\ast$}{*}}]{pos }\end{DoxyParamCaption})}
+
+Compute the min value and its index in an array of doubles. 
+
+Definition at line \mbox{\hyperlink{misc_8c_source_l00174}{174}} of file \mbox{\hyperlink{misc_8c_source}{misc.\+c}}.
+
+\Hypertarget{misc_8h_a00b6a4c474bea7360859f586ae2e2dea}\label{misc_8h_a00b6a4c474bea7360859f586ae2e2dea} 
+\index{misc.h@{misc.h}!norm\_angle\_diff@{norm\_angle\_diff}}
+\index{norm\_angle\_diff@{norm\_angle\_diff}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{norm\_angle\_diff()}{norm\_angle\_diff()}}
+{\footnotesize\ttfamily double norm\+\_\+angle\+\_\+diff (\begin{DoxyParamCaption}\item[{double}]{a,  }\item[{double}]{b }\end{DoxyParamCaption})}
+
+Normalised difference between two angles. 
+
+Definition at line \mbox{\hyperlink{misc_8c_source_l00256}{256}} of file \mbox{\hyperlink{misc_8c_source}{misc.\+c}}.
+
+\Hypertarget{misc_8h_a9f29698bce67d856008e85a5c6b45b57}\label{misc_8h_a9f29698bce67d856008e85a5c6b45b57} 
+\index{misc.h@{misc.h}!sign@{sign}}
+\index{sign@{sign}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{sign()}{sign()}}
+{\footnotesize\ttfamily int sign (\begin{DoxyParamCaption}\item[{double}]{val }\end{DoxyParamCaption})}
+
+Return +1 for positive value, and -\/1 for strictly negative value. 
+
+Definition at line \mbox{\hyperlink{misc_8c_source_l00074}{74}} of file \mbox{\hyperlink{misc_8c_source}{misc.\+c}}.
+
+\Hypertarget{misc_8h_abfa4eebba539e060400a6a7fe746614e}\label{misc_8h_abfa4eebba539e060400a6a7fe746614e} 
+\index{misc.h@{misc.h}!swap\_double@{swap\_double}}
+\index{swap\_double@{swap\_double}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{swap\_double()}{swap\_double()}}
+{\footnotesize\ttfamily void swap\+\_\+double (\begin{DoxyParamCaption}\item[{double \texorpdfstring{$\ast$}{*}}]{a,  }\item[{double \texorpdfstring{$\ast$}{*}}]{b }\end{DoxyParamCaption})}
+
+Swap two double values. 
+
+Definition at line \mbox{\hyperlink{misc_8c_source_l00128}{128}} of file \mbox{\hyperlink{misc_8c_source}{misc.\+c}}.
+
+\Hypertarget{misc_8h_a10ec5db73aebdd0d7508b49e72770ef4}\label{misc_8h_a10ec5db73aebdd0d7508b49e72770ef4} 
+\index{misc.h@{misc.h}!swap\_int@{swap\_int}}
+\index{swap\_int@{swap\_int}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{swap\_int()}{swap\_int()}}
+{\footnotesize\ttfamily void swap\+\_\+int (\begin{DoxyParamCaption}\item[{int \texorpdfstring{$\ast$}{*}}]{a,  }\item[{int \texorpdfstring{$\ast$}{*}}]{b }\end{DoxyParamCaption})}
+
+Swap two integer values. 
+
+Definition at line \mbox{\hyperlink{misc_8c_source_l00118}{118}} of file \mbox{\hyperlink{misc_8c_source}{misc.\+c}}.
+
+\Hypertarget{misc_8h_a3d503d641b82342adf77b51b2db53225}\label{misc_8h_a3d503d641b82342adf77b51b2db53225} 
+\index{misc.h@{misc.h}!swap\_ptr\_pts@{swap\_ptr\_pts}}
+\index{swap\_ptr\_pts@{swap\_ptr\_pts}!misc.h@{misc.h}}
+\doxysubsubsection{\texorpdfstring{swap\_ptr\_pts()}{swap\_ptr\_pts()}}
+{\footnotesize\ttfamily void swap\+\_\+ptr\+\_\+pts (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structPoint}{Point}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{a,  }\item[{\mbox{\hyperlink{structPoint}{Point}} \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{b }\end{DoxyParamCaption})}
+
+Swap pointers\textquotesingle{} addresses for two arrays of points. 
+
+Definition at line \mbox{\hyperlink{misc_8c_source_l00138}{138}} of file \mbox{\hyperlink{misc_8c_source}{misc.\+c}}.
+

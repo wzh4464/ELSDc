@@ -1,0 +1,250 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_misc_8c_source" xml:lang="en-US">
+<title>misc.c</title>
+<indexterm><primary>src/misc.c</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="_misc_8c_source_1l00001"/>00001 <emphasis role="comment">/*------------------------------------------------------------------------------</emphasis>
+<anchor xml:id="_misc_8c_source_1l00002"/>00002 <emphasis role="comment"></emphasis>
+<anchor xml:id="_misc_8c_source_1l00003"/>00003 <emphasis role="comment">&#32;&#32;Copyright&#32;(c)&#32;2012-2014&#32;viorica&#32;patraucean&#32;(vpatrauc@gmail.com)</emphasis>
+<anchor xml:id="_misc_8c_source_1l00004"/>00004 <emphasis role="comment">&#32;&#32;</emphasis>
+<anchor xml:id="_misc_8c_source_1l00005"/>00005 <emphasis role="comment">&#32;&#32;This&#32;program&#32;is&#32;free&#32;software:&#32;you&#32;can&#32;redistribute&#32;it&#32;and/or&#32;modify</emphasis>
+<anchor xml:id="_misc_8c_source_1l00006"/>00006 <emphasis role="comment">&#32;&#32;it&#32;under&#32;the&#32;terms&#32;of&#32;the&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License&#32;as</emphasis>
+<anchor xml:id="_misc_8c_source_1l00007"/>00007 <emphasis role="comment">&#32;&#32;published&#32;by&#32;the&#32;Free&#32;Software&#32;Foundation,&#32;either&#32;version&#32;3&#32;of&#32;the</emphasis>
+<anchor xml:id="_misc_8c_source_1l00008"/>00008 <emphasis role="comment">&#32;&#32;License,&#32;or&#32;(at&#32;your&#32;option)&#32;any&#32;later&#32;version.</emphasis>
+<anchor xml:id="_misc_8c_source_1l00009"/>00009 <emphasis role="comment"></emphasis>
+<anchor xml:id="_misc_8c_source_1l00010"/>00010 <emphasis role="comment">&#32;&#32;This&#32;program&#32;is&#32;distributed&#32;in&#32;the&#32;hope&#32;that&#32;it&#32;will&#32;be&#32;useful,</emphasis>
+<anchor xml:id="_misc_8c_source_1l00011"/>00011 <emphasis role="comment">&#32;&#32;but&#32;WITHOUT&#32;ANY&#32;WARRANTY;&#32;without&#32;even&#32;the&#32;implied&#32;warranty&#32;of</emphasis>
+<anchor xml:id="_misc_8c_source_1l00012"/>00012 <emphasis role="comment">&#32;&#32;MERCHANTABILITY&#32;or&#32;FITNESS&#32;FOR&#32;A&#32;PARTICULAR&#32;PURPOSE.&#32;See&#32;the</emphasis>
+<anchor xml:id="_misc_8c_source_1l00013"/>00013 <emphasis role="comment">&#32;&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License&#32;for&#32;more&#32;details.</emphasis>
+<anchor xml:id="_misc_8c_source_1l00014"/>00014 <emphasis role="comment"></emphasis>
+<anchor xml:id="_misc_8c_source_1l00015"/>00015 <emphasis role="comment">&#32;&#32;You&#32;should&#32;have&#32;received&#32;a&#32;copy&#32;of&#32;the&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License</emphasis>
+<anchor xml:id="_misc_8c_source_1l00016"/>00016 <emphasis role="comment">&#32;&#32;along&#32;with&#32;this&#32;program.&#32;If&#32;not,&#32;see&#32;&lt;http://www.gnu.org/licenses/&gt;.</emphasis>
+<anchor xml:id="_misc_8c_source_1l00017"/>00017 <emphasis role="comment"></emphasis>
+<anchor xml:id="_misc_8c_source_1l00018"/>00018 <emphasis role="comment"></emphasis>
+<anchor xml:id="_misc_8c_source_1l00019"/>00019 <emphasis role="comment">&#32;&#32;misc.c&#32;-&#32;This&#32;file&#32;belongs&#32;to&#32;ELSDc&#32;project&#32;(Ellipse&#32;and&#32;Line&#32;Segment&#32;</emphasis>
+<anchor xml:id="_misc_8c_source_1l00020"/>00020 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Detector&#32;with&#32;continuous&#32;validation).</emphasis>
+<anchor xml:id="_misc_8c_source_1l00021"/>00021 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;-&#32;It&#32;contains&#32;the&#32;definition&#32;of&#32;various&#32;functions&#32;needed&#32;in&#32;different&#32;</emphasis>
+<anchor xml:id="_misc_8c_source_1l00022"/>00022 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;parts&#32;of&#32;the&#32;project.</emphasis>
+<anchor xml:id="_misc_8c_source_1l00023"/>00023 <emphasis role="comment"></emphasis>
+<anchor xml:id="_misc_8c_source_1l00024"/>00024 <emphasis role="comment">------------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00025"/>00025 
+<anchor xml:id="_misc_8c_source_1l00026"/>00026 
+<anchor xml:id="_misc_8c_source_1l00027"/>00027 <emphasis role="preprocessor">#include&#32;&lt;stdio.h&gt;</emphasis>
+<anchor xml:id="_misc_8c_source_1l00028"/>00028 <emphasis role="preprocessor">#include&#32;&lt;stdlib.h&gt;</emphasis>
+<anchor xml:id="_misc_8c_source_1l00029"/>00029 <emphasis role="preprocessor">#include&#32;&lt;math.h&gt;</emphasis>
+<anchor xml:id="_misc_8c_source_1l00030"/>00030 <emphasis role="preprocessor">#include&#32;&lt;float.h&gt;</emphasis>
+<anchor xml:id="_misc_8c_source_1l00031"/>00031 <emphasis role="preprocessor">#include&#32;&lt;limits.h&gt;</emphasis>
+<anchor xml:id="_misc_8c_source_1l00032"/>00032 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_misc_8h">misc.h</link>&quot;</emphasis>
+<anchor xml:id="_misc_8c_source_1l00033"/>00033 
+<anchor xml:id="_misc_8c_source_1l00034"/>00034 
+<anchor xml:id="_misc_8c_source_1l00035"/>00035 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00038"/><link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">00038</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(&#32;<emphasis role="keywordtype">char</emphasis>&#32;*msg&#32;)
+<anchor xml:id="_misc_8c_source_1l00039"/>00039 {
+<anchor xml:id="_misc_8c_source_1l00040"/>00040 &#32;&#32;fprintf(&#32;stderr,<emphasis role="stringliteral">&quot;%s\n&quot;</emphasis>,&#32;msg&#32;);
+<anchor xml:id="_misc_8c_source_1l00041"/>00041 &#32;&#32;exit(EXIT_FAILURE);
+<anchor xml:id="_misc_8c_source_1l00042"/>00042 }
+<anchor xml:id="_misc_8c_source_1l00043"/>00043 
+<anchor xml:id="_misc_8c_source_1l00044"/>00044 
+<anchor xml:id="_misc_8c_source_1l00045"/>00045 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00048"/><link linkend="_misc_8c_1a5ee2ec8164c0157c7029ae8bfe74cb67">00048</link> <emphasis role="preprocessor">#define&#32;RELATIVE_ERROR_FACTOR&#32;100.0</emphasis>
+<anchor xml:id="_misc_8c_source_1l00049"/><link linkend="_misc_8c_1a49d0391afab7c8872bbbfb86a814360b">00049</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_misc_8c_1a49d0391afab7c8872bbbfb86a814360b">double_equal</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;a,&#32;<emphasis role="keywordtype">double</emphasis>&#32;b&#32;)
+<anchor xml:id="_misc_8c_source_1l00050"/>00050 {
+<anchor xml:id="_misc_8c_source_1l00051"/>00051 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;abs_diff,&#32;aa,&#32;bb,&#32;abs_max;
+<anchor xml:id="_misc_8c_source_1l00052"/>00052 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;a&#32;==&#32;b&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</link>;
+<anchor xml:id="_misc_8c_source_1l00053"/>00053 
+<anchor xml:id="_misc_8c_source_1l00054"/>00054 &#32;&#32;abs_diff&#32;=&#32;fabs(&#32;a-b&#32;);
+<anchor xml:id="_misc_8c_source_1l00055"/>00055 &#32;&#32;aa&#32;=&#32;fabs(a);
+<anchor xml:id="_misc_8c_source_1l00056"/>00056 &#32;&#32;bb&#32;=&#32;fabs(b);
+<anchor xml:id="_misc_8c_source_1l00057"/>00057 &#32;&#32;abs_max&#32;=&#32;aa&#32;&gt;&#32;bb&#32;?&#32;aa&#32;:&#32;bb;
+<anchor xml:id="_misc_8c_source_1l00058"/>00058 
+<anchor xml:id="_misc_8c_source_1l00059"/>00059 &#32;&#32;<emphasis role="comment">/*&#32;DBL_MIN&#32;is&#32;the&#32;smallest&#32;normalized&#32;number,&#32;thus,&#32;the&#32;smallest</emphasis>
+<anchor xml:id="_misc_8c_source_1l00060"/>00060 <emphasis role="comment">&#32;&#32;&#32;number&#32;whose&#32;relative&#32;error&#32;is&#32;bounded&#32;by&#32;DBL_EPSILON.&#32;For</emphasis>
+<anchor xml:id="_misc_8c_source_1l00061"/>00061 <emphasis role="comment">&#32;&#32;&#32;smaller&#32;numbers,&#32;the&#32;same&#32;quantization&#32;steps&#32;as&#32;for&#32;DBL_MIN</emphasis>
+<anchor xml:id="_misc_8c_source_1l00062"/>00062 <emphasis role="comment">&#32;&#32;&#32;are&#32;used.&#32;Then,&#32;for&#32;smaller&#32;numbers,&#32;a&#32;meaningful&#32;&quot;relative&quot;</emphasis>
+<anchor xml:id="_misc_8c_source_1l00063"/>00063 <emphasis role="comment">&#32;&#32;&#32;error&#32;should&#32;be&#32;computed&#32;by&#32;dividing&#32;the&#32;difference&#32;by&#32;DBL_MIN.&#32;*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00064"/>00064 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;abs_max&#32;&lt;&#32;DBL_MIN&#32;)&#32;abs_max&#32;=&#32;DBL_MIN;
+<anchor xml:id="_misc_8c_source_1l00065"/>00065 
+<anchor xml:id="_misc_8c_source_1l00066"/>00066 &#32;&#32;<emphasis role="comment">/*&#32;equal&#32;if&#32;relative&#32;error&#32;&lt;=&#32;factor&#32;x&#32;eps&#32;*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00067"/>00067 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;(&#32;abs_diff&#32;/&#32;abs_max&#32;)&#32;&lt;=&#32;(<link linkend="_misc_8c_1a5ee2ec8164c0157c7029ae8bfe74cb67">RELATIVE_ERROR_FACTOR</link>&#32;*&#32;DBL_EPSILON);
+<anchor xml:id="_misc_8c_source_1l00068"/>00068 }
+<anchor xml:id="_misc_8c_source_1l00069"/>00069 
+<anchor xml:id="_misc_8c_source_1l00070"/>00070 
+<anchor xml:id="_misc_8c_source_1l00071"/>00071 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00074"/><link linkend="_misc_8c_1a9f29698bce67d856008e85a5c6b45b57">00074</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_misc_8c_1a9f29698bce67d856008e85a5c6b45b57">sign</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;val&#32;)
+<anchor xml:id="_misc_8c_source_1l00075"/>00075 {
+<anchor xml:id="_misc_8c_source_1l00076"/>00076 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;val&#32;&gt;=&#32;0&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;1;
+<anchor xml:id="_misc_8c_source_1l00077"/>00077 &#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">return</emphasis>&#32;-1;
+<anchor xml:id="_misc_8c_source_1l00078"/>00078 }
+<anchor xml:id="_misc_8c_source_1l00079"/>00079 
+<anchor xml:id="_misc_8c_source_1l00080"/>00080 
+<anchor xml:id="_misc_8c_source_1l00081"/>00081 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00084"/><link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">00084</link> <emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;x1,&#32;<emphasis role="keywordtype">double</emphasis>&#32;y1,&#32;<emphasis role="keywordtype">double</emphasis>&#32;x2,&#32;<emphasis role="keywordtype">double</emphasis>&#32;y2&#32;)
+<anchor xml:id="_misc_8c_source_1l00085"/>00085 {
+<anchor xml:id="_misc_8c_source_1l00086"/>00086 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;sqrt(&#32;(x2-x1)&#32;*&#32;(x2-x1)&#32;+&#32;(y2-y1)&#32;*&#32;(y2-y1)&#32;);
+<anchor xml:id="_misc_8c_source_1l00087"/>00087 }
+<anchor xml:id="_misc_8c_source_1l00088"/>00088 
+<anchor xml:id="_misc_8c_source_1l00089"/>00089 
+<anchor xml:id="_misc_8c_source_1l00090"/>00090 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00093"/><link linkend="_misc_8c_1a4e46bd783e4efe71bee053481afeb4a9">00093</link> <emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_misc_8c_1a4e46bd783e4efe71bee053481afeb4a9">angle_diff</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;a,&#32;<emphasis role="keywordtype">double</emphasis>&#32;b&#32;)
+<anchor xml:id="_misc_8c_source_1l00094"/>00094 {
+<anchor xml:id="_misc_8c_source_1l00095"/>00095 &#32;&#32;a&#32;-=&#32;b;
+<anchor xml:id="_misc_8c_source_1l00096"/>00096 &#32;&#32;<emphasis role="keywordflow">while</emphasis>(&#32;a&#32;&lt;=&#32;-<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>&#32;)&#32;a&#32;+=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_misc_8c_source_1l00097"/>00097 &#32;&#32;<emphasis role="keywordflow">while</emphasis>(&#32;a&#32;&gt;&#32;&#32;&#32;<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>&#32;)&#32;a&#32;-=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_misc_8c_source_1l00098"/>00098 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;a&#32;&lt;&#32;0.0&#32;)&#32;a&#32;=&#32;-a;
+<anchor xml:id="_misc_8c_source_1l00099"/>00099 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;a;
+<anchor xml:id="_misc_8c_source_1l00100"/>00100 }
+<anchor xml:id="_misc_8c_source_1l00101"/>00101 
+<anchor xml:id="_misc_8c_source_1l00102"/>00102 
+<anchor xml:id="_misc_8c_source_1l00103"/>00103 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00106"/><link linkend="_misc_8c_1afc6d1f1cd19f4dfd5513632ab80322df">00106</link> <emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_misc_8c_1afc6d1f1cd19f4dfd5513632ab80322df">angle_diff_signed</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;a,&#32;<emphasis role="keywordtype">double</emphasis>&#32;b&#32;)
+<anchor xml:id="_misc_8c_source_1l00107"/>00107 {
+<anchor xml:id="_misc_8c_source_1l00108"/>00108 &#32;&#32;a&#32;-=&#32;b;
+<anchor xml:id="_misc_8c_source_1l00109"/>00109 &#32;&#32;<emphasis role="keywordflow">while</emphasis>(&#32;a&#32;&lt;=&#32;-<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>&#32;)&#32;a&#32;+=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_misc_8c_source_1l00110"/>00110 &#32;&#32;<emphasis role="keywordflow">while</emphasis>(&#32;a&#32;&gt;&#32;&#32;&#32;<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>&#32;)&#32;a&#32;-=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_misc_8c_source_1l00111"/>00111 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;a;
+<anchor xml:id="_misc_8c_source_1l00112"/>00112 }
+<anchor xml:id="_misc_8c_source_1l00113"/>00113 
+<anchor xml:id="_misc_8c_source_1l00114"/>00114 
+<anchor xml:id="_misc_8c_source_1l00115"/>00115 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00118"/><link linkend="_misc_8c_1a10ec5db73aebdd0d7508b49e72770ef4">00118</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_misc_8c_1a10ec5db73aebdd0d7508b49e72770ef4">swap_int</link>(&#32;<emphasis role="keywordtype">int</emphasis>&#32;*a,&#32;<emphasis role="keywordtype">int</emphasis>&#32;*b&#32;)
+<anchor xml:id="_misc_8c_source_1l00119"/>00119 {
+<anchor xml:id="_misc_8c_source_1l00120"/>00120 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;t;
+<anchor xml:id="_misc_8c_source_1l00121"/>00121 &#32;&#32;t&#32;=&#32;*a;&#32;*a&#32;=&#32;*b;&#32;*b&#32;=&#32;t;
+<anchor xml:id="_misc_8c_source_1l00122"/>00122 }
+<anchor xml:id="_misc_8c_source_1l00123"/>00123 
+<anchor xml:id="_misc_8c_source_1l00124"/>00124 
+<anchor xml:id="_misc_8c_source_1l00125"/>00125 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00128"/><link linkend="_misc_8c_1abfa4eebba539e060400a6a7fe746614e">00128</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_misc_8c_1abfa4eebba539e060400a6a7fe746614e">swap_double</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;*a,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*b&#32;)
+<anchor xml:id="_misc_8c_source_1l00129"/>00129 {
+<anchor xml:id="_misc_8c_source_1l00130"/>00130 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;t;
+<anchor xml:id="_misc_8c_source_1l00131"/>00131 &#32;&#32;t&#32;=&#32;*a;&#32;*a&#32;=&#32;*b;&#32;*b&#32;=&#32;t;
+<anchor xml:id="_misc_8c_source_1l00132"/>00132 }
+<anchor xml:id="_misc_8c_source_1l00133"/>00133 
+<anchor xml:id="_misc_8c_source_1l00134"/>00134 
+<anchor xml:id="_misc_8c_source_1l00135"/>00135 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00138"/><link linkend="_misc_8c_1a3d503d641b82342adf77b51b2db53225">00138</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_misc_8c_1a3d503d641b82342adf77b51b2db53225">swap_ptr_pts</link>(&#32;<link linkend="_structPoint">Point</link>&#32;**a,&#32;<link linkend="_structPoint">Point</link>&#32;**b&#32;)
+<anchor xml:id="_misc_8c_source_1l00139"/>00139 {
+<anchor xml:id="_misc_8c_source_1l00140"/>00140 &#32;&#32;<link linkend="_structPoint">Point</link>&#32;*p;
+<anchor xml:id="_misc_8c_source_1l00141"/>00141 
+<anchor xml:id="_misc_8c_source_1l00142"/>00142 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00143"/>00143 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;*a&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;swap_ptr_pts:&#32;invalid&#32;input&#32;array.&quot;</emphasis>);
+<anchor xml:id="_misc_8c_source_1l00144"/>00144 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;*b&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;swap_ptr_pts:&#32;invalid&#32;input&#32;array.&quot;</emphasis>);
+<anchor xml:id="_misc_8c_source_1l00145"/>00145 &#32;&#32;&#32;p&#32;=&#32;*a;
+<anchor xml:id="_misc_8c_source_1l00146"/>00146 &#32;&#32;*a&#32;=&#32;*b;
+<anchor xml:id="_misc_8c_source_1l00147"/>00147 &#32;&#32;*b&#32;=&#32;&#32;p;
+<anchor xml:id="_misc_8c_source_1l00148"/>00148 }
+<anchor xml:id="_misc_8c_source_1l00149"/>00149 
+<anchor xml:id="_misc_8c_source_1l00150"/>00150 
+<anchor xml:id="_misc_8c_source_1l00151"/>00151 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00154"/><link linkend="_misc_8c_1acbf3663dd6c05ce0f7f82f6d4b36c6a7">00154</link> <emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_misc_8c_1acbf3663dd6c05ce0f7f82f6d4b36c6a7">min_array</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;*v,&#32;<emphasis role="keywordtype">int</emphasis>&#32;sz&#32;)
+<anchor xml:id="_misc_8c_source_1l00155"/>00155 {
+<anchor xml:id="_misc_8c_source_1l00156"/>00156 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;m&#32;=&#32;DBL_MAX;
+<anchor xml:id="_misc_8c_source_1l00157"/>00157 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;i;
+<anchor xml:id="_misc_8c_source_1l00158"/>00158 
+<anchor xml:id="_misc_8c_source_1l00159"/>00159 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00160"/>00160 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;v&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;min_array:&#32;null&#32;input&#32;array.&quot;</emphasis>);
+<anchor xml:id="_misc_8c_source_1l00161"/>00161 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;sz&#32;&lt;=&#32;0&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;min_array:&#32;size&#32;must&#32;be&#32;strictly&#32;positive.&quot;</emphasis>);
+<anchor xml:id="_misc_8c_source_1l00162"/>00162 
+<anchor xml:id="_misc_8c_source_1l00163"/>00163 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=0;&#32;i&lt;sz;&#32;i++&#32;)&#32;
+<anchor xml:id="_misc_8c_source_1l00164"/>00164 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;v[i]&#32;&lt;&#32;m&#32;)&#32;
+<anchor xml:id="_misc_8c_source_1l00165"/>00165 &#32;&#32;&#32;&#32;&#32;&#32;m&#32;=&#32;v[i];
+<anchor xml:id="_misc_8c_source_1l00166"/>00166 
+<anchor xml:id="_misc_8c_source_1l00167"/>00167 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;m;
+<anchor xml:id="_misc_8c_source_1l00168"/>00168 }
+<anchor xml:id="_misc_8c_source_1l00169"/>00169 
+<anchor xml:id="_misc_8c_source_1l00170"/>00170 
+<anchor xml:id="_misc_8c_source_1l00171"/>00171 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00174"/><link linkend="_misc_8c_1a6d6f434a2cc946f78f7916364ad14f38">00174</link> <emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_misc_8c_1a6d6f434a2cc946f78f7916364ad14f38">min_array_pos</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;*v,&#32;<emphasis role="keywordtype">int</emphasis>&#32;sz,&#32;<emphasis role="keywordtype">int</emphasis>&#32;*pos&#32;)
+<anchor xml:id="_misc_8c_source_1l00175"/>00175 {
+<anchor xml:id="_misc_8c_source_1l00176"/>00176 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;m&#32;=&#32;DBL_MAX;
+<anchor xml:id="_misc_8c_source_1l00177"/>00177 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;i;
+<anchor xml:id="_misc_8c_source_1l00178"/>00178 
+<anchor xml:id="_misc_8c_source_1l00179"/>00179 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00180"/>00180 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;v&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;min_array_pos:&#32;null&#32;input&#32;array.&quot;</emphasis>);
+<anchor xml:id="_misc_8c_source_1l00181"/>00181 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;sz&#32;&lt;=&#32;0&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;min_array_pos:&#32;size&#32;must&#32;be&#32;strictly&#32;positive.&quot;</emphasis>);
+<anchor xml:id="_misc_8c_source_1l00182"/>00182 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;pos&#32;==&#32;NULL)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;min_array_pos:&#32;pos&#32;must&#32;be&#32;non-null.&quot;</emphasis>);
+<anchor xml:id="_misc_8c_source_1l00183"/>00183 
+<anchor xml:id="_misc_8c_source_1l00184"/>00184 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=0;&#32;i&lt;sz;&#32;i++&#32;)&#32;
+<anchor xml:id="_misc_8c_source_1l00185"/>00185 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;v[i]&#32;&lt;&#32;m&#32;)&#32;
+<anchor xml:id="_misc_8c_source_1l00186"/>00186 &#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_misc_8c_source_1l00187"/>00187 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;m&#32;=&#32;v[i];
+<anchor xml:id="_misc_8c_source_1l00188"/>00188 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;*pos&#32;=&#32;i;
+<anchor xml:id="_misc_8c_source_1l00189"/>00189 &#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_misc_8c_source_1l00190"/>00190 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;m;
+<anchor xml:id="_misc_8c_source_1l00191"/>00191 }
+<anchor xml:id="_misc_8c_source_1l00192"/>00192 
+<anchor xml:id="_misc_8c_source_1l00193"/>00193 
+<anchor xml:id="_misc_8c_source_1l00194"/>00194 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00197"/><link linkend="_misc_8c_1a7b7aa8971ae07b4e29a61533909d098d">00197</link> <emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_misc_8c_1a7b7aa8971ae07b4e29a61533909d098d">max_array_pos</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;*a,&#32;<emphasis role="keywordtype">int</emphasis>&#32;sz,&#32;<emphasis role="keywordtype">int</emphasis>&#32;*poz&#32;)
+<anchor xml:id="_misc_8c_source_1l00198"/>00198 {
+<anchor xml:id="_misc_8c_source_1l00199"/>00199 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;i;
+<anchor xml:id="_misc_8c_source_1l00200"/>00200 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_misc_8h_1a24e753bacac6be5f30e18f8a2bdefda4">max</link>&#32;=&#32;(double)LONG_MIN;
+<anchor xml:id="_misc_8c_source_1l00201"/>00201 
+<anchor xml:id="_misc_8c_source_1l00202"/>00202 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00203"/>00203 &#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(a&#32;==&#32;NULL)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;max_array_pos:&#32;invalid&#32;input&#32;array.&quot;</emphasis>);
+<anchor xml:id="_misc_8c_source_1l00204"/>00204 &#32;&#32;
+<anchor xml:id="_misc_8c_source_1l00205"/>00205 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=0;&#32;i&lt;sz;&#32;i++&#32;)
+<anchor xml:id="_misc_8c_source_1l00206"/>00206 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;<link linkend="_misc_8h_1a24e753bacac6be5f30e18f8a2bdefda4">max</link>&lt;a[i]&#32;)&#32;
+<anchor xml:id="_misc_8c_source_1l00207"/>00207 &#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_misc_8c_source_1l00208"/>00208 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_misc_8h_1a24e753bacac6be5f30e18f8a2bdefda4">max</link>&#32;=&#32;a[i];&#32;
+<anchor xml:id="_misc_8c_source_1l00209"/>00209 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;*poz&#32;=&#32;i;
+<anchor xml:id="_misc_8c_source_1l00210"/>00210 &#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_misc_8c_source_1l00211"/>00211 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1a24e753bacac6be5f30e18f8a2bdefda4">max</link>;
+<anchor xml:id="_misc_8c_source_1l00212"/>00212 }
+<anchor xml:id="_misc_8c_source_1l00213"/>00213 
+<anchor xml:id="_misc_8c_source_1l00214"/>00214 
+<anchor xml:id="_misc_8c_source_1l00215"/>00215 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00218"/><link linkend="_misc_8c_1a5ff03a878859dab858f9fa1ce803e71f">00218</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_misc_8c_1a5ff03a878859dab858f9fa1ce803e71f">in_interval</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;x,&#32;<emphasis role="keywordtype">double</emphasis>&#32;a,&#32;<emphasis role="keywordtype">double</emphasis>&#32;b&#32;)
+<anchor xml:id="_misc_8c_source_1l00219"/>00219 {
+<anchor xml:id="_misc_8c_source_1l00220"/>00220 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;x&gt;=a&#32;&amp;&amp;&#32;x&lt;b&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</link>;
+<anchor xml:id="_misc_8c_source_1l00221"/>00221 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa93f0eb578d23995850d61f7d61c55c1">FALSE</link>;
+<anchor xml:id="_misc_8c_source_1l00222"/>00222 }
+<anchor xml:id="_misc_8c_source_1l00223"/>00223 
+<anchor xml:id="_misc_8c_source_1l00224"/>00224 
+<anchor xml:id="_misc_8c_source_1l00225"/>00225 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00228"/><link linkend="_misc_8c_1a7bd5f9830327532b199607799edf7fe2">00228</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_misc_8c_1a7bd5f9830327532b199607799edf7fe2">is_aligned</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;a,&#32;<emphasis role="keywordtype">double</emphasis>&#32;theta,&#32;<emphasis role="keywordtype">double</emphasis>&#32;prec&#32;)
+<anchor xml:id="_misc_8c_source_1l00229"/>00229 {
+<anchor xml:id="_misc_8c_source_1l00230"/>00230 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00231"/>00231 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;prec&#32;&lt;&#32;0.0&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;is_similar:&#32;&apos;prec&apos;&#32;must&#32;be&#32;positive.&quot;</emphasis>);
+<anchor xml:id="_misc_8c_source_1l00232"/>00232 
+<anchor xml:id="_misc_8c_source_1l00233"/>00233 &#32;&#32;<emphasis role="comment">/*&#32;if&#32;angle&#32;not&#32;defined,&#32;it&#32;is&#32;considered&#32;NON-similar&#32;*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00234"/>00234 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;a&#32;==&#32;<link linkend="_misc_8h_1a18d9edd8c3bfc9c1837a10505dfa037c">NOTDEF</link>&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa93f0eb578d23995850d61f7d61c55c1">FALSE</link>;&#32;&#32;<emphasis role="comment">/*&#32;there&#32;is&#32;no&#32;need&#32;to&#32;call&#32;the&#32;function</emphasis>
+<anchor xml:id="_misc_8c_source_1l00235"/>00235 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&apos;double_equal&apos;&#32;here&#32;because&#32;there&#32;is</emphasis>
+<anchor xml:id="_misc_8c_source_1l00236"/>00236 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;no&#32;risk&#32;of&#32;problems&#32;related&#32;to&#32;the</emphasis>
+<anchor xml:id="_misc_8c_source_1l00237"/>00237 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;comparison&#32;doubles,&#32;we&#32;are&#32;only</emphasis>
+<anchor xml:id="_misc_8c_source_1l00238"/>00238 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;interested&#32;in&#32;the&#32;exact&#32;NOTDEF&#32;value&#32;*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00239"/>00239 
+<anchor xml:id="_misc_8c_source_1l00240"/>00240 &#32;&#32;<emphasis role="comment">/*&#32;it&#32;is&#32;assumed&#32;that&#32;&apos;theta&apos;&#32;and&#32;&apos;a&apos;&#32;are&#32;in&#32;the&#32;range&#32;[-pi,pi]&#32;*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00241"/>00241 &#32;&#32;theta&#32;-=&#32;a;
+<anchor xml:id="_misc_8c_source_1l00242"/>00242 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;theta&#32;&lt;&#32;0.0&#32;)&#32;theta&#32;=&#32;-theta;
+<anchor xml:id="_misc_8c_source_1l00243"/>00243 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;theta&#32;&gt;&#32;<link linkend="_misc_8h_1ae82255d0b75d68c1cd14d4019443a14d">M_3_2_PI</link>&#32;)
+<anchor xml:id="_misc_8c_source_1l00244"/>00244 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_misc_8c_source_1l00245"/>00245 &#32;&#32;&#32;&#32;&#32;&#32;theta&#32;-=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_misc_8c_source_1l00246"/>00246 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;theta&#32;&lt;&#32;0.0&#32;)&#32;theta&#32;=&#32;-theta;
+<anchor xml:id="_misc_8c_source_1l00247"/>00247 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_misc_8c_source_1l00248"/>00248 
+<anchor xml:id="_misc_8c_source_1l00249"/>00249 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;theta&#32;&lt;=&#32;prec;
+<anchor xml:id="_misc_8c_source_1l00250"/>00250 }
+<anchor xml:id="_misc_8c_source_1l00251"/>00251 
+<anchor xml:id="_misc_8c_source_1l00252"/>00252 
+<anchor xml:id="_misc_8c_source_1l00253"/>00253 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00256"/><link linkend="_misc_8c_1a00b6a4c474bea7360859f586ae2e2dea">00256</link> <emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_misc_8c_1a00b6a4c474bea7360859f586ae2e2dea">norm_angle_diff</link>(&#32;<emphasis role="keywordtype">double</emphasis>&#32;a,&#32;<emphasis role="keywordtype">double</emphasis>&#32;b&#32;)
+<anchor xml:id="_misc_8c_source_1l00257"/>00257 {
+<anchor xml:id="_misc_8c_source_1l00258"/>00258 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;if&#32;valid&#32;angles&#32;*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00259"/>00259 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(a&#32;==&#32;<link linkend="_misc_8h_1a18d9edd8c3bfc9c1837a10505dfa037c">NOTDEF</link>)&#32;||&#32;(b&#32;==&#32;<link linkend="_misc_8h_1a18d9edd8c3bfc9c1837a10505dfa037c">NOTDEF</link>)&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;1.0;
+<anchor xml:id="_misc_8c_source_1l00260"/>00260 
+<anchor xml:id="_misc_8c_source_1l00261"/>00261 &#32;&#32;<emphasis role="comment">/*&#32;normalize&#32;a&#32;*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00262"/>00262 &#32;&#32;<emphasis role="keywordflow">while</emphasis>(&#32;a&#32;&lt;=&#32;-<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>&#32;)&#32;a&#32;+=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_misc_8c_source_1l00263"/>00263 &#32;&#32;<emphasis role="keywordflow">while</emphasis>(&#32;a&#32;&gt;&#32;&#32;&#32;<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>&#32;)&#32;a&#32;-=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_misc_8c_source_1l00264"/>00264 
+<anchor xml:id="_misc_8c_source_1l00265"/>00265 &#32;&#32;<emphasis role="comment">/*&#32;normalize&#32;b&#32;*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00266"/>00266 &#32;&#32;<emphasis role="keywordflow">while</emphasis>(&#32;b&#32;&lt;=&#32;-<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>&#32;)&#32;b&#32;+=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_misc_8c_source_1l00267"/>00267 &#32;&#32;<emphasis role="keywordflow">while</emphasis>(&#32;b&#32;&gt;&#32;&#32;&#32;<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>&#32;)&#32;b&#32;-=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_misc_8c_source_1l00268"/>00268 
+<anchor xml:id="_misc_8c_source_1l00269"/>00269 &#32;&#32;<emphasis role="comment">/*&#32;compute&#32;difference&#32;and&#32;return&#32;normalised&#32;value&#32;*/</emphasis>
+<anchor xml:id="_misc_8c_source_1l00270"/>00270 &#32;&#32;a&#32;-=&#32;b;
+<anchor xml:id="_misc_8c_source_1l00271"/>00271 &#32;&#32;<emphasis role="keywordflow">while</emphasis>(&#32;a&#32;&lt;=&#32;-<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>&#32;)&#32;a&#32;+=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_misc_8c_source_1l00272"/>00272 &#32;&#32;<emphasis role="keywordflow">while</emphasis>(&#32;a&#32;&gt;&#32;&#32;&#32;<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>&#32;)&#32;a&#32;-=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_misc_8c_source_1l00273"/>00273 
+<anchor xml:id="_misc_8c_source_1l00274"/>00274 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;fabs(a)&#32;/&#32;<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>;
+<anchor xml:id="_misc_8c_source_1l00275"/>00275 }
+</programlisting></section>

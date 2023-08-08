@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_iterator_8c_source" xml:lang="en-US">
+<title>iterator.c</title>
+<indexterm><primary>src/iterator.c</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="_iterator_8c_source_1l00001"/>00001 <emphasis role="comment">/*------------------------------------------------------------------------------</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00002"/>00002 <emphasis role="comment">&#32;&#32;</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00003"/>00003 <emphasis role="comment">&#32;&#32;Copyright&#32;(c)&#32;2007-2011&#32;rafael&#32;grompone&#32;von&#32;gioi&#32;(grompone@gmail.com)</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00004"/>00004 <emphasis role="comment">&#32;&#32;Copyright&#32;(c)&#32;2012-2014&#32;viorica&#32;patraucean&#32;(vpatrauc@gmail.com)</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00005"/>00005 <emphasis role="comment">&#32;&#32;</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00006"/>00006 <emphasis role="comment">&#32;&#32;This&#32;program&#32;is&#32;free&#32;software:&#32;you&#32;can&#32;redistribute&#32;it&#32;and/or&#32;modify</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00007"/>00007 <emphasis role="comment">&#32;&#32;it&#32;under&#32;the&#32;terms&#32;of&#32;the&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License&#32;as</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00008"/>00008 <emphasis role="comment">&#32;&#32;published&#32;by&#32;the&#32;Free&#32;Software&#32;Foundation,&#32;either&#32;version&#32;3&#32;of&#32;the</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00009"/>00009 <emphasis role="comment">&#32;&#32;License,&#32;or&#32;(at&#32;your&#32;option)&#32;any&#32;later&#32;version.</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00010"/>00010 <emphasis role="comment"></emphasis>
+<anchor xml:id="_iterator_8c_source_1l00011"/>00011 <emphasis role="comment">&#32;&#32;This&#32;program&#32;is&#32;distributed&#32;in&#32;the&#32;hope&#32;that&#32;it&#32;will&#32;be&#32;useful,</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00012"/>00012 <emphasis role="comment">&#32;&#32;but&#32;WITHOUT&#32;ANY&#32;WARRANTY;&#32;without&#32;even&#32;the&#32;implied&#32;warranty&#32;of</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00013"/>00013 <emphasis role="comment">&#32;&#32;MERCHANTABILITY&#32;or&#32;FITNESS&#32;FOR&#32;A&#32;PARTICULAR&#32;PURPOSE.&#32;See&#32;the</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00014"/>00014 <emphasis role="comment">&#32;&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License&#32;for&#32;more&#32;details.</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00015"/>00015 <emphasis role="comment"></emphasis>
+<anchor xml:id="_iterator_8c_source_1l00016"/>00016 <emphasis role="comment">&#32;&#32;You&#32;should&#32;have&#32;received&#32;a&#32;copy&#32;of&#32;the&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00017"/>00017 <emphasis role="comment">&#32;&#32;along&#32;with&#32;this&#32;program.&#32;If&#32;not,&#32;see&#32;&lt;http://www.gnu.org/licenses/&gt;.</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00018"/>00018 <emphasis role="comment"></emphasis>
+<anchor xml:id="_iterator_8c_source_1l00019"/>00019 <emphasis role="comment"></emphasis>
+<anchor xml:id="_iterator_8c_source_1l00020"/>00020 <emphasis role="comment">&#32;&#32;iterator.c&#32;-&#32;This&#32;file&#32;belongs&#32;to&#32;ELSDc&#32;project&#32;(Ellipse&#32;and&#32;Line&#32;Segment&#32;</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00021"/>00021 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Detector&#32;with&#32;continuous&#32;validation).</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00022"/>00022 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;-&#32;It&#32;contains&#32;functions&#32;to&#32;scan&#32;the&#32;points&#32;in&#32;a&#32;rectangular&#32;area.</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00023"/>00023 <emphasis role="comment"></emphasis>
+<anchor xml:id="_iterator_8c_source_1l00024"/>00024 <emphasis role="comment">------------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00025"/>00025 
+<anchor xml:id="_iterator_8c_source_1l00026"/>00026 
+<anchor xml:id="_iterator_8c_source_1l00027"/>00027 <emphasis role="preprocessor">#include&#32;&lt;stdio.h&gt;</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00028"/>00028 <emphasis role="preprocessor">#include&#32;&lt;stdlib.h&gt;</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00029"/>00029 <emphasis role="preprocessor">#include&#32;&lt;math.h&gt;</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00030"/>00030 <emphasis role="preprocessor">#include&#32;&lt;float.h&gt;</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00031"/>00031 <emphasis role="preprocessor">#include&#32;&lt;limits.h&gt;</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00032"/>00032 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_misc_8h">misc.h</link>&quot;</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00033"/>00033 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_rectangle_8h">rectangle.h</link>&quot;</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00034"/>00034 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_iterator_8h">iterator.h</link>&quot;</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00035"/>00035 
+<anchor xml:id="_iterator_8c_source_1l00036"/>00036 
+<anchor xml:id="_iterator_8c_source_1l00037"/>00037 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00041"/>00041 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">double</emphasis>&#32;inter_low(&#32;<emphasis role="keywordtype">double</emphasis>&#32;x,&#32;<emphasis role="keywordtype">double</emphasis>&#32;x1,&#32;<emphasis role="keywordtype">double</emphasis>&#32;y1,&#32;<emphasis role="keywordtype">double</emphasis>&#32;x2,&#32;<emphasis role="keywordtype">double</emphasis>&#32;y2&#32;)
+<anchor xml:id="_iterator_8c_source_1l00042"/>00042 {
+<anchor xml:id="_iterator_8c_source_1l00043"/>00043 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(x1&#32;&gt;&#32;x2)&#32;||&#32;(x&#32;&lt;&#32;x1)&#32;||&#32;(x&#32;&gt;&#32;x2)&#32;)
+<anchor xml:id="_iterator_8c_source_1l00044"/>00044 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_iterator_8c_source_1l00045"/>00045 &#32;&#32;&#32;&#32;&#32;&#32;fprintf(&#32;stderr,<emphasis role="stringliteral">&quot;inter_low:&#32;x&#32;%g&#32;x1&#32;%g&#32;x2&#32;%g.\n&quot;</emphasis>,&#32;x,&#32;x1,&#32;x2&#32;);
+<anchor xml:id="_iterator_8c_source_1l00046"/>00046 &#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;inter_low:&#32;something&#32;went&#32;wrong!&quot;</emphasis>);
+<anchor xml:id="_iterator_8c_source_1l00047"/>00047 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_iterator_8c_source_1l00048"/>00048 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(<link linkend="_misc_8c_1a49d0391afab7c8872bbbfb86a814360b">double_equal</link>(&#32;x1,&#32;x2&#32;))&#32;&amp;&amp;&#32;(y1&lt;y2)&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;y1;
+<anchor xml:id="_iterator_8c_source_1l00049"/>00049 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(<link linkend="_misc_8c_1a49d0391afab7c8872bbbfb86a814360b">double_equal</link>(&#32;x1,&#32;x2&#32;))&#32;&amp;&amp;&#32;(y1&gt;y2)&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;y2;
+<anchor xml:id="_iterator_8c_source_1l00050"/>00050 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;y1&#32;+&#32;(x-x1)&#32;*&#32;(y2-y1)&#32;/&#32;(x2-x1);
+<anchor xml:id="_iterator_8c_source_1l00051"/>00051 }
+<anchor xml:id="_iterator_8c_source_1l00052"/>00052 
+<anchor xml:id="_iterator_8c_source_1l00053"/>00053 
+<anchor xml:id="_iterator_8c_source_1l00054"/>00054 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00058"/>00058 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">double</emphasis>&#32;inter_hi(&#32;<emphasis role="keywordtype">double</emphasis>&#32;x,&#32;<emphasis role="keywordtype">double</emphasis>&#32;x1,&#32;<emphasis role="keywordtype">double</emphasis>&#32;y1,&#32;<emphasis role="keywordtype">double</emphasis>&#32;x2,&#32;<emphasis role="keywordtype">double</emphasis>&#32;y2&#32;)
+<anchor xml:id="_iterator_8c_source_1l00059"/>00059 {
+<anchor xml:id="_iterator_8c_source_1l00060"/>00060 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(x1&#32;&gt;&#32;x2)&#32;||&#32;(x&#32;&lt;&#32;x1)&#32;||&#32;(x&#32;&gt;&#32;x2)&#32;)
+<anchor xml:id="_iterator_8c_source_1l00061"/>00061 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_iterator_8c_source_1l00062"/>00062 &#32;&#32;&#32;&#32;&#32;&#32;fprintf(stderr,<emphasis role="stringliteral">&quot;inter_hi:&#32;x&#32;%g&#32;x1&#32;%g&#32;x2&#32;%g.\n&quot;</emphasis>,x,x1,x2);
+<anchor xml:id="_iterator_8c_source_1l00063"/>00063 &#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;inter_hi:&#32;something&#32;went&#32;wrong!&quot;</emphasis>);
+<anchor xml:id="_iterator_8c_source_1l00064"/>00064 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_iterator_8c_source_1l00065"/>00065 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(<link linkend="_misc_8c_1a49d0391afab7c8872bbbfb86a814360b">double_equal</link>(&#32;x1,&#32;x2&#32;))&#32;&amp;&amp;&#32;(y1&lt;y2)&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;y2;
+<anchor xml:id="_iterator_8c_source_1l00066"/>00066 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(<link linkend="_misc_8c_1a49d0391afab7c8872bbbfb86a814360b">double_equal</link>(&#32;x1,&#32;x2&#32;))&#32;&amp;&amp;&#32;(y1&gt;y2)&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;y1;
+<anchor xml:id="_iterator_8c_source_1l00067"/>00067 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;y1&#32;+&#32;(x-x1)&#32;*&#32;(y2-y1)&#32;/&#32;(x2-x1);
+<anchor xml:id="_iterator_8c_source_1l00068"/>00068 }
+<anchor xml:id="_iterator_8c_source_1l00069"/>00069 
+<anchor xml:id="_iterator_8c_source_1l00070"/>00070 
+<anchor xml:id="_iterator_8c_source_1l00071"/>00071 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00074"/><link linkend="_iterator_8c_1a85d1536d02765e56ec37da19a90e7fda">00074</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_iterator_8c_1a85d1536d02765e56ec37da19a90e7fda">free_RectIter</link>(&#32;<link linkend="_structRectIter">RectIter</link>&#32;*iter&#32;)
+<anchor xml:id="_iterator_8c_source_1l00075"/>00075 {
+<anchor xml:id="_iterator_8c_source_1l00076"/>00076 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00077"/>00077 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;iter&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;free_RectIter:&#32;NULL&#32;iterator.&quot;</emphasis>);
+<anchor xml:id="_iterator_8c_source_1l00078"/>00078 &#32;&#32;free(&#32;(<emphasis role="keywordtype">void</emphasis>&#32;*)&#32;iter&#32;);
+<anchor xml:id="_iterator_8c_source_1l00079"/>00079 }
+<anchor xml:id="_iterator_8c_source_1l00080"/>00080 
+<anchor xml:id="_iterator_8c_source_1l00081"/>00081 
+<anchor xml:id="_iterator_8c_source_1l00082"/>00082 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00085"/><link linkend="_iterator_8c_1af7da6dcffa5131ae89a09928a735876c">00085</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_iterator_8c_1af7da6dcffa5131ae89a09928a735876c">end_RectIter</link>(&#32;<link linkend="_structRectIter">RectIter</link>&#32;*i&#32;)
+<anchor xml:id="_iterator_8c_source_1l00086"/>00086 {
+<anchor xml:id="_iterator_8c_source_1l00087"/>00087 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00088"/>00088 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;i&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;end_RectIter:&#32;NULL&#32;iterator.&quot;</emphasis>);
+<anchor xml:id="_iterator_8c_source_1l00089"/>00089 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;(<emphasis role="keywordtype">double</emphasis>)(i-&gt;<link linkend="_structRectIter_1a6150e0515f7202e2fb518f7206ed97dc">x</link>)&#32;&gt;&#32;i-&gt;<link linkend="_structRectIter_1a8b14543be0e1e25098de7a0a6f9e8b5c">vx</link>[2];
+<anchor xml:id="_iterator_8c_source_1l00090"/>00090 }
+<anchor xml:id="_iterator_8c_source_1l00091"/>00091 
+<anchor xml:id="_iterator_8c_source_1l00092"/>00092 
+<anchor xml:id="_iterator_8c_source_1l00093"/>00093 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00096"/><link linkend="_iterator_8c_1a4c117221ffe49dc4f9e5f12638a29226">00096</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_iterator_8c_1a4c117221ffe49dc4f9e5f12638a29226">inc_RectIter</link>(&#32;<link linkend="_structRectIter">RectIter</link>&#32;*i&#32;)
+<anchor xml:id="_iterator_8c_source_1l00097"/>00097 {
+<anchor xml:id="_iterator_8c_source_1l00098"/>00098 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00099"/>00099 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;i&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;inc_RectIter:&#32;NULL&#32;iterator.&quot;</emphasis>);
+<anchor xml:id="_iterator_8c_source_1l00100"/>00100 
+<anchor xml:id="_iterator_8c_source_1l00101"/>00101 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(<emphasis role="keywordtype">double</emphasis>)&#32;(i-&gt;<link linkend="_structRectIter_1a6150e0515f7202e2fb518f7206ed97dc">x</link>)&#32;&lt;=&#32;i-&gt;<link linkend="_structRectIter_1a8b14543be0e1e25098de7a0a6f9e8b5c">vx</link>[2]&#32;)&#32;i-&gt;<link linkend="_structRectIter_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>++;
+<anchor xml:id="_iterator_8c_source_1l00102"/>00102 &#32;&#32;<emphasis role="keywordflow">while</emphasis>(&#32;((<emphasis role="keywordtype">double</emphasis>)&#32;(i-&gt;<link linkend="_structRectIter_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>)&#32;&gt;&#32;i-&gt;<link linkend="_structRectIter_1a6daa5b14fcf6b3557da9371acadeab1f">ye</link>)&#32;&amp;&amp;&#32;((<emphasis role="keywordtype">double</emphasis>)&#32;(i-&gt;<link linkend="_structRectIter_1a6150e0515f7202e2fb518f7206ed97dc">x</link>)&#32;&lt;=&#32;i-&gt;<link linkend="_structRectIter_1a8b14543be0e1e25098de7a0a6f9e8b5c">vx</link>[2])&#32;)
+<anchor xml:id="_iterator_8c_source_1l00103"/>00103 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_iterator_8c_source_1l00104"/>00104 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;new&#32;x&#32;*/</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00105"/>00105 &#32;&#32;&#32;&#32;&#32;&#32;i-&gt;<link linkend="_structRectIter_1a6150e0515f7202e2fb518f7206ed97dc">x</link>++;
+<anchor xml:id="_iterator_8c_source_1l00106"/>00106 
+<anchor xml:id="_iterator_8c_source_1l00107"/>00107 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(<emphasis role="keywordtype">double</emphasis>)&#32;(i-&gt;<link linkend="_structRectIter_1a6150e0515f7202e2fb518f7206ed97dc">x</link>)&#32;&gt;&#32;i-&gt;<link linkend="_structRectIter_1a8b14543be0e1e25098de7a0a6f9e8b5c">vx</link>[2]&#32;)&#32;<emphasis role="keywordflow">return</emphasis>;&#32;<emphasis role="comment">/*&#32;end&#32;of&#32;iteration&#32;*/</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00108"/>00108 
+<anchor xml:id="_iterator_8c_source_1l00109"/>00109 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;update&#32;lower&#32;y&#32;limit&#32;for&#32;the&#32;line&#32;*/</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00110"/>00110 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(<emphasis role="keywordtype">double</emphasis>)&#32;i-&gt;<link linkend="_structRectIter_1a6150e0515f7202e2fb518f7206ed97dc">x</link>&#32;&lt;&#32;i-&gt;<link linkend="_structRectIter_1a8b14543be0e1e25098de7a0a6f9e8b5c">vx</link>[3]&#32;)
+<anchor xml:id="_iterator_8c_source_1l00111"/>00111 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;i-&gt;<link linkend="_structRectIter_1a3eefdb12a0278c393fdbb31a52c6d751">ys</link>&#32;=&#32;inter_low((<emphasis role="keywordtype">double</emphasis>)i-&gt;<link linkend="_structRectIter_1a6150e0515f7202e2fb518f7206ed97dc">x</link>,i-&gt;<link linkend="_structRectIter_1a8b14543be0e1e25098de7a0a6f9e8b5c">vx</link>[0],i-&gt;<link linkend="_structRectIter_1a32200ba3dee738c5005f3b12e8a4c5b7">vy</link>[0],i-&gt;<link linkend="_structRectIter_1a8b14543be0e1e25098de7a0a6f9e8b5c">vx</link>[3],i-&gt;<link linkend="_structRectIter_1a32200ba3dee738c5005f3b12e8a4c5b7">vy</link>[3]);
+<anchor xml:id="_iterator_8c_source_1l00112"/>00112 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;
+<anchor xml:id="_iterator_8c_source_1l00113"/>00113 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;i-&gt;<link linkend="_structRectIter_1a3eefdb12a0278c393fdbb31a52c6d751">ys</link>&#32;=&#32;inter_low((<emphasis role="keywordtype">double</emphasis>)i-&gt;<link linkend="_structRectIter_1a6150e0515f7202e2fb518f7206ed97dc">x</link>,i-&gt;<link linkend="_structRectIter_1a8b14543be0e1e25098de7a0a6f9e8b5c">vx</link>[3],i-&gt;<link linkend="_structRectIter_1a32200ba3dee738c5005f3b12e8a4c5b7">vy</link>[3],i-&gt;<link linkend="_structRectIter_1a8b14543be0e1e25098de7a0a6f9e8b5c">vx</link>[2],i-&gt;<link linkend="_structRectIter_1a32200ba3dee738c5005f3b12e8a4c5b7">vy</link>[2]);
+<anchor xml:id="_iterator_8c_source_1l00114"/>00114 
+<anchor xml:id="_iterator_8c_source_1l00115"/>00115 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;update&#32;upper&#32;y&#32;limit&#32;for&#32;the&#32;line&#32;*/</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00116"/>00116 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(<emphasis role="keywordtype">double</emphasis>)i-&gt;<link linkend="_structRectIter_1a6150e0515f7202e2fb518f7206ed97dc">x</link>&#32;&lt;&#32;i-&gt;<link linkend="_structRectIter_1a8b14543be0e1e25098de7a0a6f9e8b5c">vx</link>[1]&#32;)
+<anchor xml:id="_iterator_8c_source_1l00117"/>00117 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;i-&gt;<link linkend="_structRectIter_1a6daa5b14fcf6b3557da9371acadeab1f">ye</link>&#32;=&#32;inter_hi((<emphasis role="keywordtype">double</emphasis>)i-&gt;<link linkend="_structRectIter_1a6150e0515f7202e2fb518f7206ed97dc">x</link>,i-&gt;<link linkend="_structRectIter_1a8b14543be0e1e25098de7a0a6f9e8b5c">vx</link>[0],i-&gt;<link linkend="_structRectIter_1a32200ba3dee738c5005f3b12e8a4c5b7">vy</link>[0],i-&gt;<link linkend="_structRectIter_1a8b14543be0e1e25098de7a0a6f9e8b5c">vx</link>[1],i-&gt;<link linkend="_structRectIter_1a32200ba3dee738c5005f3b12e8a4c5b7">vy</link>[1]);
+<anchor xml:id="_iterator_8c_source_1l00118"/>00118 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;
+<anchor xml:id="_iterator_8c_source_1l00119"/>00119 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;i-&gt;<link linkend="_structRectIter_1a6daa5b14fcf6b3557da9371acadeab1f">ye</link>&#32;=&#32;inter_hi((<emphasis role="keywordtype">double</emphasis>)i-&gt;<link linkend="_structRectIter_1a6150e0515f7202e2fb518f7206ed97dc">x</link>,i-&gt;<link linkend="_structRectIter_1a8b14543be0e1e25098de7a0a6f9e8b5c">vx</link>[1],i-&gt;<link linkend="_structRectIter_1a32200ba3dee738c5005f3b12e8a4c5b7">vy</link>[1],i-&gt;<link linkend="_structRectIter_1a8b14543be0e1e25098de7a0a6f9e8b5c">vx</link>[2],i-&gt;<link linkend="_structRectIter_1a32200ba3dee738c5005f3b12e8a4c5b7">vy</link>[2]);
+<anchor xml:id="_iterator_8c_source_1l00120"/>00120 
+<anchor xml:id="_iterator_8c_source_1l00121"/>00121 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;new&#32;y&#32;*/</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00122"/>00122 &#32;&#32;&#32;&#32;&#32;&#32;i-&gt;<link linkend="_structRectIter_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>&#32;=&#32;(int)&#32;ceil(i-&gt;<link linkend="_structRectIter_1a3eefdb12a0278c393fdbb31a52c6d751">ys</link>);
+<anchor xml:id="_iterator_8c_source_1l00123"/>00123 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_iterator_8c_source_1l00124"/>00124 }
+<anchor xml:id="_iterator_8c_source_1l00125"/>00125 
+<anchor xml:id="_iterator_8c_source_1l00126"/>00126 
+<anchor xml:id="_iterator_8c_source_1l00127"/>00127 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00130"/><link linkend="_iterator_8c_1a10e0fc06c9d67303b68e6b4296dd692e">00130</link> <link linkend="_structRectIter">RectIter</link>&#32;*<link linkend="_iterator_8c_1a10e0fc06c9d67303b68e6b4296dd692e">ini_RectIter</link>(&#32;<link linkend="_structRectangle">Rectangle</link>&#32;*r&#32;)
+<anchor xml:id="_iterator_8c_source_1l00131"/>00131 {
+<anchor xml:id="_iterator_8c_source_1l00132"/>00132 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;vx[4],&#32;vy[4];
+<anchor xml:id="_iterator_8c_source_1l00133"/>00133 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;n,&#32;offset;
+<anchor xml:id="_iterator_8c_source_1l00134"/>00134 &#32;&#32;<link linkend="_structRectIter">RectIter</link>&#32;*i;
+<anchor xml:id="_iterator_8c_source_1l00135"/>00135 
+<anchor xml:id="_iterator_8c_source_1l00136"/>00136 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00137"/>00137 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;r&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;ini_RectIter:&#32;invalid&#32;input&#32;rectangle.&quot;</emphasis>);
+<anchor xml:id="_iterator_8c_source_1l00138"/>00138 
+<anchor xml:id="_iterator_8c_source_1l00139"/>00139 &#32;&#32;i&#32;=&#32;(<link linkend="_structRectIter">RectIter</link>&#32;*)&#32;malloc(&#32;<emphasis role="keyword">sizeof</emphasis>(<link linkend="_structRectIter">RectIter</link>)&#32;);
+<anchor xml:id="_iterator_8c_source_1l00140"/>00140 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;i&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;ini_RectIter:&#32;not&#32;enough&#32;memory.&quot;</emphasis>);
+<anchor xml:id="_iterator_8c_source_1l00141"/>00141 
+<anchor xml:id="_iterator_8c_source_1l00142"/>00142 &#32;&#32;vx[0]&#32;=&#32;r-&gt;<link linkend="_structRectangle_1ac75b803b570527306e1e744bfb7a604f">x1</link>&#32;-&#32;r-&gt;<link linkend="_structRectangle_1a9deb6f886b19d50e714d890c3c268efc">dy</link>&#32;*&#32;r-&gt;<link linkend="_structRectangle_1a54612b6d232db5e1a58ae8b2f26b1df4">wmax</link>;
+<anchor xml:id="_iterator_8c_source_1l00143"/>00143 &#32;&#32;vy[0]&#32;=&#32;r-&gt;<link linkend="_structRectangle_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>&#32;+&#32;r-&gt;<link linkend="_structRectangle_1a229d11aff11a7482259d1296b9b70b8a">dx</link>&#32;*&#32;r-&gt;<link linkend="_structRectangle_1a54612b6d232db5e1a58ae8b2f26b1df4">wmax</link>;
+<anchor xml:id="_iterator_8c_source_1l00144"/>00144 &#32;&#32;vx[1]&#32;=&#32;r-&gt;<link linkend="_structRectangle_1adcf04f5f1964d18b332643939561da0d">x2</link>&#32;-&#32;r-&gt;<link linkend="_structRectangle_1a9deb6f886b19d50e714d890c3c268efc">dy</link>&#32;*&#32;r-&gt;<link linkend="_structRectangle_1a54612b6d232db5e1a58ae8b2f26b1df4">wmax</link>;
+<anchor xml:id="_iterator_8c_source_1l00145"/>00145 &#32;&#32;vy[1]&#32;=&#32;r-&gt;<link linkend="_structRectangle_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>&#32;+&#32;r-&gt;<link linkend="_structRectangle_1a229d11aff11a7482259d1296b9b70b8a">dx</link>&#32;*&#32;r-&gt;<link linkend="_structRectangle_1a54612b6d232db5e1a58ae8b2f26b1df4">wmax</link>;
+<anchor xml:id="_iterator_8c_source_1l00146"/>00146 &#32;&#32;vx[2]&#32;=&#32;r-&gt;<link linkend="_structRectangle_1adcf04f5f1964d18b332643939561da0d">x2</link>&#32;-&#32;r-&gt;<link linkend="_structRectangle_1a9deb6f886b19d50e714d890c3c268efc">dy</link>&#32;*&#32;r-&gt;<link linkend="_structRectangle_1ad1515daed95ba43fd919fddcf3144d1a">wmin</link>;
+<anchor xml:id="_iterator_8c_source_1l00147"/>00147 &#32;&#32;vy[2]&#32;=&#32;r-&gt;<link linkend="_structRectangle_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>&#32;+&#32;r-&gt;<link linkend="_structRectangle_1a229d11aff11a7482259d1296b9b70b8a">dx</link>&#32;*&#32;r-&gt;<link linkend="_structRectangle_1ad1515daed95ba43fd919fddcf3144d1a">wmin</link>;
+<anchor xml:id="_iterator_8c_source_1l00148"/>00148 &#32;&#32;vx[3]&#32;=&#32;r-&gt;<link linkend="_structRectangle_1ac75b803b570527306e1e744bfb7a604f">x1</link>&#32;-&#32;r-&gt;<link linkend="_structRectangle_1a9deb6f886b19d50e714d890c3c268efc">dy</link>&#32;*&#32;r-&gt;<link linkend="_structRectangle_1ad1515daed95ba43fd919fddcf3144d1a">wmin</link>;
+<anchor xml:id="_iterator_8c_source_1l00149"/>00149 &#32;&#32;vy[3]&#32;=&#32;r-&gt;<link linkend="_structRectangle_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>&#32;+&#32;r-&gt;<link linkend="_structRectangle_1a229d11aff11a7482259d1296b9b70b8a">dx</link>&#32;*&#32;r-&gt;<link linkend="_structRectangle_1ad1515daed95ba43fd919fddcf3144d1a">wmin</link>;
+<anchor xml:id="_iterator_8c_source_1l00150"/>00150 
+<anchor xml:id="_iterator_8c_source_1l00151"/>00151 &#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;&#32;&#32;&#32;&#32;(&#32;(r-&gt;<link linkend="_structRectangle_1ac75b803b570527306e1e744bfb7a604f">x1</link>&#32;&lt;&#32;&#32;r-&gt;<link linkend="_structRectangle_1adcf04f5f1964d18b332643939561da0d">x2</link>)&#32;&amp;&amp;&#32;(r-&gt;<link linkend="_structRectangle_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>&#32;&lt;=&#32;r-&gt;<link linkend="_structRectangle_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>)&#32;)&#32;offset&#32;=&#32;0;
+<anchor xml:id="_iterator_8c_source_1l00152"/>00152 &#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(r-&gt;<link linkend="_structRectangle_1ac75b803b570527306e1e744bfb7a604f">x1</link>&#32;&gt;=&#32;r-&gt;<link linkend="_structRectangle_1adcf04f5f1964d18b332643939561da0d">x2</link>)&#32;&amp;&amp;&#32;(r-&gt;<link linkend="_structRectangle_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>&#32;&lt;&#32;&#32;r-&gt;<link linkend="_structRectangle_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>)&#32;)&#32;offset&#32;=&#32;1;
+<anchor xml:id="_iterator_8c_source_1l00153"/>00153 &#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(r-&gt;<link linkend="_structRectangle_1ac75b803b570527306e1e744bfb7a604f">x1</link>&#32;&gt;&#32;&#32;r-&gt;<link linkend="_structRectangle_1adcf04f5f1964d18b332643939561da0d">x2</link>)&#32;&amp;&amp;&#32;(r-&gt;<link linkend="_structRectangle_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>&#32;&gt;=&#32;r-&gt;<link linkend="_structRectangle_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>)&#32;)&#32;offset&#32;=&#32;2;
+<anchor xml:id="_iterator_8c_source_1l00154"/>00154 &#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;offset&#32;=&#32;3;
+<anchor xml:id="_iterator_8c_source_1l00155"/>00155 
+<anchor xml:id="_iterator_8c_source_1l00156"/>00156 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;n=0;&#32;n&lt;4;&#32;n++&#32;)
+<anchor xml:id="_iterator_8c_source_1l00157"/>00157 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_iterator_8c_source_1l00158"/>00158 &#32;&#32;&#32;&#32;&#32;&#32;i-&gt;<link linkend="_structRectIter_1a8b14543be0e1e25098de7a0a6f9e8b5c">vx</link>[n]&#32;=&#32;vx[&#32;(offset+n)&#32;%&#32;4&#32;];
+<anchor xml:id="_iterator_8c_source_1l00159"/>00159 &#32;&#32;&#32;&#32;&#32;&#32;i-&gt;<link linkend="_structRectIter_1a32200ba3dee738c5005f3b12e8a4c5b7">vy</link>[n]&#32;=&#32;vy[&#32;(offset+n)&#32;%&#32;4&#32;];
+<anchor xml:id="_iterator_8c_source_1l00160"/>00160 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_iterator_8c_source_1l00161"/>00161 
+<anchor xml:id="_iterator_8c_source_1l00162"/>00162 &#32;&#32;<emphasis role="comment">/*&#32;starting&#32;point&#32;*/</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00163"/>00163 &#32;&#32;i-&gt;<link linkend="_structRectIter_1a6150e0515f7202e2fb518f7206ed97dc">x</link>&#32;=&#32;(int)&#32;ceil(i-&gt;<link linkend="_structRectIter_1a8b14543be0e1e25098de7a0a6f9e8b5c">vx</link>[0])&#32;-&#32;1;
+<anchor xml:id="_iterator_8c_source_1l00164"/>00164 &#32;&#32;i-&gt;<link linkend="_structRectIter_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>&#32;=&#32;(int)&#32;ceil(i-&gt;<link linkend="_structRectIter_1a32200ba3dee738c5005f3b12e8a4c5b7">vy</link>[0]);
+<anchor xml:id="_iterator_8c_source_1l00165"/>00165 &#32;&#32;i-&gt;<link linkend="_structRectIter_1a3eefdb12a0278c393fdbb31a52c6d751">ys</link>&#32;=&#32;i-&gt;<link linkend="_structRectIter_1a6daa5b14fcf6b3557da9371acadeab1f">ye</link>&#32;=&#32;-DBL_MAX;
+<anchor xml:id="_iterator_8c_source_1l00166"/>00166 
+<anchor xml:id="_iterator_8c_source_1l00167"/>00167 &#32;&#32;<emphasis role="comment">/*&#32;advance&#32;to&#32;the&#32;first&#32;point&#32;*/</emphasis>
+<anchor xml:id="_iterator_8c_source_1l00168"/>00168 &#32;&#32;<link linkend="_iterator_8c_1a4c117221ffe49dc4f9e5f12638a29226">inc_RectIter</link>(i);
+<anchor xml:id="_iterator_8c_source_1l00169"/>00169 
+<anchor xml:id="_iterator_8c_source_1l00170"/>00170 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;i;
+<anchor xml:id="_iterator_8c_source_1l00171"/>00171 }
+</programlisting></section>

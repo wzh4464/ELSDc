@@ -1,0 +1,393 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_ellipse__fit_8c_source" xml:lang="en-US">
+<title>ellipse_fit.c</title>
+<indexterm><primary>src/ellipse_fit.c</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="_ellipse__fit_8c_source_1l00001"/>00001 <emphasis role="comment">/*------------------------------------------------------------------------------</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00002"/>00002 <emphasis role="comment"></emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00003"/>00003 <emphasis role="comment">&#32;&#32;Copyright&#32;(c)&#32;2012-2014&#32;viorica&#32;patraucean&#32;(vpatrauc@gmail.com)</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00004"/>00004 <emphasis role="comment">&#32;&#32;</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00005"/>00005 <emphasis role="comment">&#32;&#32;This&#32;program&#32;is&#32;free&#32;software:&#32;you&#32;can&#32;redistribute&#32;it&#32;and/or&#32;modify</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00006"/>00006 <emphasis role="comment">&#32;&#32;it&#32;under&#32;the&#32;terms&#32;of&#32;the&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License&#32;as</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00007"/>00007 <emphasis role="comment">&#32;&#32;published&#32;by&#32;the&#32;Free&#32;Software&#32;Foundation,&#32;either&#32;version&#32;3&#32;of&#32;the</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00008"/>00008 <emphasis role="comment">&#32;&#32;License,&#32;or&#32;(at&#32;your&#32;option)&#32;any&#32;later&#32;version.</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00009"/>00009 <emphasis role="comment"></emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00010"/>00010 <emphasis role="comment">&#32;&#32;This&#32;program&#32;is&#32;distributed&#32;in&#32;the&#32;hope&#32;that&#32;it&#32;will&#32;be&#32;useful,</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00011"/>00011 <emphasis role="comment">&#32;&#32;but&#32;WITHOUT&#32;ANY&#32;WARRANTY;&#32;without&#32;even&#32;the&#32;implied&#32;warranty&#32;of</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00012"/>00012 <emphasis role="comment">&#32;&#32;MERCHANTABILITY&#32;or&#32;FITNESS&#32;FOR&#32;A&#32;PARTICULAR&#32;PURPOSE.&#32;See&#32;the</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00013"/>00013 <emphasis role="comment">&#32;&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License&#32;for&#32;more&#32;details.</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00014"/>00014 <emphasis role="comment"></emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00015"/>00015 <emphasis role="comment">&#32;&#32;You&#32;should&#32;have&#32;received&#32;a&#32;copy&#32;of&#32;the&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00016"/>00016 <emphasis role="comment">&#32;&#32;along&#32;with&#32;this&#32;program.&#32;If&#32;not,&#32;see&#32;&lt;http://www.gnu.org/licenses/&gt;.</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00017"/>00017 <emphasis role="comment"></emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00018"/>00018 <emphasis role="comment"></emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00019"/>00019 <emphasis role="comment">&#32;&#32;ellipse_fit.c&#32;-&#32;This&#32;file&#32;belongs&#32;to&#32;ELSDc&#32;project&#32;(Ellipse&#32;and&#32;Line&#32;Segment&#32;</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00020"/>00020 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Detector&#32;with&#32;continuous&#32;validation).</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00021"/>00021 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;-&#32;It&#32;contains&#32;functions&#32;to&#32;normalize&#32;a&#32;set&#32;of&#32;points&#32;and&#32;to&#32;fit&#32;</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00022"/>00022 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;an&#32;ellipse&#32;or&#32;a&#32;circle&#32;to&#32;these&#32;points.</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00023"/>00023 <emphasis role="comment"></emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00024"/>00024 <emphasis role="comment">------------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00025"/>00025 
+<anchor xml:id="_ellipse__fit_8c_source_1l00026"/>00026 
+<anchor xml:id="_ellipse__fit_8c_source_1l00027"/>00027 <emphasis role="preprocessor">#include&#32;&lt;stdio.h&gt;</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00028"/>00028 <emphasis role="preprocessor">#include&#32;&lt;stdlib.h&gt;</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00029"/>00029 <emphasis role="preprocessor">#include&#32;&lt;math.h&gt;</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00030"/>00030 <emphasis role="preprocessor">#include&#32;&lt;float.h&gt;</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00031"/>00031 <emphasis role="preprocessor">#include&#32;&lt;stddef.h&gt;</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00032"/>00032 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_misc_8h">misc.h</link>&quot;</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00033"/>00033 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_lapack__wrapper_8h">lapack_wrapper.h</link>&quot;</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00034"/>00034 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_ellipse__fit_8h">ellipse_fit.h</link>&quot;</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00035"/>00035 
+<anchor xml:id="_ellipse__fit_8c_source_1l00036"/>00036 
+<anchor xml:id="_ellipse__fit_8c_source_1l00037"/>00037 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00041"/>00041 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;ellipse2param(&#32;<emphasis role="keywordtype">double</emphasis>&#32;*p,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*param)
+<anchor xml:id="_ellipse__fit_8c_source_1l00042"/>00042 {
+<anchor xml:id="_ellipse__fit_8c_source_1l00043"/>00043 &#32;&#32;<emphasis role="comment">/*&#32;p&#32;=&#32;[&#32;a,&#32;&#32;&#32;&#32;&#32;1/2*b,&#32;1/2*d,&#32;&#32;&#32;</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00044"/>00044 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;1/2*b,&#32;&#32;&#32;&#32;&#32;c,&#32;1/2*e,&#32;&#32;</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00045"/>00045 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;1/2*d,&#32;1/2*e,&#32;f&#32;&#32;&#32;&#32;&#32;];&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00046"/>00046 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;a,&#32;b,&#32;c,&#32;d,&#32;e,&#32;f;
+<anchor xml:id="_ellipse__fit_8c_source_1l00047"/>00047 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;thetarad,&#32;cost,&#32;sint,&#32;cos_squared,&#32;sin_squared,&#32;cos_sin;
+<anchor xml:id="_ellipse__fit_8c_source_1l00048"/>00048 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;Ao,&#32;Au,&#32;Av,&#32;Auu,&#32;Avv;
+<anchor xml:id="_ellipse__fit_8c_source_1l00049"/>00049 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;tuCentre,&#32;tvCentre,&#32;wCentre,&#32;uCentre,&#32;vCentre,&#32;Ru,&#32;Rv;
+<anchor xml:id="_ellipse__fit_8c_source_1l00050"/>00050 
+<anchor xml:id="_ellipse__fit_8c_source_1l00051"/>00051 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00052"/>00052 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;p&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;ellipse2param:&#32;null&#32;input&#32;ellipse&#32;matrix.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00053"/>00053 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;param&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;ellipse2param:&#32;output&#32;&apos;param&apos;&#32;should&#32;be&#32;non-null&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00054"/>00054 
+<anchor xml:id="_ellipse__fit_8c_source_1l00055"/>00055 &#32;&#32;a&#32;=&#32;&#32;&#32;p[0];
+<anchor xml:id="_ellipse__fit_8c_source_1l00056"/>00056 &#32;&#32;b&#32;=&#32;2*p[1];
+<anchor xml:id="_ellipse__fit_8c_source_1l00057"/>00057 &#32;&#32;c&#32;=&#32;&#32;&#32;p[4];
+<anchor xml:id="_ellipse__fit_8c_source_1l00058"/>00058 &#32;&#32;d&#32;=&#32;2*p[2];
+<anchor xml:id="_ellipse__fit_8c_source_1l00059"/>00059 &#32;&#32;e&#32;=&#32;2*p[5];
+<anchor xml:id="_ellipse__fit_8c_source_1l00060"/>00060 &#32;&#32;f&#32;=&#32;&#32;&#32;p[8];&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00061"/>00061 
+<anchor xml:id="_ellipse__fit_8c_source_1l00062"/>00062 &#32;&#32;thetarad&#32;=&#32;0.5*atan2(b,a-c);&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00063"/>00063 &#32;&#32;cost&#32;=&#32;cos(thetarad);&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00064"/>00064 &#32;&#32;sint&#32;=&#32;sin(thetarad);
+<anchor xml:id="_ellipse__fit_8c_source_1l00065"/>00065 &#32;&#32;sin_squared&#32;=&#32;sint&#32;*&#32;sint;
+<anchor xml:id="_ellipse__fit_8c_source_1l00066"/>00066 &#32;&#32;cos_squared&#32;=&#32;cost&#32;*&#32;cost;
+<anchor xml:id="_ellipse__fit_8c_source_1l00067"/>00067 &#32;&#32;cos_sin&#32;=&#32;sint&#32;*&#32;cost;
+<anchor xml:id="_ellipse__fit_8c_source_1l00068"/>00068 &#32;&#32;Ao&#32;&#32;=&#32;&#32;f;
+<anchor xml:id="_ellipse__fit_8c_source_1l00069"/>00069 &#32;&#32;Au&#32;&#32;=&#32;&#32;d*cost&#32;+&#32;e*sint;
+<anchor xml:id="_ellipse__fit_8c_source_1l00070"/>00070 &#32;&#32;Av&#32;&#32;=&#32;-d*sint&#32;+&#32;e*cost;
+<anchor xml:id="_ellipse__fit_8c_source_1l00071"/>00071 &#32;&#32;Auu&#32;=&#32;a*cos_squared&#32;+&#32;c*sin_squared&#32;+&#32;b*cos_sin;
+<anchor xml:id="_ellipse__fit_8c_source_1l00072"/>00072 &#32;&#32;Avv&#32;=&#32;a*sin_squared&#32;+&#32;c*cos_squared&#32;-&#32;b*cos_sin;
+<anchor xml:id="_ellipse__fit_8c_source_1l00073"/>00073 
+<anchor xml:id="_ellipse__fit_8c_source_1l00074"/>00074 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(Auu&#32;==&#32;0)&#32;||&#32;(Avv==0)&#32;)
+<anchor xml:id="_ellipse__fit_8c_source_1l00075"/>00075 &#32;&#32;&#32;&#32;{&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00076"/>00076 &#32;&#32;&#32;&#32;&#32;&#32;param[0]&#32;=&#32;0;
+<anchor xml:id="_ellipse__fit_8c_source_1l00077"/>00077 &#32;&#32;&#32;&#32;&#32;&#32;param[1]&#32;=&#32;0;
+<anchor xml:id="_ellipse__fit_8c_source_1l00078"/>00078 &#32;&#32;&#32;&#32;&#32;&#32;param[2]&#32;=&#32;0;
+<anchor xml:id="_ellipse__fit_8c_source_1l00079"/>00079 &#32;&#32;&#32;&#32;&#32;&#32;param[3]&#32;=&#32;0;
+<anchor xml:id="_ellipse__fit_8c_source_1l00080"/>00080 &#32;&#32;&#32;&#32;&#32;&#32;param[4]&#32;=&#32;0;
+<anchor xml:id="_ellipse__fit_8c_source_1l00081"/>00081 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_ellipse__fit_8c_source_1l00082"/>00082 &#32;&#32;<emphasis role="keywordflow">else</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00083"/>00083 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_ellipse__fit_8c_source_1l00084"/>00084 &#32;&#32;&#32;&#32;&#32;&#32;tuCentre&#32;=&#32;-Au&#32;/&#32;(2.*Auu);
+<anchor xml:id="_ellipse__fit_8c_source_1l00085"/>00085 &#32;&#32;&#32;&#32;&#32;&#32;tvCentre&#32;=&#32;-Av&#32;/&#32;(2.*Avv);
+<anchor xml:id="_ellipse__fit_8c_source_1l00086"/>00086 
+<anchor xml:id="_ellipse__fit_8c_source_1l00087"/>00087 &#32;&#32;&#32;&#32;&#32;&#32;wCentre&#32;&#32;=&#32;&#32;Ao-Auu*tuCentre*tuCentre&#32;-&#32;Avv*tvCentre&#32;*&#32;tvCentre;
+<anchor xml:id="_ellipse__fit_8c_source_1l00088"/>00088 &#32;&#32;&#32;&#32;&#32;&#32;uCentre&#32;&#32;=&#32;&#32;tuCentre*cost&#32;-&#32;tvCentre*sint;
+<anchor xml:id="_ellipse__fit_8c_source_1l00089"/>00089 &#32;&#32;&#32;&#32;&#32;&#32;vCentre&#32;&#32;=&#32;&#32;tuCentre*sint&#32;+&#32;tvCentre*cost;
+<anchor xml:id="_ellipse__fit_8c_source_1l00090"/>00090 
+<anchor xml:id="_ellipse__fit_8c_source_1l00091"/>00091 &#32;&#32;&#32;&#32;&#32;&#32;Ru&#32;=&#32;-wCentre&#32;/&#32;Auu;
+<anchor xml:id="_ellipse__fit_8c_source_1l00092"/>00092 &#32;&#32;&#32;&#32;&#32;&#32;Rv&#32;=&#32;-wCentre&#32;/&#32;Avv;
+<anchor xml:id="_ellipse__fit_8c_source_1l00093"/>00093 
+<anchor xml:id="_ellipse__fit_8c_source_1l00094"/>00094 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;Ru&gt;0&#32;)&#32;Ru&#32;=&#32;&#32;pow(&#32;Ru,0.5);
+<anchor xml:id="_ellipse__fit_8c_source_1l00095"/>00095 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;&#32;&#32;&#32;&#32;&#32;&#32;Ru&#32;=&#32;-pow(-Ru,0.5);
+<anchor xml:id="_ellipse__fit_8c_source_1l00096"/>00096 
+<anchor xml:id="_ellipse__fit_8c_source_1l00097"/>00097 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;Rv&gt;0&#32;)&#32;Rv&#32;=&#32;&#32;pow(&#32;Rv,0.5);
+<anchor xml:id="_ellipse__fit_8c_source_1l00098"/>00098 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;&#32;&#32;&#32;&#32;&#32;&#32;Rv&#32;=&#32;-pow(-Rv,0.5);
+<anchor xml:id="_ellipse__fit_8c_source_1l00099"/>00099 
+<anchor xml:id="_ellipse__fit_8c_source_1l00100"/>00100 &#32;&#32;&#32;&#32;&#32;&#32;param[0]&#32;=&#32;uCentre;
+<anchor xml:id="_ellipse__fit_8c_source_1l00101"/>00101 &#32;&#32;&#32;&#32;&#32;&#32;param[1]&#32;=&#32;vCentre;
+<anchor xml:id="_ellipse__fit_8c_source_1l00102"/>00102 &#32;&#32;&#32;&#32;&#32;&#32;param[2]&#32;=&#32;Ru;
+<anchor xml:id="_ellipse__fit_8c_source_1l00103"/>00103 &#32;&#32;&#32;&#32;&#32;&#32;param[3]&#32;=&#32;Rv;
+<anchor xml:id="_ellipse__fit_8c_source_1l00104"/>00104 &#32;&#32;&#32;&#32;&#32;&#32;param[4]&#32;=&#32;thetarad;
+<anchor xml:id="_ellipse__fit_8c_source_1l00105"/>00105 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_ellipse__fit_8c_source_1l00106"/>00106 }
+<anchor xml:id="_ellipse__fit_8c_source_1l00107"/>00107 
+<anchor xml:id="_ellipse__fit_8c_source_1l00108"/>00108 
+<anchor xml:id="_ellipse__fit_8c_source_1l00109"/>00109 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00116"/>00116 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;vgg_conditioner_from_points(&#32;<emphasis role="keywordtype">double</emphasis>&#32;*T,&#32;<link linkend="_structPoint">Point</link>&#32;*reg,&#32;<emphasis role="keywordtype">int</emphasis>&#32;reg_size&#32;)
+<anchor xml:id="_ellipse__fit_8c_source_1l00117"/>00117 {
+<anchor xml:id="_ellipse__fit_8c_source_1l00118"/>00118 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;mx&#32;=&#32;0.0,&#32;my&#32;=&#32;0.0;
+<anchor xml:id="_ellipse__fit_8c_source_1l00119"/>00119 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;qmean&#32;=&#32;0.0,&#32;Qt&#32;=&#32;0.0,&#32;val;
+<anchor xml:id="_ellipse__fit_8c_source_1l00120"/>00120 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;i;
+<anchor xml:id="_ellipse__fit_8c_source_1l00121"/>00121 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00122"/>00122 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;reg&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;vgg_conditioner_from_points:&#32;invalid&#32;points&#32;list.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00123"/>00123 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;reg_size&#32;&lt;=&#32;0&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;vgg_conditioner_from_points:&#32;invalid&#32;size&#32;list.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00124"/>00124 &#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00125"/>00125 &#32;&#32;<emphasis role="comment">/*&#32;compute&#32;mean&#32;point&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00126"/>00126 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=0;&#32;i&lt;reg_size;&#32;i++&#32;)
+<anchor xml:id="_ellipse__fit_8c_source_1l00127"/>00127 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_ellipse__fit_8c_source_1l00128"/>00128 &#32;&#32;&#32;&#32;&#32;&#32;mx&#32;+=&#32;reg[i].<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>;
+<anchor xml:id="_ellipse__fit_8c_source_1l00129"/>00129 &#32;&#32;&#32;&#32;&#32;&#32;my&#32;+=&#32;reg[i].<link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>;
+<anchor xml:id="_ellipse__fit_8c_source_1l00130"/>00130 &#32;&#32;&#32;&#32;}&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00131"/>00131 &#32;&#32;mx&#32;/=&#32;(double)reg_size;&#32;my&#32;/=&#32;(double)reg_size;
+<anchor xml:id="_ellipse__fit_8c_source_1l00132"/>00132 
+<anchor xml:id="_ellipse__fit_8c_source_1l00133"/>00133 &#32;&#32;<emphasis role="comment">/*&#32;compute&#32;mean&#32;variance&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00134"/>00134 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=0;&#32;i&lt;reg_size;&#32;i++&#32;)
+<anchor xml:id="_ellipse__fit_8c_source_1l00135"/>00135 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_ellipse__fit_8c_source_1l00136"/>00136 &#32;&#32;&#32;&#32;&#32;&#32;val&#32;=&#32;(reg[i].<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>&#32;-&#32;mx)*(reg[i].x&#32;-&#32;mx)+(reg[i].<link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>&#32;-&#32;my)*(reg[i].y&#32;-&#32;my);
+<anchor xml:id="_ellipse__fit_8c_source_1l00137"/>00137 &#32;&#32;&#32;&#32;&#32;&#32;Qt&#32;+=&#32;sqrt(val);
+<anchor xml:id="_ellipse__fit_8c_source_1l00138"/>00138 &#32;&#32;&#32;&#32;}&#32;&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00139"/>00139 &#32;&#32;qmean&#32;=&#32;Qt/(double)reg_size;&#32;&#32;&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00140"/>00140 &#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00141"/>00141 &#32;&#32;<emphasis role="comment">/*&#32;build&#32;normalization&#32;matrix&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00142"/>00142 &#32;&#32;val&#32;=&#32;<link linkend="_misc_8h_1a514396dd60fa0621c83072091fb2a0cd">SQRT2</link>/qmean;
+<anchor xml:id="_ellipse__fit_8c_source_1l00143"/>00143 &#32;&#32;T[1]&#32;=&#32;T[3]&#32;=&#32;0;
+<anchor xml:id="_ellipse__fit_8c_source_1l00144"/>00144 &#32;&#32;T[0]&#32;=&#32;T[4]&#32;=&#32;val;
+<anchor xml:id="_ellipse__fit_8c_source_1l00145"/>00145 &#32;&#32;T[2]&#32;=&#32;-val&#32;*&#32;mx;
+<anchor xml:id="_ellipse__fit_8c_source_1l00146"/>00146 &#32;&#32;T[5]&#32;=&#32;-val&#32;*&#32;my;
+<anchor xml:id="_ellipse__fit_8c_source_1l00147"/>00147 &#32;&#32;T[6]&#32;=&#32;T[7]&#32;=&#32;0;
+<anchor xml:id="_ellipse__fit_8c_source_1l00148"/>00148 &#32;&#32;T[8]&#32;=&#32;1;&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00149"/>00149 }&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00150"/>00150 
+<anchor xml:id="_ellipse__fit_8c_source_1l00151"/>00151 
+<anchor xml:id="_ellipse__fit_8c_source_1l00152"/>00152 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00155"/>00155 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;antisym(&#32;<emphasis role="keywordtype">double</emphasis>&#32;*u,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*A&#32;)
+<anchor xml:id="_ellipse__fit_8c_source_1l00156"/>00156 {
+<anchor xml:id="_ellipse__fit_8c_source_1l00157"/>00157 &#32;&#32;A[0]&#32;=&#32;A[4]&#32;=&#32;A[8]&#32;=&#32;0;
+<anchor xml:id="_ellipse__fit_8c_source_1l00158"/>00158 &#32;&#32;A[1]&#32;=&#32;-u[2];
+<anchor xml:id="_ellipse__fit_8c_source_1l00159"/>00159 &#32;&#32;A[2]&#32;=&#32;&#32;u[1];
+<anchor xml:id="_ellipse__fit_8c_source_1l00160"/>00160 &#32;&#32;A[3]&#32;=&#32;&#32;u[2];
+<anchor xml:id="_ellipse__fit_8c_source_1l00161"/>00161 &#32;&#32;A[5]&#32;=&#32;-u[0];
+<anchor xml:id="_ellipse__fit_8c_source_1l00162"/>00162 &#32;&#32;A[6]&#32;=&#32;-u[1];
+<anchor xml:id="_ellipse__fit_8c_source_1l00163"/>00163 &#32;&#32;A[7]&#32;=&#32;&#32;u[0];
+<anchor xml:id="_ellipse__fit_8c_source_1l00164"/>00164 }&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00165"/>00165 
+<anchor xml:id="_ellipse__fit_8c_source_1l00166"/>00166 
+<anchor xml:id="_ellipse__fit_8c_source_1l00167"/>00167 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00171"/>00171 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;fit_equations(&#32;<link linkend="_structImageDouble">PImageDouble</link>&#32;gradx,&#32;<link linkend="_structImageDouble">PImageDouble</link>&#32;grady,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*vgg,&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00172"/>00172 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_structPoint">Point</link>&#32;*reg,&#32;<emphasis role="keywordtype">int</emphasis>&#32;reg_size,&#32;<emphasis role="keywordtype">double</emphasis>&#32;**buff,&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00173"/>00173 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;*size_buff_max&#32;)
+<anchor xml:id="_ellipse__fit_8c_source_1l00174"/>00174 {
+<anchor xml:id="_ellipse__fit_8c_source_1l00175"/>00175 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;i,j;
+<anchor xml:id="_ellipse__fit_8c_source_1l00176"/>00176 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;K[27];
+<anchor xml:id="_ellipse__fit_8c_source_1l00177"/>00177 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;asym[9];
+<anchor xml:id="_ellipse__fit_8c_source_1l00178"/>00178 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;idx;
+<anchor xml:id="_ellipse__fit_8c_source_1l00179"/>00179 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;crosspr[3];&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00180"/>00180 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;pnormx,&#32;pnormy,&#32;dirnormx,&#32;dirnormy;
+<anchor xml:id="_ellipse__fit_8c_source_1l00181"/>00181 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;addr;
+<anchor xml:id="_ellipse__fit_8c_source_1l00182"/>00182 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00183"/>00183 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(gradx&#32;==&#32;NULL)&#32;||&#32;(gradx-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>&#32;==&#32;NULL)&#32;)
+<anchor xml:id="_ellipse__fit_8c_source_1l00184"/>00184 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;fit_equations:&#32;invalid&#32;input&#32;&apos;gradx&apos;&#32;image.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00185"/>00185 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(grady&#32;==&#32;NULL)&#32;||&#32;(grady-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>&#32;==&#32;NULL)&#32;)
+<anchor xml:id="_ellipse__fit_8c_source_1l00186"/>00186 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;fit_equations:&#32;invalid&#32;input&#32;&apos;grady&apos;&#32;image.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00187"/>00187 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;vgg&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;fit_equations:&#32;invalid&#32;normalization&#32;matrix.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00188"/>00188 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;reg&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;fit_equations:&#32;invalid&#32;region.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00189"/>00189 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;reg_size&lt;=0&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;fit_equations:&#32;invalid&#32;region&#32;size.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00190"/>00190 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;*buff&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;fit_equations:&#32;invalid&#32;buffer.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00191"/>00191 
+<anchor xml:id="_ellipse__fit_8c_source_1l00192"/>00192 &#32;&#32;<emphasis role="comment">/*&#32;if&#32;buffer&#32;too&#32;small,&#32;allocate&#32;twice&#32;the&#32;memory&#32;required&#32;at&#32;this&#32;step&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00193"/>00193 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;reg_size&#32;*&#32;24&#32;&gt;&#32;*size_buff_max&#32;)
+<anchor xml:id="_ellipse__fit_8c_source_1l00194"/>00194 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_ellipse__fit_8c_source_1l00195"/>00195 &#32;&#32;&#32;&#32;&#32;&#32;*buff&#32;=&#32;(<emphasis role="keywordtype">double</emphasis>*)&#32;realloc(&#32;*buff,&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00196"/>00196 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">sizeof</emphasis>(<emphasis role="keywordtype">double</emphasis>)&#32;*&#32;2&#32;*&#32;reg_size&#32;*&#32;24&#32;);&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00197"/>00197 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;*buff&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;fit_equations:&#32;not&#32;enough&#32;memory.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00198"/>00198 &#32;&#32;&#32;&#32;&#32;&#32;*size_buff_max&#32;=&#32;2&#32;*&#32;reg_size&#32;*&#32;24;
+<anchor xml:id="_ellipse__fit_8c_source_1l00199"/>00199 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_ellipse__fit_8c_source_1l00200"/>00200 
+<anchor xml:id="_ellipse__fit_8c_source_1l00201"/>00201 
+<anchor xml:id="_ellipse__fit_8c_source_1l00202"/>00202 &#32;&#32;<emphasis role="comment">/*&#32;compute&#32;normalisation&#32;matrix&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00203"/>00203 &#32;&#32;vgg_conditioner_from_points(&#32;vgg,&#32;reg,&#32;reg_size&#32;);
+<anchor xml:id="_ellipse__fit_8c_source_1l00204"/>00204 
+<anchor xml:id="_ellipse__fit_8c_source_1l00205"/>00205 &#32;&#32;<emphasis role="comment">/*&#32;compute&#32;equation&#32;system&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00206"/>00206 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=0;&#32;i&lt;reg_size;&#32;i++)
+<anchor xml:id="_ellipse__fit_8c_source_1l00207"/>00207 &#32;&#32;&#32;&#32;{&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00208"/>00208 &#32;&#32;&#32;&#32;&#32;&#32;idx&#32;=&#32;i*4*6;
+<anchor xml:id="_ellipse__fit_8c_source_1l00209"/>00209 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;normalise&#32;point&#32;(pnormx,pnormy)&#32;=&#32;VGG*(x,y)&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00210"/>00210 &#32;&#32;&#32;&#32;&#32;&#32;pnormx&#32;=&#32;vgg[0]*reg[i].<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>&#32;+&#32;vgg[1]*reg[i].<link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>&#32;+&#32;vgg[2];
+<anchor xml:id="_ellipse__fit_8c_source_1l00211"/>00211 &#32;&#32;&#32;&#32;&#32;&#32;pnormy&#32;=&#32;vgg[3]*reg[i].<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>&#32;+&#32;vgg[4]*reg[i].<link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>&#32;+&#32;vgg[5];
+<anchor xml:id="_ellipse__fit_8c_source_1l00212"/>00212 &#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00213"/>00213 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;normalise&#32;gradient&#32;direction&#32;(dirnormx,dirnormy)&#32;=&#32;VGG*(dx,dy)&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00214"/>00214 &#32;&#32;&#32;&#32;&#32;&#32;addr&#32;=&#32;reg[i].<link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>&#32;*&#32;gradx-&gt;<link linkend="_structImageDouble_1aa4b0263c533c5ce471067bd5ede24477">xsize</link>&#32;+&#32;reg[i].<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>;
+<anchor xml:id="_ellipse__fit_8c_source_1l00215"/>00215 &#32;&#32;&#32;&#32;&#32;&#32;dirnormx&#32;=&#32;-vgg[0]&#32;*&#32;grady-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>[addr]&#32;+&#32;vgg[1]&#32;*&#32;gradx-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>[addr];
+<anchor xml:id="_ellipse__fit_8c_source_1l00216"/>00216 &#32;&#32;&#32;&#32;&#32;&#32;dirnormy&#32;=&#32;-vgg[3]&#32;*&#32;grady-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>[addr]&#32;+&#32;vgg[4]&#32;*&#32;gradx-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>[addr];
+<anchor xml:id="_ellipse__fit_8c_source_1l00217"/>00217 
+<anchor xml:id="_ellipse__fit_8c_source_1l00218"/>00218 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;cross&#32;product&#32;(pnormx,pnormy)&#32;x&#32;(dirnormx,dirnormy)&#32;=&#32;tangent&#32;line&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00219"/>00219 &#32;&#32;&#32;&#32;&#32;&#32;crosspr[0]&#32;=&#32;-dirnormy;
+<anchor xml:id="_ellipse__fit_8c_source_1l00220"/>00220 &#32;&#32;&#32;&#32;&#32;&#32;crosspr[1]&#32;=&#32;&#32;dirnormx;
+<anchor xml:id="_ellipse__fit_8c_source_1l00221"/>00221 &#32;&#32;&#32;&#32;&#32;&#32;crosspr[2]&#32;=&#32;&#32;pnormx&#32;*&#32;dirnormy&#32;-&#32;pnormy&#32;*&#32;dirnormx;
+<anchor xml:id="_ellipse__fit_8c_source_1l00222"/>00222 
+<anchor xml:id="_ellipse__fit_8c_source_1l00223"/>00223 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;tangent&#32;equation:&#32;eq&#32;=&#32;-transpose(kron(TPts(1:3,i),antisym(l)))*J;&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00224"/>00224 &#32;&#32;&#32;&#32;&#32;&#32;antisym(crosspr,asym);
+<anchor xml:id="_ellipse__fit_8c_source_1l00225"/>00225 
+<anchor xml:id="_ellipse__fit_8c_source_1l00226"/>00226 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(j=0;j&lt;9;j++)&#32;K[j]&#32;=&#32;asym[j]*pnormx;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00227"/>00227 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(j=0;j&lt;9;j++)&#32;K[j+9]&#32;=&#32;asym[j]*pnormy;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00228"/>00228 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(j=0;j&lt;9;j++)&#32;K[j+18]&#32;=&#32;asym[j];
+<anchor xml:id="_ellipse__fit_8c_source_1l00229"/>00229 
+<anchor xml:id="_ellipse__fit_8c_source_1l00230"/>00230 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx]&#32;&#32;&#32;=&#32;-K[0];&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00231"/>00231 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+1]&#32;=&#32;-(K[3]+K[9]);&#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00232"/>00232 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+2]&#32;=&#32;-(K[6]+K[18]);&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00233"/>00233 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+3]&#32;=&#32;-K[12];&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00234"/>00234 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+4]&#32;=&#32;-(K[15]+K[21]);&#32;&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00235"/>00235 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+5]&#32;=&#32;-K[24];&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00236"/>00236 
+<anchor xml:id="_ellipse__fit_8c_source_1l00237"/>00237 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+6]&#32;&#32;&#32;=&#32;-K[1];
+<anchor xml:id="_ellipse__fit_8c_source_1l00238"/>00238 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+6+1]&#32;=&#32;-(K[4]+K[10]);&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00239"/>00239 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+6+2]&#32;=&#32;-(K[7]+K[19]);&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00240"/>00240 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+6+3]&#32;=&#32;-K[13];
+<anchor xml:id="_ellipse__fit_8c_source_1l00241"/>00241 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+6+4]&#32;=&#32;-(K[16]+K[22]);
+<anchor xml:id="_ellipse__fit_8c_source_1l00242"/>00242 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+6+5]&#32;=&#32;-K[25];&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00243"/>00243 &#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00244"/>00244 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+12]&#32;&#32;&#32;=&#32;-K[2];&#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00245"/>00245 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+12+1]&#32;=&#32;-(K[5]+K[11]);&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00246"/>00246 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+12+2]&#32;=&#32;-(K[8]+K[20]);
+<anchor xml:id="_ellipse__fit_8c_source_1l00247"/>00247 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+12+3]&#32;=&#32;-K[14];&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00248"/>00248 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+12+4]&#32;=&#32;-(K[17]+K[23]);&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00249"/>00249 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+12+5]&#32;=&#32;-K[26];&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00250"/>00250 
+<anchor xml:id="_ellipse__fit_8c_source_1l00251"/>00251 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;position&#32;equation:&#32;eq&#32;=&#32;transpose(kron(TPts(1:3,i),TPts(1:3,i)))*J;&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00252"/>00252 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+18]&#32;=&#32;pnormx&#32;*&#32;pnormx;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00253"/>00253 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+19]&#32;=&#32;2&#32;*&#32;pnormx&#32;*&#32;pnormy;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00254"/>00254 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+20]&#32;=&#32;2&#32;*&#32;pnormx;
+<anchor xml:id="_ellipse__fit_8c_source_1l00255"/>00255 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+21]&#32;=&#32;pnormy&#32;*&#32;pnormy;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00256"/>00256 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+22]&#32;=&#32;2&#32;*&#32;pnormy;
+<anchor xml:id="_ellipse__fit_8c_source_1l00257"/>00257 &#32;&#32;&#32;&#32;&#32;&#32;(*buff)[idx+23]&#32;=&#32;1;
+<anchor xml:id="_ellipse__fit_8c_source_1l00258"/>00258 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_ellipse__fit_8c_source_1l00259"/>00259 }
+<anchor xml:id="_ellipse__fit_8c_source_1l00260"/>00260 
+<anchor xml:id="_ellipse__fit_8c_source_1l00261"/>00261 
+<anchor xml:id="_ellipse__fit_8c_source_1l00262"/>00262 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00266"/>00266 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;fit_circle(&#32;<emphasis role="keywordtype">double</emphasis>&#32;*buff,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*vgg,&#32;<emphasis role="keywordtype">int</emphasis>&#32;reg_size,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*param&#32;)
+<anchor xml:id="_ellipse__fit_8c_source_1l00267"/>00267 {
+<anchor xml:id="_ellipse__fit_8c_source_1l00268"/>00268 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;i,&#32;j,&#32;k;
+<anchor xml:id="_ellipse__fit_8c_source_1l00269"/>00269 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;A[16];&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00270"/>00270 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00271"/>00271 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;reg_size&lt;=0&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;fit_circle:&#32;invalid&#32;size.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00272"/>00272 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;buff&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;fit_circle:&#32;invalid&#32;buffer.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00273"/>00273 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;vgg&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;fit_circle:&#32;invalid&#32;normalization&#32;matrix.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00274"/>00274 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;param&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;fit_circle:&#32;param&#32;must&#32;be&#32;non&#32;null.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00275"/>00275 
+<anchor xml:id="_ellipse__fit_8c_source_1l00276"/>00276 &#32;&#32;<emphasis role="comment">/*&#32;circle&#32;fitting&#32;computes&#32;less&#32;parameters,&#32;so&#32;the&#32;equation&#32;matrix&#32;has&#32;</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00277"/>00277 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;only&#32;four&#32;columns,&#32;not&#32;six;&#32;modify&#32;accordingly&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00278"/>00278 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=0;&#32;i&lt;reg_size*4*6;&#32;i+=6&#32;)
+<anchor xml:id="_ellipse__fit_8c_source_1l00279"/>00279 &#32;&#32;&#32;&#32;{&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00280"/>00280 &#32;&#32;&#32;&#32;&#32;&#32;buff[i]&#32;&#32;&#32;=&#32;buff[i]&#32;+&#32;buff[i+3];
+<anchor xml:id="_ellipse__fit_8c_source_1l00281"/>00281 &#32;&#32;&#32;&#32;&#32;&#32;buff[i+1]&#32;=&#32;buff[i+2];
+<anchor xml:id="_ellipse__fit_8c_source_1l00282"/>00282 &#32;&#32;&#32;&#32;&#32;&#32;buff[i+2]&#32;=&#32;buff[i+4];
+<anchor xml:id="_ellipse__fit_8c_source_1l00283"/>00283 &#32;&#32;&#32;&#32;&#32;&#32;buff[i+3]&#32;=&#32;buff[i+5];
+<anchor xml:id="_ellipse__fit_8c_source_1l00284"/>00284 &#32;&#32;&#32;&#32;}&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00285"/>00285 &#32;&#32;<emphasis role="comment">/*&#32;A&#32;=&#32;EQ&apos;*EQ;&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00286"/>00286 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=0;&#32;i&lt;16;&#32;i++)&#32;A[i]&#32;=&#32;0.0;
+<anchor xml:id="_ellipse__fit_8c_source_1l00287"/>00287 
+<anchor xml:id="_ellipse__fit_8c_source_1l00288"/>00288 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=0;&#32;i&lt;4;&#32;i++&#32;)
+<anchor xml:id="_ellipse__fit_8c_source_1l00289"/>00289 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;j=0;&#32;j&lt;4;&#32;j++)
+<anchor xml:id="_ellipse__fit_8c_source_1l00290"/>00290 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>(k=0;&#32;k&lt;4*reg_size;&#32;k++)
+<anchor xml:id="_ellipse__fit_8c_source_1l00291"/>00291 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;A[i*4+j]&#32;+=&#32;buff[k*6+i]&#32;*&#32;buff[k*6+j];
+<anchor xml:id="_ellipse__fit_8c_source_1l00292"/>00292 
+<anchor xml:id="_ellipse__fit_8c_source_1l00293"/>00293 &#32;&#32;<emphasis role="comment">/*&#32;lapack&#32;call&#32;to&#32;solve&#32;linear&#32;system&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00294"/>00294 &#32;&#32;<link linkend="_lapack__wrapper_8c_1a0c2af188e0233a54ff3baf6b9da6a3df">lap_eig</link>(&#32;A,&#32;4&#32;);&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00295"/>00295 &#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00296"/>00296 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;s[9];
+<anchor xml:id="_ellipse__fit_8c_source_1l00297"/>00297 &#32;&#32;s[0]&#32;=&#32;s[4]&#32;=&#32;A[0];
+<anchor xml:id="_ellipse__fit_8c_source_1l00298"/>00298 &#32;&#32;s[1]&#32;=&#32;s[3]&#32;=&#32;0;
+<anchor xml:id="_ellipse__fit_8c_source_1l00299"/>00299 &#32;&#32;s[2]&#32;=&#32;s[6]&#32;=&#32;A[1];
+<anchor xml:id="_ellipse__fit_8c_source_1l00300"/>00300 &#32;&#32;s[5]&#32;=&#32;s[7]&#32;=&#32;A[2];
+<anchor xml:id="_ellipse__fit_8c_source_1l00301"/>00301 &#32;&#32;s[8]&#32;=&#32;A[3];
+<anchor xml:id="_ellipse__fit_8c_source_1l00302"/>00302 
+<anchor xml:id="_ellipse__fit_8c_source_1l00303"/>00303 &#32;&#32;<emphasis role="comment">/*&#32;apply&#32;inverse(normalisation&#32;matrix)&#32;*/</emphasis>&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00304"/>00304 &#32;&#32;<emphasis role="comment">/*&#32;C&#32;=&#32;T&apos;*[&#32;x(1),0,x(2);&#32;0,x(1),x(3)&#32;;&#32;x(2),x(3),x(4)]*T;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00305"/>00305 
+<anchor xml:id="_ellipse__fit_8c_source_1l00306"/>00306 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;C[9];
+<anchor xml:id="_ellipse__fit_8c_source_1l00307"/>00307 &#32;&#32;C[0]&#32;=&#32;vgg[0]*vgg[0]*s[0]&#32;+&#32;vgg[3]*vgg[3]*s[4];
+<anchor xml:id="_ellipse__fit_8c_source_1l00308"/>00308 &#32;&#32;C[1]&#32;=&#32;vgg[0]*vgg[1]*s[0]&#32;+&#32;vgg[3]*vgg[4]*s[4];
+<anchor xml:id="_ellipse__fit_8c_source_1l00309"/>00309 &#32;&#32;C[2]&#32;=&#32;vgg[0]*vgg[2]*s[0]&#32;+&#32;vgg[3]*vgg[5]*s[4]+vgg[0]*s[2]&#32;+&#32;vgg[3]*s[5];
+<anchor xml:id="_ellipse__fit_8c_source_1l00310"/>00310 
+<anchor xml:id="_ellipse__fit_8c_source_1l00311"/>00311 &#32;&#32;C[3]&#32;=&#32;vgg[0]*vgg[1]*s[0]&#32;+&#32;vgg[3]*vgg[4]*s[4];
+<anchor xml:id="_ellipse__fit_8c_source_1l00312"/>00312 &#32;&#32;C[4]&#32;=&#32;vgg[1]*vgg[1]*s[0]&#32;+&#32;vgg[4]*vgg[4]*s[4];
+<anchor xml:id="_ellipse__fit_8c_source_1l00313"/>00313 &#32;&#32;C[5]&#32;=&#32;vgg[1]*vgg[2]*s[0]&#32;+&#32;vgg[4]*vgg[5]*s[4]&#32;+&#32;vgg[1]*s[2]&#32;+&#32;vgg[4]*s[5];
+<anchor xml:id="_ellipse__fit_8c_source_1l00314"/>00314 
+<anchor xml:id="_ellipse__fit_8c_source_1l00315"/>00315 &#32;&#32;C[6]&#32;=&#32;vgg[0]*vgg[2]*s[0]&#32;+&#32;vgg[0]*s[6]&#32;+&#32;vgg[3]*vgg[5]*s[4]&#32;+&#32;vgg[3]*s[7];
+<anchor xml:id="_ellipse__fit_8c_source_1l00316"/>00316 &#32;&#32;C[7]&#32;=&#32;vgg[1]*vgg[2]*s[0]&#32;+&#32;vgg[1]*s[6]&#32;+&#32;vgg[4]*vgg[5]*s[4]&#32;+&#32;vgg[4]*s[7];
+<anchor xml:id="_ellipse__fit_8c_source_1l00317"/>00317 &#32;&#32;C[8]&#32;=&#32;vgg[2]*vgg[2]*s[0]&#32;+&#32;vgg[2]*s[6]&#32;+&#32;vgg[5]*vgg[5]*s[4]&#32;+&#32;vgg[5]*s[7]+
+<anchor xml:id="_ellipse__fit_8c_source_1l00318"/>00318 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vgg[2]*s[2]&#32;+&#32;vgg[5]*s[5]&#32;+&#32;s[8];
+<anchor xml:id="_ellipse__fit_8c_source_1l00319"/>00319 &#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00320"/>00320 &#32;&#32;ellipse2param(&#32;C,&#32;param&#32;);
+<anchor xml:id="_ellipse__fit_8c_source_1l00321"/>00321 }
+<anchor xml:id="_ellipse__fit_8c_source_1l00322"/>00322 
+<anchor xml:id="_ellipse__fit_8c_source_1l00323"/>00323 
+<anchor xml:id="_ellipse__fit_8c_source_1l00324"/>00324 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00327"/>00327 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;fit_ellipse(&#32;<emphasis role="keywordtype">double</emphasis>&#32;*buff,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*vgg,&#32;<emphasis role="keywordtype">int</emphasis>&#32;reg_size,&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00328"/>00328 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;*param&#32;)
+<anchor xml:id="_ellipse__fit_8c_source_1l00329"/>00329 {&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00330"/>00330 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;i,j,k;
+<anchor xml:id="_ellipse__fit_8c_source_1l00331"/>00331 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;A[36];&#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00332"/>00332 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00333"/>00333 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;reg_size&#32;&lt;=&#32;0&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;fit_ellipse:&#32;invalid&#32;size.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00334"/>00334 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;buff&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;fit_ellipse:&#32;invalid&#32;buffer.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00335"/>00335 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;vgg&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;fit_ellipse:&#32;invalid&#32;normalization&#32;matrix.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00336"/>00336 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;param&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;fit_ellipse:&#32;param&#32;must&#32;be&#32;non&#32;null.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00337"/>00337 &#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00338"/>00338 &#32;&#32;<emphasis role="comment">/*&#32;A&#32;=&#32;EQ&apos;*EQ;&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00339"/>00339 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=0;&#32;i&lt;36;&#32;i++&#32;)&#32;A[i]&#32;=&#32;0.0;
+<anchor xml:id="_ellipse__fit_8c_source_1l00340"/>00340 
+<anchor xml:id="_ellipse__fit_8c_source_1l00341"/>00341 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=0;&#32;i&lt;6;&#32;i++&#32;)
+<anchor xml:id="_ellipse__fit_8c_source_1l00342"/>00342 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;j=0;&#32;j&lt;6;&#32;j++&#32;)
+<anchor xml:id="_ellipse__fit_8c_source_1l00343"/>00343 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;k=0;&#32;k&lt;4*reg_size;&#32;k++&#32;)
+<anchor xml:id="_ellipse__fit_8c_source_1l00344"/>00344 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;A[i*6+j]&#32;+=&#32;buff[k*6+i]&#32;*&#32;buff[k*6+j];
+<anchor xml:id="_ellipse__fit_8c_source_1l00345"/>00345 
+<anchor xml:id="_ellipse__fit_8c_source_1l00346"/>00346 &#32;&#32;<emphasis role="comment">/*&#32;lapack&#32;call&#32;to&#32;solve&#32;linear&#32;system&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00347"/>00347 &#32;&#32;<link linkend="_lapack__wrapper_8c_1a0c2af188e0233a54ff3baf6b9da6a3df">lap_eig</link>(&#32;A,&#32;6&#32;);&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00348"/>00348 &#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00349"/>00349 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;s[9];
+<anchor xml:id="_ellipse__fit_8c_source_1l00350"/>00350 &#32;&#32;s[0]&#32;=&#32;A[0];
+<anchor xml:id="_ellipse__fit_8c_source_1l00351"/>00351 &#32;&#32;s[1]&#32;=&#32;s[3]&#32;=&#32;A[1];
+<anchor xml:id="_ellipse__fit_8c_source_1l00352"/>00352 &#32;&#32;s[2]&#32;=&#32;s[6]&#32;=&#32;A[2];
+<anchor xml:id="_ellipse__fit_8c_source_1l00353"/>00353 &#32;&#32;s[4]&#32;=&#32;A[3];
+<anchor xml:id="_ellipse__fit_8c_source_1l00354"/>00354 &#32;&#32;s[5]&#32;=&#32;s[7]&#32;=&#32;A[4];
+<anchor xml:id="_ellipse__fit_8c_source_1l00355"/>00355 &#32;&#32;s[8]&#32;=&#32;A[5];
+<anchor xml:id="_ellipse__fit_8c_source_1l00356"/>00356 &#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00357"/>00357 &#32;&#32;<emphasis role="comment">/*&#32;apply&#32;inverse(normalisation&#32;matrix)&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00358"/>00358 &#32;&#32;<emphasis role="comment">/*&#32;C&#32;=&#32;T&apos;*[&#32;x(1),x(2),x(3);&#32;x(2),x(4),x(5)&#32;;&#32;x(3),x(5),x(6)]*T;&#32;*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00359"/>00359 &#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00360"/>00360 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;C[9];
+<anchor xml:id="_ellipse__fit_8c_source_1l00361"/>00361 &#32;&#32;C[0]&#32;=&#32;vgg[0]*vgg[0]*s[0]&#32;+&#32;vgg[0]*vgg[3]*s[3]&#32;+
+<anchor xml:id="_ellipse__fit_8c_source_1l00362"/>00362 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vgg[0]*vgg[3]*s[1]&#32;+&#32;vgg[3]*vgg[3]*s[4];
+<anchor xml:id="_ellipse__fit_8c_source_1l00363"/>00363 &#32;&#32;C[1]&#32;=&#32;vgg[0]*vgg[1]*s[0]&#32;+&#32;vgg[1]*vgg[3]*s[3]&#32;+
+<anchor xml:id="_ellipse__fit_8c_source_1l00364"/>00364 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vgg[0]*vgg[4]*s[1]&#32;+&#32;vgg[3]*vgg[4]*s[4];
+<anchor xml:id="_ellipse__fit_8c_source_1l00365"/>00365 &#32;&#32;C[2]&#32;=&#32;vgg[0]*vgg[2]*s[0]&#32;+&#32;vgg[2]*vgg[3]*s[3]&#32;+
+<anchor xml:id="_ellipse__fit_8c_source_1l00366"/>00366 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vgg[0]*vgg[5]*s[1]&#32;+&#32;vgg[3]*vgg[5]*s[4]&#32;+&#32;vgg[0]*s[2]&#32;+&#32;vgg[3]*s[5];
+<anchor xml:id="_ellipse__fit_8c_source_1l00367"/>00367 
+<anchor xml:id="_ellipse__fit_8c_source_1l00368"/>00368 &#32;&#32;C[3]&#32;=&#32;vgg[0]*vgg[1]*s[0]&#32;+&#32;vgg[0]*vgg[4]*s[3]&#32;+
+<anchor xml:id="_ellipse__fit_8c_source_1l00369"/>00369 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vgg[1]*vgg[3]*s[1]&#32;+&#32;vgg[3]*vgg[4]*s[4];
+<anchor xml:id="_ellipse__fit_8c_source_1l00370"/>00370 &#32;&#32;C[4]&#32;=&#32;vgg[1]*vgg[1]*s[0]&#32;+&#32;vgg[1]*vgg[4]*s[3]&#32;+
+<anchor xml:id="_ellipse__fit_8c_source_1l00371"/>00371 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vgg[1]*vgg[4]*s[1]&#32;+&#32;vgg[4]*vgg[4]*s[4];
+<anchor xml:id="_ellipse__fit_8c_source_1l00372"/>00372 &#32;&#32;C[5]&#32;=&#32;vgg[1]*vgg[2]*s[0]&#32;+&#32;vgg[2]*vgg[4]*s[3]&#32;+
+<anchor xml:id="_ellipse__fit_8c_source_1l00373"/>00373 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vgg[1]*vgg[5]*s[1]&#32;+&#32;vgg[4]*vgg[5]*s[4]&#32;+&#32;vgg[1]*s[2]&#32;+&#32;vgg[4]*s[5];
+<anchor xml:id="_ellipse__fit_8c_source_1l00374"/>00374 
+<anchor xml:id="_ellipse__fit_8c_source_1l00375"/>00375 &#32;&#32;C[6]&#32;=&#32;vgg[0]*vgg[2]*s[0]&#32;+&#32;vgg[0]*vgg[5]*s[3]&#32;+
+<anchor xml:id="_ellipse__fit_8c_source_1l00376"/>00376 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vgg[0]*s[6]&#32;+&#32;vgg[2]*vgg[3]*s[1]&#32;+&#32;vgg[3]*vgg[5]*s[4]&#32;+&#32;vgg[3]*s[7];
+<anchor xml:id="_ellipse__fit_8c_source_1l00377"/>00377 &#32;&#32;C[7]&#32;=&#32;vgg[1]*vgg[2]*s[0]&#32;+&#32;vgg[1]*vgg[5]*s[3]&#32;+
+<anchor xml:id="_ellipse__fit_8c_source_1l00378"/>00378 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vgg[1]*s[6]&#32;+&#32;vgg[2]*vgg[4]*s[1]&#32;+&#32;vgg[4]*vgg[5]*s[4]&#32;+&#32;vgg[4]*s[7];
+<anchor xml:id="_ellipse__fit_8c_source_1l00379"/>00379 &#32;&#32;C[8]&#32;=&#32;vgg[2]*vgg[2]*s[0]&#32;+&#32;vgg[2]*vgg[5]*s[3]&#32;+&#32;vgg[2]*s[6]&#32;+&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00380"/>00380 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vgg[2]*vgg[5]*s[1]&#32;+&#32;vgg[5]*vgg[5]*s[4]&#32;+&#32;vgg[5]*s[7]&#32;+&#32;vgg[2]*s[2]&#32;+&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00381"/>00381 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vgg[5]*s[5]&#32;+&#32;s[8];
+<anchor xml:id="_ellipse__fit_8c_source_1l00382"/>00382 &#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00383"/>00383 &#32;&#32;ellipse2param(C,param);
+<anchor xml:id="_ellipse__fit_8c_source_1l00384"/>00384 }
+<anchor xml:id="_ellipse__fit_8c_source_1l00385"/>00385 
+<anchor xml:id="_ellipse__fit_8c_source_1l00386"/>00386 
+<anchor xml:id="_ellipse__fit_8c_source_1l00387"/>00387 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_ellipse__fit_8c_source_1l00390"/><link linkend="_ellipse__fit_8c_1ae12e7701a84e615d38554c37a91e0c2c">00390</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_ellipse__fit_8c_1ae12e7701a84e615d38554c37a91e0c2c">conic_fit</link>(&#32;<link linkend="_structImageDouble">PImageDouble</link>&#32;gradx,&#32;<link linkend="_structImageDouble">PImageDouble</link>&#32;grady,&#32;<link linkend="_structPoint">Point</link>&#32;*reg,&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00391"/>00391 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;reg_size,&#32;<emphasis role="keywordtype">double</emphasis>&#32;**buff,&#32;<emphasis role="keywordtype">int</emphasis>&#32;*size_buff_max,&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00392"/>00392 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;*cparam,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*eparam&#32;)
+<anchor xml:id="_ellipse__fit_8c_source_1l00393"/>00393 {
+<anchor xml:id="_ellipse__fit_8c_source_1l00394"/>00394 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;vgg[9];
+<anchor xml:id="_ellipse__fit_8c_source_1l00395"/>00395 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(gradx&#32;==&#32;NULL)&#32;||&#32;(gradx-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>&#32;==&#32;NULL)&#32;)
+<anchor xml:id="_ellipse__fit_8c_source_1l00396"/>00396 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;conic_fit:&#32;invalid&#32;input&#32;&apos;gradx&apos;&#32;image.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00397"/>00397 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(grady&#32;==&#32;NULL)&#32;||&#32;(grady-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>&#32;==&#32;NULL)&#32;)
+<anchor xml:id="_ellipse__fit_8c_source_1l00398"/>00398 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;conic_fit:&#32;invalid&#32;input&#32;&apos;grady&apos;&#32;image.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00399"/>00399 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;reg&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;conic_fit:&#32;invalid&#32;region.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00400"/>00400 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;reg_size&lt;=0&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;conic_fit:&#32;invalid&#32;region&#32;size.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00401"/>00401 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;*buff&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;conic_fit:&#32;invalid&#32;buffer.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00402"/>00402 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;cparam&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;conic_fit:&#32;invalid&#32;&apos;cparam&apos;.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00403"/>00403 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;eparam&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;conic_fit:&#32;invalid&#32;&apos;eparam&apos;.&quot;</emphasis>);
+<anchor xml:id="_ellipse__fit_8c_source_1l00404"/>00404 &#32;&#32;
+<anchor xml:id="_ellipse__fit_8c_source_1l00405"/>00405 &#32;&#32;fit_equations(&#32;gradx,&#32;grady,&#32;vgg,&#32;reg,&#32;reg_size,&#32;buff,&#32;size_buff_max&#32;);
+<anchor xml:id="_ellipse__fit_8c_source_1l00406"/>00406 &#32;&#32;fit_ellipse(&#32;*buff,&#32;vgg,&#32;reg_size,&#32;eparam&#32;);
+<anchor xml:id="_ellipse__fit_8c_source_1l00407"/>00407 &#32;&#32;fit_circle&#32;(&#32;*buff,&#32;vgg,&#32;reg_size,&#32;cparam&#32;);
+<anchor xml:id="_ellipse__fit_8c_source_1l00408"/>00408 }
+<anchor xml:id="_ellipse__fit_8c_source_1l00409"/>00409 
+</programlisting></section>

@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_structPoint" xml:lang="en-US">
+<title>Point Struct Reference</title>
+<indexterm><primary>Point</primary></indexterm>
+<para>
+<computeroutput>#include &lt;misc.h&gt;</computeroutput>
+</para>
+<simplesect>
+    <title>Data Fields    </title>
+        <itemizedlist>
+            <listitem><para>int <link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para>Integer cartesian coordinates of a point. </para>
+<para>
+Definition at line <link linkend="_misc_8h_source_1l00067">67</link> of file <link linkend="_misc_8h_source">misc.h</link>.</para>
+</section>
+<section>
+<title>Field Documentation</title>
+<anchor xml:id="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc"/><section>
+    <title>x</title>
+<indexterm><primary>x</primary><secondary>Point</secondary></indexterm>
+<indexterm><primary>Point</primary><secondary>x</secondary></indexterm>
+<para><computeroutput>int x</computeroutput></para><para>
+Definition at line <link linkend="_misc_8h_source_1l00069">69</link> of file <link linkend="_misc_8h_source">misc.h</link>.</para>
+</section>
+<anchor xml:id="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33"/><section>
+    <title>y</title>
+<indexterm><primary>y</primary><secondary>Point</secondary></indexterm>
+<indexterm><primary>Point</primary><secondary>y</secondary></indexterm>
+<para><computeroutput>int y</computeroutput></para><para>
+Definition at line <link linkend="_misc_8h_source_1l00069">69</link> of file <link linkend="_misc_8h_source">misc.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+src/<link linkend="_misc_8h">misc.h</link></section>
+</section>

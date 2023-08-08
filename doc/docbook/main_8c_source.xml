@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_main_8c_source" xml:lang="en-US">
+<title>main.c</title>
+<indexterm><primary>src/main.c</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="_main_8c_source_1l00001"/>00001 <emphasis role="comment">/*------------------------------------------------------------------------------</emphasis>
+<anchor xml:id="_main_8c_source_1l00002"/>00002 <emphasis role="comment"></emphasis>
+<anchor xml:id="_main_8c_source_1l00003"/>00003 <emphasis role="comment">&#32;&#32;Copyright&#32;(c)&#32;2007-2011&#32;rafael&#32;grompone&#32;von&#32;gioi&#32;(grompone@gmail.com)&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00004"/>00004 <emphasis role="comment">&#32;&#32;Copyright&#32;(c)&#32;2012-2014&#32;viorica&#32;patraucean&#32;(vpatrauc@gmail.com)</emphasis>
+<anchor xml:id="_main_8c_source_1l00005"/>00005 <emphasis role="comment">&#32;&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00006"/>00006 <emphasis role="comment">&#32;&#32;This&#32;program&#32;is&#32;free&#32;software:&#32;you&#32;can&#32;redistribute&#32;it&#32;and/or&#32;modify</emphasis>
+<anchor xml:id="_main_8c_source_1l00007"/>00007 <emphasis role="comment">&#32;&#32;it&#32;under&#32;the&#32;terms&#32;of&#32;the&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License&#32;as</emphasis>
+<anchor xml:id="_main_8c_source_1l00008"/>00008 <emphasis role="comment">&#32;&#32;published&#32;by&#32;the&#32;Free&#32;Software&#32;Foundation,&#32;either&#32;version&#32;3&#32;of&#32;the</emphasis>
+<anchor xml:id="_main_8c_source_1l00009"/>00009 <emphasis role="comment">&#32;&#32;License,&#32;or&#32;(at&#32;your&#32;option)&#32;any&#32;later&#32;version.</emphasis>
+<anchor xml:id="_main_8c_source_1l00010"/>00010 <emphasis role="comment"></emphasis>
+<anchor xml:id="_main_8c_source_1l00011"/>00011 <emphasis role="comment">&#32;&#32;This&#32;program&#32;is&#32;distributed&#32;in&#32;the&#32;hope&#32;that&#32;it&#32;will&#32;be&#32;useful,</emphasis>
+<anchor xml:id="_main_8c_source_1l00012"/>00012 <emphasis role="comment">&#32;&#32;but&#32;WITHOUT&#32;ANY&#32;WARRANTY;&#32;without&#32;even&#32;the&#32;implied&#32;warranty&#32;of</emphasis>
+<anchor xml:id="_main_8c_source_1l00013"/>00013 <emphasis role="comment">&#32;&#32;MERCHANTABILITY&#32;or&#32;FITNESS&#32;FOR&#32;A&#32;PARTICULAR&#32;PURPOSE.&#32;See&#32;the</emphasis>
+<anchor xml:id="_main_8c_source_1l00014"/>00014 <emphasis role="comment">&#32;&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License&#32;for&#32;more&#32;details.</emphasis>
+<anchor xml:id="_main_8c_source_1l00015"/>00015 <emphasis role="comment"></emphasis>
+<anchor xml:id="_main_8c_source_1l00016"/>00016 <emphasis role="comment">&#32;&#32;You&#32;should&#32;have&#32;received&#32;a&#32;copy&#32;of&#32;the&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License</emphasis>
+<anchor xml:id="_main_8c_source_1l00017"/>00017 <emphasis role="comment">&#32;&#32;along&#32;with&#32;this&#32;program.&#32;If&#32;not,&#32;see&#32;&lt;http://www.gnu.org/licenses/&gt;.</emphasis>
+<anchor xml:id="_main_8c_source_1l00018"/>00018 <emphasis role="comment"></emphasis>
+<anchor xml:id="_main_8c_source_1l00019"/>00019 <emphasis role="comment"></emphasis>
+<anchor xml:id="_main_8c_source_1l00020"/>00020 <emphasis role="comment">&#32;&#32;main.c&#32;-&#32;This&#32;file&#32;belongs&#32;to&#32;ELSDc&#32;project&#32;(Ellipse&#32;and&#32;Line&#32;Segment&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00021"/>00021 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Detector&#32;with&#32;continuous&#32;validation)</emphasis>
+<anchor xml:id="_main_8c_source_1l00022"/>00022 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;-&#32;It&#32;contains&#32;the&#32;main&#32;function,&#32;which&#32;reads&#32;a&#32;pgm&#32;image,&#32;calls&#32;the&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00023"/>00023 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;detector,&#32;and&#32;writes&#32;the&#32;result&#32;in&#32;ASCII&#32;and&#32;SVG&#32;form.</emphasis>
+<anchor xml:id="_main_8c_source_1l00024"/>00024 <emphasis role="comment"></emphasis>
+<anchor xml:id="_main_8c_source_1l00025"/>00025 <emphasis role="comment">------------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00026"/>00026 
+<anchor xml:id="_main_8c_source_1l00027"/>00027 
+<anchor xml:id="_main_8c_source_1l00028"/>00028 <emphasis role="preprocessor">#include&#32;&lt;stdio.h&gt;</emphasis>
+<anchor xml:id="_main_8c_source_1l00029"/>00029 <emphasis role="preprocessor">#include&#32;&lt;stdlib.h&gt;</emphasis>
+<anchor xml:id="_main_8c_source_1l00030"/>00030 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_misc_8h">misc.h</link>&quot;</emphasis>
+<anchor xml:id="_main_8c_source_1l00031"/>00031 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_pgm_8h">pgm.h</link>&quot;</emphasis>
+<anchor xml:id="_main_8c_source_1l00032"/>00032 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_svg_8h">svg.h</link>&quot;</emphasis>
+<anchor xml:id="_main_8c_source_1l00033"/>00033 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_polygon_8h">polygon.h</link>&quot;</emphasis>
+<anchor xml:id="_main_8c_source_1l00034"/>00034 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_ring_8h">ring.h</link>&quot;</emphasis>
+<anchor xml:id="_main_8c_source_1l00035"/>00035 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_elsdc_8h">elsdc.h</link>&quot;</emphasis>
+<anchor xml:id="_main_8c_source_1l00036"/>00036 
+<anchor xml:id="_main_8c_source_1l00037"/>00037 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00041"/><link linkend="_main_8c_1a3c04138a5bfe5d72780bb7e82a18e627">00041</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_main_8c_1a3c04138a5bfe5d72780bb7e82a18e627">main</link>(&#32;<emphasis role="keywordtype">int</emphasis>&#32;argc,&#32;<emphasis role="keywordtype">char</emphasis>&#32;**argv&#32;)
+<anchor xml:id="_main_8c_source_1l00042"/>00042 {
+<anchor xml:id="_main_8c_source_1l00043"/>00043 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;arguments&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00044"/>00044 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;argc&#32;&lt;&#32;2&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;usage:&#32;./elsdc&#32;image_name.pgm&quot;</emphasis>);
+<anchor xml:id="_main_8c_source_1l00045"/>00045 
+<anchor xml:id="_main_8c_source_1l00046"/>00046 &#32;&#32;<link linkend="_structImageDouble">PImageDouble</link>&#32;in;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;input&#32;image&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00047"/>00047 &#32;&#32;<link linkend="_structImageInt">PImageInt</link>&#32;&#32;&#32;&#32;out;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;output&#32;image&#32;having&#32;the&#32;same&#32;size&#32;as&#32;&apos;in&apos;;&#32;the&#32;pixels</emphasis>
+<anchor xml:id="_main_8c_source_1l00048"/>00048 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;supporting&#32;a&#32;certain&#32;geometric&#32;primitive&#32;are&#32;marked&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00049"/>00049 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;with&#32;the&#32;same&#32;label&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00050"/>00050 
+<anchor xml:id="_main_8c_source_1l00051"/>00051 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;ell_count&#32;=&#32;0;&#32;&#32;&#32;<emphasis role="comment">/*&#32;number&#32;of&#32;detected&#32;ellipses&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00052"/>00052 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;*ell_labels=NULL;<emphasis role="comment">/*&#32;the&#32;pixels&#32;supporting&#32;a&#32;certain&#32;ellipse&#32;are&#32;marked&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00053"/>00053 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;with&#32;the&#32;same&#32;unique&#32;label&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00054"/>00054 &#32;&#32;<link linkend="_structRing">Ring</link>&#32;*ell_out&#32;=&#32;NULL;<emphasis role="comment">/*&#32;array&#32;containing&#32;the&#32;parameters&#32;of&#32;the&#32;detected&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00055"/>00055 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ellipses;&#32;correlated&#32;with&#32;ell_labels,&#32;i.e.&#32;the&#32;i-th</emphasis>
+<anchor xml:id="_main_8c_source_1l00056"/>00056 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;element&#32;of&#32;ell_labels&#32;is&#32;the&#32;label&#32;of&#32;the&#32;pixels&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00057"/>00057 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;supporting&#32;the&#32;ellipse&#32;defined&#32;by&#32;the&#32;parameters&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00058"/>00058 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ell[i]&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00059"/>00059 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_main_8c_source_1l00060"/>00060 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;poly_count&#32;=&#32;0;&#32;&#32;<emphasis role="comment">/*&#32;number&#32;of&#32;detected&#32;polygons&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00061"/>00061 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;*poly_labels=NULL;<emphasis role="comment">/*&#32;the&#32;pixels&#32;supporting&#32;a&#32;certain&#32;polygon&#32;are&#32;marked&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00062"/>00062 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;with&#32;the&#32;same&#32;unique&#32;label&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00063"/>00063 &#32;&#32;<link linkend="_structPolygon">Polygon</link>&#32;*poly_out=NULL;<emphasis role="comment">/*&#32;array&#32;containing&#32;the&#32;parameters&#32;of&#32;the&#32;detected&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00064"/>00064 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;polygons;&#32;correlated&#32;with&#32;poly_labels,&#32;i.e.&#32;the&#32;i-th</emphasis>
+<anchor xml:id="_main_8c_source_1l00065"/>00065 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;element&#32;of&#32;ell_labels&#32;is&#32;the&#32;label&#32;of&#32;the&#32;pixels&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00066"/>00066 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;supporting&#32;the&#32;polygon&#32;defined&#32;by&#32;the&#32;parameters</emphasis>
+<anchor xml:id="_main_8c_source_1l00067"/>00067 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;poly[i]&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00068"/>00068 
+<anchor xml:id="_main_8c_source_1l00069"/>00069 &#32;&#32;FILE&#32;*ell_ascii;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;output&#32;file&#32;with&#32;the&#32;parameters&#32;of&#32;the&#32;detected&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00070"/>00070 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ellipses&#32;--&#32;ASCII&#32;format&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00071"/>00071 &#32;&#32;FILE&#32;*poly_ascii;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;output&#32;file&#32;with&#32;the&#32;parameters&#32;of&#32;the&#32;detected</emphasis>
+<anchor xml:id="_main_8c_source_1l00072"/>00072 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;polygons&#32;--&#32;ASCII&#32;format&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00073"/>00073 &#32;&#32;FILE&#32;*fsvg;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;output&#32;file&#32;with&#32;the&#32;detected&#32;ellipses&#32;and&#32;polygons&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00074"/>00074 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;in&#32;vectorial&#32;form&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00075"/>00075 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;i,j;
+<anchor xml:id="_main_8c_source_1l00076"/>00076 
+<anchor xml:id="_main_8c_source_1l00077"/>00077 &#32;&#32;<emphasis role="comment">/*&#32;read&#32;input&#32;image;&#32;must&#32;be&#32;PGM&#32;form&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00078"/>00078 &#32;&#32;in&#32;=&#32;<link linkend="_pgm_8c_1a9a98683fcb23d861dc3b3ac2437267bb">read_pgm_image_double</link>(&#32;argv[1]&#32;);
+<anchor xml:id="_main_8c_source_1l00079"/>00079 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;xsize&#32;=&#32;in-&gt;<link linkend="_structImageDouble_1aa4b0263c533c5ce471067bd5ede24477">xsize</link>,&#32;ysize&#32;=&#32;in-&gt;<link linkend="_structImageDouble_1a7e7fdb6b4d76fd619024da6878c27d58">ysize</link>;
+<anchor xml:id="_main_8c_source_1l00080"/>00080 &#32;&#32;
+<anchor xml:id="_main_8c_source_1l00081"/>00081 &#32;&#32;<emphasis role="comment">/*&#32;create&#32;and&#32;initialize&#32;with&#32;0&#32;output&#32;label&#32;image&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00082"/>00082 &#32;&#32;out&#32;=&#32;<link linkend="_image_8c_1aa54fa4ed5a519b86fb3264668ff6655f">new_PImageInt_ini</link>(&#32;in-&gt;<link linkend="_structImageDouble_1aa4b0263c533c5ce471067bd5ede24477">xsize</link>,&#32;in-&gt;<link linkend="_structImageDouble_1a7e7fdb6b4d76fd619024da6878c27d58">ysize</link>,&#32;0&#32;);&#32;&#32;
+<anchor xml:id="_main_8c_source_1l00083"/>00083 &#32;&#32;
+<anchor xml:id="_main_8c_source_1l00084"/>00084 &#32;&#32;<emphasis role="comment">/*&#32;call&#32;detection&#32;procedure&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00085"/>00085 &#32;&#32;<link linkend="_elsdc_8c_1a622977efb42238086935cbcd5e6704ee">ELSDc</link>(&#32;in,&#32;&amp;ell_count,&#32;&amp;ell_out,&#32;&amp;ell_labels,&#32;&amp;poly_count,&#32;&amp;poly_out,&#32;
+<anchor xml:id="_main_8c_source_1l00086"/>00086 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&amp;poly_labels,&#32;out&#32;);
+<anchor xml:id="_main_8c_source_1l00087"/>00087 
+<anchor xml:id="_main_8c_source_1l00088"/>00088 &#32;&#32;<emphasis role="comment">/*&#32;write&#32;results&#32;in&#32;ASCII&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00089"/>00089 &#32;&#32;<emphasis role="comment">/*&#32;Ellipse&#32;file:&#32;each&#32;line&#32;contains&#32;1&#32;integer&#32;and&#32;11&#32;doubles&#32;in&#32;the&#32;form</emphasis>
+<anchor xml:id="_main_8c_source_1l00090"/>00090 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;ell_label&#32;x1&#32;y1&#32;x2&#32;y2&#32;cx&#32;cy&#32;ax&#32;bx&#32;theta&#32;ang_start&#32;ang_end</emphasis>
+<anchor xml:id="_main_8c_source_1l00091"/>00091 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;where:</emphasis>
+<anchor xml:id="_main_8c_source_1l00092"/>00092 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;ell_label&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;--&#32;the&#32;label&#32;of&#32;the&#32;pixels&#32;supporting&#32;this&#32;ellipse&#32;in&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00093"/>00093 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&apos;out&apos;&#32;labels&#32;image&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00094"/>00094 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;x1,&#32;y1,&#32;x2,&#32;y2&#32;&#32;&#32;&#32;&#32;--&#32;points&#32;delimiting&#32;the&#32;arc&#32;in&#32;trigonometric&#32;sense</emphasis>
+<anchor xml:id="_main_8c_source_1l00095"/>00095 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;cx,&#32;cy&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;--&#32;ellipse&#32;centre</emphasis>
+<anchor xml:id="_main_8c_source_1l00096"/>00096 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;ax,&#32;bx&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;--&#32;ellipse&#32;axes;&#32;ax&#32;is&#32;the&#32;greater&#32;axis</emphasis>
+<anchor xml:id="_main_8c_source_1l00097"/>00097 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;theta&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;--&#32;orientation&#32;of&#32;the&#32;ellipse</emphasis>
+<anchor xml:id="_main_8c_source_1l00098"/>00098 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;ang_start,&#32;ang_end&#32;--&#32;angles&#32;delimiting&#32;the&#32;arc&#32;in&#32;trigonometric&#32;sense&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00099"/>00099 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;ell_out&#32;!=&#32;NULL&#32;)
+<anchor xml:id="_main_8c_source_1l00100"/>00100 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_main_8c_source_1l00101"/>00101 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(ell_ascii&#32;=&#32;fopen(<emphasis role="stringliteral">&quot;out_ellipse.txt&quot;</emphasis>,<emphasis role="stringliteral">&quot;w&quot;</emphasis>))&#32;==&#32;NULL&#32;)
+<anchor xml:id="_main_8c_source_1l00102"/>00102 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;main:&#32;can&apos;t&#32;open&#32;ellipse&#32;output&#32;file.&quot;</emphasis>);
+<anchor xml:id="_main_8c_source_1l00103"/>00103 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=0;&#32;i&lt;ell_count;&#32;i++&#32;)
+<anchor xml:id="_main_8c_source_1l00104"/>00104 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_main_8c_source_1l00105"/>00105 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;fprintf(&#32;ell_ascii,<emphasis role="stringliteral">&quot;%d&#32;&quot;</emphasis>,&#32;ell_labels[i]&#32;);
+<anchor xml:id="_main_8c_source_1l00106"/>00106 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;fprintf(&#32;ell_ascii,<emphasis role="stringliteral">&quot;%lf&#32;%lf&#32;%lf&#32;%lf&#32;%lf&#32;%lf&#32;%lf&#32;%lf&#32;%lf&#32;%lf&#32;%lf&#32;\n&quot;</emphasis>,
+<anchor xml:id="_main_8c_source_1l00107"/>00107 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ell_out[i].x1,&#32;ell_out[i].y1,&#32;ell_out[i].x2,&#32;ell_out[i].y2,&#32;
+<anchor xml:id="_main_8c_source_1l00108"/>00108 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ell_out[i].cx,&#32;ell_out[i].cy,&#32;ell_out[i].ax,&#32;ell_out[i].bx,
+<anchor xml:id="_main_8c_source_1l00109"/>00109 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ell_out[i].theta,&#32;ell_out[i].ang_start,&#32;ell_out[i].ang_end&#32;);
+<anchor xml:id="_main_8c_source_1l00110"/>00110 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_main_8c_source_1l00111"/>00111 &#32;&#32;&#32;&#32;&#32;&#32;fclose(ell_ascii);
+<anchor xml:id="_main_8c_source_1l00112"/>00112 &#32;&#32;&#32;&#32;}&#32;&#32;&#32;&#32;
+<anchor xml:id="_main_8c_source_1l00113"/>00113 
+<anchor xml:id="_main_8c_source_1l00114"/>00114 &#32;&#32;<emphasis role="comment">/*&#32;Polygon&#32;file:&#32;each&#32;line&#32;contains&#32;2&#32;integers&#32;and&#32;a&#32;variable&#32;number&#32;of&#32;&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00115"/>00115 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;doubles&#32;in&#32;the&#32;form&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00116"/>00116 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;poly_label&#32;n&#32;x1&#32;y1&#32;x2&#32;y2&#32;...&#32;xn&#32;yn</emphasis>
+<anchor xml:id="_main_8c_source_1l00117"/>00117 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;where:</emphasis>
+<anchor xml:id="_main_8c_source_1l00118"/>00118 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;poly_label&#32;&#32;&#32;&#32;&#32;&#32;--&#32;the&#32;label&#32;of&#32;the&#32;pixels&#32;supporting&#32;this&#32;polygon&#32;in&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00119"/>00119 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&apos;out&apos;&#32;labels&#32;image</emphasis>
+<anchor xml:id="_main_8c_source_1l00120"/>00120 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;n&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;--&#32;the&#32;number&#32;of&#32;points&#32;in&#32;the&#32;polygon;&#32;it&#32;is&#32;the&#32;double&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00121"/>00121 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;of&#32;the&#32;number&#32;of&#32;segments</emphasis>
+<anchor xml:id="_main_8c_source_1l00122"/>00122 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;x1&#32;y1&#32;...&#32;xn&#32;yn&#32;--&#32;(x,y)&#32;coordinates&#32;of&#32;the&#32;ending&#32;points&#32;of&#32;each&#32;segment.</emphasis>
+<anchor xml:id="_main_8c_source_1l00123"/>00123 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;A&#32;polygon&#32;with&#32;n/2&#32;line&#32;segments&#32;has&#32;n&#32;points,&#32;given&#32;in&#32;consecutive&#32;order.</emphasis>
+<anchor xml:id="_main_8c_source_1l00124"/>00124 <emphasis role="comment">&#32;&#32;&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00125"/>00125 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;poly_out&#32;!=&#32;NULL&#32;)
+<anchor xml:id="_main_8c_source_1l00126"/>00126 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_main_8c_source_1l00127"/>00127 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(poly_ascii&#32;=&#32;fopen(<emphasis role="stringliteral">&quot;out_polygon.txt&quot;</emphasis>,<emphasis role="stringliteral">&quot;w&quot;</emphasis>))&#32;==&#32;NULL&#32;)
+<anchor xml:id="_main_8c_source_1l00128"/>00128 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;main:&#32;can&apos;t&#32;open&#32;polygon&#32;output&#32;file.&quot;</emphasis>);
+<anchor xml:id="_main_8c_source_1l00129"/>00129 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=0;&#32;i&lt;poly_count;&#32;i++&#32;)
+<anchor xml:id="_main_8c_source_1l00130"/>00130 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_main_8c_source_1l00131"/>00131 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;fprintf(&#32;poly_ascii,&#32;<emphasis role="stringliteral">&quot;%d&#32;%d&#32;&quot;</emphasis>,&#32;poly_labels[i],&#32;poly_out[i].dim&#32;);
+<anchor xml:id="_main_8c_source_1l00132"/>00132 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;j=0;&#32;j&lt;poly_out[i].<link linkend="_structPolygon_1a70b5e28b5bc3d1b63a7435c5fe50b837">dim</link>;&#32;j++&#32;)
+<anchor xml:id="_main_8c_source_1l00133"/>00133 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;fprintf(&#32;poly_ascii,<emphasis role="stringliteral">&quot;%lf&#32;%lf&#32;&quot;</emphasis>,&#32;poly_out[i].pts[j].x,&#32;poly_out[i].pts[j].y);
+<anchor xml:id="_main_8c_source_1l00134"/>00134 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;fprintf(&#32;poly_ascii,&#32;<emphasis role="stringliteral">&quot;\n&quot;</emphasis>&#32;);
+<anchor xml:id="_main_8c_source_1l00135"/>00135 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_main_8c_source_1l00136"/>00136 &#32;&#32;&#32;&#32;&#32;&#32;fclose(poly_ascii);
+<anchor xml:id="_main_8c_source_1l00137"/>00137 &#32;&#32;&#32;&#32;}&#32;&#32;
+<anchor xml:id="_main_8c_source_1l00138"/>00138 
+<anchor xml:id="_main_8c_source_1l00139"/>00139 &#32;&#32;<emphasis role="comment">/*&#32;write&#32;vectorial&#32;output&#32;in&#32;SVG&#32;format&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00140"/>00140 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(ell_out&#32;!=&#32;NULL)&#32;||&#32;(poly_out&#32;!=&#32;NULL)&#32;)
+<anchor xml:id="_main_8c_source_1l00141"/>00141 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_main_8c_source_1l00142"/>00142 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;init&#32;svg&#32;file&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00143"/>00143 &#32;&#32;&#32;&#32;&#32;&#32;fsvg&#32;=&#32;<link linkend="_svg_8c_1a558582c3fc08d1b34b5773e8543704a7">init_svg</link>(&#32;<emphasis role="stringliteral">&quot;output.svg&quot;</emphasis>,&#32;xsize,&#32;ysize&#32;);
+<anchor xml:id="_main_8c_source_1l00144"/>00144 &#32;
+<anchor xml:id="_main_8c_source_1l00145"/>00145 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;write&#32;ellipses&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00146"/>00146 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=0;&#32;i&lt;ell_count;&#32;i++)
+<anchor xml:id="_main_8c_source_1l00147"/>00147 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;distinguish&#32;between&#32;circle&#32;and&#32;ellipse,&#32;because&#32;the&#32;procedures&#32;</emphasis>
+<anchor xml:id="_main_8c_source_1l00148"/>00148 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;to&#32;write&#32;them&#32;are&#32;different&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00149"/>00149 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(<link linkend="_misc_8c_1a49d0391afab7c8872bbbfb86a814360b">double_equal</link>(&#32;ell_out[i].ax,&#32;ell_out[i].bx&#32;))&#32;)<emphasis role="comment">/*&#32;&amp;&amp;&#32;(ell_out[i].theta&#32;==&#32;0)&#32;)&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00150"/>00150 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_svg_8c_1addecc5315e2b2bf715678d6169c29cd2">write_svg_circ_arc</link>(&#32;fsvg,&#32;&amp;ell_out[i]&#32;);
+<anchor xml:id="_main_8c_source_1l00151"/>00151 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;
+<anchor xml:id="_main_8c_source_1l00152"/>00152 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_svg_8c_1abfaad49171308ccbecd1f3023ac13c15">write_svg_ell_arc</link>(&#32;fsvg,&#32;&amp;ell_out[i]&#32;);
+<anchor xml:id="_main_8c_source_1l00153"/>00153 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_main_8c_source_1l00154"/>00154 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;write&#32;polygons&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00155"/>00155 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=0;&#32;i&lt;poly_count;&#32;i++&#32;)
+<anchor xml:id="_main_8c_source_1l00156"/>00156 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_svg_8c_1a3a909bc27359f0f315f09797743d1863">write_svg_poly</link>(&#32;fsvg,&#32;&amp;poly_out[i]&#32;);
+<anchor xml:id="_main_8c_source_1l00157"/>00157 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;close&#32;svg&#32;file&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00158"/>00158 &#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_svg_8c_1a248633af17855dac187670ce42897417">fclose_svg</link>(&#32;fsvg&#32;);
+<anchor xml:id="_main_8c_source_1l00159"/>00159 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_main_8c_source_1l00160"/>00160 
+<anchor xml:id="_main_8c_source_1l00161"/>00161 &#32;&#32;<emphasis role="comment">/*&#32;write&#32;labels&#32;image&#32;in&#32;pgm&#32;form&#32;*/</emphasis>
+<anchor xml:id="_main_8c_source_1l00162"/>00162 &#32;&#32;<link linkend="_pgm_8c_1a94f252c634af4c81659315c4545be8b8">write_pgm_image_int</link>(&#32;out-&gt;<link linkend="_structImageInt_1ac103627c1ad15cbec2f22d0abe6d54b6">data</link>,&#32;out-&gt;<link linkend="_structImageInt_1aa4b0263c533c5ce471067bd5ede24477">xsize</link>,&#32;out-&gt;<link linkend="_structImageInt_1a7e7fdb6b4d76fd619024da6878c27d58">ysize</link>,&#32;<emphasis role="stringliteral">&quot;labels.pgm&quot;</emphasis>&#32;);
+<anchor xml:id="_main_8c_source_1l00163"/>00163 &#32;&#32;<link linkend="_image_8c_1a6ee6bd84de84b9c43d96a7daf535ccd3">free_PImageInt</link>(out);
+<anchor xml:id="_main_8c_source_1l00164"/>00164 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;ell_out&#32;!=&#32;NULL&#32;)&#32;{free(ell_out);&#32;free(ell_labels);}
+<anchor xml:id="_main_8c_source_1l00165"/>00165 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;poly_out&#32;!=&#32;NULL&#32;)&#32;
+<anchor xml:id="_main_8c_source_1l00166"/>00166 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_main_8c_source_1l00167"/>00167 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=0;&#32;i&lt;poly_count;&#32;i++&#32;)
+<anchor xml:id="_main_8c_source_1l00168"/>00168 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;free(poly_out[i].pts);
+<anchor xml:id="_main_8c_source_1l00169"/>00169 &#32;&#32;&#32;&#32;&#32;&#32;free(poly_out);&#32;
+<anchor xml:id="_main_8c_source_1l00170"/>00170 &#32;&#32;&#32;&#32;&#32;&#32;free(poly_labels);
+<anchor xml:id="_main_8c_source_1l00171"/>00171 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_main_8c_source_1l00172"/>00172 &#32;&#32;printf(<emphasis role="stringliteral">&quot;Number&#32;of&#32;ellipses&#32;detected&#32;=&#32;%d\n&quot;</emphasis>,ell_count);
+<anchor xml:id="_main_8c_source_1l00173"/>00173 &#32;&#32;printf(<emphasis role="stringliteral">&quot;Number&#32;of&#32;polygons&#32;detected&#32;=&#32;%d\n&quot;</emphasis>,poly_count);
+<anchor xml:id="_main_8c_source_1l00174"/>00174 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;0;
+<anchor xml:id="_main_8c_source_1l00175"/>00175 }
+</programlisting></section>

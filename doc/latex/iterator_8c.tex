@@ -1,0 +1,64 @@
+\doxysection{src/iterator.c File Reference}
+\hypertarget{iterator_8c}{}\label{iterator_8c}\index{src/iterator.c@{src/iterator.c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$float.\+h$>$}\newline
+{\ttfamily \#include $<$limits.\+h$>$}\newline
+{\ttfamily \#include \"{}misc.\+h\"{}}\newline
+{\ttfamily \#include \"{}rectangle.\+h\"{}}\newline
+{\ttfamily \#include \"{}iterator.\+h\"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{iterator_8c_a85d1536d02765e56ec37da19a90e7fda}{free\+\_\+\+Rect\+Iter}} (\mbox{\hyperlink{structRectIter}{Rect\+Iter}} \texorpdfstring{$\ast$}{*}iter)
+\item 
+int \mbox{\hyperlink{iterator_8c_af7da6dcffa5131ae89a09928a735876c}{end\+\_\+\+Rect\+Iter}} (\mbox{\hyperlink{structRectIter}{Rect\+Iter}} \texorpdfstring{$\ast$}{*}i)
+\item 
+void \mbox{\hyperlink{iterator_8c_a4c117221ffe49dc4f9e5f12638a29226}{inc\+\_\+\+Rect\+Iter}} (\mbox{\hyperlink{structRectIter}{Rect\+Iter}} \texorpdfstring{$\ast$}{*}i)
+\item 
+\mbox{\hyperlink{structRectIter}{Rect\+Iter}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{iterator_8c_a10e0fc06c9d67303b68e6b4296dd692e}{ini\+\_\+\+Rect\+Iter}} (\mbox{\hyperlink{structRectangle}{Rectangle}} \texorpdfstring{$\ast$}{*}r)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{iterator_8c_af7da6dcffa5131ae89a09928a735876c}\label{iterator_8c_af7da6dcffa5131ae89a09928a735876c} 
+\index{iterator.c@{iterator.c}!end\_RectIter@{end\_RectIter}}
+\index{end\_RectIter@{end\_RectIter}!iterator.c@{iterator.c}}
+\doxysubsubsection{\texorpdfstring{end\_RectIter()}{end\_RectIter()}}
+{\footnotesize\ttfamily int end\+\_\+\+Rect\+Iter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRectIter}{Rect\+Iter}} \texorpdfstring{$\ast$}{*}}]{i }\end{DoxyParamCaption})}
+
+Check if the iterator finished the full iteration. 
+
+Definition at line \mbox{\hyperlink{iterator_8c_source_l00085}{85}} of file \mbox{\hyperlink{iterator_8c_source}{iterator.\+c}}.
+
+\Hypertarget{iterator_8c_a85d1536d02765e56ec37da19a90e7fda}\label{iterator_8c_a85d1536d02765e56ec37da19a90e7fda} 
+\index{iterator.c@{iterator.c}!free\_RectIter@{free\_RectIter}}
+\index{free\_RectIter@{free\_RectIter}!iterator.c@{iterator.c}}
+\doxysubsubsection{\texorpdfstring{free\_RectIter()}{free\_RectIter()}}
+{\footnotesize\ttfamily void free\+\_\+\+Rect\+Iter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRectIter}{Rect\+Iter}} \texorpdfstring{$\ast$}{*}}]{iter }\end{DoxyParamCaption})}
+
+Free memory used by a rectangle iterator. 
+
+Definition at line \mbox{\hyperlink{iterator_8c_source_l00074}{74}} of file \mbox{\hyperlink{iterator_8c_source}{iterator.\+c}}.
+
+\Hypertarget{iterator_8c_a4c117221ffe49dc4f9e5f12638a29226}\label{iterator_8c_a4c117221ffe49dc4f9e5f12638a29226} 
+\index{iterator.c@{iterator.c}!inc\_RectIter@{inc\_RectIter}}
+\index{inc\_RectIter@{inc\_RectIter}!iterator.c@{iterator.c}}
+\doxysubsubsection{\texorpdfstring{inc\_RectIter()}{inc\_RectIter()}}
+{\footnotesize\ttfamily void inc\+\_\+\+Rect\+Iter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRectIter}{Rect\+Iter}} \texorpdfstring{$\ast$}{*}}]{i }\end{DoxyParamCaption})}
+
+Increment a rectangle iterator. 
+
+Definition at line \mbox{\hyperlink{iterator_8c_source_l00096}{96}} of file \mbox{\hyperlink{iterator_8c_source}{iterator.\+c}}.
+
+\Hypertarget{iterator_8c_a10e0fc06c9d67303b68e6b4296dd692e}\label{iterator_8c_a10e0fc06c9d67303b68e6b4296dd692e} 
+\index{iterator.c@{iterator.c}!ini\_RectIter@{ini\_RectIter}}
+\index{ini\_RectIter@{ini\_RectIter}!iterator.c@{iterator.c}}
+\doxysubsubsection{\texorpdfstring{ini\_RectIter()}{ini\_RectIter()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structRectIter}{Rect\+Iter}} \texorpdfstring{$\ast$}{*} ini\+\_\+\+Rect\+Iter (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structRectangle}{Rectangle}} \texorpdfstring{$\ast$}{*}}]{r }\end{DoxyParamCaption})}
+
+Create and initialize a rectangle iterator. 
+
+Definition at line \mbox{\hyperlink{iterator_8c_source_l00130}{130}} of file \mbox{\hyperlink{iterator_8c_source}{iterator.\+c}}.
+

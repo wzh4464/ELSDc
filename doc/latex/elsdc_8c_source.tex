@@ -1,0 +1,1041 @@
+\doxysection{elsdc.\+c}
+\hypertarget{elsdc_8c_source}{}\label{elsdc_8c_source}\index{src/elsdc.c@{src/elsdc.c}}
+\mbox{\hyperlink{elsdc_8c}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00001}00001\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00002}00002\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00003}00003\ \textcolor{comment}{\ \ Copyright\ (c)\ 2012-\/2014\ viorica\ patraucean\ (vpatrauc@gmail.com)}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00004}00004\ \textcolor{comment}{\ \ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00005}00005\ \textcolor{comment}{\ \ This\ program\ is\ free\ software:\ you\ can\ redistribute\ it\ and/or\ modify}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00006}00006\ \textcolor{comment}{\ \ it\ under\ the\ terms\ of\ the\ GNU\ Affero\ General\ Public\ License\ as}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00007}00007\ \textcolor{comment}{\ \ published\ by\ the\ Free\ Software\ Foundation,\ either\ version\ 3\ of\ the}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00008}00008\ \textcolor{comment}{\ \ License,\ or\ (at\ your\ option)\ any\ later\ version.}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00009}00009\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00010}00010\ \textcolor{comment}{\ \ This\ program\ is\ distributed\ in\ the\ hope\ that\ it\ will\ be\ useful,}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00011}00011\ \textcolor{comment}{\ \ but\ WITHOUT\ ANY\ WARRANTY;\ without\ even\ the\ implied\ warranty\ of}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00012}00012\ \textcolor{comment}{\ \ MERCHANTABILITY\ or\ FITNESS\ FOR\ A\ PARTICULAR\ PURPOSE.\ See\ the}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00013}00013\ \textcolor{comment}{\ \ GNU\ Affero\ General\ Public\ License\ for\ more\ details.}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00014}00014\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00015}00015\ \textcolor{comment}{\ \ You\ should\ have\ received\ a\ copy\ of\ the\ GNU\ Affero\ General\ Public\ License}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00016}00016\ \textcolor{comment}{\ \ along\ with\ this\ program.\ If\ not,\ see\ <http://www.gnu.org/licenses/>.}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00017}00017\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00018}00018\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00019}00019\ \textcolor{comment}{\ \ elsdc.c\ -\/\ This\ file\ belongs\ to\ ELSDc\ project\ (Ellipse\ and\ Line\ Segment\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00020}00020\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ Detector\ with\ continuous\ validation).}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00021}00021\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ -\/\ It\ contains\ the\ main\ detection\ procedure:\ curve\ growing\ and\ curve}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00022}00022\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ validation.\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00023}00023\ \textcolor{comment}{}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00024}00024\ \textcolor{comment}{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00027}00027\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00028}00028\ \textcolor{preprocessor}{\#include\ <stdlib.h>}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00029}00029\ \textcolor{preprocessor}{\#include\ <math.h>}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00030}00030\ \textcolor{preprocessor}{\#include\ <float.h>}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00031}00031\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00032}00032\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{misc_8h}{misc.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00033}00033\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{image_8h}{image.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00034}00034\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{gauss_8h}{gauss.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00035}00035\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{rectangle_8h}{rectangle.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00036}00036\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{iterator_8h}{iterator.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00037}00037\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{polygon_8h}{polygon.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00038}00038\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{ring_8h}{ring.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00039}00039\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{ellipse__fit_8h}{ellipse\_fit.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00040}00040\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{curve__grow_8h}{curve\_grow.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00041}00041\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{elsdc_8h}{elsdc.h}}"{}}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00043}00043\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00044}00044\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00051}\mbox{\hyperlink{elsdc_8c_af685048ab39761c96a17c680b1b48a17}{00051}}\ \textcolor{preprocessor}{\#define\ LOG10\_1\_2\_M\_2\_\_PI\ \ 0.39908993418}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00052}\mbox{\hyperlink{elsdc_8c_aa058eb8fdd5d04db876ffd7a18f3cd58}{00052}}\ \textcolor{preprocessor}{\#define\ LOG10\_EXP1\ \ \ \ \ \ \ \ \ 0.43429448190}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00053}00053\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ NFAc(\ \textcolor{keywordtype}{int}\ n,\ \textcolor{keywordtype}{double}\ k,\ \textcolor{keywordtype}{double}\ logNT\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00054}00054\ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00055}00055\ \ \ \textcolor{comment}{/*\ check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00056}00056\ \ \ \textcolor{keywordflow}{if}(\ n\ <\ 0)\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}NFAc:\ 'n'\ must\ be\ strictly\ positive."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00057}00057\ \ \ \textcolor{keywordflow}{if}(\ n==0\ )\ \textcolor{keywordflow}{return}\ -\/logNT;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00058}00058\ \ \ \textcolor{keywordtype}{double}\ logNFAC\ =\ logNT;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00059}00059\ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00060}00060\ \ \ k\ =\ \mbox{\hyperlink{misc_8h_a24e753bacac6be5f30e18f8a2bdefda4}{max}}(k,0.01);}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00061}00061\ \ \ logNFAC\ =\ logNT\ +\ n\ *\ log10(k)\ -\/\ \mbox{\hyperlink{elsdc_8c_af685048ab39761c96a17c680b1b48a17}{LOG10\_1\_2\_M\_2\_\_PI}}\ -\/\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ (n+0.5)\ *\ log10(n)\ +\ n\ *\ \mbox{\hyperlink{elsdc_8c_aa058eb8fdd5d04db876ffd7a18f3cd58}{LOG10\_EXP1}}\ ;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00063}00063\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00064}00064\ \ \ \textcolor{keywordflow}{return}\ -\/logNFAC;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00065}00065\ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00066}00066\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00067}00067\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00068}00068\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00069}00069\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ FUNCTIONS\ FOR\ RECTANGLE\ VALIDATION\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00070}00070\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00072}00072\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00073}00073\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00078}00078\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ rect\_count\_error(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ angles,\ \mbox{\hyperlink{structImageInt}{PImageInt}}\ used,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00079}00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structRectangle}{Rectangle}}\ *rec,\ \textcolor{keywordtype}{int}\ *pts,\ \textcolor{keywordtype}{double}\ *err,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ *buff,\ \textcolor{keywordtype}{int}\ *size\_buff\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00081}00081\ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00082}00082\ \ \ \mbox{\hyperlink{structRectIter}{RectIter}}\ *i;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00083}00083\ \ \ \textcolor{keywordtype}{int}\ adr;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00084}00084\ \ \ \textcolor{keywordtype}{double}\ theta;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00085}00085\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00086}00086\ \ \ \textcolor{comment}{/*\ check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00087}00087\ \ \ \textcolor{keywordflow}{if}(\ (angles\ ==\ NULL)\ ||\ (angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00088}00088\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}rect\_count\_error:\ invalid\ input\ 'angles'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00089}00089\ \ \ \textcolor{keywordflow}{if}(\ (used\ ==\ NULL)\ ||\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00090}00090\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}rect\_count\_error:\ invalid\ input\ 'used'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00091}00091\ \ \ \textcolor{keywordflow}{if}(\ rec\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}rect\_count\_error:\ invalid\ input\ rectangle."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00092}00092\ \ \ \textcolor{keywordflow}{if}(\ buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}rect\_count\_error:\ invalid\ buffer."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00093}00093\ \ \ \textcolor{keywordflow}{if}(\ size\_buff\ ==\ NULL\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00094}00094\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}rect\_count\_error:\ size\_buff\ must\ be\ non\ null."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00095}00095\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00096}00096\ \ \ theta\ =\ rec-\/>\mbox{\hyperlink{structRectangle_aca81c35c21e3a5f7f3a8d24504e76664}{theta}}\ -\/\ \mbox{\hyperlink{misc_8h_ae11c01f236a7a89f767a7b34283da201}{M\_1\_2\_PI}};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00097}00097\ \ \ *pts\ =\ 0;\ *err\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00099}00099\ \ \ \textcolor{comment}{/*\ iterate\ through\ rectangle\ and\ accumulate\ per-\/pixel\ normalised\ error\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00100}00100\ \ \ \textcolor{keywordflow}{for}(\ i=\mbox{\hyperlink{iterator_8c_a10e0fc06c9d67303b68e6b4296dd692e}{ini\_RectIter}}(rec);\ !\mbox{\hyperlink{iterator_8c_af7da6dcffa5131ae89a09928a735876c}{end\_RectIter}}(i);\ \mbox{\hyperlink{iterator_8c_a4c117221ffe49dc4f9e5f12638a29226}{inc\_RectIter}}(i)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00101}00101\ \ \ \ \ \textcolor{keywordflow}{if}(\ \mbox{\hyperlink{image_8c_a7d75c600cc492bd8efbc1cc0c3819d88}{in\_image}}(\ i-\/>\mbox{\hyperlink{structRectIter_a6150e0515f7202e2fb518f7206ed97dc}{x}},\ i-\/>\mbox{\hyperlink{structRectIter_a0a2f84ed7838f07779ae24c5a9086d33}{y}},\ used-\/>\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}},\ used-\/>\mbox{\hyperlink{structImageInt_a7e7fdb6b4d76fd619024da6878c27d58}{ysize}}\ )\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00102}00102\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00103}00103\ \ \ \ \ \ \ \ \ ++(*pts);}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00104}00104\ \ \ \ \ \ \ \ \ adr\ =\ (i-\/>\mbox{\hyperlink{structRectIter_a0a2f84ed7838f07779ae24c5a9086d33}{y}})\ *\ used-\/>\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}}\ +\ (i-\/>\mbox{\hyperlink{structRectIter_a6150e0515f7202e2fb518f7206ed97dc}{x}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00105}00105\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[adr]\ ==\ \mbox{\hyperlink{misc_8h_abcd0a22ee4346cad5706adb6d2119429}{USED}})\ ||\ (angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[adr]\ ==\ \mbox{\hyperlink{misc_8h_a18d9edd8c3bfc9c1837a10505dfa037c}{NOTDEF}})\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00106}00106\ \ \ \ \ \ \ \ \ \ \ (*err)\ +=\ 1.0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00107}00107\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00108}00108\ \ \ \ \ \ \ \ \ \ \ (*err)\ +=\ \mbox{\hyperlink{misc_8c_a00b6a4c474bea7360859f586ae2e2dea}{norm\_angle\_diff}}(\ angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[adr],\ theta\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00109}00109\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ store\ points\ in\ buffer\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00110}00110\ \ \ \ \ \ \ \ \ buff[*size\_buff].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ =\ i-\/>\mbox{\hyperlink{structRectIter_a6150e0515f7202e2fb518f7206ed97dc}{x}};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00111}00111\ \ \ \ \ \ \ \ \ buff[*size\_buff].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ =\ i-\/>\mbox{\hyperlink{structRectIter_a0a2f84ed7838f07779ae24c5a9086d33}{y}};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00112}00112\ \ \ \ \ \ \ \ \ ++(*size\_buff);}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00113}00113\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00114}00114\ \ \ \mbox{\hyperlink{iterator_8c_a85d1536d02765e56ec37da19a90e7fda}{free\_RectIter}}(i);}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00115}00115\ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00116}00116\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00117}00117\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00118}00118\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00122}00122\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ get\_seg(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ angles,\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ gradmag,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00123}00123\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageInt}{PImageInt}}\ used,\ \mbox{\hyperlink{structPolyRect}{PolyRect}}\ *poly,\ \mbox{\hyperlink{structPoint}{Point}}\ *reg,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00124}00124\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ reg\_size,\ \textcolor{keywordtype}{double}\ prec\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00125}00125\ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00126}00126\ \ \ \textcolor{keywordtype}{double}\ sumdx\ =\ 0.0,\ sumdy\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00127}00127\ \ \ \textcolor{keywordtype}{double}\ reg\_angle;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00128}00128\ \ \ \textcolor{keywordtype}{int}\ i;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00129}00129\ \ \ \textcolor{keywordtype}{int}\ adr;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00130}00130\ \ \ \mbox{\hyperlink{structRectangle}{Rectangle}}\ rec;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00131}00131\ \ \ \textcolor{comment}{/*\ check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00132}00132\ \ \ \textcolor{keywordflow}{if}(\ (angles\ ==\ NULL)\ ||\ (angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00133}00133\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}get\_seg:\ invalid\ input\ 'angles'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00134}00134\ \ \ \textcolor{keywordflow}{if}(\ (gradmag\ ==\ NULL)\ ||\ (gradmag-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00135}00135\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}get\_seg:\ invalid\ input\ 'angles'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00136}00136\ \ \ \textcolor{keywordflow}{if}(\ (used\ ==\ NULL)\ ||\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00137}00137\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}get\_seg:\ invalid\ input\ 'used'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00138}00138\ \ \ \textcolor{keywordflow}{if}(\ poly\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}get\_seg:\ invalid\ input\ polygon."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00139}00139\ \ \ \textcolor{keywordflow}{if}(\ reg\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}get\_seg:\ invalid\ input\ region."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00140}00140\ \ \ \textcolor{keywordflow}{if}(\ reg\_size\ <=\ 0\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}get\_seg:\ 'reg\_size'\ must\ be\ strictly\ positive."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00141}00141\ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00142}00142\ \ \ \textcolor{comment}{/*\ compute\ the\ mean\ angle\ of\ the\ whole\ region\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00143}00143\ \ \ \textcolor{keywordflow}{for}(\ i=0;\ i<reg\_size;\ i++\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00144}00144\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00145}00145\ \ \ \ \ \ \ adr\ =\ reg[i].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ +\ reg[i].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ *\ angles-\/>\mbox{\hyperlink{structImageDouble_aa4b0263c533c5ce471067bd5ede24477}{xsize}};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00146}00146\ \ \ \ \ \ \ sumdx\ +=\ cos(\ angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[adr]\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00147}00147\ \ \ \ \ \ \ sumdy\ +=\ sin(\ angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[adr]\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00148}00148\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00149}00149\ \ \ reg\_angle\ =\ atan2(\ sumdy,\ sumdx\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00150}00150\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00151}00151\ \ \ \textcolor{comment}{/*\ estimate\ rectangle\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00152}00152\ \ \ \mbox{\hyperlink{curve__grow_8c_a6309f2cc70e39c4d40bbe504844b4866}{region2rect}}(\ gradmag,\ reg,\ 0,\ reg\_size,\ reg\_angle,\ \&rec,\ prec\ );\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00153}00153\ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00154}00154\ \ \ \textcolor{comment}{/*\ add\ rectangle\ to\ polygon\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00155}00155\ \ \ poly-\/>\mbox{\hyperlink{structPolyRect_a70b5e28b5bc3d1b63a7435c5fe50b837}{dim}}++;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00156}00156\ \ \ \mbox{\hyperlink{polygon_8c_a32839ef9cf401a79864fd0d3b9718dec}{add\_rect\_to\_polyrect}}(\ poly,\ \&rec\ );\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00157}00157\ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00158}00158\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00159}00159\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00160}00160\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00161}00161\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ FUNCTIONS\ FOR\ POLYGON\ VALIDATION\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00162}00162\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00163}00163\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00164}00164\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00165}00165\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00170}00170\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ poly\_count\_error(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ angles,\ \mbox{\hyperlink{structImageInt}{PImageInt}}\ used,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00171}00171\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPolyRect}{PolyRect}}\ *poly,\ \textcolor{keywordtype}{double}\ polywmin,\ \textcolor{keywordtype}{double}\ polywmax,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00172}00172\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *pts,\ \textcolor{keywordtype}{double}\ *err,\ \mbox{\hyperlink{structPoint}{Point}}\ *buff,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00173}00173\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *size\_buff\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00174}00174\ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00175}00175\ \ \ \textcolor{keywordtype}{int}\ pts\_rect;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00176}00176\ \ \ \textcolor{keywordtype}{double}\ err\_rect;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00177}00177\ \ \ \textcolor{keywordtype}{int}\ i;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00178}00178\ \ \ \textcolor{comment}{/*\ check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00179}00179\ \ \ \textcolor{keywordflow}{if}(\ (angles\ ==\ NULL)\ ||\ (angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00180}00180\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}poly\_count\_error:\ invalid\ input\ 'angles'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00181}00181\ \ \ \textcolor{keywordflow}{if}(\ (used\ ==\ NULL)\ ||\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00182}00182\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}poly\_count\_error:\ invalid\ input\ 'used'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00183}00183\ \ \ \textcolor{keywordflow}{if}(\ poly\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}poly\_count\_error:\ invalid\ input\ polygon."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00184}00184\ \ \ \textcolor{keywordflow}{if}(\ buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}poly\_count\_error:\ invalid\ buffer."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00185}00185\ \ \ \textcolor{keywordflow}{if}(\ size\_buff\ ==\ NULL\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00186}00186\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}poly\_count\_error:\ size\_buff\ must\ be\ non\ null."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00187}00187\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00188}00188\ \ \ *pts\ =\ 0;\ *err\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00189}00189\ \ \ *size\_buff\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00190}00190\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00191}00191\ \ \ \textcolor{comment}{/*\ Scan\ every\ rectangle\ in\ the\ polygon\ and\ count\ the\ additive\ error.\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00192}00192\ \textcolor{comment}{\ \ \ \ \ We\ must\ consider\ the\ same\ widths\ wmin\ and\ wmax\ for\ all\ rectangles.\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00193}00193\ \ \ \textcolor{keywordflow}{for}(\ i=0;\ i<poly-\/>\mbox{\hyperlink{structPolyRect_a70b5e28b5bc3d1b63a7435c5fe50b837}{dim}};\ i++)}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00194}00194\ \ \ \ \ \{\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00195}00195\ \ \ \ \ \ \ poly-\/>\mbox{\hyperlink{structPolyRect_aa6c235e6fd60e9c44d47b5ff669a4b07}{rectlist}}[i].\mbox{\hyperlink{structRectangle_ad1515daed95ba43fd919fddcf3144d1a}{wmin}}\ =\ polywmin;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00196}00196\ \ \ \ \ \ \ poly-\/>\mbox{\hyperlink{structPolyRect_aa6c235e6fd60e9c44d47b5ff669a4b07}{rectlist}}[i].\mbox{\hyperlink{structRectangle_a54612b6d232db5e1a58ae8b2f26b1df4}{wmax}}\ =\ polywmax;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00197}00197\ \ \ \ \ \ \ rect\_count\_error(\ angles,\ used,\ \&(poly-\/>\mbox{\hyperlink{structPolyRect_aa6c235e6fd60e9c44d47b5ff669a4b07}{rectlist}}[i]),\ \&pts\_rect,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00198}00198\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&err\_rect,\ buff,\ size\_buff\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00199}00199\ \ \ \ \ \ \ (*pts)\ +=\ pts\_rect;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00200}00200\ \ \ \ \ \ \ (*err)\ +=\ err\_rect;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00201}00201\ \ \ \ \ \}\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00202}00202\ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00203}00203\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00204}00204\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00205}00205\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00208}00208\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ poly\_nfa(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ angles,\ \mbox{\hyperlink{structImageInt}{PImageInt}}\ used,\ \mbox{\hyperlink{structPolyRect}{PolyRect}}\ *poly,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00209}00209\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ polywmin,\ \textcolor{keywordtype}{double}\ polywmax,\ \mbox{\hyperlink{structPoint}{Point}}\ *buff,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00210}00210\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *size\_buff,\ \textcolor{keywordtype}{double}\ logNT\_poly\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00211}00211\ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00212}00212\ \ \ \textcolor{keywordtype}{int}\ pts;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00213}00213\ \ \ \textcolor{keywordtype}{double}\ err;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00214}00214\ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00215}00215\ \ \ \textcolor{comment}{/*\ check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00216}00216\ \ \ \textcolor{keywordflow}{if}(\ (angles\ ==\ NULL)\ ||\ (angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00217}00217\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}poly\_nfa:\ invalid\ input\ 'angles'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00218}00218\ \ \ \textcolor{keywordflow}{if}(\ (used\ ==\ NULL)\ ||\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00219}00219\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}poly\_nfa:\ invalid\ input\ 'used'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00220}00220\ \ \ \textcolor{keywordflow}{if}(\ poly\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}poly\_nfa:\ invalid\ input\ polygon."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00221}00221\ \ \ \textcolor{keywordflow}{if}(\ buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}poly\_nfa:\ invalid\ buffer."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00222}00222\ \ \ \textcolor{keywordflow}{if}(\ size\_buff\ ==\ NULL\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00223}00223\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}poly\_nfa:\ size\_buff\ must\ be\ non\ null."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00224}00224\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00225}00225\ \ \ \textcolor{comment}{/*\ count\ additive\ error\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00226}00226\ \ \ poly\_count\_error(\ angles,\ used,\ poly,\ polywmin,\ polywmax,\ \&pts,\ \&err,\ buff,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00227}00227\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ size\_buff\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00228}00228\ \ \ \textcolor{comment}{/*\ return\ computed\ NFA\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00229}00229\ \ \ \textcolor{keywordflow}{return}\ NFAc(\ pts,\ err,\ logNT\_poly\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00230}00230\ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00231}00231\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00232}00232\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00233}00233\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00236}00236\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ poly\_improve(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ angles,\ \mbox{\hyperlink{structImageInt}{PImageInt}}\ used,\ \mbox{\hyperlink{structPolyRect}{PolyRect}}\ *poly,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00237}00237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ **local\_buff,\ \textcolor{keywordtype}{int}\ *size\_local\_buff,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00238}00238\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ **tmp\_buff,\ \textcolor{keywordtype}{double}\ logNT\_poly\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00239}00239\ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00240}00240\ \ \ \textcolor{keywordtype}{double}\ delta\ =\ 0.5;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00241}00241\ \ \ \textcolor{keywordtype}{double}\ log\_nfa,log\_nfa\_new;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00242}00242\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00243}00243\ \ \ \textcolor{keywordtype}{int}\ size\_tmp\_buff;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00244}00244\ \ \ \textcolor{keywordtype}{double}\ wmin,wmax;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00245}00245\ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00246}00246\ \ \ \textcolor{comment}{/*\ check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00247}00247\ \ \ \textcolor{keywordflow}{if}(\ (angles\ ==\ NULL)\ ||\ (angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00248}00248\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}poly\_improve:\ invalid\ input\ 'angles'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00249}00249\ \ \ \textcolor{keywordflow}{if}(\ (used\ ==\ NULL)\ ||\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00250}00250\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}poly\_improve:\ invalid\ input\ 'used'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00251}00251\ \ \ \textcolor{keywordflow}{if}(\ poly\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}poly\_improve:\ invalid\ input\ polygon."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00252}00252\ \ \ \textcolor{keywordflow}{if}(\ *local\_buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}poly\_improve:\ invalid\ local\ buffer."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00253}00253\ \ \ \textcolor{keywordflow}{if}(\ size\_local\_buff\ ==\ NULL\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00254}00254\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}poly\_improve:\ 'size\_local\_buff'\ must\ be\ non\ null."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00255}00255\ \ \ \textcolor{keywordflow}{if}(\ *tmp\_buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}poly\_improve:\ invalid\ tmp\ buffer."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00256}00256\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00257}00257\ \ \ *size\_local\_buff\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00258}00258\ \ \ wmax\ =\ poly-\/>\mbox{\hyperlink{structPolyRect_a54612b6d232db5e1a58ae8b2f26b1df4}{wmax}};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00259}00259\ \ \ wmin\ =\ poly-\/>\mbox{\hyperlink{structPolyRect_ad1515daed95ba43fd919fddcf3144d1a}{wmin}};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00260}00260\ \ \ \textcolor{comment}{/*\ check\ if\ polygon\ valid:\ wmin\ and\ wmax\ must\ have\ opposite\ sign\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00261}00261\ \ \ \textcolor{keywordflow}{if}\ (\ wmin*wmax\ >0\ )\ \textcolor{keywordflow}{return}\ -\/logNT\_poly;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00262}00262\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00263}00263\ \ \ log\_nfa\ =\ poly\_nfa(\ angles,\ used,\ poly,\ wmin,\ wmax,\ *local\_buff,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00264}00264\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ size\_local\_buff,\ logNT\_poly\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00265}00265\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00266}00266\ \ \ \textcolor{comment}{/*\ try\ to\ improve\ the\ polygon,\ by\ reducing\ width;\ first\ reduce\ wmax\ */}\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00267}00267\ \ \ \textcolor{comment}{/*for(\ n=0;\ n<10;\ n++\ )}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00268}00268\ \textcolor{comment}{\ \ \ \ \{*/}\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00269}00269\ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\ wmax\ -\/\ delta\ >\ 0.0)}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00270}00270\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00271}00271\ \ \ \ \ \ \ \ \ \ \ wmax\ -\/=\ delta;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00272}00272\ \ \ \ \ \ \ \ \ \ \ size\_tmp\_buff\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00273}00273\ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00274}00274\ \ \ \ \ \ \ \ \ \ \ log\_nfa\_new\ =\ poly\_nfa(\ angles,\ used,\ poly,\ wmin,\ wmax,\ *tmp\_buff,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00275}00275\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&size\_tmp\_buff,\ logNT\_poly\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00276}00276\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ log\_nfa\_new\ >\ log\_nfa\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00277}00277\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00278}00278\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ log\_nfa\ =\ log\_nfa\_new;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00279}00279\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ switch\ addresses\ of\ the\ pointers\ to\ the\ local\ and\ tmp\ buffer\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00280}00280\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*swap\_ptr\_pts(\ local\_buff,\ tmp\_buff\ );}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00281}00281\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ (*size\_local\_buff)\ =\ size\_tmp\_buff;*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00282}00282\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ poly-\/>\mbox{\hyperlink{structPolyRect_a54612b6d232db5e1a58ae8b2f26b1df4}{wmax}}\ -\/=\ delta;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00283}00283\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00284}00284\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00285}00285\ \ \ \ \ \textcolor{comment}{/*\ \}\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00286}00286\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00287}00287\ \ \ \textcolor{comment}{/*\ now\ try\ to\ reduce\ dmin\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00288}00288\ \ \ \textcolor{comment}{/*\ for(\ n=0;\ n<10;\ n++\ )}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00289}00289\ \textcolor{comment}{\ \ \ \ \{\ */}\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00290}00290\ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\ wmin\ +\ delta\ <\ 0.0)}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00291}00291\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00292}00292\ \ \ \ \ \ \ \ \ \ \ wmin\ +=\ delta;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00293}00293\ \ \ \ \ \ \ \ \ \ \ size\_tmp\_buff\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00294}00294\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00295}00295\ \ \ \ \ \ \ \ \ \ \ log\_nfa\_new\ =\ poly\_nfa(\ angles,\ used,\ poly,\ wmin,\ poly-\/>\mbox{\hyperlink{structPolyRect_a54612b6d232db5e1a58ae8b2f26b1df4}{wmax}},\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00296}00296\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *tmp\_buff,\ \&size\_tmp\_buff,\ logNT\_poly\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00297}00297\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ log\_nfa\_new\ >\ log\_nfa\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00298}00298\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00299}00299\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ log\_nfa\ =\ log\_nfa\_new;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00300}00300\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ switch\ addresses\ of\ the\ pointers\ to\ the\ local\ and\ tmp\ buffer\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00301}00301\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ swap\_ptr\_pts(\ local\_buff,\ tmp\_buff\ );}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00302}00302\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ (*size\_local\_buff)\ =\ size\_tmp\_buff;\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00303}00303\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ poly-\/>\mbox{\hyperlink{structPolyRect_ad1515daed95ba43fd919fddcf3144d1a}{wmin}}\ +=\ delta;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00304}00304\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00305}00305\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00306}00306\ \ \ \ \ \textcolor{comment}{/*\ \}\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00307}00307\ \ \ \textcolor{keywordflow}{return}\ log\_nfa;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00308}00308\ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00309}00309\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00310}00310\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00311}00311\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00312}00312\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ FUNCTIONS\ FOR\ CIRCLE\ RING\ VALIDATION\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00313}00313\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00314}00314\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00315}00315\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00316}00316\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00321}00321\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ circ\_count\_error(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ angles,\ \mbox{\hyperlink{structImageInt}{PImageInt}}\ used,\ \mbox{\hyperlink{structRing}{Ring}}\ *cring,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00322}00322\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{int}\ grad\_dir,\ \mbox{\hyperlink{structPoint}{Point}}\ *buff,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00323}00323\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *size\_buff,\ \textcolor{keywordtype}{int}\ label,\ \textcolor{keywordtype}{int}\ *pts,\ \textcolor{keywordtype}{double}\ *err\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00324}00324\ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00325}00325\ \ \ \textcolor{keywordtype}{int}\ xx,\ yy,\ i,\ adr;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00326}00326\ \ \ \textcolor{keywordtype}{double}\ theta;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00327}00327\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00328}00328\ \ \ \textcolor{comment}{/*\ check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00329}00329\ \ \ \textcolor{keywordflow}{if}(\ (angles\ ==\ NULL)\ ||\ (angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00330}00330\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}circ\_count\_error:\ invalid\ input\ 'angles'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00331}00331\ \ \ \textcolor{keywordflow}{if}(\ (used\ ==\ NULL)\ ||\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00332}00332\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}circ\_count\_error:\ invalid\ input\ 'used'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00333}00333\ \ \ \textcolor{keywordflow}{if}(\ cring\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}circ\_count\_error:\ invalid\ input\ ring."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00334}00334\ \ \ \textcolor{keywordflow}{if}(\ buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}circ\_count\_error:\ invalid\ local\ buffer."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00335}00335\ \ \ \textcolor{keywordflow}{if}(\ size\_buff\ ==\ NULL\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00336}00336\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}circ\_count\_error:\ 'size\_local\_buff'\ must\ be\ non\ null."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00337}00337\ \ \ \textcolor{keywordflow}{if}(\ label\ <=\ 1\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}circ\_count\_error:\ forbidden\ label\ value."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00338}00338\ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00339}00339\ \ \ *pts\ =\ 0;\ *err\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00340}00340\ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00341}00341\ \ \ \textcolor{comment}{/*\ To\ compute\ the\ error,\ visit\ each\ pixel\ in\ the\ ring\ in\ a\ region\ growing\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00342}00342\ \textcolor{comment}{\ \ \ \ \ manner\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00343}00343\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00344}00344\ \ \ \textcolor{comment}{/*\ First\ make\ sure\ the\ seed\ point\ (x,y)\ is\ inside\ the\ ring;\ if\ not,\ visit\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00345}00345\ \textcolor{comment}{\ \ \ \ \ neighbours\ in\ a\ 3x3\ neighbourhood\ to\ find\ a\ point\ inside\ the\ ring\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00346}00346\ \ \ *size\_buff\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00347}00347\ \ \ \textcolor{keywordflow}{if}(\ \mbox{\hyperlink{ring_8c_abc1b2fcb970026bac2c06de0423e6278}{is\_in\_circ\_ring}}(\ cring,\ x,\ y\ )\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00348}00348\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00349}00349\ \ \ \ \ \ \ buff[0].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ =\ x;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00350}00350\ \ \ \ \ \ \ buff[0].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ =\ y;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00351}00351\ \ \ \ \ \ \ used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[\ buff[0].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ *\ used-\/>\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}}\ +\ buff[0].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ ]\ =\ label;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00352}00352\ \ \ \ \ \ \ *size\_buff\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00353}00353\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00354}00354\ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00355}00355\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00356}00356\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ xx=x-\/2;\ xx<=x+2;\ xx++\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00357}00357\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00358}00358\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ yy=y-\/2;\ yy<=y+2;\ yy++\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00359}00359\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ \mbox{\hyperlink{image_8c_a7d75c600cc492bd8efbc1cc0c3819d88}{in\_image}}(\ xx,\ yy,\ used-\/>\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}},\ used-\/>\mbox{\hyperlink{structImageInt_a7e7fdb6b4d76fd619024da6878c27d58}{ysize}}\ )\ \&\&\ \mbox{\hyperlink{ring_8c_abc1b2fcb970026bac2c06de0423e6278}{is\_in\_circ\_ring}}(\ cring,\ xx,\ yy\ )\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00360}00360\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00361}00361\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ buff[0].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ =\ xx;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00362}00362\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ buff[0].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ =\ yy;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00363}00363\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[\ buff[0].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ *\ used-\/>\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}}\ +\ buff[0].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ ]\ =\ label;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00364}00364\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *size\_buff\ =\ 1;\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00365}00365\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00366}00366\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00367}00367\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ *size\_buff\ ==\ 1\ )\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00368}00368\ \ \ \ \ \ \ \ \ \}\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00369}00369\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00370}00370\ \ \ \textcolor{keywordflow}{if}(\ *size\_buff\ ==\ 0\ )\ \textcolor{keywordflow}{return};\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00371}00371\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00372}00372\ \ \ \textcolor{keywordflow}{for}(\ i=0;\ i\ <\ *size\_buff;\ i++\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00373}00373\ \ \ \ \ \textcolor{keywordflow}{for}(\ xx=buff[i].x-\/1;\ xx<=buff[i].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}+1;\ xx++\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00374}00374\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ yy=buff[i].y-\/1;\ yy<=buff[i].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}+1;\ yy++\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00375}00375\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ \mbox{\hyperlink{image_8c_a7d75c600cc492bd8efbc1cc0c3819d88}{in\_image}}(\ xx,\ yy,\ used-\/>\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}},\ used-\/>\mbox{\hyperlink{structImageInt_a7e7fdb6b4d76fd619024da6878c27d58}{ysize}}\ )\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00376}00376\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00377}00377\ \ \ \ \ \ \ \ \ \ \ \ \ adr\ =\ xx\ +\ yy\ *\ used-\/>\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00378}00378\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ check\ if\ the\ point\ has\ already\ been\ used\ or\ visited\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00379}00379\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[adr]\ !=\ \mbox{\hyperlink{misc_8h_abcd0a22ee4346cad5706adb6d2119429}{USED}})\ \&\&\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[adr]\ !=\ label)\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00380}00380\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00381}00381\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ check\ if\ point\ inside\ the\ circle\ ring\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00382}00382\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ \mbox{\hyperlink{ring_8c_abc1b2fcb970026bac2c06de0423e6278}{is\_in\_circ\_ring}}(\ cring,\ xx,\ yy\ )\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00383}00383\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00384}00384\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ check\ if\ gradient\ converges\ or\ diverges\ when\ computing\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00385}00385\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ the\ ideal\ angle\ of\ a\ point\ on\ the\ circle\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00386}00386\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ theta\ =\ atan2(\ (\textcolor{keywordtype}{double})yy\ -\/\ cring-\/>\mbox{\hyperlink{structRing_a2d6a093e4a6fe06658d3d01563d028c9}{cy}},\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00387}00387\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (\textcolor{keywordtype}{double})xx\ -\/\ cring-\/>\mbox{\hyperlink{structRing_ac176cb816ac192bd8ec2f73c40b43309}{cx}}\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00388}00388\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ grad\_dir\ ==\ 0\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00389}00389\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00390}00390\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ theta\ >\ 0\ )\ theta\ =\ -\/(\mbox{\hyperlink{misc_8h_ae71449b1cc6e6250b91f539153a7a0d3}{M\_PI}}-\/theta);}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00391}00391\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ theta\ =\ \mbox{\hyperlink{misc_8h_ae71449b1cc6e6250b91f539153a7a0d3}{M\_PI}}\ +\ theta;\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00392}00392\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00393}00393\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (*err)\ +=\ \mbox{\hyperlink{misc_8c_a00b6a4c474bea7360859f586ae2e2dea}{norm\_angle\_diff}}(\ angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[adr],\ theta\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00394}00394\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[adr]\ =\ label;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00395}00395\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ buff[*size\_buff].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ =\ xx;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00396}00396\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ buff[*size\_buff].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ =\ yy;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00397}00397\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++(*size\_buff);\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00398}00398\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00399}00399\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00400}00400\ \ \ \ \ \ \ \ \ \ \ \}\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00401}00401\ \ \ *pts\ =\ *size\_buff;\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00402}00402\ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00403}00403\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00404}00404\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00405}00405\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00408}00408\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ circ\_ring\_nfa(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ angles,\ \mbox{\hyperlink{structImageInt}{PImageInt}}\ used,\ \mbox{\hyperlink{structRing}{Ring}}\ *cring,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00409}00409\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{int}\ grad\_dir,\ \mbox{\hyperlink{structPoint}{Point}}\ *buff,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00410}00410\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *size\_buff,\ \textcolor{keywordtype}{int}\ label,\ \textcolor{keywordtype}{double}\ logNT\_ell\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00411}00411\ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00412}00412\ \ \ \textcolor{keywordtype}{int}\ pts;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00413}00413\ \ \ \textcolor{keywordtype}{double}\ err;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00414}00414\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00415}00415\ \ \ \textcolor{comment}{/*\ check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00416}00416\ \ \ \textcolor{keywordflow}{if}(\ (angles\ ==\ NULL)\ ||\ (angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00417}00417\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}circ\_ring\_nfa:\ invalid\ input\ 'angles'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00418}00418\ \ \ \textcolor{keywordflow}{if}(\ (used\ ==\ NULL)\ ||\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00419}00419\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}circ\_ring\_nfa:\ invalid\ input\ 'used'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00420}00420\ \ \ \textcolor{keywordflow}{if}(\ cring\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}circ\_ring\_nfa:\ invalid\ input\ ring."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00421}00421\ \ \ \textcolor{keywordflow}{if}(\ buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}circ\_ring\_nfa:\ invalid\ local\ buffer."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00422}00422\ \ \ \textcolor{keywordflow}{if}(\ size\_buff\ ==\ NULL\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00423}00423\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}circ\_ring\_nfa:\ 'size\_local\_buff'\ must\ be\ non\ null."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00424}00424\ \ \ \textcolor{keywordflow}{if}(\ label\ <=\ 1\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}circ\_ring\_nfa:\ forbidden\ label\ value."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00425}00425\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00426}00426\ \ \ \textcolor{comment}{/*\ count\ additive\ error\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00427}00427\ \ \ circ\_count\_error(\ angles,\ used,\ cring,\ x,\ y,\ grad\_dir,\ buff,\ size\_buff,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00428}00428\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ label,\ \&pts,\ \&err\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00429}00429\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00430}00430\ \ \ \textcolor{comment}{/*\ return\ computed\ NFA\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00431}00431\ \ \ \textcolor{keywordflow}{return}\ NFAc(\ pts,\ err,\ logNT\_ell\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00432}00432\ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00433}00433\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00434}00434\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00435}00435\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00438}00438\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ circ\_ring\_improve(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ angles,\ \mbox{\hyperlink{structImageInt}{PImageInt}}\ used,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00439}00439\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structRing}{Ring}}\ *cring,\ \textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{int}\ grad\_dir,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00440}00440\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ **local\_buff,\ \textcolor{keywordtype}{int}\ *size\_local\_buff,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00441}00441\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ **tmp\_buff,\ \textcolor{keywordtype}{int}\ *label,\ \textcolor{keywordtype}{double}\ logNT\_ell)}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00442}00442\ \{\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00443}00443\ \ \ \textcolor{keywordtype}{double}\ log\_nfa,\ log\_nfa\_new;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00444}00444\ \ \ \textcolor{keywordtype}{double}\ delta\ =\ 0.5;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00445}00445\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00446}00446\ \ \ \textcolor{keywordtype}{int}\ size\_tmp\_buff;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00447}00447\ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00448}00448\ \ \ \textcolor{comment}{/*\ check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00449}00449\ \ \ \textcolor{keywordflow}{if}(\ (angles\ ==\ NULL)\ ||\ (angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00450}00450\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}circ\_ring\_improve:\ invalid\ input\ 'angles'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00451}00451\ \ \ \textcolor{keywordflow}{if}(\ (used\ ==\ NULL)\ ||\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00452}00452\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}circ\_ring\_improve:\ invalid\ input\ 'used'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00453}00453\ \ \ \textcolor{keywordflow}{if}(\ cring\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}circ\_ring\_improve:\ invalid\ input\ ring."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00454}00454\ \ \ \textcolor{keywordflow}{if}(\ *local\_buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}circ\_ring\_improve:\ invalid\ local\ buffer."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00455}00455\ \ \ \textcolor{keywordflow}{if}(\ *tmp\_buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}circ\_ring\_improve:\ invalid\ tmp\ buffer."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00456}00456\ \ \ \textcolor{keywordflow}{if}(\ size\_local\_buff\ ==\ NULL\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00457}00457\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}circ\_ring\_improve:\ 'size\_local\_buff'\ must\ be\ non\ null."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00458}00458\ \ \ \textcolor{keywordflow}{if}(\ *label\ <=\ 1\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}circ\_ring\_improve:\ forbidden\ label\ value."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00459}00459\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00460}00460\ \ \ \textcolor{keywordflow}{if}\ (\ !\ \mbox{\hyperlink{ring_8c_a135c65c3fc6ffdec3f39ea806588958c}{check\_circ\_ring}}(cring)\ )\ \textcolor{keywordflow}{return}\ -\/logNT\_ell;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00461}00461\ \ \ (*label)++;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00462}00462\ \ \ *size\_local\_buff\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00463}00463\ \ \ log\_nfa\ =\ circ\_ring\_nfa(\ angles,\ used,\ cring,\ x,\ y,\ grad\_dir,\ *local\_buff,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00464}00464\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ size\_local\_buff,\ *label,\ logNT\_ell\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00465}00465\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00466}00466\ \ \ \textcolor{comment}{/*\ try\ to\ improve\ the\ ring,\ by\ reducing\ width;\ first\ reduce\ wmax\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00467}00467\ \ \ \mbox{\hyperlink{structRing}{Ring}}\ r;\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00468}00468\ \ \ \mbox{\hyperlink{ring_8c_aa22a2072f90b5e5ed51c29d5081c4faf}{copy\_ring}}(\ cring,\ \&r\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00469}00469\ \ \ \textcolor{comment}{/*for(\ n=0;\ n<10;\ n++\ )}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00470}00470\ \textcolor{comment}{\ \ \ \ \{\ */}\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00471}00471\ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\ r.\mbox{\hyperlink{structRing_a54612b6d232db5e1a58ae8b2f26b1df4}{wmax}}-\/delta\ >\ 0.0)}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00472}00472\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00473}00473\ \ \ \ \ \ \ \ \ \ \ r.\mbox{\hyperlink{structRing_a54612b6d232db5e1a58ae8b2f26b1df4}{wmax}}\ -\/=\ delta;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00474}00474\ \ \ \ \ \ \ \ \ \ \ size\_tmp\_buff\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00475}00475\ \ \ \ \ \ \ \ \ \ \ (*label)++;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00476}00476\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00477}00477\ \ \ \ \ \ \ \ \ \ \ log\_nfa\_new\ =\ circ\_ring\_nfa(\ angles,\ used,\ \&r,\ x,\ y,\ grad\_dir,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00478}00478\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *tmp\_buff,\ \&size\_tmp\_buff,\ *label,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00479}00479\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ logNT\_ell\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00480}00480\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ log\_nfa\_new\ >\ log\_nfa\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00481}00481\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00482}00482\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cring-\/>\mbox{\hyperlink{structRing_a54612b6d232db5e1a58ae8b2f26b1df4}{wmax}}\ -\/=\ delta;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00483}00483\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ log\_nfa\ =\ log\_nfa\_new;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00484}00484\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ switch\ addresses\ of\ the\ pointers\ to\ the\ local\ and\ tmp\ buffer\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00485}00485\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*swap\_ptr\_pts(\ local\_buff,\ tmp\_buff\ );}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00486}00486\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ (*size\_local\_buff)\ =\ size\_tmp\_buff;\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00487}00487\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00488}00488\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00489}00489\ \ \ \ \ \textcolor{comment}{/*\ \}\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00490}00490\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00491}00491\ \ \ \textcolor{comment}{/*\ now\ try\ to\ reduce\ wmin\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00492}00492\ \ \ \mbox{\hyperlink{ring_8c_aa22a2072f90b5e5ed51c29d5081c4faf}{copy\_ring}}(\ cring,\ \&r\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00493}00493\ \ \ \textcolor{comment}{/*for(\ n=0;\ n<10;\ n++\ )}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00494}00494\ \textcolor{comment}{\ \ \ \ \{\ */}\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00495}00495\ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\ r.\mbox{\hyperlink{structRing_ad1515daed95ba43fd919fddcf3144d1a}{wmin}}\ +\ delta\ <\ 0.0)}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00496}00496\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00497}00497\ \ \ \ \ \ \ \ \ \ \ r.\mbox{\hyperlink{structRing_ad1515daed95ba43fd919fddcf3144d1a}{wmin}}\ +=\ delta;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00498}00498\ \ \ \ \ \ \ \ \ \ \ size\_tmp\_buff\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00499}00499\ \ \ \ \ \ \ \ \ \ \ (*label)++;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00500}00500\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00501}00501\ \ \ \ \ \ \ \ \ \ \ log\_nfa\_new\ =\ circ\_ring\_nfa(\ angles,\ used,\ \&r,\ x,\ y,\ grad\_dir,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00502}00502\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *tmp\_buff,\ \&size\_tmp\_buff,\ *label,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00503}00503\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ logNT\_ell\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00504}00504\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ log\_nfa\_new\ >\ log\_nfa\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00505}00505\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00506}00506\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cring-\/>\mbox{\hyperlink{structRing_ad1515daed95ba43fd919fddcf3144d1a}{wmin}}\ +=\ delta;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00507}00507\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ log\_nfa\ =\ log\_nfa\_new;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00508}00508\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ switch\ addresses\ of\ the\ pointers\ to\ the\ local\ and\ tmp\ buffer\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00509}00509\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*swap\_ptr\_pts(\ local\_buff,\ tmp\_buff\ );}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00510}00510\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ (*size\_local\_buff)\ =\ size\_tmp\_buff;*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00511}00511\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00512}00512\ \ \ \ \ \ \ \ \ \}\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00513}00513\ \ \ \ \ \textcolor{comment}{/*\}\ */}\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00514}00514\ \ \ \textcolor{keywordflow}{if}\ (\ !\ \mbox{\hyperlink{ring_8c_a135c65c3fc6ffdec3f39ea806588958c}{check\_circ\_ring}}(cring)\ )\ \textcolor{keywordflow}{return}\ -\/logNT\_ell;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00515}00515\ \ \ \textcolor{keywordflow}{return}\ log\_nfa;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00516}00516\ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00517}00517\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00518}00518\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00519}00519\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00520}00520\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ FUNCTIONS\ FOR\ ELLIPSE\ RING\ VALIDATION\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00521}00521\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00522}00522\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00523}00523\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00524}00524\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00529}00529\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ ell\_count\_error(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ angles,\ \mbox{\hyperlink{structImageInt}{PImageInt}}\ used,\ \mbox{\hyperlink{structRing}{Ring}}\ *ering,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00530}00530\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ *foci,\ \textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{int}\ grad\_dir,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00531}00531\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ *buff,\ \textcolor{keywordtype}{int}\ *size\_buff,\ \textcolor{keywordtype}{int}\ label,\ \textcolor{keywordtype}{int}\ *pts,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00532}00532\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ *err\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00533}00533\ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00534}00534\ \ \ \textcolor{keywordtype}{int}\ xx,\ yy,\ i,\ adr;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00535}00535\ \ \ \textcolor{keywordtype}{double}\ theta;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00536}00536\ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00537}00537\ \ \ \textcolor{comment}{/*\ check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00538}00538\ \ \ \textcolor{keywordflow}{if}(\ (angles\ ==\ NULL)\ ||\ (angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00539}00539\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_count\_error:\ invalid\ input\ 'angles'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00540}00540\ \ \ \textcolor{keywordflow}{if}(\ (used\ ==\ NULL)\ ||\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00541}00541\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_count\_error:\ invalid\ input\ 'used'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00542}00542\ \ \ \textcolor{keywordflow}{if}(\ ering\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_count\_error:\ invalid\ input\ ring."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00543}00543\ \ \ \textcolor{keywordflow}{if}(\ foci\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_count\_error:\ invalid\ input\ foci."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00544}00544\ \ \ \textcolor{keywordflow}{if}(\ buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_count\_error:\ invalid\ local\ buffer."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00545}00545\ \ \ \textcolor{keywordflow}{if}(\ size\_buff\ ==\ NULL\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00546}00546\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_count\_error:\ 'size\_local\_buff'\ must\ be\ non\ null."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00547}00547\ \ \ \textcolor{keywordflow}{if}(\ label\ <=\ 1\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_count\_error:\ forbidden\ label\ value."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00548}00548\ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00549}00549\ \ \ *pts\ =\ 0;\ *err\ =\ 0.0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00550}00550\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00551}00551\ \ \ \textcolor{comment}{/*\ To\ compute\ the\ error,\ visit\ each\ pixel\ in\ the\ ring\ in\ a\ region\ growing\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00552}00552\ \textcolor{comment}{\ \ \ \ \ manner\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00553}00553\ \ \ \textcolor{comment}{/*\ First\ make\ sure\ the\ seed\ point\ (x,y)\ is\ inside\ the\ ring;\ if\ not,\ visit\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00554}00554\ \textcolor{comment}{\ \ \ \ \ neighbours\ in\ a\ 3x3\ neighbourhood\ to\ find\ a\ point\ inside\ the\ ring\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00555}00555\ \ \ *size\_buff\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00556}00556\ \ \ \textcolor{keywordflow}{if}(\ \mbox{\hyperlink{ring_8c_ad4da58ff04f79b272727c6bfaf9d433d}{is\_in\_ell\_ring}}(\ ering,\ x,\ y\ )\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00557}00557\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00558}00558\ \ \ \ \ \ \ buff[0].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ =\ x;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00559}00559\ \ \ \ \ \ \ buff[0].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ =\ y;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00560}00560\ \ \ \ \ \ \ used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[\ buff[0].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ *\ used-\/>\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}}\ +\ buff[0].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ ]\ =\ label;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00561}00561\ \ \ \ \ \ \ *size\_buff\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00562}00562\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00563}00563\ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00564}00564\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00565}00565\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ xx=x-\/2;\ xx<=x+2;\ xx++\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00566}00566\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00567}00567\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ yy=y-\/2;\ yy<=y+2;\ yy++\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00568}00568\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ \mbox{\hyperlink{image_8c_a7d75c600cc492bd8efbc1cc0c3819d88}{in\_image}}(\ xx,\ yy,\ used-\/>\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}},\ used-\/>\mbox{\hyperlink{structImageInt_a7e7fdb6b4d76fd619024da6878c27d58}{ysize}}\ )\ \&\&\ \mbox{\hyperlink{ring_8c_ad4da58ff04f79b272727c6bfaf9d433d}{is\_in\_ell\_ring}}(\ ering,\ xx,\ yy\ )\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00569}00569\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00570}00570\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ buff[0].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ =\ xx;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00571}00571\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ buff[0].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ =\ yy;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00572}00572\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[\ buff[0].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ *\ used-\/>\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}}\ +\ buff[0].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ ]\ =\ label;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00573}00573\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *size\_buff\ =\ 1;\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00574}00574\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00575}00575\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00576}00576\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ *size\_buff\ ==\ 1\ )\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00577}00577\ \ \ \ \ \ \ \ \ \}\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00578}00578\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00579}00579\ \ \ \textcolor{keywordflow}{if}(\ *size\_buff\ ==\ 0\ )\ \textcolor{keywordflow}{return};\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00580}00580\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00581}00581\ \ \ \textcolor{keywordflow}{for}(\ i=0;\ i\ <\ *size\_buff;\ i++\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00582}00582\ \ \ \ \ \textcolor{keywordflow}{for}(\ xx=buff[i].x-\/1;\ xx<=buff[i].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}+1;\ xx++\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00583}00583\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\ yy=buff[i].y-\/1;\ yy<=buff[i].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}+1;\ yy++\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00584}00584\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ \mbox{\hyperlink{image_8c_a7d75c600cc492bd8efbc1cc0c3819d88}{in\_image}}(\ xx,\ yy,\ used-\/>\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}},\ used-\/>\mbox{\hyperlink{structImageInt_a7e7fdb6b4d76fd619024da6878c27d58}{ysize}}\ )\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00585}00585\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00586}00586\ \ \ \ \ \ \ \ \ \ \ \ \ adr\ =\ xx\ +\ yy\ *\ used-\/>\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00587}00587\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ check\ if\ the\ point\ has\ already\ been\ used\ or\ visited\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00588}00588\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[adr]\ !=\ \mbox{\hyperlink{misc_8h_abcd0a22ee4346cad5706adb6d2119429}{USED}})\ \&\&\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[adr]\ !=\ label)\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00589}00589\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00590}00590\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ check\ if\ point\ inside\ the\ ellipse\ ring\ */}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00591}00591\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ \mbox{\hyperlink{ring_8c_ad4da58ff04f79b272727c6bfaf9d433d}{is\_in\_ell\_ring}}(\ ering,\ xx,\ yy\ )\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00592}00592\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00593}00593\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ get\ angle\ normal\ to\ the\ ellipse\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00594}00594\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ theta\ =\ \mbox{\hyperlink{ring_8c_ab1ba9a1926e5a5587e7f0f8ef583fb90}{ellipse\_normal\_angle}}(\ (\textcolor{keywordtype}{double})xx,\ (\textcolor{keywordtype}{double})yy,\ foci);}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00595}00595\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ check\ if\ gradient\ converges\ or\ diverges\ when\ computing\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00596}00596\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ the\ ideal\ angle\ of\ a\ point\ on\ the\ circle\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00597}00597\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ grad\_dir\ ==\ 0\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00598}00598\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00599}00599\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ theta\ >\ 0\ )\ theta\ =\ -\/\ (\ \mbox{\hyperlink{misc_8h_ae71449b1cc6e6250b91f539153a7a0d3}{M\_PI}}\ -\/\ theta\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00600}00600\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ theta\ =\ \mbox{\hyperlink{misc_8h_ae71449b1cc6e6250b91f539153a7a0d3}{M\_PI}}\ +\ theta;\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00601}00601\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00602}00602\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (*err)\ +=\ \mbox{\hyperlink{misc_8c_a00b6a4c474bea7360859f586ae2e2dea}{norm\_angle\_diff}}(\ angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[adr],\ theta\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00603}00603\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[adr]\ =\ label;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00604}00604\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ buff[*size\_buff].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ =\ xx;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00605}00605\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ buff[*size\_buff].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ =\ yy;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00606}00606\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++(*size\_buff);\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00607}00607\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00608}00608\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00609}00609\ \ \ \ \ \ \ \ \ \ \ \}\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00610}00610\ \ \ *pts\ =\ *size\_buff;\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00611}00611\ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00612}00612\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00613}00613\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00614}00614\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00617}00617\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ ell\_ring\_nfa(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ angles,\ \mbox{\hyperlink{structImageInt}{PImageInt}}\ used,\ \mbox{\hyperlink{structRing}{Ring}}\ *ering,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00618}00618\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ *foci,\ \textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ \textcolor{keywordtype}{int}\ grad\_dir,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00619}00619\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structPoint}{Point}}\ *buff,\ \textcolor{keywordtype}{int}\ *size\_buff,\ \textcolor{keywordtype}{int}\ label,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00620}00620\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ logNT\_ell\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00621}00621\ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00622}00622\ \ \ \textcolor{keywordtype}{int}\ pts;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00623}00623\ \ \ \textcolor{keywordtype}{double}\ err;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00624}00624\ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00625}00625\ \ \ \textcolor{comment}{/*\ check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00626}00626\ \ \ \textcolor{keywordflow}{if}(\ (angles\ ==\ NULL)\ ||\ (angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00627}00627\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_ring\_nfa:\ invalid\ input\ 'angles'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00628}00628\ \ \ \textcolor{keywordflow}{if}(\ (used\ ==\ NULL)\ ||\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00629}00629\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_ring\_nfa:\ invalid\ input\ 'used'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00630}00630\ \ \ \textcolor{keywordflow}{if}(\ ering\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_ring\_nfa:\ invalid\ input\ ring."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00631}00631\ \ \ \textcolor{keywordflow}{if}(\ foci\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_ring\_nfa:\ invalid\ input\ foci."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00632}00632\ \ \ \textcolor{keywordflow}{if}(\ buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_ring\_nfa:\ invalid\ local\ buffer."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00633}00633\ \ \ \textcolor{keywordflow}{if}(\ size\_buff\ ==\ NULL\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00634}00634\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_ring\_nfa:\ 'size\_local\_buff'\ must\ be\ non\ null."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00635}00635\ \ \ \textcolor{keywordflow}{if}(\ label\ <=\ 1\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_ring\_nfa:\ forbidden\ label\ value."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00636}00636\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00637}00637\ \ \ \textcolor{comment}{/*\ count\ additive\ error\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00638}00638\ \ \ ell\_count\_error(\ angles,\ used,\ ering,\ foci,\ x,\ y,\ grad\_dir,\ buff,\ size\_buff,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00639}00639\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ label,\ \&pts,\ \&err\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00640}00640\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00641}00641\ \ \ \textcolor{comment}{/*\ return\ computed\ NFA\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00642}00642\ \ \ \textcolor{keywordflow}{return}\ NFAc(\ pts,\ err,\ logNT\_ell\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00643}00643\ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00644}00644\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00645}00645\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00646}00646\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00649}00649\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{double}\ ell\_ring\_improve(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ angles,\ \mbox{\hyperlink{structImageInt}{PImageInt}}\ used,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00650}00650\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structRing}{Ring}}\ *ering,\ \textcolor{keywordtype}{double}\ *foci,\ \textcolor{keywordtype}{int}\ x,\ \textcolor{keywordtype}{int}\ y,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00651}00651\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ grad\_dir,\ \mbox{\hyperlink{structPoint}{Point}}\ **local\_buff,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00652}00652\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *size\_local\_buff,\ \mbox{\hyperlink{structPoint}{Point}}\ **tmp\_buff,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00653}00653\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *label,\ \textcolor{keywordtype}{double}\ logNT\_ell\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00654}00654\ \{\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00655}00655\ \ \ \textcolor{keywordtype}{double}\ log\_nfa,\ log\_nfa\_new;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00656}00656\ \ \ \textcolor{keywordtype}{double}\ delta\ =\ 0.5;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00657}00657\ \ \ \textcolor{keywordtype}{int}\ size\_tmp\_buff;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00658}00658\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00659}00659\ \ \ \textcolor{comment}{/*\ check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00660}00660\ \ \ \textcolor{keywordflow}{if}(\ (angles\ ==\ NULL)\ ||\ (angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00661}00661\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_ring\_improve:\ invalid\ input\ 'angles'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00662}00662\ \ \ \textcolor{keywordflow}{if}(\ (used\ ==\ NULL)\ ||\ (used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}\ ==\ NULL)\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00663}00663\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_ring\_improve:\ invalid\ input\ 'used'\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00664}00664\ \ \ \textcolor{keywordflow}{if}(\ ering\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_ring\_improve:\ invalid\ input\ ring."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00665}00665\ \ \ \textcolor{keywordflow}{if}(\ foci\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_ring\_improve:\ invalid\ input\ foci."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00666}00666\ \ \ \textcolor{keywordflow}{if}(\ local\_buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_ring\_improve:\ invalid\ local\ buffer."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00667}00667\ \ \ \textcolor{keywordflow}{if}(\ tmp\_buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_ring\_improve:\ invalid\ tmp\ buffer."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00668}00668\ \ \ \textcolor{keywordflow}{if}(\ size\_local\_buff\ ==\ NULL\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00669}00669\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_ring\_improve:\ 'size\_local\_buff'\ must\ be\ non\ null."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00670}00670\ \ \ \textcolor{keywordflow}{if}(\ *label\ <=\ 1\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ell\_ring\_improve:\ forbidden\ label\ value."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00671}00671\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00672}00672\ \ \ \textcolor{keywordflow}{if}\ (\ !\ \mbox{\hyperlink{ring_8c_aab09e6cf000c148dc5d6c8d3637bcbf1}{check\_ell\_ring}}(ering)\ )\ \textcolor{keywordflow}{return}\ -\/logNT\_ell;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00673}00673\ \ \ (*label)++;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00674}00674\ \ \ *size\_local\_buff\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00675}00675\ \ \ log\_nfa\ =\ ell\_ring\_nfa(\ angles,\ used,\ ering,\ foci,\ x,\ y,\ grad\_dir,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00676}00676\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *local\_buff,\ size\_local\_buff,\ *label,\ logNT\_ell\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00677}00677\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00678}00678\ \ \ \textcolor{comment}{/*\ try\ to\ improve\ the\ ring,\ by\ reducing\ width;\ first\ reduce\ wmax\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00679}00679\ \ \ \mbox{\hyperlink{structRing}{Ring}}\ r;\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00680}00680\ \ \ \mbox{\hyperlink{ring_8c_aa22a2072f90b5e5ed51c29d5081c4faf}{copy\_ring}}(\ ering,\ \&r\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00681}00681\ \ \ \textcolor{comment}{/*for(\ n=0;\ n<10;\ n++\ )}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00682}00682\ \textcolor{comment}{\ \ \ \ \{\ */}\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00683}00683\ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\ r.\mbox{\hyperlink{structRing_a54612b6d232db5e1a58ae8b2f26b1df4}{wmax}}-\/delta\ >\ 0.0)\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00684}00684\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00685}00685\ \ \ \ \ \ \ \ \ \ \ r.\mbox{\hyperlink{structRing_a54612b6d232db5e1a58ae8b2f26b1df4}{wmax}}\ -\/=\ delta;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00686}00686\ \ \ \ \ \ \ \ \ \ \ size\_tmp\_buff\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00687}00687\ \ \ \ \ \ \ \ \ \ \ (*label)++;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00688}00688\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00689}00689\ \ \ \ \ \ \ \ \ \ \ log\_nfa\_new\ =\ ell\_ring\_nfa(\ angles,\ used,\ \&r,\ foci,\ x,\ y,\ grad\_dir,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00690}00690\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *tmp\_buff,\ \&size\_tmp\_buff,\ *label,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00691}00691\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ logNT\_ell\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00692}00692\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ log\_nfa\_new\ >\ log\_nfa\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00693}00693\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00694}00694\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ering-\/>\mbox{\hyperlink{structRing_a54612b6d232db5e1a58ae8b2f26b1df4}{wmax}}\ -\/=\ delta;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00695}00695\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ log\_nfa\ =\ log\_nfa\_new;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00696}00696\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ switch\ addresses\ of\ the\ pointers\ to\ the\ local\ and\ tmp\ buffer\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00697}00697\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*swap\_ptr\_pts(\ local\_buff,\ tmp\_buff\ );}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00698}00698\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ (*size\_local\_buff)\ =\ size\_tmp\_buff;*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00699}00699\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00700}00700\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00701}00701\ \ \ \ \ \textcolor{comment}{/*\}\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00702}00702\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00703}00703\ \ \ \textcolor{comment}{/*\ now\ try\ to\ reduce\ wmin\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00704}00704\ \ \ \mbox{\hyperlink{ring_8c_aa22a2072f90b5e5ed51c29d5081c4faf}{copy\_ring}}(\ ering,\ \&r\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00705}00705\ \ \ \textcolor{comment}{/*for(\ n=0;\ n<10;\ n++\ )}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00706}00706\ \textcolor{comment}{\ \ \ \ \{\ */}\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00707}00707\ \ \ \ \ \ \ \textcolor{keywordflow}{while}(\ r.\mbox{\hyperlink{structRing_ad1515daed95ba43fd919fddcf3144d1a}{wmin}}\ +\ delta\ <\ 0.0)\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00708}00708\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00709}00709\ \ \ \ \ \ \ \ \ \ \ r.\mbox{\hyperlink{structRing_ad1515daed95ba43fd919fddcf3144d1a}{wmin}}\ +=\ delta;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00710}00710\ \ \ \ \ \ \ \ \ \ \ size\_tmp\_buff\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00711}00711\ \ \ \ \ \ \ \ \ \ \ (*label)++;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00712}00712\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00713}00713\ \ \ \ \ \ \ \ \ \ \ log\_nfa\_new\ =\ ell\_ring\_nfa(\ angles,\ used,\ \&r,\ foci,\ x,\ y,\ grad\_dir,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00714}00714\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *tmp\_buff,\ \&size\_tmp\_buff,\ *label,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00715}00715\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ logNT\_ell\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00716}00716\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ log\_nfa\_new\ >\ log\_nfa\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00717}00717\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00718}00718\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ering-\/>\mbox{\hyperlink{structRing_ad1515daed95ba43fd919fddcf3144d1a}{wmin}}\ +=\ delta;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00719}00719\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ log\_nfa\ =\ log\_nfa\_new;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00720}00720\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ switch\ addresses\ of\ the\ pointers\ to\ the\ local\ and\ tmp\ buffer\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00721}00721\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*swap\_ptr\_pts(\ local\_buff,\ tmp\_buff\ );}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00722}00722\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ (*size\_local\_buff)\ =\ size\_tmp\_buff;\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00723}00723\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00724}00724\ \ \ \ \ \ \ \ \ \}\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00725}00725\ \ \ \ \textcolor{comment}{/*\ \}\ */}\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00726}00726\ \ \ \textcolor{keywordflow}{if}\ (\ !\ \mbox{\hyperlink{ring_8c_aab09e6cf000c148dc5d6c8d3637bcbf1}{check\_ell\_ring}}(ering)\ )\ \textcolor{keywordflow}{return}\ -\/logNT\_ell;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00727}00727\ \ \ \textcolor{keywordflow}{return}\ log\_nfa;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00728}00728\ \}\ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00729}00729\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00730}00730\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00731}00731\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00732}00732\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ BUILD\ OUTPUT\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00733}00733\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00734}00734\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00735}00735\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00736}00736\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00739}\mbox{\hyperlink{elsdc_8c_a14c0968bea725a2e334332bc4ac3c6ed}{00739}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{elsdc_8c_a14c0968bea725a2e334332bc4ac3c6ed}{add\_poly\_out}}(\ \mbox{\hyperlink{structPolygon}{Polygon}}\ **poly\_out,\ \mbox{\hyperlink{structPolyRect}{PolyRect}}\ *poly,\ \textcolor{keywordtype}{int}\ poly\_count,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00740}00740\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *poly\_count\_max,\ \textcolor{keywordtype}{int}\ **labels,\ \textcolor{keywordtype}{int}\ lbl\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00741}00741\ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00742}00742\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00743}00743\ \ \ \textcolor{keywordflow}{if}(\ poly\_count>*poly\_count\_max\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00744}00744\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00745}00745\ \ \ \ \ \ \ *poly\_out\ =\ (\mbox{\hyperlink{structPolygon}{Polygon}}\ *)\ realloc\ (\ *poly\_out,\ (2*poly\_count)\ *}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00746}00746\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structPolygon}{Polygon}})\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00747}00747\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00748}00748\ \ \ \ \ \ \ *labels\ =\ (\textcolor{keywordtype}{int}\ *)\ realloc\ (\ *labels,\ (2*poly\_count)\ *\ \textcolor{keyword}{sizeof}(int)\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00749}00749\ \ \ \ \ \ \ *poly\_count\_max\ =\ 2\ *\ poly\_count;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00750}00750\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00751}00751\ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00752}00752\ \ \ \mbox{\hyperlink{polygon_8c_accef77c06a440cd1d9baf927ae7274f9}{polyrect2polygon}}(\ poly,\ \&(\ (*poly\_out)[poly\_count-\/1]\ )\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00753}00753\ \ \ (*labels)[poly\_count-\/1]\ =\ lbl;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00754}00754\ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00755}00755\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00756}00756\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00757}00757\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00760}\mbox{\hyperlink{elsdc_8c_a3d4097d23c7734e16d559485b7ecfaab}{00760}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{elsdc_8c_a3d4097d23c7734e16d559485b7ecfaab}{add\_ell\_out}}(\ \mbox{\hyperlink{structRing}{Ring}}\ **ell\_out,\ \mbox{\hyperlink{structRing}{Ring}}\ *ell,\ \textcolor{keywordtype}{int}\ ell\_count,\ \textcolor{keywordtype}{int}\ *ell\_count\_max,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00761}00761\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ **labels,\ \textcolor{keywordtype}{int}\ lbl\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00762}00762\ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00763}00763\ \ \ \textcolor{keywordflow}{if}(\ ell\_count>*ell\_count\_max\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00764}00764\ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00765}00765\ \ \ \ \ \ \ *ell\_out\ =\ (\ \mbox{\hyperlink{structRing}{Ring}}\ *)\ realloc\ (\ *ell\_out,\ (2*ell\_count)\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structRing}{Ring}})\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00766}00766\ \ \ \ \ \ \ *labels\ =\ \ (\ \textcolor{keywordtype}{int}\ *)\ realloc\ (\ *labels,\ (2*ell\_count)\ *\ \textcolor{keyword}{sizeof}(int)\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00767}00767\ \ \ \ \ \ \ *ell\_count\_max\ =\ 2\ *\ ell\_count;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00768}00768\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00769}00769\ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00770}00770\ \ \ \mbox{\hyperlink{ring_8c_aa22a2072f90b5e5ed51c29d5081c4faf}{copy\_ring}}(\ ell,\ \&(\ (*ell\_out)[ell\_count-\/1]\ )\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00771}00771\ \ \ (*labels)[ell\_count-\/1]\ =\ lbl;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00772}00772\ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00773}00773\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00774}00774\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00775}00775\ \textcolor{comment}{/*-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00780}\mbox{\hyperlink{elsdc_8c_a622977efb42238086935cbcd5e6704ee}{00780}}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{elsdc_8c_a622977efb42238086935cbcd5e6704ee}{ELSDc}}(\ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ in,\ \textcolor{keywordtype}{int}\ *ell\_count,\ \mbox{\hyperlink{structRing}{Ring}}\ **ell\_out,\ \textcolor{keywordtype}{int}\ **ell\_labels,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00781}00781\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *poly\_count,\ \mbox{\hyperlink{structPolygon}{Polygon}}\ **poly\_out,\ \textcolor{keywordtype}{int}\ **poly\_labels,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00782}00782\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structImageInt}{PImageInt}}\ out\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00783}00783\ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00784}00784\ \ \ \textcolor{keywordtype}{double}\ ang\_th\ =\ 22.5;\ \ \ \ \ \textcolor{comment}{/*\ gradient\ angle\ tolerance\ in\ degrees\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00785}00785\ \ \ \textcolor{keywordtype}{double}\ prec;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ radian\ precision\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00786}00786\ \ \ \textcolor{keywordtype}{double}\ p;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00787}00787\ \ \ \textcolor{keywordtype}{double}\ rho\ =\ 5.0;\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ pixels\ with\ gradient\ magnitude\ under\ this\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00788}00788\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ threshold\ are\ not\ considered,\ as\ their\ (weak)\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00789}00789\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ orientation\ might\ be\ too\ affected\ by\ noise\ \ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00790}00790\ \ \ \textcolor{keywordtype}{int}\ grad\_dirc;\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ direction\ of\ the\ gradient\ wrt\ center\ of\ the\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00791}00791\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ circle\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00792}00792\ \ \ \textcolor{keywordtype}{int}\ grad\_dire;\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ direction\ of\ the\ gradient\ wrt\ center\ of\ the\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00793}00793\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ellipse\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00794}00794\ \ \ \textcolor{keywordtype}{double}\ density\_th\ =\ 0.7;\ \ \textcolor{comment}{/*\ minimum\ density\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00795}00795\ \ \ \textcolor{keywordtype}{void}\ *mem\_p;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ parameters\ used\ for\ sorting\ */}\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00796}00796\ \ \ \textcolor{keywordtype}{int}\ n\_bins\ =\ 1024;\ \ \ \ \ \ \ \ \textcolor{comment}{/*\ (binning)\ pixels\ according\ to\ */}\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00797}00797\ \ \ \textcolor{keywordtype}{double}\ max\_grad\ =\ 255.0;\ \ \textcolor{comment}{/*\ to\ their\ gradient\ magnitude\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00798}00798\ \ \ \mbox{\hyperlink{structlist}{CoordList}}\ *list\_p;\ \ \ \ \ \ \ \ \textcolor{comment}{/*\ list\ of\ sorted\ pixels\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00799}00799\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ xsize,ysize;\ \textcolor{comment}{/*\ image\ size\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00800}00800\ \ \ \textcolor{keywordtype}{double}\ mlog10eps\ =\ 0.0;\ \ \ \textcolor{comment}{/*\ minus\ log\ of\ the\ number\ of\ accepted\ false\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00801}00801\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ positives\ (\ eps=1\ )\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00802}00802\ \ \ \textcolor{keywordtype}{int}\ min\_size\_seg;\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ minimum\ size\ of\ a\ region\ that\ could\ contain\ a\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00803}00803\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ meaningful\ segment\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00804}00804\ \ \ \textcolor{keywordtype}{int}\ min\_size\_ell;\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ minimum\ size\ of\ a\ region\ that\ could\ contain\ a\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00805}00805\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ meaningful\ ellipse\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00806}00806\ \ \ \textcolor{keywordtype}{int}\ min\_size\_poly;\ \ \ \ \ \ \ \ \textcolor{comment}{/*\ minimum\ size\ of\ a\ region\ that\ could\ contain\ a\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00807}00807\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ meaningful\ ellipse\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00808}00808\ \ \ \textcolor{keywordtype}{double}\ msize;\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ max\ value\ allowed\ for\ circle/ellipse\ radius\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00809}00809\ \ \ \textcolor{keywordtype}{double}\ logNT\_ell;\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ log\ of\ the\ number\ of\ tests\ for\ elliptical\ arcs\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00810}00810\ \ \ \textcolor{keywordtype}{double}\ logNT\_seg;\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ log\ of\ the\ number\ of\ tests\ for\ line\ segments\ */}\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00811}00811\ \ \ \textcolor{keywordtype}{double}\ logNT\_poly;\ \ \ \ \ \ \ \ \textcolor{comment}{/*\ log\ of\ the\ number\ of\ tests\ for\ polygons\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00812}00812\ \ \ \textcolor{keywordtype}{double}\ log\_nfa,\ best\_nfa;\ \textcolor{comment}{/*\ NFA\ values\ using\ the\ continuous\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00813}00813\ \ \ \textcolor{keywordtype}{void}\ *best\_feature;\ \ \ \ \ \ \ \textcolor{comment}{/*\ pointer\ to\ best\ feature\ found\ so\ far\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00814}00814\ \ \ \textcolor{keywordtype}{char}\ best\_type\ =\ \textcolor{charliteral}{'0'};\ \ \ \ \ \textcolor{comment}{/*\ type\ of\ best\ feature;\ 'p'\ for\ polygon,\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00815}00815\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 'e'\ for\ ellipse\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00816}00816\ \ \ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ imgauss;\ \ \ \ \ \textcolor{comment}{/*\ smooth\ version\ of\ the\ original\ image,\ used\ during}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00817}00817\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ candidate\ selection\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00818}00818\ \ \ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ angles;\ \ \ \ \ \ \textcolor{comment}{/*\ gradient\ angles\ smooth\ image\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00819}00819\ \ \ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ angles0;\ \ \ \ \ \textcolor{comment}{/*\ gradient\ angles\ original\ image\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00820}00820\ \ \ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ gradmag;\ \ \ \ \ \textcolor{comment}{/*\ gradient\ magnitude\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00821}00821\ \ \ \mbox{\hyperlink{structImageDouble}{PImageDouble}}\ gradx,\ grady;\textcolor{comment}{/*\ gradient\ orientations\ on\ Ox\ and\ Oy\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00822}00822\ \ \ \mbox{\hyperlink{structImageInt}{PImageInt}}\ used;\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ image\ to\ mark\ already\ used\ points\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00823}00823\ \ \ \mbox{\hyperlink{structPolyRect}{PolyRect}}\ *poly;\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ parameters\ of\ polygon\ as\ list\ of\ rectangles\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00824}00824\ \ \ \mbox{\hyperlink{structPolyRect}{PolyRect}}\ *seg;\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ one\ rectangle\ is\ a\ particular\ polygon\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00825}00825\ \ \ \mbox{\hyperlink{structRing}{Ring}}\ ering,\ cring;\ \ \ \ \ \ \ \ \textcolor{comment}{/*\ ring\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00826}00826\ \ \ \textcolor{keywordtype}{double}\ *buff\_fit;\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ buffer\ zone\ needed\ for\ fitting\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00827}00827\ \ \ \textcolor{keywordtype}{int}\ size\_buff\_fit;\ \ \ \ \ \ \ \ \textcolor{comment}{/*\ size\ of\ the\ currently\ allocated\ memory\ for\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00828}00828\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ the\ buffer\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00829}00829\ \ \ \mbox{\hyperlink{structPoint}{Point}}\ *reg;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ list\ of\ points\ gathered\ during\ curve\ growing\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00830}00830\ \ \ \textcolor{keywordtype}{int}\ reg\_size;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00831}00831\ \ \ \mbox{\hyperlink{structPoint}{Point}}\ *best\_buff;\ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ buffer\ to\ store\ the\ points\ of\ the\ most\ meaningful}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00832}00832\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ primitive\ found\ so\ far\ (among\ segment,\ polygon,\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00833}00833\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ellipse,\ circle)\ in\ one\ iteration\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00834}00834\ \ \ \textcolor{keywordtype}{int}\ size\_best\_buff;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00835}00835\ \ \ \mbox{\hyperlink{structPoint}{Point}}\ *new\_buff;\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ buffer\ to\ store\ the\ points\ of\ a\ new\ primitive;\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00836}00836\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\ the\ new\ primitive\ is\ more\ meaningful\ than\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00837}00837\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ the\ most\ meaningful\ primitive\ found\ so\ far,\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00838}00838\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ deem\ new\ primitive\ as\ most\ meaningful\ by\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00839}00839\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ switching\ the\ addresses\ with\ best\_buff\ \ \ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00840}00840\ \ \ \textcolor{keywordtype}{int}\ size\_new\_buff;\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00841}00841\ \ \ \mbox{\hyperlink{structPoint}{Point}}\ *tmp\_buff;\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ buffer\ to\ store\ the\ points\ of\ a\ new\ version\ of\ a}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00842}00842\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ primitive,\ computed\ during\ improve\ operation;\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00843}00843\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\ the\ new\ version\ is\ more\ meaningful\ than\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00844}00844\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ the\ most\ meaningful\ version\ found\ so\ far,\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00845}00845\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ deem\ new\ version\ as\ most\ meaningful\ by\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00846}00846\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ switching\ the\ addresses\ with\ new\_buff\ \ \ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00847}00847\ \ \ \textcolor{keywordtype}{int}\ ell\_count\_max\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00848}00848\ \ \ \textcolor{keywordtype}{int}\ poly\_count\_max\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00849}00849\ \ \ \textcolor{keywordtype}{int}\ adr;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00850}00850\ \ \ \textcolor{keywordtype}{double}\ cparam[5];}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00851}00851\ \ \ \textcolor{keywordtype}{double}\ eparam[5];\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00852}00852\ \ \ \textcolor{keywordtype}{double}\ pext1[2],\ pext2[2],\ ang0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00853}00853\ \ \ \textcolor{keywordtype}{int}\ label\ =\ 2;\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ 0\ is\ NOTUSED,\ 1\ is\ USED,\ so\ 'label'\ must\ go\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00854}00854\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ upward\ from\ 2\ */}\ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00855}00855\ \ \ \textcolor{keywordtype}{int}\ label\_meaningful\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00856}00856\ \ \ \textcolor{keywordtype}{double}\ spir;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00857}00857\ \ \ \textcolor{keywordtype}{double}\ foci[4];}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00858}00858\ \ \ \textcolor{comment}{/*int\ i;*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00859}00859\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00860}00860\ \ \ \textcolor{comment}{/*\ check\ parameters\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00861}00861\ \ \ \textcolor{keywordflow}{if}(\ (in\ ==\ NULL)\ ||\ (in-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}\ ==\ NULL)\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ELSDc:\ invalid\ input\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00862}00862\ \ \ \textcolor{keywordflow}{if}(\ (out\ ==\ NULL)\ ||\ (out-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}\ ==\ NULL)\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00863}00863\ \ \ \ \ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ELSDc:\ invalid\ output\ label\ image."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00864}00864\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00865}00865\ \ \ \textcolor{comment}{/*\ allocate\ and\ init\ variables\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00866}00866\ \ \ prec\ =\ \mbox{\hyperlink{misc_8h_ae71449b1cc6e6250b91f539153a7a0d3}{M\_PI}}*ang\_th/180.0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00867}00867\ \ \ p\ =\ ang\_th/180.0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00868}00868\ \ \ xsize\ =\ in-\/>\mbox{\hyperlink{structImageDouble_aa4b0263c533c5ce471067bd5ede24477}{xsize}};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00869}00869\ \ \ ysize\ =\ in-\/>\mbox{\hyperlink{structImageDouble_a7e7fdb6b4d76fd619024da6878c27d58}{ysize}};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00870}00870\ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00871}00871\ \ \ \textcolor{comment}{/*\ allocate\ matrix\ to\ store\ elements\ of\ the\ design\ matrix\ used\ in\ conic}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00872}00872\ \textcolor{comment}{\ \ \ \ \ fitting\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00873}00873\ \ \ buff\_fit\ =\ (\textcolor{keywordtype}{double}*)\ malloc\ (\ \textcolor{keyword}{sizeof}\ (\textcolor{keywordtype}{double})\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00874}00874\ \ \ size\_buff\_fit\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00875}00875\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00876}00876\ \ \ \textcolor{comment}{/*\ allocate\ buffers\ to\ store\ point\ coordinates\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00877}00877\ \ \ reg\ =\ (\mbox{\hyperlink{structPoint}{Point}}\ *)\ malloc(\ xsize\ *\ ysize\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structPoint}{Point}})\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00878}00878\ \ \ \textcolor{keywordflow}{if}(\ reg\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ELSDc:\ not\ enough\ memory."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00879}00879\ \ \ best\_buff\ =\ (\mbox{\hyperlink{structPoint}{Point}}\ *)\ malloc(\ xsize\ *\ ysize\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structPoint}{Point}})\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00880}00880\ \ \ \textcolor{keywordflow}{if}(\ best\_buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ELSDc:\ not\ enough\ memory."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00881}00881\ \ \ new\_buff\ =\ (\mbox{\hyperlink{structPoint}{Point}}\ *)\ malloc(\ xsize\ *\ ysize\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structPoint}{Point}})\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00882}00882\ \ \ \textcolor{keywordflow}{if}(\ new\_buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ELSDc:\ not\ enough\ memory."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00883}00883\ \ \ tmp\_buff\ =\ (\mbox{\hyperlink{structPoint}{Point}}\ *)\ malloc(\ xsize\ *\ ysize\ *\ \textcolor{keyword}{sizeof}(\mbox{\hyperlink{structPoint}{Point}})\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00884}00884\ \ \ \textcolor{keywordflow}{if}(\ tmp\_buff\ ==\ NULL\ )\ \mbox{\hyperlink{misc_8c_aad9796c174f7ef5d226cd169f2520fd5}{error}}(\textcolor{stringliteral}{"{}ELSDc:\ not\ enough\ memory."{}});}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00885}00885\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00886}00886\ \ \ used\ =\ \mbox{\hyperlink{image_8c_aa54fa4ed5a519b86fb3264668ff6655f}{new\_PImageInt\_ini}}(\ xsize,\ ysize,\ \mbox{\hyperlink{misc_8h_a8a397aec99143b8dcf8e553c0115eb42}{NOTUSED}}\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00887}00887\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00888}00888\ \ \ \textcolor{comment}{/*\ Number\ of\ tests\ for\ ellipse\ arcs.\ We\ must\ count\ (3*xsize)*(3*ysize)\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00889}00889\ \textcolor{comment}{\ \ \ \ \ possible\ values\ for\ the\ center,\ as\ center\ can\ be\ outside\ the\ image\ too,}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00890}00890\ \textcolor{comment}{\ \ \ \ \ (xsize*ysize)\ possible\ values\ for\ the\ two\ axes,\ sqrt(xsize*ysize)\ possible}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00891}00891\ \textcolor{comment}{\ \ \ \ \ values\ for\ orientation,\ sqrt(xsize*ysize)\ possible\ values\ for\ width,\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00892}00892\ \textcolor{comment}{\ \ \ \ \ (xsize*ysize)\ possible\ values\ for\ delimiting\ angles.\ This\ makes\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00893}00893\ \textcolor{comment}{\ \ \ \ \ 9*(xsize*ysize)\string^4.\ Since\ we\ have\ polygons\ and\ ellipses,\ i.e.\ two\ families,}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00894}00894\ \textcolor{comment}{\ \ \ \ \ we\ must\ multiply\ this\ by\ 2.\ So\ NT\_ell\ =\ 2*9*(xsize*ysize)\string^4.\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00895}00895\ \textcolor{comment}{\ \ \ \ \ In\ log,\ we\ get:\ \ \ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00896}00896\ \ \ logNT\_ell\ =\ 4.0\ *\ (\ log10(\ (\textcolor{keywordtype}{double})xsize\ )\ +\ log10(\ (\textcolor{keywordtype}{double})ysize\ )\ )\ +\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00897}00897\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{misc_8h_a77cf8b4c639f547ffdf219b26ecd79a7}{LOG10\_9}}\ +\ \mbox{\hyperlink{misc_8h_a3db2b368b81b5e26dbd97b5f47ac979d}{LOG10\_2}};\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00898}00898\ \ \ min\_size\_ell\ =\ (int)(\ (-\/logNT\_ell-\/mlog10eps)\ /\ log10(p)\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00899}00899\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00900}00900\ \ \ logNT\_seg\ =\ 2.5\ *\ (log10((\textcolor{keywordtype}{double})xsize)\ +\ log10((\textcolor{keywordtype}{double})ysize)\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00901}00901\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ +\ \mbox{\hyperlink{misc_8h_a3db2b368b81b5e26dbd97b5f47ac979d}{LOG10\_2}};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00902}00902\ \ \ min\_size\_seg\ =\ (int)(\ (-\/logNT\_seg\ -\/\ mlog10eps)\ /\ log10(p)\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00903}00903\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00904}00904\ \ \ \textcolor{comment}{/*\ perform\ gaussian\ smoothing\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00905}00905\ \ \ imgauss\ =\ \mbox{\hyperlink{gauss_8c_a5e6f7e6e45933ad48a9c61dff80bb52e}{gaussian\_sampler}}(\ in,\ 1.0,\ 0.6\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00906}00906\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00907}00907\ \ \ \textcolor{comment}{/*\ compute\ gradient\ magnitude\ and\ orientation\ \ for\ the\ smooth\ image\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00908}00908\ \ \ \mbox{\hyperlink{image_8c_a0312c9c68ef16da181121d5f105caf33}{img\_gradient\_sort}}(\ imgauss,\ rho,\ \&list\_p,\ \&mem\_p,\ n\_bins,\ max\_grad,\ \&angles,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00909}00909\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&gradmag,\ \&gradx,\ \&grady\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00910}00910\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00911}00911\ \ \ \textcolor{comment}{/*\ compute\ gradient\ orientation\ for\ the\ original\ image\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00912}00912\ \ \ angles0\ =\ \mbox{\hyperlink{image_8c_a51ef0a087c0699dffd084d8930fa7377}{img\_gradient\_angle}}(\ in,\ rho\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00913}00913\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00914}00914\ \ \ \textcolor{comment}{/*\ input\ image\ not\ needed\ any\ more;\ free\ it\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00915}00915\ \ \ \mbox{\hyperlink{image_8c_a65f922be2f5afbbcdb04645cb8f8bbfb}{free\_PImageDouble}}(in);}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00916}00916\ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00917}00917\ \ \ msize\ =\ \mbox{\hyperlink{misc_8h_a24e753bacac6be5f30e18f8a2bdefda4}{max}}(xsize,ysize);}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00918}00918\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00919}00919\ \ \ poly\ =\ \mbox{\hyperlink{polygon_8c_a6f6ebc705a3f6b7de7abc4c51f5c5e41}{new\_polyrect}}();}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00920}00920\ \ \ seg\ =\ \mbox{\hyperlink{polygon_8c_a6f6ebc705a3f6b7de7abc4c51f5c5e41}{new\_polyrect}}();}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00921}00921\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00922}00922\ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00923}00923\ \ \ \textcolor{comment}{/*\ begin\ primitive\ detection\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00924}00924\ \ \ \textcolor{keywordflow}{for}(\ ;\ list\_p;\ list\_p\ =\ list\_p-\/>\mbox{\hyperlink{structlist_a7d9504c931be4ef8f9755e0065d27489}{next}}\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00925}00925\ \ \ \ \ \{\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00926}00926\ \ \ \ \ \ \ adr\ =\ list\_p-\/>\mbox{\hyperlink{structlist_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ *\ used-\/>\mbox{\hyperlink{structImageInt_aa4b0263c533c5ce471067bd5ede24477}{xsize}}\ +\ list\_p-\/>\mbox{\hyperlink{structlist_a6150e0515f7202e2fb518f7206ed97dc}{x}};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00927}00927\ \ \ \ \ \ \ \textcolor{comment}{/*\ only\ pixels\ that\ haven't\ been\ used\ already\ can\ be\ seed\ pixels\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00928}00928\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ used-\/>\mbox{\hyperlink{structImageInt_ac103627c1ad15cbec2f22d0abe6d54b6}{data}}[adr]\ ==\ \mbox{\hyperlink{misc_8h_abcd0a22ee4346cad5706adb6d2119429}{USED}}\ )\ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00929}00929\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00930}00930\ \ \ \ \ \ \ \textcolor{comment}{/*\ only\ pixels\ with\ defined\ gradient\ can\ be\ seed\ pixels\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00931}00931\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[adr]\ ==\ \mbox{\hyperlink{misc_8h_a18d9edd8c3bfc9c1837a10505dfa037c}{NOTDEF}}\ )\ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00932}00932\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00933}00933\ \ \ \ \ \ \ \textcolor{comment}{/*\ only\ pixels\ that\ are\ local\ maxima\ in\ the\ image\ can\ be\ seed\ pixels\ */}\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00934}00934\ \ \ \ \ \ \ \textcolor{comment}{/*if(\ !local\_max(\ imgauss,\ list\_p-\/>x,\ list\_p-\/>y\ )\ )\ continue;\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00935}00935\ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00936}00936\ \ \ \ \ \ \ \textcolor{comment}{/*\ init\ intra-\/iteration\ variables\ */}\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00937}00937\ \ \ \ \ \ \ log\_nfa\ =\ best\_nfa\ =\ mlog10eps;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00938}00938\ \ \ \ \ \ \ best\_feature\ =\ NULL;\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00939}00939\ \ \ \ \ \ \ best\_type\ =\ \textcolor{charliteral}{'0'};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00940}00940\ \ \ \ \ \ \ size\_best\_buff\ =\ size\_new\_buff\ =\ 0;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00941}00941\ \ \ \ \ \ \ label++;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00942}00942\ \ \ \ \ \ \ spir\ =\ 0.0;\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00943}00943\ \ \ \ \ \ \ \mbox{\hyperlink{polygon_8c_aba9f787d494579b057a533db04a3e79f}{clear\_polyrect}}(poly);}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00944}00944\ \ \ \ \ \ \ \mbox{\hyperlink{polygon_8c_aba9f787d494579b057a533db04a3e79f}{clear\_polyrect}}(seg);}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00945}00945\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00946}00946\ \ \ \ \ \ \ \textcolor{comment}{/*\ set\ initial\ seed\ point\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00947}00947\ \ \ \ \ \ \ reg[0].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ =\ list\_p-\/>\mbox{\hyperlink{structlist_a6150e0515f7202e2fb518f7206ed97dc}{x}};\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00948}00948\ \ \ \ \ \ \ reg[0].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}\ =\ list\_p-\/>\mbox{\hyperlink{structlist_a0a2f84ed7838f07779ae24c5a9086d33}{y}};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00949}00949\ \ \ \ \ \ \ reg\_size\ =\ 1;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00950}00950\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00951}00951\ \ \ \ \ \ \ \textcolor{comment}{/*\ Gather\ points\ aligned\ along\ a\ convex\ polygon\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00952}00952\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !\mbox{\hyperlink{curve__grow_8c_a05a2be0b004173552b1178130d6c7369}{curve\_grow}}(\ gradmag,\ angles,\ used,\ reg,\ \&reg\_size,\ density\_th,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00953}00953\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ prec,\ poly,\ \&label,\ pext2,\ pext1,\ \&spir\ )\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00954}00954\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00955}00955\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00956}00956\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00957}00957\ \ \ \ \ \ \ \textcolor{comment}{/*\ Validate\ polygon\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00958}00958\ \ \ \ \ \ \ \textcolor{comment}{/*\ Compute\ number\ of\ tests\ for\ polygon;\ it\ must\ be\ done\ for\ each\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00959}00959\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ polygon,\ as\ it\ depends\ on\ the\ number\ of\ segments\ in\ the\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00960}00960\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ polygon\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00961}00961\ \ \ \ \ \ \ logNT\_poly\ =\ (\ poly-\/>\mbox{\hyperlink{structPolyRect_a70b5e28b5bc3d1b63a7435c5fe50b837}{dim}}\ +\ 1.5\ )\ *\ (\ log10((\textcolor{keywordtype}{double})xsize\ )\ +\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00962}00962\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ log10(\ (\textcolor{keywordtype}{double})ysize)\ )\ +\ (\ poly-\/>\mbox{\hyperlink{structPolyRect_a70b5e28b5bc3d1b63a7435c5fe50b837}{dim}}+1.0\ )\ *\ \mbox{\hyperlink{misc_8h_a3db2b368b81b5e26dbd97b5f47ac979d}{LOG10\_2}};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00963}00963\ \ \ \ \ \ \ \textcolor{comment}{/*\ polygon's\ best\ validation\ score\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00964}00964\ \ \ \ \ \ \ min\_size\_poly\ =(int)((-\/logNT\_poly\ -\/\ mlog10eps)/log10(p));}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00965}00965\ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00966}00966\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ reg\_size\ >\ min\_size\_poly\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00967}00967\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00968}00968\ \ \ \ \ \ \ \ \ \ \ best\_nfa\ =\ poly\_improve(\ angles0,\ used,\ poly,\ \&best\_buff,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00969}00969\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&size\_best\_buff,\ \&tmp\_buff,\ logNT\_poly\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00970}00970\ \ \ \ \ \ \ \ \ \ \ best\_feature\ =\ (\textcolor{keywordtype}{void}*)poly;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00971}00971\ \ \ \ \ \ \ \ \ \ \ best\_type\ =\ \textcolor{charliteral}{'p'};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00972}00972\ \ \ \ \ \ \ \ \ \}\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00973}00973\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00974}00974\ \ \ \ \ \ \ \textcolor{comment}{/*\ Estimate\ a\ single\ segment\ on\ the\ entire\ set\ and\ validate;\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00975}00975\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ this\ prevents\ from\ considering\ very\ small\ regions\ at\ the\ ends\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00976}00976\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ of\ a\ large\ segment\ as\ new\ segments.\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00977}00977\ \ \ \ \ \ \ get\_seg(\ angles,\ gradmag,\ used,\ seg,\ reg,\ reg\_size,\ prec\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00978}00978\ \ \ \ \ \ \ log\_nfa\ =\ poly\_improve(\ angles0,\ used,\ seg,\ \&new\_buff,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00979}00979\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&size\_new\_buff,\ \&tmp\_buff,\ logNT\_seg\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00980}00980\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00981}00981\ \ \ \ \ \ \ \textcolor{comment}{/*\ if\ more\ meaningful\ than\ previous,\ update\ best\ feature\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00982}00982\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ log\_nfa\ >\ best\_nfa\ \&\&\ size\_new\_buff>min\_size\_seg\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00983}00983\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00984}00984\ \ \ \ \ \ \ \ \ \ \ best\_nfa\ =\ log\_nfa;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00985}00985\ \ \ \ \ \ \ \ \ \ \ best\_feature\ =\ (\textcolor{keywordtype}{void}*)seg;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00986}00986\ \ \ \ \ \ \ \ \ \ \ best\_type\ =\ \textcolor{charliteral}{'p'};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00987}00987\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{misc_8c_a3d503d641b82342adf77b51b2db53225}{swap\_ptr\_pts}}(\ \&best\_buff,\ \&new\_buff\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00988}00988\ \ \ \ \ \ \ \ \ \ \ size\_best\_buff\ =\ size\_new\_buff;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00989}00989\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00990}00990\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00991}00991\ \ \ \ \ \ \ \textcolor{comment}{/*\ Estimate\ circle\ and\ ellipse\ parameters\ (centre,\ axes,\ orientation)}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00992}00992\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ on\ the\ gathered\ pixels\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00993}00993\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ reg\_size\ >\ min\_size\_ell\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00994}00994\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{ellipse__fit_8c_ae12e7701a84e615d38554c37a91e0c2c}{conic\_fit}}(\ gradx,\ grady,\ reg,\ reg\_size,\ \&buff\_fit,\ \&size\_buff\_fit,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00995}00995\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cparam,\ eparam\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00996}00996\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00997}00997\ \ \ \ \ \ \ \textcolor{comment}{/*\ Get\ parameters\ of\ the\ circle\ ring\ and\ compute\ validation\ score\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00998}00998\ \ \ \ \ \ \ ang0\ =\ angles-\/>\mbox{\hyperlink{structImageDouble_a23436a7a2b44939627b59df11be7ad75}{data}}[\ reg[0].\mbox{\hyperlink{structPoint_a0a2f84ed7838f07779ae24c5a9086d33}{y}}*angles-\/>\mbox{\hyperlink{structImageDouble_aa4b0263c533c5ce471067bd5ede24477}{xsize}}\ +\ reg[0].\mbox{\hyperlink{structPoint_a6150e0515f7202e2fb518f7206ed97dc}{x}}\ ];}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l00999}00999\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ \mbox{\hyperlink{ring_8c_aa6025924df802bd4fad9009c72e4587c}{get\_ring}}(\ reg,\ reg\_size,\ ang0,\ cparam,\ pext1,\ pext2,\ \mbox{\hyperlink{ring_8h_a4a49761654ff508d856c6c1b4d132442}{CIRCLE}},}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01000}01000\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ spir,\ \&cring,\ \&grad\_dirc,\ foci,\ msize\ )\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01001}01001\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01002}01002\ \ \ \ \ \ \ \ \ \ \ log\_nfa\ =\ circ\_ring\_improve(\ angles0,\ used,\ \&cring,\ reg[0].x,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01003}01003\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reg[0].y,\ grad\_dirc,\ \&new\_buff,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01004}01004\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&size\_new\_buff,\ \&tmp\_buff,\ \&label,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01005}01005\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ logNT\_ell\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01006}01006\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ if\ more\ meaningful\ than\ previous,\ update\ best\ feature\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01007}01007\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ log\_nfa\ >\ best\_nfa\ \&\&\ size\_new\_buff>min\_size\_ell\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01008}01008\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01009}01009\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ best\_nfa\ =\ log\_nfa;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01010}01010\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ best\_feature\ =\ (\textcolor{keywordtype}{void}*)(\&cring);}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01011}01011\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ best\_type\ =\ \textcolor{charliteral}{'c'};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01012}01012\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{misc_8c_a3d503d641b82342adf77b51b2db53225}{swap\_ptr\_pts}}(\ \&best\_buff,\ \&new\_buff\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01013}01013\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ size\_best\_buff\ =\ size\_new\_buff;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01014}01014\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01015}01015\ \ \ \ \ \ \ \ \ \}\ \textcolor{comment}{/*\ !\ get\ cring\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01016}01016\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01017}01017\ \ \ \ \ \ \ \textcolor{comment}{/*\ Get\ parameters\ of\ the\ ellipse\ ring\ and\ compute\ validation\ score\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01018}01018\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ \mbox{\hyperlink{ring_8c_aa6025924df802bd4fad9009c72e4587c}{get\_ring}}(\ reg,\ reg\_size,\ ang0,\ eparam,\ pext1,\ pext2,\ \mbox{\hyperlink{ring_8h_a4f234426a7c0a5fe82e44dc4c107c123}{ELLIPSE}},}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01019}01019\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ spir,\ \&ering,\ \&grad\_dire,\ foci,\ msize\ )\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01020}01020\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01021}01021\ \ \ \ \ \ \ \ \ \ \ log\_nfa\ =\ ell\_ring\_improve(\ angles0,\ used,\ \&ering,\ foci,\ reg[0].x,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01022}01022\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reg[0].y,\ grad\_dire,\ \&new\_buff,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01023}01023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&size\_new\_buff,\ \&tmp\_buff,\ \&label,}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01024}01024\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ logNT\_ell\ );\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01025}01025\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ if\ more\ meaningful\ than\ previous,\ update\ best\ feature\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01026}01026\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ log\_nfa\ >\ best\_nfa\ \&\&\ size\_new\_buff>min\_size\_ell\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01027}01027\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01028}01028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ best\_nfa\ =\ log\_nfa;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01029}01029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ best\_feature\ =\ (\textcolor{keywordtype}{void}*)(\&ering);}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01030}01030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ best\_type\ =\ \textcolor{charliteral}{'c'};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01031}01031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{misc_8c_a3d503d641b82342adf77b51b2db53225}{swap\_ptr\_pts}}(\ \&best\_buff,\ \&new\_buff\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01032}01032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ size\_best\_buff\ =\ size\_new\_buff;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01033}01033\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01034}01034\ \ \ \ \ \ \ \ \ \}\ \ \textcolor{comment}{/*\ !\ get\ ering\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01035}01035\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01036}01036\ \ \ \ \ \ \ \textcolor{comment}{/*\ At\ this\ point,\ we\ have\ the\ most\ meaninful\ feature\ at\ this\ iteration.\ }}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01037}01037\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ If\ it\ is\ meaningful\ compared\ to\ eps,\ then\ store\ */}\ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01038}01038\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ best\_nfa\ <=\ mlog10eps\ )\ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01039}01039\ \ \ \ \ \ \ label\_meaningful++;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01040}01040\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ best\_type\ ==\ \textcolor{charliteral}{'c'}\ )}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01041}01041\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01042}01042\ \ \ \ \ \ \ \ \ \ \ (*ell\_count)++;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01043}01043\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{elsdc_8c_a3d4097d23c7734e16d559485b7ecfaab}{add\_ell\_out}}(\ ell\_out,\ (\mbox{\hyperlink{structRing}{Ring}}*)best\_feature,\ *ell\_count,\ \&ell\_count\_max,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01044}01044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ell\_labels,\ label\_meaningful\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01045}01045\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*Ring\ *rr\ =\ (Ring*)best\_feature;*/}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01046}01046\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ free(rr);\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01047}01047\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01048}01048\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ best\_type\ ==\ \textcolor{charliteral}{'p'}\ )\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01049}01049\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01050}01050\ \ \ \ \ \ \ \ \ \ \ (*poly\_count)++;}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01051}01051\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{elsdc_8c_a14c0968bea725a2e334332bc4ac3c6ed}{add\_poly\_out}}(\ poly\_out,\ (\mbox{\hyperlink{structPolyRect}{PolyRect}}*)best\_feature,\ *poly\_count,\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01052}01052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&poly\_count\_max,\ poly\_labels,\ label\_meaningful\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01053}01053\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01054}01054\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01055}01055\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01056}01056\ \ \ \ \ \ \ \textcolor{comment}{/*\ Mark\ as\ USED\ the\ pixels\ of\ the\ best\ feature\ in\ 'used'\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01057}01057\ \ \ \ \ \ \ \mbox{\hyperlink{image_8c_a23026d70139f0859bae4a5723784f1fc}{mark\_img\_pts}}(\ used,\ best\_buff,\ 0,\ size\_best\_buff,\ \mbox{\hyperlink{misc_8h_abcd0a22ee4346cad5706adb6d2119429}{USED}}\ );}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01058}01058\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01059}01059\ \ \ \ \ \ \ \textcolor{comment}{/*\ Mark\ label\ of\ the\ best\ feature\ in\ output\ label\ image\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01060}01060\ \ \ \ \ \ \ \mbox{\hyperlink{image_8c_a23026d70139f0859bae4a5723784f1fc}{mark\_img\_pts}}(\ out,\ best\_buff,\ 0,\ size\_best\_buff,\ label\_meaningful\ );\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01061}01061\ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01062}01062\ \ \ \ \ \}\ \ \textcolor{comment}{/*\ !\ for\ loop\ */}}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01063}01063\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01064}01064\ \ \ \textcolor{comment}{/*\ free\ useless\ structures\ and\ arrays\ */}\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01065}01065\ \ \ \mbox{\hyperlink{image_8c_a65f922be2f5afbbcdb04645cb8f8bbfb}{free\_PImageDouble}}(imgauss);}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01066}01066\ \ \ \mbox{\hyperlink{image_8c_a65f922be2f5afbbcdb04645cb8f8bbfb}{free\_PImageDouble}}(gradx);\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01067}01067\ \ \ \mbox{\hyperlink{image_8c_a65f922be2f5afbbcdb04645cb8f8bbfb}{free\_PImageDouble}}(grady);}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01068}01068\ \ \ \mbox{\hyperlink{image_8c_a65f922be2f5afbbcdb04645cb8f8bbfb}{free\_PImageDouble}}(gradmag);\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01069}01069\ \ \ \mbox{\hyperlink{image_8c_a65f922be2f5afbbcdb04645cb8f8bbfb}{free\_PImageDouble}}(angles);}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01070}01070\ \ \ \mbox{\hyperlink{image_8c_a65f922be2f5afbbcdb04645cb8f8bbfb}{free\_PImageDouble}}(angles0);\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01071}01071\ \ \ \mbox{\hyperlink{image_8c_a6ee6bd84de84b9c43d96a7daf535ccd3}{free\_PImageInt}}(used);}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01072}01072\ \ \ free(reg);\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01073}01073\ \ \ free(best\_buff);}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01074}01074\ \ \ free(new\_buff);}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01075}01075\ \ \ free(tmp\_buff);}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01076}01076\ \ \ free(buff\_fit);\ \ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01077}01077\ \ \ free(poly-\/>\mbox{\hyperlink{structPolyRect_aa6c235e6fd60e9c44d47b5ff669a4b07}{rectlist}});\ free(poly);\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01078}01078\ \ \ free(seg-\/>\mbox{\hyperlink{structPolyRect_aa6c235e6fd60e9c44d47b5ff669a4b07}{rectlist}});\ free(seg);\ }
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01079}01079\ \ \ free(mem\_p);}
+\DoxyCodeLine{\Hypertarget{elsdc_8c_source_l01080}01080\ \}}
+
+\end{DoxyCode}

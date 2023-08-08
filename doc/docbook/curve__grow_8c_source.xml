@@ -1,0 +1,724 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_curve__grow_8c_source" xml:lang="en-US">
+<title>curve_grow.c</title>
+<indexterm><primary>src/curve_grow.c</primary></indexterm>
+Go to the documentation of this file.<programlisting linenumbering="unnumbered"><anchor xml:id="_curve__grow_8c_source_1l00001"/>00001 <emphasis role="comment">/*------------------------------------------------------------------------------</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00002"/>00002 <emphasis role="comment"></emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00003"/>00003 <emphasis role="comment">&#32;&#32;Copyright&#32;(c)&#32;2012-2014&#32;viorica&#32;patraucean&#32;(vpatrauc@gmail.com)</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00004"/>00004 <emphasis role="comment">&#32;&#32;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00005"/>00005 <emphasis role="comment">&#32;&#32;This&#32;program&#32;is&#32;free&#32;software:&#32;you&#32;can&#32;redistribute&#32;it&#32;and/or&#32;modify</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00006"/>00006 <emphasis role="comment">&#32;&#32;it&#32;under&#32;the&#32;terms&#32;of&#32;the&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License&#32;as</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00007"/>00007 <emphasis role="comment">&#32;&#32;published&#32;by&#32;the&#32;Free&#32;Software&#32;Foundation,&#32;either&#32;version&#32;3&#32;of&#32;the</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00008"/>00008 <emphasis role="comment">&#32;&#32;License,&#32;or&#32;(at&#32;your&#32;option)&#32;any&#32;later&#32;version.</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00009"/>00009 <emphasis role="comment"></emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00010"/>00010 <emphasis role="comment">&#32;&#32;This&#32;program&#32;is&#32;distributed&#32;in&#32;the&#32;hope&#32;that&#32;it&#32;will&#32;be&#32;useful,</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00011"/>00011 <emphasis role="comment">&#32;&#32;but&#32;WITHOUT&#32;ANY&#32;WARRANTY;&#32;without&#32;even&#32;the&#32;implied&#32;warranty&#32;of</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00012"/>00012 <emphasis role="comment">&#32;&#32;MERCHANTABILITY&#32;or&#32;FITNESS&#32;FOR&#32;A&#32;PARTICULAR&#32;PURPOSE.&#32;See&#32;the</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00013"/>00013 <emphasis role="comment">&#32;&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License&#32;for&#32;more&#32;details.</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00014"/>00014 <emphasis role="comment"></emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00015"/>00015 <emphasis role="comment">&#32;&#32;You&#32;should&#32;have&#32;received&#32;a&#32;copy&#32;of&#32;the&#32;GNU&#32;Affero&#32;General&#32;Public&#32;License</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00016"/>00016 <emphasis role="comment">&#32;&#32;along&#32;with&#32;this&#32;program.&#32;If&#32;not,&#32;see&#32;&lt;http://www.gnu.org/licenses/&gt;.</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00017"/>00017 <emphasis role="comment"></emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00018"/>00018 <emphasis role="comment"></emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00019"/>00019 <emphasis role="comment">&#32;&#32;elsdc.c&#32;-&#32;This&#32;file&#32;belongs&#32;to&#32;ELSDc&#32;project&#32;(Ellipse&#32;and&#32;Line&#32;Segment&#32;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00020"/>00020 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Detector&#32;with&#32;continuous&#32;validation).</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00021"/>00021 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;-&#32;It&#32;contains&#32;the&#32;main&#32;detection&#32;procedure:&#32;curve&#32;growing&#32;and&#32;curve</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00022"/>00022 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;validation.&#32;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00023"/>00023 <emphasis role="comment"></emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00024"/>00024 <emphasis role="comment">------------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00025"/>00025 
+<anchor xml:id="_curve__grow_8c_source_1l00026"/>00026 
+<anchor xml:id="_curve__grow_8c_source_1l00027"/>00027 <emphasis role="preprocessor">#include&#32;&lt;stdio.h&gt;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00028"/>00028 <emphasis role="preprocessor">#include&#32;&lt;stdlib.h&gt;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00029"/>00029 <emphasis role="preprocessor">#include&#32;&lt;math.h&gt;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00030"/>00030 <emphasis role="preprocessor">#include&#32;&lt;float.h&gt;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00031"/>00031 <emphasis role="preprocessor">#include&#32;&lt;string.h&gt;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00032"/>00032 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_misc_8h">misc.h</link>&quot;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00033"/>00033 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_image_8h">image.h</link>&quot;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00034"/>00034 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_rectangle_8h">rectangle.h</link>&quot;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00035"/>00035 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_iterator_8h">iterator.h</link>&quot;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00036"/>00036 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_polygon_8h">polygon.h</link>&quot;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00037"/>00037 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_ring_8h">ring.h</link>&quot;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00038"/>00038 <emphasis role="preprocessor">#include&#32;&quot;<link linkend="_curve__grow_8h">curve_grow.h</link>&quot;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00039"/>00039 
+<anchor xml:id="_curve__grow_8c_source_1l00040"/>00040 
+<anchor xml:id="_curve__grow_8c_source_1l00041"/>00041 
+<anchor xml:id="_curve__grow_8c_source_1l00042"/>00042 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00049"/>00049 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;region_grow(&#32;<link linkend="_structImageDouble">PImageDouble</link>&#32;angles,&#32;<link linkend="_structImageInt">PImageInt</link>&#32;used,&#32;<link linkend="_structPoint">Point</link>&#32;*reg,&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00050"/>00050 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;start,&#32;<emphasis role="keywordtype">int</emphasis>&#32;idx_buff,&#32;<emphasis role="keywordtype">int</emphasis>&#32;*end,&#32;<emphasis role="keywordtype">int</emphasis>&#32;label,&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00051"/>00051 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;label_start,&#32;<emphasis role="keywordtype">double</emphasis>&#32;prec,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*reg_angle&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00052"/>00052 {
+<anchor xml:id="_curve__grow_8c_source_1l00053"/>00053 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;sumdx&#32;=&#32;0.0,&#32;sumdy&#32;=&#32;0.0;
+<anchor xml:id="_curve__grow_8c_source_1l00054"/>00054 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;ang;
+<anchor xml:id="_curve__grow_8c_source_1l00055"/>00055 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;xx,&#32;yy,&#32;i;
+<anchor xml:id="_curve__grow_8c_source_1l00056"/>00056 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;adr;
+<anchor xml:id="_curve__grow_8c_source_1l00057"/>00057 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00058"/>00058 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(angles&#32;==&#32;NULL)&#32;||&#32;(angles-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>&#32;==&#32;NULL)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00059"/>00059 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;region_grow:&#32;invalid&#32;image&#32;&apos;angles&apos;.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00060"/>00060 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(used&#32;==&#32;NULL)&#32;||&#32;(used-&gt;<link linkend="_structImageInt_1ac103627c1ad15cbec2f22d0abe6d54b6">data</link>&#32;==&#32;NULL)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00061"/>00061 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;region_grow:&#32;invalid&#32;image&#32;&apos;used&apos;.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00062"/>00062 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;reg&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;region_grow:&#32;invalid&#32;input&#32;region.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00063"/>00063 &#32;&#32;<emphasis role="comment">/*&#32;if(&#32;start&#32;&gt;=&#32;*end&#32;)&#32;error(&quot;region_grow:&#32;invalid&#32;indexes.&quot;);*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00064"/>00064 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;prec&#32;&lt;&#32;0.0&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;region_grow:&#32;&apos;prec&apos;&#32;must&#32;be&#32;positive.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00065"/>00065 &#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00066"/>00066 &#32;&#32;<emphasis role="comment">/*&#32;Initialise&#32;*reg_angle&#32;with&#32;the&#32;value&#32;of&#32;the&#32;pixels&#32;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00067"/>00067 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;orientations&#32;in&#32;the&#32;buffer&#32;part&#32;of&#32;reg.&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00068"/>00068 &#32;
+<anchor xml:id="_curve__grow_8c_source_1l00069"/>00069 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=start;&#32;i&lt;idx_buff;&#32;i++&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00070"/>00070 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00071"/>00071 &#32;&#32;&#32;&#32;&#32;&#32;xx&#32;=&#32;reg[i].<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>;&#32;yy&#32;=&#32;reg[i].<link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00072"/>00072 &#32;&#32;&#32;&#32;&#32;&#32;adr&#32;=&#32;xx&#32;+&#32;yy*angles-&gt;<link linkend="_structImageDouble_1aa4b0263c533c5ce471067bd5ede24477">xsize</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00073"/>00073 &#32;&#32;&#32;&#32;&#32;&#32;sumdx&#32;+=&#32;cos(&#32;angles-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>[adr]&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00074"/>00074 &#32;&#32;&#32;&#32;&#32;&#32;sumdy&#32;+=&#32;sin(&#32;angles-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>[adr]&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00075"/>00075 &#32;&#32;&#32;&#32;&#32;&#32;used-&gt;<link linkend="_structImageInt_1ac103627c1ad15cbec2f22d0abe6d54b6">data</link>[adr]&#32;=&#32;label;
+<anchor xml:id="_curve__grow_8c_source_1l00076"/>00076 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00077"/>00077 &#32;&#32;*reg_angle&#32;=&#32;atan2(&#32;sumdy,&#32;sumdx&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00078"/>00078 &#32;&#32;<emphasis role="comment">/*&#32;try&#32;neighbors&#32;as&#32;new&#32;region&#32;points&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00079"/>00079 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=start;&#32;i&lt;*end;&#32;i++&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00080"/>00080 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;xx=reg[i].x-1;&#32;xx&lt;=reg[i].<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>+1;&#32;xx++&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00081"/>00081 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;yy=reg[i].y-1;&#32;yy&lt;=reg[i].<link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>+1;&#32;yy++&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00082"/>00082 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;<link linkend="_image_8c_1a7d75c600cc492bd8efbc1cc0c3819d88">in_image</link>(&#32;xx,&#32;yy,&#32;used-&gt;<link linkend="_structImageInt_1aa4b0263c533c5ce471067bd5ede24477">xsize</link>,&#32;used-&gt;<link linkend="_structImageInt_1a7e7fdb6b4d76fd619024da6878c27d58">ysize</link>&#32;)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00083"/>00083 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00084"/>00084 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;adr&#32;=&#32;yy&#32;*&#32;angles-&gt;<link linkend="_structImageDouble_1aa4b0263c533c5ce471067bd5ede24477">xsize</link>&#32;+&#32;xx;
+<anchor xml:id="_curve__grow_8c_source_1l00085"/>00085 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(used-&gt;<link linkend="_structImageInt_1ac103627c1ad15cbec2f22d0abe6d54b6">data</link>[adr]&#32;!=&#32;<link linkend="_misc_8h_1abcd0a22ee4346cad5706adb6d2119429">USED</link>)&#32;&amp;&amp;&#32;(used-&gt;<link linkend="_structImageInt_1ac103627c1ad15cbec2f22d0abe6d54b6">data</link>[adr]&#32;!=&#32;label)&#32;&amp;&amp;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00086"/>00086 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;(used-&gt;<link linkend="_structImageInt_1ac103627c1ad15cbec2f22d0abe6d54b6">data</link>[adr]&#32;&lt;&#32;label_start)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00087"/>00087 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00088"/>00088 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ang&#32;=&#32;angles-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>[adr];
+<anchor xml:id="_curve__grow_8c_source_1l00089"/>00089 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(ang&#32;!=&#32;<link linkend="_misc_8h_1a18d9edd8c3bfc9c1837a10505dfa037c">NOTDEF</link>&#32;)&#32;&amp;&amp;&#32;(<link linkend="_misc_8c_1a7bd5f9830327532b199607799edf7fe2">is_aligned</link>(&#32;ang,&#32;*reg_angle,&#32;prec&#32;))&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00090"/>00090 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00091"/>00091 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;add&#32;point&#32;and&#32;mark&#32;as&#32;already&#32;visited&#32;in&#32;this&#32;call&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00092"/>00092 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;used-&gt;<link linkend="_structImageInt_1ac103627c1ad15cbec2f22d0abe6d54b6">data</link>[adr]&#32;=&#32;label;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00093"/>00093 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;reg[*end].<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>&#32;=&#32;xx;
+<anchor xml:id="_curve__grow_8c_source_1l00094"/>00094 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;reg[*end].<link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>&#32;=&#32;yy;
+<anchor xml:id="_curve__grow_8c_source_1l00095"/>00095 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;++(*end);&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00096"/>00096 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;update&#32;region&apos;s&#32;angle&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00097"/>00097 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;sumdx&#32;+=&#32;cos(ang);
+<anchor xml:id="_curve__grow_8c_source_1l00098"/>00098 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;sumdy&#32;+=&#32;sin(ang);
+<anchor xml:id="_curve__grow_8c_source_1l00099"/>00099 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;*reg_angle&#32;=&#32;atan2(&#32;sumdy,&#32;sumdx&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00100"/>00100 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00101"/>00101 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00102"/>00102 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00103"/>00103 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00104"/>00104 }
+<anchor xml:id="_curve__grow_8c_source_1l00105"/>00105 
+<anchor xml:id="_curve__grow_8c_source_1l00106"/>00106 
+<anchor xml:id="_curve__grow_8c_source_1l00107"/>00107 
+<anchor xml:id="_curve__grow_8c_source_1l00108"/>00108 
+<anchor xml:id="_curve__grow_8c_source_1l00109"/>00109 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00110"/>00110 <emphasis role="comment">/*---------&#32;FUNCTIONS&#32;FOR&#32;GATHERING&#32;CONNECTED&#32;CONVEX&#32;REGIONS&#32;OF&#32;PIXELS&#32;-------*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00111"/>00111 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00112"/>00112 
+<anchor xml:id="_curve__grow_8c_source_1l00113"/>00113 
+<anchor xml:id="_curve__grow_8c_source_1l00114"/>00114 <emphasis role="comment">/*------------------&#32;FUNCTIONS&#32;FOR&#32;RECTANGLE&#32;ESTIMATION&#32;----------------------*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00115"/>00115 
+<anchor xml:id="_curve__grow_8c_source_1l00116"/>00116 
+<anchor xml:id="_curve__grow_8c_source_1l00117"/>00117 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00123"/>00123 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">double</emphasis>&#32;get_theta(&#32;<link linkend="_structImageDouble">PImageDouble</link>&#32;gradmag,&#32;<link linkend="_structPoint">Point</link>&#32;*reg,&#32;<emphasis role="keywordtype">int</emphasis>&#32;start,&#32;<emphasis role="keywordtype">int</emphasis>&#32;end,&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00124"/>00124 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;cx,&#32;<emphasis role="keywordtype">double</emphasis>&#32;cy,&#32;<emphasis role="keywordtype">double</emphasis>&#32;reg_angle,&#32;<emphasis role="keywordtype">double</emphasis>&#32;prec&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00125"/>00125 {
+<anchor xml:id="_curve__grow_8c_source_1l00126"/>00126 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;lambda1,&#32;lambda2,&#32;tmp,&#32;theta,&#32;weight,&#32;sum;
+<anchor xml:id="_curve__grow_8c_source_1l00127"/>00127 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;Ixx&#32;=&#32;0.0;
+<anchor xml:id="_curve__grow_8c_source_1l00128"/>00128 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;Iyy&#32;=&#32;0.0;
+<anchor xml:id="_curve__grow_8c_source_1l00129"/>00129 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;Ixy&#32;=&#32;0.0;
+<anchor xml:id="_curve__grow_8c_source_1l00130"/>00130 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;i;
+<anchor xml:id="_curve__grow_8c_source_1l00131"/>00131 &#32;&#32;<emphasis role="comment">/*&#32;check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00132"/>00132 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;reg&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;get_theta:&#32;invalid&#32;input&#32;region.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00133"/>00133 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(gradmag&#32;==&#32;NULL)&#32;||&#32;(gradmag-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>&#32;==&#32;NULL)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00134"/>00134 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;get_theta:&#32;invalid&#32;image&#32;&apos;gradmag&apos;.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00135"/>00135 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;start&#32;&gt;=&#32;end&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;get_theta:&#32;invalid&#32;indexes.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00136"/>00136 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;prec&#32;&lt;&#32;0.0&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;get_theta:&#32;&apos;prec&apos;&#32;must&#32;be&#32;positive.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00137"/>00137 
+<anchor xml:id="_curve__grow_8c_source_1l00138"/>00138 &#32;&#32;<emphasis role="comment">/*-----------&#32;theta&#32;---------------------------------------------------*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00139"/>00139 &#32;&#32;<emphasis role="comment">/*</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00140"/>00140 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;Region&#32;inertia&#32;matrix&#32;A:</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00141"/>00141 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Ixx&#32;Ixy</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00142"/>00142 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Ixy&#32;Iyy</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00143"/>00143 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;where</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00144"/>00144 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Ixx&#32;=&#32;\sum_i&#32;y_i^2</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00145"/>00145 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Iyy&#32;=&#32;\sum_i&#32;x_i^2</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00146"/>00146 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Ixy&#32;=&#32;-\sum_i&#32;x_i&#32;y_i</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00147"/>00147 <emphasis role="comment"></emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00148"/>00148 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;lambda1&#32;and&#32;lambda2&#32;are&#32;the&#32;eigenvalues,&#32;with&#32;lambda1&#32;&gt;=&#32;lambda2.</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00149"/>00149 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;They&#32;are&#32;found&#32;by&#32;solving&#32;the&#32;characteristic&#32;polynomial</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00150"/>00150 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;det(\lambda&#32;I&#32;-&#32;A)&#32;=&#32;0.</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00151"/>00151 <emphasis role="comment"></emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00152"/>00152 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;To&#32;get&#32;the&#32;line&#32;segment&#32;direction&#32;we&#32;want&#32;to&#32;get&#32;the&#32;eigenvector&#32;of</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00153"/>00153 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;the&#32;smaller&#32;eigenvalue.&#32;We&#32;have&#32;to&#32;solve&#32;a,b&#32;in:</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00154"/>00154 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;a.Ixx&#32;+&#32;b.Ixy&#32;=&#32;a.lambda2</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00155"/>00155 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;a.Ixy&#32;+&#32;b.Iyy&#32;=&#32;b.lambda2</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00156"/>00156 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;We&#32;want&#32;the&#32;angle&#32;theta&#32;=&#32;atan(b/a).&#32;I&#32;can&#32;be&#32;computed&#32;with</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00157"/>00157 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;any&#32;of&#32;the&#32;two&#32;equations:</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00158"/>00158 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;theta&#32;=&#32;atan(&#32;(lambda2-Ixx)&#32;/&#32;Ixy&#32;)</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00159"/>00159 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;or</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00160"/>00160 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;theta&#32;=&#32;atan(&#32;Ixy&#32;/&#32;(lambda2-Iyy)&#32;)</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00161"/>00161 <emphasis role="comment"></emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00162"/>00162 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;When&#32;|Ixx|&#32;&gt;&#32;|Iyy|&#32;we&#32;use&#32;the&#32;first,&#32;otherwise&#32;the&#32;second</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00163"/>00163 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;(just&#32;to&#32;get&#32;better&#32;numeric&#32;precision).</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00164"/>00164 <emphasis role="comment">&#32;&#32;&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00165"/>00165 &#32;&#32;sum&#32;=&#32;0.0;
+<anchor xml:id="_curve__grow_8c_source_1l00166"/>00166 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=start;&#32;i&lt;end;&#32;i++&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00167"/>00167 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00168"/>00168 &#32;&#32;&#32;&#32;&#32;&#32;weight&#32;=&#32;gradmag-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>[&#32;reg[i].<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>&#32;+&#32;reg[i].<link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>&#32;*&#32;gradmag-&gt;<link linkend="_structImageDouble_1aa4b0263c533c5ce471067bd5ede24477">xsize</link>&#32;];
+<anchor xml:id="_curve__grow_8c_source_1l00169"/>00169 &#32;&#32;&#32;&#32;&#32;&#32;Ixx&#32;+=&#32;(&#32;(double)&#32;reg[i].y&#32;-&#32;cy&#32;)&#32;*&#32;(&#32;(double)&#32;reg[i].y&#32;-&#32;cy&#32;)&#32;*&#32;weight;
+<anchor xml:id="_curve__grow_8c_source_1l00170"/>00170 &#32;&#32;&#32;&#32;&#32;&#32;Iyy&#32;+=&#32;(&#32;(double)&#32;reg[i].x&#32;-&#32;cx&#32;)&#32;*&#32;(&#32;(double)&#32;reg[i].x&#32;-&#32;cx&#32;)&#32;*&#32;weight;
+<anchor xml:id="_curve__grow_8c_source_1l00171"/>00171 &#32;&#32;&#32;&#32;&#32;&#32;Ixy&#32;-=&#32;(&#32;(double)&#32;reg[i].x&#32;-&#32;cx&#32;)&#32;*&#32;(&#32;(double)&#32;reg[i].y&#32;-&#32;cy&#32;)&#32;*&#32;weight;
+<anchor xml:id="_curve__grow_8c_source_1l00172"/>00172 &#32;&#32;&#32;&#32;&#32;&#32;sum&#32;+=&#32;weight;
+<anchor xml:id="_curve__grow_8c_source_1l00173"/>00173 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00174"/>00174 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;sum&#32;&lt;=&#32;0.0&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;get_theta:&#32;weights&#32;sum&#32;less&#32;or&#32;equal&#32;to&#32;zero.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00175"/>00175 &#32;&#32;Ixx&#32;/=&#32;sum;
+<anchor xml:id="_curve__grow_8c_source_1l00176"/>00176 &#32;&#32;Iyy&#32;/=&#32;sum;
+<anchor xml:id="_curve__grow_8c_source_1l00177"/>00177 &#32;&#32;Ixy&#32;/=&#32;sum;
+<anchor xml:id="_curve__grow_8c_source_1l00178"/>00178 &#32;&#32;lambda1&#32;=&#32;(&#32;Ixx&#32;+&#32;Iyy&#32;+&#32;sqrt(&#32;(Ixx-Iyy)*(Ixx-Iyy)&#32;+&#32;4.0*Ixy*Ixy&#32;)&#32;)&#32;/&#32;2.0;
+<anchor xml:id="_curve__grow_8c_source_1l00179"/>00179 &#32;&#32;lambda2&#32;=&#32;(&#32;Ixx&#32;+&#32;Iyy&#32;-&#32;sqrt(&#32;(Ixx-Iyy)*(Ixx-Iyy)&#32;+&#32;4.0*Ixy*Ixy&#32;)&#32;)&#32;/&#32;2.0;
+<anchor xml:id="_curve__grow_8c_source_1l00180"/>00180 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;fabs(lambda1)&#32;&lt;&#32;fabs(lambda2)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00181"/>00181 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00182"/>00182 &#32;&#32;&#32;&#32;&#32;&#32;fprintf(stderr,<emphasis role="stringliteral">&quot;Ixx&#32;%g&#32;Iyy&#32;%g&#32;Ixy&#32;%g&#32;lamb1&#32;%g&#32;lamb2&#32;%g&#32;-&#32;lamb1&#32;&lt;&#32;lamb2\n&quot;</emphasis>,
+<anchor xml:id="_curve__grow_8c_source_1l00183"/>00183 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Ixx,&#32;Iyy,&#32;Ixy,&#32;lambda1,&#32;lambda2&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00184"/>00184 &#32;&#32;&#32;&#32;&#32;&#32;tmp&#32;=&#32;lambda1;
+<anchor xml:id="_curve__grow_8c_source_1l00185"/>00185 &#32;&#32;&#32;&#32;&#32;&#32;lambda1&#32;=&#32;lambda2;
+<anchor xml:id="_curve__grow_8c_source_1l00186"/>00186 &#32;&#32;&#32;&#32;&#32;&#32;lambda2&#32;=&#32;tmp;
+<anchor xml:id="_curve__grow_8c_source_1l00187"/>00187 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00188"/>00188 
+<anchor xml:id="_curve__grow_8c_source_1l00189"/>00189 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;fabs(Ixx)&#32;&gt;&#32;fabs(Iyy)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00190"/>00190 &#32;&#32;&#32;&#32;theta&#32;=&#32;atan2(&#32;lambda2-Ixx,&#32;Ixy&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00191"/>00191 &#32;&#32;<emphasis role="keywordflow">else</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00192"/>00192 &#32;&#32;&#32;&#32;theta&#32;=&#32;atan2(&#32;Ixy,&#32;lambda2-Iyy&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00193"/>00193 
+<anchor xml:id="_curve__grow_8c_source_1l00194"/>00194 &#32;&#32;<emphasis role="comment">/*&#32;The&#32;previous&#32;procedure&#32;doesn&apos;t&#32;care&#32;about&#32;orientation,</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00195"/>00195 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;so&#32;it&#32;could&#32;be&#32;wrong&#32;by&#32;180&#32;degrees.&#32;Here&#32;is&#32;corrected&#32;if&#32;necessary.&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00196"/>00196 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;<link linkend="_misc_8c_1a4e46bd783e4efe71bee053481afeb4a9">angle_diff</link>(&#32;theta-<link linkend="_misc_8h_1ae11c01f236a7a89f767a7b34283da201">M_1_2_PI</link>,&#32;reg_angle&#32;)&#32;&gt;&#32;prec&#32;)&#32;theta&#32;+=&#32;<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00197"/>00197 
+<anchor xml:id="_curve__grow_8c_source_1l00198"/>00198 &#32;&#32;<emphasis role="comment">/*&#32;If&#32;the&#32;estimated&#32;orientation&#32;is&#32;still&#32;very&#32;different&#32;wrt&#32;reg_angle</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00199"/>00199 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;(region&#32;is&#32;nearly&#32;square),&#32;return&#32;the&#32;orthogonal&#32;to&#32;original&#32;reg_angle.&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00200"/>00200 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;<link linkend="_misc_8c_1a4e46bd783e4efe71bee053481afeb4a9">angle_diff</link>(&#32;theta-<link linkend="_misc_8h_1ae11c01f236a7a89f767a7b34283da201">M_1_2_PI</link>,&#32;reg_angle&#32;)&#32;&gt;&#32;prec&#32;)&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00201"/>00201 &#32;&#32;&#32;&#32;theta&#32;=&#32;reg_angle&#32;+&#32;<link linkend="_misc_8h_1ae11c01f236a7a89f767a7b34283da201">M_1_2_PI</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00202"/>00202 
+<anchor xml:id="_curve__grow_8c_source_1l00203"/>00203 &#32;&#32;<emphasis role="keywordflow">while</emphasis>(&#32;theta&#32;&gt;&#32;&#32;<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>&#32;)&#32;theta&#32;-=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00204"/>00204 &#32;&#32;<emphasis role="keywordflow">while</emphasis>(&#32;theta&#32;&lt;&#32;-<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>&#32;)&#32;theta&#32;+=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00205"/>00205 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;theta;
+<anchor xml:id="_curve__grow_8c_source_1l00206"/>00206 }
+<anchor xml:id="_curve__grow_8c_source_1l00207"/>00207 
+<anchor xml:id="_curve__grow_8c_source_1l00208"/>00208 
+<anchor xml:id="_curve__grow_8c_source_1l00209"/>00209 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00214"/><link linkend="_curve__grow_8c_1a6309f2cc70e39c4d40bbe504844b4866">00214</link> <emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_curve__grow_8c_1a6309f2cc70e39c4d40bbe504844b4866">region2rect</link>(&#32;<link linkend="_structImageDouble">PImageDouble</link>&#32;gradmag,&#32;<link linkend="_structPoint">Point</link>&#32;*reg,&#32;<emphasis role="keywordtype">int</emphasis>&#32;start,&#32;<emphasis role="keywordtype">int</emphasis>&#32;end,
+<anchor xml:id="_curve__grow_8c_source_1l00215"/>00215 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;reg_angle,&#32;<link linkend="_structRectangle">Rectangle</link>&#32;*rec,&#32;<emphasis role="keywordtype">double</emphasis>&#32;prec&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00216"/>00216 {
+<anchor xml:id="_curve__grow_8c_source_1l00217"/>00217 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;cx,&#32;cy,&#32;dx,&#32;dy,&#32;l,&#32;w,&#32;theta;
+<anchor xml:id="_curve__grow_8c_source_1l00218"/>00218 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;weight,sum,l_min,l_max,w_min,w_max;
+<anchor xml:id="_curve__grow_8c_source_1l00219"/>00219 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;i,&#32;adr;
+<anchor xml:id="_curve__grow_8c_source_1l00220"/>00220 &#32;&#32;<emphasis role="comment">/*&#32;Check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00221"/>00221 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(gradmag&#32;==&#32;NULL)&#32;||&#32;(gradmag-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>&#32;==&#32;NULL)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00222"/>00222 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;region2rect:&#32;invalid&#32;image&#32;&apos;gradmag&apos;.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00223"/>00223 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;reg&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;region2rect:&#32;invalid&#32;input&#32;region.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00224"/>00224 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;start&#32;&gt;=&#32;end&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;region2rect:&#32;invalid&#32;indexes.&quot;</emphasis>);&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00225"/>00225 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;rec&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;region2rect:&#32;invalid&#32;&apos;rec&apos;.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00226"/>00226 
+<anchor xml:id="_curve__grow_8c_source_1l00227"/>00227 &#32;&#32;<emphasis role="comment">/*&#32;Center&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00228"/>00228 &#32;&#32;cx&#32;=&#32;cy&#32;=&#32;sum&#32;=&#32;0.0;
+<anchor xml:id="_curve__grow_8c_source_1l00229"/>00229 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=start;&#32;i&lt;end;&#32;i++&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00230"/>00230 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00231"/>00231 &#32;&#32;&#32;&#32;&#32;&#32;adr&#32;=&#32;reg[i].<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>&#32;+&#32;reg[i].<link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>&#32;*&#32;gradmag-&gt;<link linkend="_structImageDouble_1aa4b0263c533c5ce471067bd5ede24477">xsize</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00232"/>00232 &#32;&#32;&#32;&#32;&#32;&#32;weight&#32;=&#32;gradmag-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>[adr];
+<anchor xml:id="_curve__grow_8c_source_1l00233"/>00233 &#32;&#32;&#32;&#32;&#32;&#32;cx&#32;+=&#32;(double)&#32;reg[i].x&#32;*&#32;weight;
+<anchor xml:id="_curve__grow_8c_source_1l00234"/>00234 &#32;&#32;&#32;&#32;&#32;&#32;cy&#32;+=&#32;(double)&#32;reg[i].y&#32;*&#32;weight;
+<anchor xml:id="_curve__grow_8c_source_1l00235"/>00235 &#32;&#32;&#32;&#32;&#32;&#32;sum&#32;+=&#32;weight;
+<anchor xml:id="_curve__grow_8c_source_1l00236"/>00236 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00237"/>00237 
+<anchor xml:id="_curve__grow_8c_source_1l00238"/>00238 &#32;&#32;cx&#32;/=&#32;sum;
+<anchor xml:id="_curve__grow_8c_source_1l00239"/>00239 &#32;&#32;cy&#32;/=&#32;sum;
+<anchor xml:id="_curve__grow_8c_source_1l00240"/>00240 
+<anchor xml:id="_curve__grow_8c_source_1l00241"/>00241 &#32;&#32;<emphasis role="comment">/*&#32;Orientation&#32;*/</emphasis>&#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00242"/>00242 &#32;&#32;theta&#32;=&#32;get_theta(&#32;gradmag,&#32;reg,&#32;start,&#32;end,&#32;cx,&#32;cy,&#32;reg_angle,&#32;prec&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00243"/>00243 
+<anchor xml:id="_curve__grow_8c_source_1l00244"/>00244 &#32;&#32;<emphasis role="comment">/*&#32;Length&#32;and&#32;width&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00245"/>00245 &#32;&#32;dx&#32;=&#32;cos(theta);
+<anchor xml:id="_curve__grow_8c_source_1l00246"/>00246 &#32;&#32;dy&#32;=&#32;sin(theta);
+<anchor xml:id="_curve__grow_8c_source_1l00247"/>00247 &#32;&#32;l_min&#32;=&#32;l_max&#32;=&#32;w_min&#32;=&#32;w_max&#32;=&#32;0.0;
+<anchor xml:id="_curve__grow_8c_source_1l00248"/>00248 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=start;&#32;i&lt;end;&#32;i++&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00249"/>00249 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00250"/>00250 &#32;&#32;&#32;&#32;&#32;&#32;l&#32;=&#32;&#32;(&#32;(double)&#32;reg[i].x&#32;-&#32;cx)&#32;*&#32;dx&#32;+&#32;(&#32;(double)&#32;reg[i].y&#32;-&#32;cy)&#32;*&#32;dy;
+<anchor xml:id="_curve__grow_8c_source_1l00251"/>00251 &#32;&#32;&#32;&#32;&#32;&#32;w&#32;=&#32;-(&#32;(double)&#32;reg[i].x&#32;-&#32;cx)&#32;*&#32;dy&#32;+&#32;(&#32;(double)&#32;reg[i].y&#32;-&#32;cy)&#32;*&#32;dx;
+<anchor xml:id="_curve__grow_8c_source_1l00252"/>00252 
+<anchor xml:id="_curve__grow_8c_source_1l00253"/>00253 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;l&#32;&gt;&#32;l_max&#32;)&#32;l_max&#32;=&#32;l;
+<anchor xml:id="_curve__grow_8c_source_1l00254"/>00254 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;l&#32;&lt;&#32;l_min&#32;)&#32;l_min&#32;=&#32;l;
+<anchor xml:id="_curve__grow_8c_source_1l00255"/>00255 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;w&#32;&gt;&#32;w_max&#32;)&#32;w_max&#32;=&#32;w;
+<anchor xml:id="_curve__grow_8c_source_1l00256"/>00256 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;w&#32;&lt;&#32;w_min&#32;)&#32;w_min&#32;=&#32;w;
+<anchor xml:id="_curve__grow_8c_source_1l00257"/>00257 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00258"/>00258 
+<anchor xml:id="_curve__grow_8c_source_1l00259"/>00259 &#32;&#32;<emphasis role="comment">/*&#32;Store&#32;values&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00260"/>00260 &#32;&#32;rec-&gt;<link linkend="_structRectangle_1ac75b803b570527306e1e744bfb7a604f">x1</link>&#32;=&#32;cx&#32;+&#32;l_min&#32;*&#32;dx;
+<anchor xml:id="_curve__grow_8c_source_1l00261"/>00261 &#32;&#32;rec-&gt;<link linkend="_structRectangle_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>&#32;=&#32;cy&#32;+&#32;l_min&#32;*&#32;dy;
+<anchor xml:id="_curve__grow_8c_source_1l00262"/>00262 &#32;&#32;rec-&gt;<link linkend="_structRectangle_1adcf04f5f1964d18b332643939561da0d">x2</link>&#32;=&#32;cx&#32;+&#32;l_max&#32;*&#32;dx;
+<anchor xml:id="_curve__grow_8c_source_1l00263"/>00263 &#32;&#32;rec-&gt;<link linkend="_structRectangle_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>&#32;=&#32;cy&#32;+&#32;l_max&#32;*&#32;dy;
+<anchor xml:id="_curve__grow_8c_source_1l00264"/>00264 &#32;&#32;rec-&gt;<link linkend="_structRectangle_1a9df23e056f5d1a0388cd8190431c0e03">width</link>&#32;=&#32;w_max&#32;-&#32;w_min;
+<anchor xml:id="_curve__grow_8c_source_1l00265"/>00265 &#32;&#32;rec-&gt;<link linkend="_structRectangle_1ad1515daed95ba43fd919fddcf3144d1a">wmin</link>&#32;=&#32;w_min;
+<anchor xml:id="_curve__grow_8c_source_1l00266"/>00266 &#32;&#32;rec-&gt;<link linkend="_structRectangle_1a54612b6d232db5e1a58ae8b2f26b1df4">wmax</link>&#32;=&#32;w_max;
+<anchor xml:id="_curve__grow_8c_source_1l00267"/>00267 &#32;&#32;rec-&gt;<link linkend="_structRectangle_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>&#32;=&#32;cx;
+<anchor xml:id="_curve__grow_8c_source_1l00268"/>00268 &#32;&#32;rec-&gt;<link linkend="_structRectangle_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>&#32;=&#32;cy;
+<anchor xml:id="_curve__grow_8c_source_1l00269"/>00269 &#32;&#32;rec-&gt;<link linkend="_structRectangle_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>&#32;=&#32;theta;
+<anchor xml:id="_curve__grow_8c_source_1l00270"/>00270 &#32;&#32;rec-&gt;<link linkend="_structRectangle_1a229d11aff11a7482259d1296b9b70b8a">dx</link>&#32;=&#32;dx;
+<anchor xml:id="_curve__grow_8c_source_1l00271"/>00271 &#32;&#32;rec-&gt;<link linkend="_structRectangle_1a9deb6f886b19d50e714d890c3c268efc">dy</link>&#32;=&#32;dy;
+<anchor xml:id="_curve__grow_8c_source_1l00272"/>00272 &#32;&#32;rec-&gt;<link linkend="_structRectangle_1aaa22d55a01e89d03ac81a5bbc95105aa">prec</link>&#32;=&#32;prec;
+<anchor xml:id="_curve__grow_8c_source_1l00273"/>00273 &#32;&#32;rec-&gt;<link linkend="_structRectangle_1ad4bd51cdbe6ba41894905207ed94974f">len</link>&#32;=&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(&#32;rec-&gt;<link linkend="_structRectangle_1ac75b803b570527306e1e744bfb7a604f">x1</link>,&#32;rec-&gt;<link linkend="_structRectangle_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>,&#32;rec-&gt;<link linkend="_structRectangle_1adcf04f5f1964d18b332643939561da0d">x2</link>,&#32;rec-&gt;<link linkend="_structRectangle_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00274"/>00274 &#32;&#32;<emphasis role="comment">/*&#32;Correct&#32;if&#32;rectangle&#32;too&#32;thin&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00275"/>00275 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;rec-&gt;<link linkend="_structRectangle_1a9df23e056f5d1a0388cd8190431c0e03">width</link>&#32;&lt;&#32;1.0&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00276"/>00276 &#32;&#32;&#32;&#32;{&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00277"/>00277 &#32;&#32;&#32;&#32;&#32;&#32;rec-&gt;<link linkend="_structRectangle_1a9df23e056f5d1a0388cd8190431c0e03">width</link>&#32;=&#32;1.0;&#32;rec-&gt;<link linkend="_structRectangle_1ad1515daed95ba43fd919fddcf3144d1a">wmin</link>&#32;=&#32;-0.5;&#32;rec-&gt;<link linkend="_structRectangle_1a54612b6d232db5e1a58ae8b2f26b1df4">wmax</link>&#32;=&#32;0.5;
+<anchor xml:id="_curve__grow_8c_source_1l00278"/>00278 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00279"/>00279 }
+<anchor xml:id="_curve__grow_8c_source_1l00280"/>00280 
+<anchor xml:id="_curve__grow_8c_source_1l00281"/>00281 
+<anchor xml:id="_curve__grow_8c_source_1l00282"/>00282 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00287"/>00287 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;reduce_region_radius(&#32;<link linkend="_structImageDouble">PImageDouble</link>&#32;gradmag,&#32;<link linkend="_structImageDouble">PImageDouble</link>&#32;angles,
+<anchor xml:id="_curve__grow_8c_source_1l00288"/>00288 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_structImageInt">PImageInt</link>&#32;used,&#32;<link linkend="_structPoint">Point</link>&#32;*reg,&#32;<emphasis role="keywordtype">int</emphasis>&#32;start,&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00289"/>00289 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;*end,&#32;<emphasis role="keywordtype">double</emphasis>&#32;reg_angle,&#32;<link linkend="_structRectangle">Rectangle</link>&#32;*rec,&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00290"/>00290 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;x,&#32;<emphasis role="keywordtype">int</emphasis>&#32;y,&#32;<emphasis role="keywordtype">double</emphasis>&#32;density_th,&#32;<emphasis role="keywordtype">double</emphasis>&#32;prec&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00291"/>00291 {
+<anchor xml:id="_curve__grow_8c_source_1l00292"/>00292 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;density,&#32;rad1,&#32;rad2,&#32;rad;
+<anchor xml:id="_curve__grow_8c_source_1l00293"/>00293 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;i;
+<anchor xml:id="_curve__grow_8c_source_1l00294"/>00294 &#32;&#32;<emphasis role="comment">/*&#32;Check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00295"/>00295 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(gradmag&#32;==&#32;NULL)&#32;||&#32;(gradmag-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>&#32;==&#32;NULL)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00296"/>00296 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;reduce_region_radius:&#32;invalid&#32;image&#32;&apos;gradmag&apos;.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00297"/>00297 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(angles&#32;==&#32;NULL)&#32;||&#32;(angles-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>&#32;==&#32;NULL)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00298"/>00298 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;reduce_region_radius:&#32;invalid&#32;image&#32;&apos;angles&apos;.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00299"/>00299 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(used&#32;==&#32;NULL)&#32;||&#32;(used-&gt;<link linkend="_structImageInt_1ac103627c1ad15cbec2f22d0abe6d54b6">data</link>&#32;==&#32;NULL)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00300"/>00300 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;reduce_region_radius:&#32;invalid&#32;image&#32;&apos;used&apos;.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00301"/>00301 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;reg&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;reduce_region_radius:&#32;invalid&#32;input&#32;region.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00302"/>00302 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;start&#32;&gt;=&#32;*end&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;reduce_region_radius:&#32;invalid&#32;indexes.&quot;</emphasis>);&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00303"/>00303 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;rec&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;reduce_region_radius:&#32;invalid&#32;&apos;rec&apos;.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00304"/>00304 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;prec&#32;&lt;&#32;0.0&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;reduce_region_radius:&#32;&apos;prec&apos;&#32;must&#32;be&#32;positive.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00305"/>00305 
+<anchor xml:id="_curve__grow_8c_source_1l00306"/>00306 &#32;&#32;<emphasis role="comment">/*&#32;Compute&#32;region&#32;points&#32;density&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00307"/>00307 &#32;&#32;density&#32;=&#32;(double)&#32;(*end&#32;-&#32;start)&#32;/
+<anchor xml:id="_curve__grow_8c_source_1l00308"/>00308 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;(<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(rec-&gt;<link linkend="_structRectangle_1ac75b803b570527306e1e744bfb7a604f">x1</link>,rec-&gt;<link linkend="_structRectangle_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>,rec-&gt;<link linkend="_structRectangle_1adcf04f5f1964d18b332643939561da0d">x2</link>,rec-&gt;<link linkend="_structRectangle_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>)&#32;*&#32;rec-&gt;<link linkend="_structRectangle_1a9df23e056f5d1a0388cd8190431c0e03">width</link>);
+<anchor xml:id="_curve__grow_8c_source_1l00309"/>00309 
+<anchor xml:id="_curve__grow_8c_source_1l00310"/>00310 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;density&#32;&gt;=&#32;density_th&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00311"/>00311 
+<anchor xml:id="_curve__grow_8c_source_1l00312"/>00312 &#32;&#32;<emphasis role="comment">/*&#32;Compute&#32;region&#32;radius&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00313"/>00313 &#32;&#32;rad1&#32;=&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(&#32;(<emphasis role="keywordtype">double</emphasis>)x,&#32;(<emphasis role="keywordtype">double</emphasis>)y,&#32;rec-&gt;<link linkend="_structRectangle_1ac75b803b570527306e1e744bfb7a604f">x1</link>,&#32;rec-&gt;<link linkend="_structRectangle_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00314"/>00314 &#32;&#32;rad2&#32;=&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(&#32;(<emphasis role="keywordtype">double</emphasis>)x,&#32;(<emphasis role="keywordtype">double</emphasis>)y,&#32;rec-&gt;<link linkend="_structRectangle_1adcf04f5f1964d18b332643939561da0d">x2</link>,&#32;rec-&gt;<link linkend="_structRectangle_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00315"/>00315 &#32;&#32;rad&#32;=&#32;rad1&#32;&gt;&#32;rad2&#32;?&#32;rad1&#32;:&#32;rad2;
+<anchor xml:id="_curve__grow_8c_source_1l00316"/>00316 
+<anchor xml:id="_curve__grow_8c_source_1l00317"/>00317 &#32;&#32;<emphasis role="keywordflow">while</emphasis>(&#32;density&#32;&lt;&#32;density_th&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00318"/>00318 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00319"/>00319 &#32;&#32;&#32;&#32;&#32;&#32;rad&#32;*=&#32;0.75;
+<anchor xml:id="_curve__grow_8c_source_1l00320"/>00320 
+<anchor xml:id="_curve__grow_8c_source_1l00321"/>00321 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;Remove&#32;points&#32;from&#32;the&#32;region&#32;and&#32;update&#32;&apos;used&apos;&#32;map&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00322"/>00322 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=start;&#32;i&lt;*end;&#32;i++&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00323"/>00323 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(&#32;x,&#32;y,&#32;(<emphasis role="keywordtype">double</emphasis>)&#32;reg[i].x,&#32;(<emphasis role="keywordtype">double</emphasis>)&#32;reg[i].y&#32;)&#32;&gt;&#32;rad&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00324"/>00324 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00325"/>00325 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;Point&#32;not&#32;kept,&#32;mark&#32;it&#32;as&#32;NOTUSED&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00326"/>00326 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;used-&gt;<link linkend="_structImageInt_1ac103627c1ad15cbec2f22d0abe6d54b6">data</link>[&#32;reg[i].<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>&#32;+&#32;reg[i].<link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>&#32;*&#32;used-&gt;<link linkend="_structImageInt_1aa4b0263c533c5ce471067bd5ede24477">xsize</link>&#32;]&#32;=&#32;<link linkend="_misc_8h_1a8a397aec99143b8dcf8e553c0115eb42">NOTUSED</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00327"/>00327 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;Remove&#32;point&#32;from&#32;the&#32;region&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00328"/>00328 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;reg[i].<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>&#32;=&#32;reg[*end-1].<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>;&#32;<emphasis role="comment">/*&#32;if&#32;i==*end-1&#32;copy&#32;itself&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00329"/>00329 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;reg[i].<link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>&#32;=&#32;reg[*end-1].<link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00330"/>00330 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;--(*end);
+<anchor xml:id="_curve__grow_8c_source_1l00331"/>00331 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;--i;&#32;<emphasis role="comment">/*&#32;to&#32;avoid&#32;skipping&#32;one&#32;point&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00332"/>00332 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00333"/>00333 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;Reject&#32;if&#32;the&#32;region&#32;is&#32;too&#32;small.</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00334"/>00334 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;2&#32;is&#32;the&#32;minimal&#32;region&#32;size&#32;for&#32;&apos;region2rect&apos;&#32;to&#32;work.&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00335"/>00335 
+<anchor xml:id="_curve__grow_8c_source_1l00336"/>00336 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(*end&#32;-&#32;start)&#32;&lt;&#32;2&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa93f0eb578d23995850d61f7d61c55c1">FALSE</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00337"/>00337 
+<anchor xml:id="_curve__grow_8c_source_1l00338"/>00338 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;Re-compute&#32;rectangle&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00339"/>00339 &#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_curve__grow_8c_1a6309f2cc70e39c4d40bbe504844b4866">region2rect</link>(&#32;gradmag,&#32;reg,&#32;start,&#32;*end,&#32;reg_angle,&#32;rec,&#32;prec&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00340"/>00340 
+<anchor xml:id="_curve__grow_8c_source_1l00341"/>00341 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;Re-compute&#32;region&#32;points&#32;density&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00342"/>00342 &#32;&#32;&#32;&#32;&#32;&#32;density&#32;=&#32;(double)&#32;(&#32;*end&#32;-&#32;start)&#32;/
+<anchor xml:id="_curve__grow_8c_source_1l00343"/>00343 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;(&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(&#32;rec-&gt;<link linkend="_structRectangle_1ac75b803b570527306e1e744bfb7a604f">x1</link>,&#32;rec-&gt;<link linkend="_structRectangle_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>,&#32;rec-&gt;<link linkend="_structRectangle_1adcf04f5f1964d18b332643939561da0d">x2</link>,&#32;rec-&gt;<link linkend="_structRectangle_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>&#32;)&#32;*&#32;rec-&gt;<link linkend="_structRectangle_1a9df23e056f5d1a0388cd8190431c0e03">width</link>&#32;);&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00344"/>00344 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00345"/>00345 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00346"/>00346 }
+<anchor xml:id="_curve__grow_8c_source_1l00347"/>00347 
+<anchor xml:id="_curve__grow_8c_source_1l00348"/>00348 
+<anchor xml:id="_curve__grow_8c_source_1l00349"/>00349 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00358"/>00358 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;refine(&#32;<link linkend="_structImageDouble">PImageDouble</link>&#32;gradmag,&#32;<link linkend="_structImageDouble">PImageDouble</link>&#32;angles,&#32;<link linkend="_structImageInt">PImageInt</link>&#32;used,&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00359"/>00359 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_structPoint">Point</link>&#32;*reg,&#32;<emphasis role="keywordtype">int</emphasis>&#32;start,&#32;<emphasis role="keywordtype">int</emphasis>&#32;idx_buff,&#32;<emphasis role="keywordtype">int</emphasis>&#32;*end,&#32;<emphasis role="keywordtype">int</emphasis>&#32;*label,
+<anchor xml:id="_curve__grow_8c_source_1l00360"/>00360 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;label_start,&#32;<link linkend="_structRectangle">Rectangle</link>&#32;*rec,&#32;<emphasis role="keywordtype">double</emphasis>&#32;density_th,&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00361"/>00361 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;prec&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00362"/>00362 {
+<anchor xml:id="_curve__grow_8c_source_1l00363"/>00363 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;angle,&#32;ang_d,&#32;mean_angle,&#32;tau,&#32;density,&#32;ang_c,&#32;sum,&#32;s_sum,&#32;reg_angle;
+<anchor xml:id="_curve__grow_8c_source_1l00364"/>00364 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;gradmax;
+<anchor xml:id="_curve__grow_8c_source_1l00365"/>00365 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;i,&#32;n,&#32;xx,&#32;yy;
+<anchor xml:id="_curve__grow_8c_source_1l00366"/>00366 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;xc,&#32;yc;
+<anchor xml:id="_curve__grow_8c_source_1l00367"/>00367 &#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00368"/>00368 &#32;&#32;<emphasis role="comment">/*&#32;Check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00369"/>00369 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(gradmag&#32;==&#32;NULL)&#32;||&#32;(gradmag-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>&#32;==&#32;NULL)&#32;)&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00370"/>00370 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;refine:&#32;invalid&#32;image&#32;&apos;gradmag&apos;.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00371"/>00371 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(angles&#32;==&#32;NULL)&#32;||&#32;(angles-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>&#32;==&#32;NULL)&#32;)&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00372"/>00372 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;refine:&#32;invalid&#32;image&#32;&apos;angles&apos;.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00373"/>00373 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(used&#32;==&#32;NULL)&#32;||&#32;(used-&gt;<link linkend="_structImageInt_1ac103627c1ad15cbec2f22d0abe6d54b6">data</link>&#32;==&#32;NULL)&#32;)&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00374"/>00374 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;refine:&#32;invalid&#32;image&#32;&apos;used&apos;.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00375"/>00375 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;reg&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;refine:&#32;invalid&#32;input&#32;region.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00376"/>00376 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;start&#32;&gt;=&#32;*end&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;refine:&#32;invalid&#32;indexes.&quot;</emphasis>);&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00377"/>00377 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;*label&#32;&lt;=&#32;1&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;refine:&#32;forbidden&#32;label&#32;value.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00378"/>00378 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;prec&#32;&lt;&#32;0.0&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;refine:&#32;&apos;prec&apos;&#32;must&#32;be&#32;positive.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00379"/>00379 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;rec&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;refine:&#32;invalid&#32;pointer&#32;&apos;rec&apos;.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00380"/>00380 &#32;
+<anchor xml:id="_curve__grow_8c_source_1l00381"/>00381 &#32;&#32;<emphasis role="comment">/*&#32;Compute&#32;region&#32;points&#32;density&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00382"/>00382 &#32;&#32;density&#32;=&#32;(double)&#32;(*end&#32;-&#32;start)&#32;/
+<anchor xml:id="_curve__grow_8c_source_1l00383"/>00383 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;(&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(rec-&gt;<link linkend="_structRectangle_1ac75b803b570527306e1e744bfb7a604f">x1</link>,rec-&gt;<link linkend="_structRectangle_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>,rec-&gt;<link linkend="_structRectangle_1adcf04f5f1964d18b332643939561da0d">x2</link>,rec-&gt;<link linkend="_structRectangle_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>)&#32;*&#32;rec-&gt;<link linkend="_structRectangle_1a9df23e056f5d1a0388cd8190431c0e03">width</link>&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00384"/>00384 
+<anchor xml:id="_curve__grow_8c_source_1l00385"/>00385 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;density&#32;&gt;=&#32;density_th&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00386"/>00386 &#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00387"/>00387 &#32;&#32;<emphasis role="comment">/*------&#32;First&#32;try:&#32;reduce&#32;angle&#32;tolerance&#32;------*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00388"/>00388 
+<anchor xml:id="_curve__grow_8c_source_1l00389"/>00389 &#32;&#32;<emphasis role="comment">/*&#32;Compute&#32;the&#32;new&#32;mean&#32;angle&#32;and&#32;tolerance&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00390"/>00390 &#32;&#32;gradmax&#32;=&#32;0.0;
+<anchor xml:id="_curve__grow_8c_source_1l00391"/>00391 &#32;&#32;xc&#32;=&#32;reg[start].<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00392"/>00392 &#32;&#32;yc&#32;=&#32;reg[start].<link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00393"/>00393 
+<anchor xml:id="_curve__grow_8c_source_1l00394"/>00394 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=start;&#32;i&lt;idx_buff;&#32;i++&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00395"/>00395 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00396"/>00396 &#32;&#32;&#32;&#32;&#32;&#32;xx&#32;=&#32;reg[i].<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>;&#32;yy&#32;=&#32;reg[i].<link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00397"/>00397 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;gradmag-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>[yy*gradmag-&gt;<link linkend="_structImageDouble_1aa4b0263c533c5ce471067bd5ede24477">xsize</link>+xx]&#32;&gt;&#32;gradmax&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00398"/>00398 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00399"/>00399 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;xc&#32;=&#32;xx;
+<anchor xml:id="_curve__grow_8c_source_1l00400"/>00400 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;yc&#32;=&#32;yy;
+<anchor xml:id="_curve__grow_8c_source_1l00401"/>00401 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;gradmax&#32;=&#32;gradmag-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>[yy*gradmag-&gt;<link linkend="_structImageDouble_1aa4b0263c533c5ce471067bd5ede24477">xsize</link>+xx];
+<anchor xml:id="_curve__grow_8c_source_1l00402"/>00402 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00403"/>00403 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00404"/>00404 &#32;&#32;ang_c&#32;=&#32;angles-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>[&#32;xc&#32;+&#32;yc&#32;*&#32;angles-&gt;<link linkend="_structImageDouble_1aa4b0263c533c5ce471067bd5ede24477">xsize</link>&#32;];
+<anchor xml:id="_curve__grow_8c_source_1l00405"/>00405 &#32;&#32;sum&#32;=&#32;s_sum&#32;=&#32;0.0;
+<anchor xml:id="_curve__grow_8c_source_1l00406"/>00406 &#32;&#32;n&#32;=&#32;0;
+<anchor xml:id="_curve__grow_8c_source_1l00407"/>00407 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=start;&#32;i&lt;*end;&#32;i++&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00408"/>00408 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00409"/>00409 &#32;&#32;&#32;&#32;&#32;&#32;used-&gt;<link linkend="_structImageInt_1ac103627c1ad15cbec2f22d0abe6d54b6">data</link>[&#32;reg[i].<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>&#32;+&#32;reg[i].<link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>&#32;*&#32;used-&gt;<link linkend="_structImageInt_1aa4b0263c533c5ce471067bd5ede24477">xsize</link>&#32;]&#32;=&#32;<link linkend="_misc_8h_1a8a397aec99143b8dcf8e553c0115eb42">NOTUSED</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00410"/>00410 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(&#32;(<emphasis role="keywordtype">double</emphasis>)xc,(<emphasis role="keywordtype">double</emphasis>)yc,(<emphasis role="keywordtype">double</emphasis>)reg[i].x,(<emphasis role="keywordtype">double</emphasis>)reg[i].y&#32;)&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00411"/>00411 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&lt;&#32;rec-&gt;<link linkend="_structRectangle_1a9df23e056f5d1a0388cd8190431c0e03">width</link>&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00412"/>00412 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00413"/>00413 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;angle&#32;=&#32;angles-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>[&#32;reg[i].<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>&#32;+&#32;reg[i].<link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>&#32;*&#32;angles-&gt;<link linkend="_structImageDouble_1aa4b0263c533c5ce471067bd5ede24477">xsize</link>&#32;];
+<anchor xml:id="_curve__grow_8c_source_1l00414"/>00414 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ang_d&#32;=&#32;<link linkend="_misc_8c_1afc6d1f1cd19f4dfd5513632ab80322df">angle_diff_signed</link>(angle,ang_c);
+<anchor xml:id="_curve__grow_8c_source_1l00415"/>00415 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;sum&#32;+=&#32;ang_d;
+<anchor xml:id="_curve__grow_8c_source_1l00416"/>00416 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;s_sum&#32;+=&#32;ang_d&#32;*ang_d;
+<anchor xml:id="_curve__grow_8c_source_1l00417"/>00417 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;++n;
+<anchor xml:id="_curve__grow_8c_source_1l00418"/>00418 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00419"/>00419 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00420"/>00420 &#32;&#32;mean_angle&#32;=&#32;sum&#32;/&#32;(double)&#32;n;
+<anchor xml:id="_curve__grow_8c_source_1l00421"/>00421 &#32;&#32;<emphasis role="comment">/*&#32;tau&#32;=&#32;2&#32;*&#32;standard&#32;deviation&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00422"/>00422 &#32;&#32;tau&#32;=&#32;<link linkend="_misc_8h_1a24e753bacac6be5f30e18f8a2bdefda4">max</link>(2.0&#32;*&#32;sqrt(&#32;(s_sum&#32;-&#32;2.0&#32;*&#32;mean_angle&#32;*&#32;sum)&#32;/&#32;(<emphasis role="keywordtype">double</emphasis>)&#32;n
+<anchor xml:id="_curve__grow_8c_source_1l00423"/>00423 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;+&#32;mean_angle&#32;*&#32;mean_angle&#32;),0.2);&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00424"/>00424 &#32;&#32;tau&#32;=&#32;<link linkend="_misc_8h_1a2d017cd3beb218080a7988e2deed2a11">min</link>(tau,prec);
+<anchor xml:id="_curve__grow_8c_source_1l00425"/>00425 &#32;&#32;<emphasis role="comment">/*tau&#32;=&#32;2.0&#32;*&#32;sqrt(&#32;(s_sum&#32;-&#32;2.0&#32;*&#32;mean_angle&#32;*&#32;sum)&#32;/&#32;(double)&#32;n</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00426"/>00426 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;+&#32;mean_angle*mean_angle&#32;);*/</emphasis>&#32;<emphasis role="comment">/*&#32;2&#32;*&#32;standard&#32;deviation&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00427"/>00427 
+<anchor xml:id="_curve__grow_8c_source_1l00428"/>00428 &#32;
+<anchor xml:id="_curve__grow_8c_source_1l00429"/>00429 &#32;&#32;<emphasis role="comment">/*&#32;Find&#32;a&#32;new&#32;region&#32;from&#32;the&#32;same&#32;starting&#32;point&#32;and&#32;new&#32;angle&#32;tolerance&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00430"/>00430 &#32;&#32;*end&#32;=&#32;idx_buff;
+<anchor xml:id="_curve__grow_8c_source_1l00431"/>00431 &#32;&#32;(*label)++;
+<anchor xml:id="_curve__grow_8c_source_1l00432"/>00432 &#32;&#32;region_grow(&#32;angles,&#32;used,&#32;reg,&#32;start,&#32;idx_buff,&#32;end,&#32;*label,&#32;label_start,&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00433"/>00433 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;tau,&#32;&amp;reg_angle&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00434"/>00434 
+<anchor xml:id="_curve__grow_8c_source_1l00435"/>00435 &#32;&#32;<emphasis role="comment">/*&#32;If&#32;the&#32;region&#32;is&#32;too&#32;small,&#32;reject&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00436"/>00436 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;*end&#32;-&#32;start&#32;&lt;=&#32;2&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa93f0eb578d23995850d61f7d61c55c1">FALSE</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00437"/>00437 
+<anchor xml:id="_curve__grow_8c_source_1l00438"/>00438 &#32;&#32;<emphasis role="comment">/*&#32;Re-compute&#32;rectangle&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00439"/>00439 &#32;&#32;<link linkend="_curve__grow_8c_1a6309f2cc70e39c4d40bbe504844b4866">region2rect</link>(&#32;gradmag,&#32;reg,&#32;start,&#32;*end,&#32;reg_angle,&#32;rec,&#32;prec&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00440"/>00440 
+<anchor xml:id="_curve__grow_8c_source_1l00441"/>00441 &#32;&#32;<emphasis role="comment">/*&#32;Re-compute&#32;region&#32;points&#32;density&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00442"/>00442 &#32;&#32;density&#32;=&#32;(double)&#32;(*end&#32;-&#32;start)&#32;/
+<anchor xml:id="_curve__grow_8c_source_1l00443"/>00443 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;(&#32;<link linkend="_misc_8c_1adce57df8ac5e5faa57d86a66535fdd92">dist</link>(rec-&gt;<link linkend="_structRectangle_1ac75b803b570527306e1e744bfb7a604f">x1</link>,rec-&gt;<link linkend="_structRectangle_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>,rec-&gt;<link linkend="_structRectangle_1adcf04f5f1964d18b332643939561da0d">x2</link>,rec-&gt;<link linkend="_structRectangle_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>)&#32;*&#32;rec-&gt;<link linkend="_structRectangle_1a9df23e056f5d1a0388cd8190431c0e03">width</link>);
+<anchor xml:id="_curve__grow_8c_source_1l00444"/>00444 
+<anchor xml:id="_curve__grow_8c_source_1l00445"/>00445 &#32;&#32;<emphasis role="comment">/*------&#32;Second&#32;try:&#32;reduce&#32;region&#32;radius&#32;------*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00446"/>00446 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;density&#32;&lt;&#32;density_th&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00447"/>00447 &#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;reduce_region_radius(&#32;gradmag,&#32;angles,&#32;used,&#32;reg,&#32;start,&#32;end,&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00448"/>00448 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;reg_angle,&#32;rec,&#32;xc,&#32;yc,&#32;density_th,&#32;prec&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00449"/>00449 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;<link linkend="_misc_8h_1aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00450"/>00450 }
+<anchor xml:id="_curve__grow_8c_source_1l00451"/>00451 
+<anchor xml:id="_curve__grow_8c_source_1l00452"/>00452 
+<anchor xml:id="_curve__grow_8c_source_1l00453"/>00453 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00454"/>00454 <emphasis role="comment">/*------------------&#32;FUNCTIONS&#32;FOR&#32;POLYGON&#32;AND&#32;CURVE&#32;ESTIMATION&#32;--------------*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00455"/>00455 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00456"/>00456 
+<anchor xml:id="_curve__grow_8c_source_1l00457"/>00457 
+<anchor xml:id="_curve__grow_8c_source_1l00458"/>00458 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00463"/>00463 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;px_seed(&#32;<link linkend="_structImageDouble">PImageDouble</link>&#32;angles,&#32;<link linkend="_structImageInt">PImageInt</link>&#32;used,&#32;<link linkend="_structRectangle">Rectangle</link>&#32;*rec,&#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00464"/>00464 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_structPoint">Point</link>&#32;*reg,&#32;<emphasis role="keywordtype">int</emphasis>&#32;start,&#32;<emphasis role="keywordtype">int</emphasis>&#32;*idx_buff,&#32;<emphasis role="keywordtype">int</emphasis>&#32;end,
+<anchor xml:id="_curve__grow_8c_source_1l00465"/>00465 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;*pext,&#32;<emphasis role="keywordtype">double</emphasis>&#32;prec,&#32;<emphasis role="keywordtype">int</emphasis>&#32;label,&#32;<emphasis role="keywordtype">int</emphasis>&#32;label_start&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00466"/>00466 {
+<anchor xml:id="_curve__grow_8c_source_1l00467"/>00467 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;xx,&#32;yy,&#32;i;
+<anchor xml:id="_curve__grow_8c_source_1l00468"/>00468 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;adr;
+<anchor xml:id="_curve__grow_8c_source_1l00469"/>00469 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;idx_buff0&#32;=&#32;*idx_buff;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00470"/>00470 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;width;
+<anchor xml:id="_curve__grow_8c_source_1l00471"/>00471 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;l1,&#32;l2,&#32;l;
+<anchor xml:id="_curve__grow_8c_source_1l00472"/>00472 &#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00473"/>00473 &#32;&#32;<emphasis role="comment">/*&#32;Check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00474"/>00474 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(angles&#32;==&#32;NULL)&#32;||&#32;(angles-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>&#32;==&#32;NULL)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00475"/>00475 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;px_seed:&#32;invalid&#32;input&#32;&apos;angles&apos;&#32;image.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00476"/>00476 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(used&#32;==&#32;NULL)&#32;||&#32;(used-&gt;<link linkend="_structImageInt_1ac103627c1ad15cbec2f22d0abe6d54b6">data</link>&#32;==&#32;NULL)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00477"/>00477 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;px_seed:&#32;invalid&#32;input&#32;&apos;used&apos;&#32;image.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00478"/>00478 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;rec&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;px_seed:&#32;invalid&#32;input&#32;rectangle.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00479"/>00479 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;reg&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;px_seed:&#32;invalid&#32;input&#32;region.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00480"/>00480 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;end&#32;&lt;=&#32;start&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;px_seed:&#32;invalid&#32;region&#32;size.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00481"/>00481 
+<anchor xml:id="_curve__grow_8c_source_1l00482"/>00482 &#32;&#32;width&#32;=&#32;rec-&gt;<link linkend="_structRectangle_1a9df23e056f5d1a0388cd8190431c0e03">width</link>/2.0;
+<anchor xml:id="_curve__grow_8c_source_1l00483"/>00483 
+<anchor xml:id="_curve__grow_8c_source_1l00484"/>00484 &#32;&#32;<emphasis role="comment">/*&#32;Distance&#32;between&#32;rectangle&#32;centre&#32;and&#32;extreme&#32;point;&#32;a&#32;new&#32;point&#32;can&#32;be&#32;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00485"/>00485 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;a&#32;seed&#32;only&#32;if&#32;it&#32;is&#32;at&#32;a&#32;distance&#32;farther&#32;than&#32;this&#32;*/</emphasis>&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00486"/>00486 &#32;&#32;l1&#32;=&#32;fabs(&#32;(pext[0]&#32;-&#32;rec-&gt;<link linkend="_structRectangle_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>)&#32;*&#32;rec-&gt;<link linkend="_structRectangle_1a229d11aff11a7482259d1296b9b70b8a">dx</link>&#32;+&#32;(pext[1]&#32;-&#32;rec-&gt;<link linkend="_structRectangle_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>)&#32;*&#32;rec-&gt;<link linkend="_structRectangle_1a9deb6f886b19d50e714d890c3c268efc">dy</link>);
+<anchor xml:id="_curve__grow_8c_source_1l00487"/>00487 
+<anchor xml:id="_curve__grow_8c_source_1l00488"/>00488 &#32;&#32;<emphasis role="comment">/*&#32;Scan&#32;previous&#32;region&#32;to&#32;find&#32;valid&#32;points&#32;that&#32;are&#32;close&#32;to&#32;the&#32;end&#32;of&#32;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00489"/>00489 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;the&#32;rectangle;&#32;the&#32;new&#32;seed&#32;pixels&#32;will&#32;be&#32;among&#32;the&#32;neighbours&#32;of&#32;these&#32;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00490"/>00490 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;points.&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00491"/>00491 &#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00492"/>00492 &#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;i=start;&#32;i&lt;end;&#32;i++&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00493"/>00493 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00494"/>00494 &#32;&#32;&#32;&#32;&#32;&#32;l&#32;=&#32;fabs(&#32;(&#32;(<emphasis role="keywordtype">double</emphasis>)reg[i].x&#32;-&#32;pext[0]&#32;)&#32;*&#32;rec-&gt;<link linkend="_structRectangle_1a229d11aff11a7482259d1296b9b70b8a">dx</link>&#32;+&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00495"/>00495 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;(&#32;(<emphasis role="keywordtype">double</emphasis>)reg[i].y&#32;-&#32;pext[1]&#32;)&#32;*&#32;rec-&gt;<link linkend="_structRectangle_1a9deb6f886b19d50e714d890c3c268efc">dy</link>);
+<anchor xml:id="_curve__grow_8c_source_1l00496"/>00496 
+<anchor xml:id="_curve__grow_8c_source_1l00497"/>00497 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;l&lt;width&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00498"/>00498 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;xx=reg[i].x-1;&#32;xx&lt;=reg[i].<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>+1;&#32;xx++&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00499"/>00499 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>(&#32;yy=reg[i].y-1;&#32;yy&lt;=reg[i].<link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>+1;&#32;yy++&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00500"/>00500 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00501"/>00501 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;If&#32;point&#32;in&#32;image&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00502"/>00502 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;<link linkend="_image_8c_1a7d75c600cc492bd8efbc1cc0c3819d88">in_image</link>(&#32;xx,&#32;yy,&#32;used-&gt;<link linkend="_structImageInt_1aa4b0263c533c5ce471067bd5ede24477">xsize</link>,&#32;used-&gt;<link linkend="_structImageInt_1a7e7fdb6b4d76fd619024da6878c27d58">ysize</link>&#32;)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00503"/>00503 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00504"/>00504 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;adr&#32;=&#32;yy&#32;*&#32;used-&gt;<link linkend="_structImageInt_1aa4b0263c533c5ce471067bd5ede24477">xsize</link>&#32;+&#32;xx;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00505"/>00505 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;If&#32;point&#32;not&#32;already&#32;used&#32;or&#32;visited&#32;or&#32;notdef&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00506"/>00506 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(used-&gt;<link linkend="_structImageInt_1ac103627c1ad15cbec2f22d0abe6d54b6">data</link>[adr]&#32;!=&#32;<link linkend="_misc_8h_1abcd0a22ee4346cad5706adb6d2119429">USED</link>)&#32;&amp;&amp;&#32;(used-&gt;<link linkend="_structImageInt_1ac103627c1ad15cbec2f22d0abe6d54b6">data</link>[adr]&#32;!=&#32;label&#32;)&#32;&amp;&amp;
+<anchor xml:id="_curve__grow_8c_source_1l00507"/>00507 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;(angles-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>[adr]&#32;!=&#32;<link linkend="_misc_8h_1a18d9edd8c3bfc9c1837a10505dfa037c">NOTDEF</link>)&#32;&amp;&amp;&#32;used-&gt;<link linkend="_structImageInt_1ac103627c1ad15cbec2f22d0abe6d54b6">data</link>[adr]&#32;&lt;&#32;label_start&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00508"/>00508 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00509"/>00509 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;l2&#32;=&#32;fabs(&#32;(xx&#32;-&#32;rec-&gt;<link linkend="_structRectangle_1ac176cb816ac192bd8ec2f73c40b43309">cx</link>)&#32;*&#32;rec-&gt;<link linkend="_structRectangle_1a229d11aff11a7482259d1296b9b70b8a">dx</link>&#32;+&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00510"/>00510 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;(yy&#32;-&#32;rec-&gt;<link linkend="_structRectangle_1a2d6a093e4a6fe06658d3d01563d028c9">cy</link>)&#32;*&#32;rec-&gt;<link linkend="_structRectangle_1a9deb6f886b19d50e714d890c3c268efc">dy</link>&#32;);&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00511"/>00511 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;If&#32;point&apos;s&#32;orientation&#32;is&#32;similar&#32;and&#32;the&#32;point&#32;is&#32;at</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00512"/>00512 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;an&#32;acceptable&#32;distance&#32;&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00513"/>00513 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(<link linkend="_misc_8c_1a4e46bd783e4efe71bee053481afeb4a9">angle_diff</link>(&#32;angles-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>[adr],&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00514"/>00514 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;rec-&gt;<link linkend="_structRectangle_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>-<link linkend="_misc_8h_1ae11c01f236a7a89f767a7b34283da201">M_1_2_PI</link>&#32;)&#32;&lt;&#32;3&#32;*&#32;prec&#32;)&#32;&amp;&amp;&#32;(l2&#32;&gt;=&#32;l1-1)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00515"/>00515 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00516"/>00516 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;reg[&#32;*idx_buff&#32;].<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>&#32;=&#32;xx;
+<anchor xml:id="_curve__grow_8c_source_1l00517"/>00517 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;reg[&#32;*idx_buff&#32;].<link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>&#32;=&#32;yy;
+<anchor xml:id="_curve__grow_8c_source_1l00518"/>00518 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;++(*idx_buff);
+<anchor xml:id="_curve__grow_8c_source_1l00519"/>00519 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;used-&gt;<link linkend="_structImageInt_1ac103627c1ad15cbec2f22d0abe6d54b6">data</link>[adr]&#32;=&#32;label;
+<anchor xml:id="_curve__grow_8c_source_1l00520"/>00520 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00521"/>00521 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00522"/>00522 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00523"/>00523 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00524"/>00524 &#32;&#32;&#32;&#32;}&#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00525"/>00525 
+<anchor xml:id="_curve__grow_8c_source_1l00526"/>00526 &#32;&#32;<emphasis role="comment">/*&#32;If&#32;none&#32;of&#32;the&#32;visited&#32;pixels&#32;satisfy&#32;the&#32;conditions,&#32;take&#32;as&#32;seed&#32;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00527"/>00527 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;the&#32;end&#32;of&#32;the&#32;rectangle,&#32;if&#32;it&#32;is&#32;inside&#32;the&#32;image&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00528"/>00528 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;idx_buff0&#32;==&#32;*idx_buff&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00529"/>00529 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00530"/>00530 &#32;&#32;&#32;&#32;&#32;&#32;xx&#32;=&#32;floor(pext[0]);&#32;yy&#32;=&#32;floor(pext[1]);
+<anchor xml:id="_curve__grow_8c_source_1l00531"/>00531 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;<link linkend="_image_8c_1a7d75c600cc492bd8efbc1cc0c3819d88">in_image</link>(&#32;xx,&#32;yy,&#32;used-&gt;<link linkend="_structImageInt_1aa4b0263c533c5ce471067bd5ede24477">xsize</link>,&#32;used-&gt;<link linkend="_structImageInt_1a7e7fdb6b4d76fd619024da6878c27d58">ysize</link>&#32;)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00532"/>00532 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00533"/>00533 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;reg[&#32;*idx_buff&#32;].<link linkend="_structPoint_1a6150e0515f7202e2fb518f7206ed97dc">x</link>&#32;=&#32;xx;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00534"/>00534 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;reg[&#32;*idx_buff&#32;].<link linkend="_structPoint_1a0a2f84ed7838f07779ae24c5a9086d33">y</link>&#32;=&#32;yy;
+<anchor xml:id="_curve__grow_8c_source_1l00535"/>00535 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;++(*idx_buff);
+<anchor xml:id="_curve__grow_8c_source_1l00536"/>00536 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00537"/>00537 &#32;&#32;&#32;&#32;}&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00538"/>00538 }
+<anchor xml:id="_curve__grow_8c_source_1l00539"/>00539 
+<anchor xml:id="_curve__grow_8c_source_1l00540"/>00540 
+<anchor xml:id="_curve__grow_8c_source_1l00541"/>00541 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00547"/>00547 <emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;subcurve(&#32;<link linkend="_structImageDouble">PImageDouble</link>&#32;angles,&#32;<link linkend="_structImageDouble">PImageDouble</link>&#32;gradmag,&#32;<link linkend="_structImageInt">PImageInt</link>&#32;used,&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00548"/>00548 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_structPolyRect">PolyRect</link>&#32;*poly,&#32;<link linkend="_structPoint">Point</link>&#32;*reg,&#32;<emphasis role="keywordtype">int</emphasis>&#32;start,&#32;<emphasis role="keywordtype">int</emphasis>&#32;idx_buff,
+<anchor xml:id="_curve__grow_8c_source_1l00549"/>00549 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;*end,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*pext,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*spir,&#32;<emphasis role="keywordtype">double</emphasis>&#32;density_th,
+<anchor xml:id="_curve__grow_8c_source_1l00550"/>00550 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;prec,<emphasis role="keywordtype">int</emphasis>&#32;*sgn,&#32;<emphasis role="keywordtype">int</emphasis>&#32;*label,&#32;<emphasis role="keywordtype">int</emphasis>&#32;label_start,&#32;<emphasis role="keywordtype">int</emphasis>&#32;w&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00551"/>00551 {
+<anchor xml:id="_curve__grow_8c_source_1l00552"/>00552 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;convex&#32;=&#32;1;
+<anchor xml:id="_curve__grow_8c_source_1l00553"/>00553 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;reg_angle,&#32;difang,&#32;ang_prev;
+<anchor xml:id="_curve__grow_8c_source_1l00554"/>00554 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;lenrec,&#32;lenth;
+<anchor xml:id="_curve__grow_8c_source_1l00555"/>00555 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;buf_tmp&#32;=&#32;0;
+<anchor xml:id="_curve__grow_8c_source_1l00556"/>00556 &#32;&#32;<link linkend="_structRectangle">Rectangle</link>&#32;rec;
+<anchor xml:id="_curve__grow_8c_source_1l00557"/>00557 &#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00558"/>00558 &#32;&#32;<emphasis role="comment">/*&#32;Check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00559"/>00559 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(angles&#32;==&#32;NULL)&#32;||&#32;(angles-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>&#32;==&#32;NULL)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00560"/>00560 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;subcurve:&#32;invalid&#32;input&#32;&apos;angles&apos;&#32;image.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00561"/>00561 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(gradmag&#32;==&#32;NULL)&#32;||&#32;(gradmag-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>&#32;==&#32;NULL)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00562"/>00562 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;subcurve:&#32;invalid&#32;input&#32;&apos;gradmag&apos;&#32;image.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00563"/>00563 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(used&#32;==&#32;NULL)&#32;||&#32;(used-&gt;<link linkend="_structImageInt_1ac103627c1ad15cbec2f22d0abe6d54b6">data</link>&#32;==&#32;NULL)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00564"/>00564 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;subcurve:&#32;invalid&#32;input&#32;&apos;used&apos;&#32;image.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00565"/>00565 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;reg&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;subcurve:&#32;invalid&#32;input&#32;region.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00566"/>00566 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;*end&#32;&lt;=&#32;start&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;subcurve:&#32;invalid&#32;region&#32;size.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00567"/>00567 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;*label&#32;&lt;=&#32;1&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;subcurve:&#32;forbidden&#32;label&#32;value.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00568"/>00568 
+<anchor xml:id="_curve__grow_8c_source_1l00569"/>00569 
+<anchor xml:id="_curve__grow_8c_source_1l00570"/>00570 &#32;&#32;<emphasis role="comment">/*&#32;Get&#32;length&#32;and&#32;angle&#32;of&#32;initial&#32;rectangle&#32;(stored&#32;in&#32;polygon&#32;on&#32;first&#32;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00571"/>00571 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;position)&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00572"/>00572 &#32;&#32;lenth&#32;=&#32;poly-&gt;<link linkend="_structPolyRect_1aa6c235e6fd60e9c44d47b5ff669a4b07">rectlist</link>[0].<link linkend="_structRectangle_1ad4bd51cdbe6ba41894905207ed94974f">len</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00573"/>00573 &#32;&#32;ang_prev&#32;=&#32;poly-&gt;<link linkend="_structPolyRect_1aa6c235e6fd60e9c44d47b5ff669a4b07">rectlist</link>[0].<link linkend="_structRectangle_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00574"/>00574 &#32;
+<anchor xml:id="_curve__grow_8c_source_1l00575"/>00575 &#32;&#32;<emphasis role="comment">/*&#32;Add&#32;new&#32;rectangles&#32;while&#32;the&#32;conditions&#32;of&#32;smoothness&#32;and&#32;convexity&#32;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00576"/>00576 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;are&#32;satisfied&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00577"/>00577 &#32;&#32;<emphasis role="keywordflow">while</emphasis>(&#32;convex&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00578"/>00578 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00579"/>00579 &#32;&#32;&#32;&#32;&#32;&#32;(*label)++;
+<anchor xml:id="_curve__grow_8c_source_1l00580"/>00580 &#32;&#32;&#32;&#32;&#32;&#32;start&#32;=&#32;*end;
+<anchor xml:id="_curve__grow_8c_source_1l00581"/>00581 &#32;&#32;&#32;&#32;&#32;&#32;*end&#32;=&#32;idx_buff;
+<anchor xml:id="_curve__grow_8c_source_1l00582"/>00582 &#32;&#32;&#32;&#32;&#32;&#32;buf_tmp&#32;=&#32;*end&#32;-&#32;start;
+<anchor xml:id="_curve__grow_8c_source_1l00583"/>00583 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;Start&#32;region&#32;grow&#32;at&#32;the&#32;end&#32;of&#32;the&#32;previous&#32;rectangle&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00584"/>00584 &#32;&#32;&#32;&#32;&#32;&#32;region_grow(&#32;angles,&#32;used,&#32;reg,&#32;start,&#32;idx_buff,&#32;end,&#32;*label,&#32;label_start,
+<anchor xml:id="_curve__grow_8c_source_1l00585"/>00585 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;prec,&#32;&amp;reg_angle&#32;);&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00586"/>00586 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;*end&#32;-&#32;start&#32;&gt;&#32;buf_tmp&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00587"/>00587 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00588"/>00588 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;Estimate&#32;and&#32;refine&#32;rectangle&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00589"/>00589 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_curve__grow_8c_1a6309f2cc70e39c4d40bbe504844b4866">region2rect</link>(&#32;gradmag,&#32;reg,&#32;start,&#32;*end,&#32;reg_angle,&#32;&amp;rec,&#32;prec&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00590"/>00590 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;(*label)++;
+<anchor xml:id="_curve__grow_8c_source_1l00591"/>00591 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;!refine(&#32;gradmag,&#32;angles,&#32;used,&#32;reg,&#32;start,&#32;idx_buff,&#32;end,
+<anchor xml:id="_curve__grow_8c_source_1l00592"/>00592 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;label,&#32;label_start,&#32;&amp;rec,&#32;density_th,&#32;prec)&#32;)&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00593"/>00593 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00594"/>00594 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;If&#32;operation&#32;not&#32;successful,&#32;clean&#32;last&#32;visited&#32;points&#32;and&#32;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00595"/>00595 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;return&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00596"/>00596 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_image_8c_1a23026d70139f0859bae4a5723784f1fc">mark_img_pts</link>(&#32;used,&#32;reg,&#32;start,&#32;*end,&#32;<link linkend="_misc_8h_1a8a397aec99143b8dcf8e553c0115eb42">NOTUSED</link>&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00597"/>00597 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;*end&#32;=&#32;start;
+<anchor xml:id="_curve__grow_8c_source_1l00598"/>00598 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_curve__grow_8c_source_1l00599"/>00599 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00600"/>00600 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;*end&#32;-&#32;start&#32;&lt;=&#32;buf_tmp&#32;)&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00601"/>00601 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00602"/>00602 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;*end&#32;=&#32;start;
+<anchor xml:id="_curve__grow_8c_source_1l00603"/>00603 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_curve__grow_8c_source_1l00604"/>00604 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00605"/>00605 
+<anchor xml:id="_curve__grow_8c_source_1l00606"/>00606 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;Convexity&#32;rule&#32;imposes&#32;that&#32;consecutive&#32;rectangles&#32;turn&#32;in&#32;the&#32;same</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00607"/>00607 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;direction,&#32;hence&#32;must&#32;have&#32;the&#32;same&#32;sign&#32;for&#32;angle&#32;difference&#32;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00608"/>00608 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;between&#32;consecutive&#32;rectangles&apos;&#32;orientation.&#32;If&#32;set,&#32;verify&#32;sign</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00609"/>00609 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;before&#32;adding&#32;a&#32;new&#32;rectangle.&#32;If&#32;not&#32;set&#32;(at&#32;first&#32;call),&#32;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00610"/>00610 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;then&#32;set&#32;sign.&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00611"/>00611 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;*sgn&#32;==&#32;0&#32;)&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00612"/>00612 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;*sgn&#32;=&#32;<link linkend="_misc_8c_1a9f29698bce67d856008e85a5c6b45b57">sign</link>(&#32;<link linkend="_misc_8c_1afc6d1f1cd19f4dfd5513632ab80322df">angle_diff_signed</link>(&#32;rec.<link linkend="_structRectangle_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>,&#32;ang_prev&#32;)&#32;);&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00613"/>00613 
+<anchor xml:id="_curve__grow_8c_source_1l00614"/>00614 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;Get&#32;angle&#32;difference&#32;between&#32;current&#32;rectangle&#32;and&#32;previous&#32;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00615"/>00615 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;rectangle&#32;*/</emphasis>&#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00616"/>00616 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;difang&#32;=&#32;<link linkend="_misc_8c_1afc6d1f1cd19f4dfd5513632ab80322df">angle_diff_signed</link>(&#32;rec.<link linkend="_structRectangle_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>,&#32;ang_prev&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00617"/>00617 
+<anchor xml:id="_curve__grow_8c_source_1l00618"/>00618 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;If&#32;consecutive&#32;rectangles&#32;don&apos;t&#32;have&#32;comparable&#32;lengths&#32;&#32;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00619"/>00619 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;(condition&#32;for&#32;smoothness):&#32;clean&#32;and&#32;return;&#32;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00620"/>00620 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Special&#32;case:&#32;last&#32;rectangle&#32;that&#32;joins&#32;the&#32;ends&#32;of&#32;a&#32;full&#32;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00621"/>00621 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;chain&#32;can&#32;be&#32;shorter&#32;than&#32;previous.&#32;&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00622"/>00622 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;lenrec&#32;=&#32;rec.<link linkend="_structRectangle_1ad4bd51cdbe6ba41894905207ed94974f">len</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00623"/>00623 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;lenrec&#32;&gt;&#32;lenth*3.0&#32;||&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00624"/>00624 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;(lenrec&#32;&lt;&#32;lenth/3.0&#32;&amp;&amp;&#32;(*spir&#32;+&#32;fabs(difang))&#32;&lt;=&#32;0.9*<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>)&#32;)&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00625"/>00625 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00626"/>00626 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_image_8c_1a23026d70139f0859bae4a5723784f1fc">mark_img_pts</link>(&#32;used,&#32;reg,&#32;start,&#32;*end,&#32;<link linkend="_misc_8h_1a8a397aec99143b8dcf8e553c0115eb42">NOTUSED</link>&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00627"/>00627 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;*end&#32;=&#32;start;
+<anchor xml:id="_curve__grow_8c_source_1l00628"/>00628 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">break</emphasis>;
+<anchor xml:id="_curve__grow_8c_source_1l00629"/>00629 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00630"/>00630 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;lenth&#32;=&#32;lenrec;
+<anchor xml:id="_curve__grow_8c_source_1l00631"/>00631 
+<anchor xml:id="_curve__grow_8c_source_1l00632"/>00632 
+<anchor xml:id="_curve__grow_8c_source_1l00633"/>00633 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;Convexity&#32;&amp;&#32;non-spiral&#32;check&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00634"/>00634 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(<link linkend="_misc_8c_1a9f29698bce67d856008e85a5c6b45b57">sign</link>(difang)&#32;==&#32;*sgn)&#32;&amp;&amp;&#32;(fabs(difang)&#32;&lt;&#32;(<link linkend="_misc_8h_1ae71449b1cc6e6250b91f539153a7a0d3">M_PI</link>/3.0)&#32;)&#32;&amp;&amp;
+<anchor xml:id="_curve__grow_8c_source_1l00635"/>00635 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;(&#32;(*spir&#32;=&#32;*spir&#32;+&#32;fabs(difang))&#32;&lt;=&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00636"/>00636 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00637"/>00637 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;If&#32;all&#32;conditions&#32;are&#32;met,&#32;find&#32;next&#32;seed&#32;point,&#32;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00638"/>00638 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;and&#32;add&#32;rectangle&#32;to&#32;polygon&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00639"/>00639 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;(*label)++;
+<anchor xml:id="_curve__grow_8c_source_1l00640"/>00640 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;idx_buff&#32;=&#32;*end;
+<anchor xml:id="_curve__grow_8c_source_1l00641"/>00641 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;w==0&#32;)&#32;{pext[0]&#32;=&#32;rec.<link linkend="_structRectangle_1ac75b803b570527306e1e744bfb7a604f">x1</link>;&#32;pext[1]&#32;=&#32;rec.<link linkend="_structRectangle_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>;}
+<anchor xml:id="_curve__grow_8c_source_1l00642"/>00642 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;{pext[0]&#32;=&#32;rec.<link linkend="_structRectangle_1adcf04f5f1964d18b332643939561da0d">x2</link>;&#32;pext[1]&#32;=&#32;rec.<link linkend="_structRectangle_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>;}
+<anchor xml:id="_curve__grow_8c_source_1l00643"/>00643 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;px_seed(&#32;angles,&#32;used,&#32;&amp;rec,&#32;reg,&#32;start,&#32;&amp;idx_buff,&#32;*end,
+<anchor xml:id="_curve__grow_8c_source_1l00644"/>00644 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;pext,&#32;prec,&#32;*label,&#32;label_start&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00645"/>00645 
+<anchor xml:id="_curve__grow_8c_source_1l00646"/>00646 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;Add&#32;rectangle&#32;to&#32;polygon&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00647"/>00647 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;poly-&gt;<link linkend="_structPolyRect_1a70b5e28b5bc3d1b63a7435c5fe50b837">dim</link>++;
+<anchor xml:id="_curve__grow_8c_source_1l00648"/>00648 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_polygon_8c_1a32839ef9cf401a79864fd0d3b9718dec">add_rect_to_polyrect</link>(&#32;poly,&#32;&amp;rec&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00649"/>00649 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ang_prev&#32;=&#32;rec.<link linkend="_structRectangle_1aca81c35c21e3a5f7f3a8d24504e76664">theta</link>;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00650"/>00650 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00651"/>00651 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;<emphasis role="comment">/*&#32;Not&#32;convex&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00652"/>00652 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00653"/>00653 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;convex&#32;=&#32;0;
+<anchor xml:id="_curve__grow_8c_source_1l00654"/>00654 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;Subtract&#32;the&#32;contribution&#32;of&#32;the&#32;last&#32;rectangle&#32;and&#32;clean&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00655"/>00655 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_image_8c_1a23026d70139f0859bae4a5723784f1fc">mark_img_pts</link>(&#32;used,&#32;reg,&#32;start,&#32;*end,&#32;<link linkend="_misc_8h_1a8a397aec99143b8dcf8e553c0115eb42">NOTUSED</link>&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00656"/>00656 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;*end&#32;=&#32;start;
+<anchor xml:id="_curve__grow_8c_source_1l00657"/>00657 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00658"/>00658 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;<emphasis role="comment">/*&#32;!if(&#32;*end&#32;-&#32;start&#32;&gt;&#32;1&#32;)&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00659"/>00659 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00660"/>00660 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;{&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00661"/>00661 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;convex&#32;=&#32;0;
+<anchor xml:id="_curve__grow_8c_source_1l00662"/>00662 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;*end&#32;=&#32;start;
+<anchor xml:id="_curve__grow_8c_source_1l00663"/>00663 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}&#32;&#32;&#32;&#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00664"/>00664 &#32;&#32;&#32;&#32;}&#32;&#32;<emphasis role="comment">/*&#32;!while(convex)&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00665"/>00665 }&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00666"/>00666 
+<anchor xml:id="_curve__grow_8c_source_1l00667"/>00667 
+<anchor xml:id="_curve__grow_8c_source_1l00668"/>00668 <emphasis role="comment">/*----------------------------------------------------------------------------*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00672"/><link linkend="_curve__grow_8c_1a05a2be0b004173552b1178130d6c7369">00672</link> <emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_curve__grow_8c_1a05a2be0b004173552b1178130d6c7369">curve_grow</link>(&#32;<link linkend="_structImageDouble">PImageDouble</link>&#32;gradmag,&#32;<link linkend="_structImageDouble">PImageDouble</link>&#32;angles,&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00673"/>00673 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_structImageInt">PImageInt</link>&#32;used,&#32;<link linkend="_structPoint">Point</link>&#32;*reg,&#32;<emphasis role="keywordtype">int</emphasis>&#32;*reg_size,&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00674"/>00674 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;density_th,&#32;<emphasis role="keywordtype">double</emphasis>&#32;prec,&#32;<link linkend="_structPolyRect">PolyRect</link>&#32;*poly,&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00675"/>00675 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;*label,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*pext1,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*pext2,&#32;<emphasis role="keywordtype">double</emphasis>&#32;*spir&#32;)&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00676"/>00676 {
+<anchor xml:id="_curve__grow_8c_source_1l00677"/>00677 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;sgn&#32;=&#32;0;
+<anchor xml:id="_curve__grow_8c_source_1l00678"/>00678 &#32;&#32;<link linkend="_structRectangle">Rectangle</link>&#32;rec;
+<anchor xml:id="_curve__grow_8c_source_1l00679"/>00679 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;size_first_reg&#32;=&#32;0;
+<anchor xml:id="_curve__grow_8c_source_1l00680"/>00680 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;label_start;
+<anchor xml:id="_curve__grow_8c_source_1l00681"/>00681 &#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;start,&#32;idx_buff;
+<anchor xml:id="_curve__grow_8c_source_1l00682"/>00682 &#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;reg_angle;
+<anchor xml:id="_curve__grow_8c_source_1l00683"/>00683 &#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00684"/>00684 &#32;&#32;<emphasis role="comment">/*&#32;Check&#32;parameters&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00685"/>00685 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(gradmag&#32;==&#32;NULL)&#32;||&#32;(gradmag-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>&#32;==&#32;NULL)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00686"/>00686 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;curve_grow:&#32;invalid&#32;input&#32;&apos;gradmag&apos;&#32;image.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00687"/>00687 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(angles&#32;==&#32;NULL)&#32;||&#32;(angles-&gt;<link linkend="_structImageDouble_1a23436a7a2b44939627b59df11be7ad75">data</link>&#32;==&#32;NULL)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00688"/>00688 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;curve_grow:&#32;invalid&#32;input&#32;&apos;angles&apos;&#32;image.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00689"/>00689 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;(used&#32;==&#32;NULL)&#32;||&#32;(used-&gt;<link linkend="_structImageInt_1ac103627c1ad15cbec2f22d0abe6d54b6">data</link>&#32;==&#32;NULL)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00690"/>00690 &#32;&#32;&#32;&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;curve_grow:&#32;invalid&#32;input&#32;&apos;used&apos;&#32;image.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00691"/>00691 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;reg&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;curve_grow:&#32;invalid&#32;input&#32;region.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00692"/>00692 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;*reg_size&#32;&lt;=0&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;curve_grow:&#32;list&#32;must&#32;contain&#32;at&#32;least&#32;1&#32;point.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00693"/>00693 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;poly&#32;==&#32;NULL&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;curve_grow:&#32;poly&#32;must&#32;be&#32;non&#32;null.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00694"/>00694 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;*label&#32;&lt;=&#32;1&#32;)&#32;<link linkend="_misc_8c_1aad9796c174f7ef5d226cd169f2520fd5">error</link>(<emphasis role="stringliteral">&quot;curve_grow:&#32;forbidden&#32;label&#32;value.&quot;</emphasis>);
+<anchor xml:id="_curve__grow_8c_source_1l00695"/>00695 &#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00696"/>00696 &#32;&#32;<emphasis role="comment">/*&#32;Init&#32;indexes&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00697"/>00697 &#32;&#32;start&#32;=&#32;0;
+<anchor xml:id="_curve__grow_8c_source_1l00698"/>00698 &#32;&#32;idx_buff&#32;=&#32;*reg_size;
+<anchor xml:id="_curve__grow_8c_source_1l00699"/>00699 &#32;&#32;label_start&#32;=&#32;(*label);
+<anchor xml:id="_curve__grow_8c_source_1l00700"/>00700 &#32;&#32;<emphasis role="comment">/*&#32;Perform&#32;initial&#32;region&#32;growing,&#32;to&#32;estimate&#32;first&#32;rectangle&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00701"/>00701 &#32;&#32;region_grow(&#32;angles,&#32;used,&#32;reg,&#32;start,&#32;idx_buff,&#32;reg_size,&#32;*label,&#32;label_start,
+<anchor xml:id="_curve__grow_8c_source_1l00702"/>00702 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;prec,&#32;&amp;reg_angle&#32;);&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00703"/>00703 
+<anchor xml:id="_curve__grow_8c_source_1l00704"/>00704 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;*reg_size&#32;&lt;=&#32;2&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;0;
+<anchor xml:id="_curve__grow_8c_source_1l00705"/>00705 &#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00706"/>00706 &#32;&#32;<emphasis role="comment">/*&#32;Estimate&#32;initial&#32;rectangle&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00707"/>00707 &#32;&#32;<link linkend="_curve__grow_8c_1a6309f2cc70e39c4d40bbe504844b4866">region2rect</link>(&#32;gradmag,&#32;reg,&#32;start,&#32;*reg_size,&#32;reg_angle,&#32;&amp;rec,&#32;prec&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00708"/>00708 &#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00709"/>00709 &#32;&#32;<emphasis role="comment">/*&#32;Refine&#32;rectangle&#32;if&#32;density&#32;of&#32;aligned&#32;points&#32;is&#32;less&#32;than&#32;density&#32;</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00710"/>00710 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;threshold&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00711"/>00711 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;!refine(&#32;gradmag,&#32;angles,&#32;used,&#32;reg,&#32;start,&#32;idx_buff,&#32;reg_size,&#32;label,&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00712"/>00712 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;label_start,&#32;&amp;rec,&#32;density_th,&#32;prec&#32;)&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00713"/>00713 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00714"/>00714 &#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_image_8c_1a23026d70139f0859bae4a5723784f1fc">mark_img_pts</link>(&#32;used,&#32;reg,&#32;start,&#32;*reg_size,&#32;<link linkend="_misc_8h_1a8a397aec99143b8dcf8e553c0115eb42">NOTUSED</link>&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00715"/>00715 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;0;
+<anchor xml:id="_curve__grow_8c_source_1l00716"/>00716 &#32;&#32;&#32;&#32;}
+<anchor xml:id="_curve__grow_8c_source_1l00717"/>00717 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;rec.<link linkend="_structRectangle_1ad4bd51cdbe6ba41894905207ed94974f">len</link>&#32;&lt;=&#32;2&#32;)&#32;<emphasis role="keywordflow">return</emphasis>&#32;0;
+<anchor xml:id="_curve__grow_8c_source_1l00718"/>00718 
+<anchor xml:id="_curve__grow_8c_source_1l00719"/>00719 &#32;&#32;<emphasis role="comment">/*&#32;Save&#32;size&#32;of&#32;first&#32;region;&#32;useful&#32;to&#32;compute&#32;second&#32;seed,&#32;after&#32;scanning</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00720"/>00720 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;first&#32;direction&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00721"/>00721 &#32;&#32;size_first_reg&#32;=&#32;*reg_size;
+<anchor xml:id="_curve__grow_8c_source_1l00722"/>00722 
+<anchor xml:id="_curve__grow_8c_source_1l00723"/>00723 &#32;&#32;<emphasis role="comment">/*&#32;Add&#32;rectangle&#32;to&#32;poly&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00724"/>00724 &#32;&#32;poly-&gt;<link linkend="_structPolyRect_1a70b5e28b5bc3d1b63a7435c5fe50b837">dim</link>++;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00725"/>00725 &#32;&#32;<link linkend="_polygon_8c_1a32839ef9cf401a79864fd0d3b9718dec">add_rect_to_polyrect</link>(&#32;poly,&#32;&amp;rec&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00726"/>00726 
+<anchor xml:id="_curve__grow_8c_source_1l00727"/>00727 &#32;&#32;<emphasis role="comment">/*&#32;Compute&#32;first&#32;seed&#32;with&#32;the&#32;first&#32;end&#32;of&#32;the&#32;initial&#32;rectangle&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00728"/>00728 &#32;&#32;pext1[0]&#32;=&#32;rec.<link linkend="_structRectangle_1adcf04f5f1964d18b332643939561da0d">x2</link>;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00729"/>00729 &#32;&#32;pext1[1]&#32;=&#32;rec.<link linkend="_structRectangle_1a5347e514ebe985fb371754ffd2b5ff83">y2</link>;
+<anchor xml:id="_curve__grow_8c_source_1l00730"/>00730 &#32;&#32;(*label)++;
+<anchor xml:id="_curve__grow_8c_source_1l00731"/>00731 &#32;&#32;idx_buff&#32;=&#32;*reg_size;
+<anchor xml:id="_curve__grow_8c_source_1l00732"/>00732 &#32;&#32;px_seed(&#32;angles,&#32;used,&#32;&amp;rec,&#32;reg,&#32;start,&#32;&amp;idx_buff,&#32;*reg_size,&#32;pext1,&#32;prec,
+<anchor xml:id="_curve__grow_8c_source_1l00733"/>00733 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;*label,&#32;label_start&#32;);&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00734"/>00734 
+<anchor xml:id="_curve__grow_8c_source_1l00735"/>00735 &#32;&#32;<emphasis role="comment">/*&#32;Lauch&#32;scan&#32;in&#32;first&#32;direction&#32;*/</emphasis>&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00736"/>00736 &#32;&#32;subcurve(&#32;angles,&#32;gradmag,&#32;used,&#32;poly,&#32;reg,&#32;start,&#32;idx_buff,&#32;reg_size,&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00737"/>00737 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;pext1,&#32;spir,&#32;density_th,&#32;prec,&#32;&amp;sgn,&#32;label,&#32;label_start,&#32;1&#32;);&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00738"/>00738 &#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00739"/>00739 &#32;&#32;<emphasis role="comment">/*&#32;Scan&#32;the&#32;other&#32;direction&#32;only&#32;if&#32;a&#32;complete&#32;tour&#32;was&#32;not&#32;scanned;&#32;this</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00740"/>00740 <emphasis role="comment">&#32;&#32;&#32;&#32;&#32;condition&#32;is&#32;to&#32;avoid&#32;spiral&#32;curves&#32;*/</emphasis>
+<anchor xml:id="_curve__grow_8c_source_1l00741"/>00741 &#32;&#32;pext2[0]&#32;=&#32;rec.<link linkend="_structRectangle_1ac75b803b570527306e1e744bfb7a604f">x1</link>;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00742"/>00742 &#32;&#32;pext2[1]&#32;=&#32;rec.<link linkend="_structRectangle_1ac3b72e5b77595ca2340ecf8ccfe5fd99">y1</link>;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00743"/>00743 &#32;&#32;<emphasis role="keywordflow">if</emphasis>(&#32;*spir&#32;&lt;&#32;<link linkend="_misc_8h_1a8b5e22fbd5c798aac5298e80fc91b7fe">M_2__PI</link>&#32;)
+<anchor xml:id="_curve__grow_8c_source_1l00744"/>00744 &#32;&#32;&#32;&#32;{
+<anchor xml:id="_curve__grow_8c_source_1l00745"/>00745 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;Compute&#32;second&#32;seed&#32;with&#32;the&#32;second&#32;end&#32;of&#32;the&#32;initial&#32;rectangle&#32;*/</emphasis>&#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00746"/>00746 &#32;
+<anchor xml:id="_curve__grow_8c_source_1l00747"/>00747 &#32;&#32;&#32;&#32;&#32;&#32;idx_buff&#32;=&#32;*reg_size;
+<anchor xml:id="_curve__grow_8c_source_1l00748"/>00748 &#32;&#32;&#32;&#32;&#32;&#32;(*label)++;
+<anchor xml:id="_curve__grow_8c_source_1l00749"/>00749 &#32;&#32;&#32;&#32;&#32;&#32;px_seed(&#32;angles,&#32;used,&#32;&amp;rec,&#32;reg,&#32;0,&#32;&amp;idx_buff,&#32;size_first_reg,&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00750"/>00750 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;pext2,&#32;prec,&#32;*label,&#32;label_start&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00751"/>00751 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;When&#32;scanning&#32;the&#32;other&#32;direction,&#32;the&#32;sign&#32;must&#32;be&#32;inverted&#32;*/</emphasis>&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00752"/>00752 &#32;&#32;&#32;&#32;&#32;&#32;sgn&#32;=&#32;-sgn;
+<anchor xml:id="_curve__grow_8c_source_1l00753"/>00753 &#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="comment">/*&#32;Lauch&#32;scan&#32;in&#32;second&#32;direction&#32;*/</emphasis>&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00754"/>00754 &#32;&#32;&#32;&#32;&#32;&#32;subcurve(&#32;angles,&#32;gradmag,&#32;used,&#32;poly,&#32;reg,&#32;start,&#32;idx_buff,&#32;reg_size,&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00755"/>00755 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;pext2,&#32;spir,&#32;density_th,&#32;prec,&#32;&amp;sgn,&#32;label,&#32;label_start,&#32;0&#32;);
+<anchor xml:id="_curve__grow_8c_source_1l00756"/>00756 &#32;&#32;&#32;&#32;}&#32;&#32;&#32;&#32;
+<anchor xml:id="_curve__grow_8c_source_1l00757"/>00757 &#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;1;
+<anchor xml:id="_curve__grow_8c_source_1l00758"/>00758 }
+</programlisting></section>

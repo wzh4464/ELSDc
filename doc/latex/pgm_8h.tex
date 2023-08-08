@@ -1,0 +1,33 @@
+\doxysection{src/pgm.h File Reference}
+\hypertarget{pgm_8h}{}\label{pgm_8h}\index{src/pgm.h@{src/pgm.h}}
+{\ttfamily \#include \"{}image.\+h\"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} \mbox{\hyperlink{pgm_8h_a9a98683fcb23d861dc3b3ac2437267bb}{read\+\_\+pgm\+\_\+image\+\_\+double}} (char \texorpdfstring{$\ast$}{*}name)
+\item 
+void \mbox{\hyperlink{pgm_8h_a94f252c634af4c81659315c4545be8b8}{write\+\_\+pgm\+\_\+image\+\_\+int}} (int \texorpdfstring{$\ast$}{*}image, int xsize, int ysize, char \texorpdfstring{$\ast$}{*}name)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{pgm_8h_a9a98683fcb23d861dc3b3ac2437267bb}\label{pgm_8h_a9a98683fcb23d861dc3b3ac2437267bb} 
+\index{pgm.h@{pgm.h}!read\_pgm\_image\_double@{read\_pgm\_image\_double}}
+\index{read\_pgm\_image\_double@{read\_pgm\_image\_double}!pgm.h@{pgm.h}}
+\doxysubsubsection{\texorpdfstring{read\_pgm\_image\_double()}{read\_pgm\_image\_double()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} read\+\_\+pgm\+\_\+image\+\_\+double (\begin{DoxyParamCaption}\item[{char \texorpdfstring{$\ast$}{*}}]{name }\end{DoxyParamCaption})}
+
+Read a PGM file into an \"{}image\+\_\+double\"{}. If the name is \"{}-\/\"{} the file is read from standard input. 
+
+Definition at line \mbox{\hyperlink{pgm_8c_source_l00083}{83}} of file \mbox{\hyperlink{pgm_8c_source}{pgm.\+c}}.
+
+\Hypertarget{pgm_8h_a94f252c634af4c81659315c4545be8b8}\label{pgm_8h_a94f252c634af4c81659315c4545be8b8} 
+\index{pgm.h@{pgm.h}!write\_pgm\_image\_int@{write\_pgm\_image\_int}}
+\index{write\_pgm\_image\_int@{write\_pgm\_image\_int}!pgm.h@{pgm.h}}
+\doxysubsubsection{\texorpdfstring{write\_pgm\_image\_int()}{write\_pgm\_image\_int()}}
+{\footnotesize\ttfamily void write\+\_\+pgm\+\_\+image\+\_\+int (\begin{DoxyParamCaption}\item[{int \texorpdfstring{$\ast$}{*}}]{image,  }\item[{int}]{xsize,  }\item[{int}]{ysize,  }\item[{char \texorpdfstring{$\ast$}{*}}]{name }\end{DoxyParamCaption})}
+
+Write an int image into a PGM file. If the name is \"{}-\/\"{} the file is written to standard output. 
+
+Definition at line \mbox{\hyperlink{pgm_8c_source_l00136}{136}} of file \mbox{\hyperlink{pgm_8c_source}{pgm.\+c}}.
+

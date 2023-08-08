@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_structGaussFilter" xml:lang="en-US">
+<title>GaussFilter Struct Reference</title>
+<indexterm><primary>GaussFilter</primary></indexterm>
+<para>
+<computeroutput>#include &lt;gauss.h&gt;</computeroutput>
+</para>
+<simplesect>
+    <title>Data Fields    </title>
+        <itemizedlist>
+            <listitem><para>int <link linkend="_structGaussFilter_1a70b5e28b5bc3d1b63a7435c5fe50b837">dim</link></para>
+</listitem>
+            <listitem><para>double <link linkend="_structGaussFilter_1a4ef930be9d7ab47d59cc0668d0d1fac8">sigma</link></para>
+</listitem>
+            <listitem><para>double <link linkend="_structGaussFilter_1abb40a2ee28b839fb572e161c68141faf">mean</link></para>
+</listitem>
+            <listitem><para>double * <link linkend="_structGaussFilter_1a2098158062e3e63fce7d2575b324c386">values</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para>Structure for defining the parameters of a Gaussian filter: dimension, mean, standard deviation, and actual values. </para>
+<para>
+Definition at line <link linkend="_gauss_8h_source_1l00035">35</link> of file <link linkend="_gauss_8h_source">gauss.h</link>.</para>
+</section>
+<section>
+<title>Field Documentation</title>
+<anchor xml:id="_structGaussFilter_1a70b5e28b5bc3d1b63a7435c5fe50b837"/><section>
+    <title>dim</title>
+<indexterm><primary>dim</primary><secondary>GaussFilter</secondary></indexterm>
+<indexterm><primary>GaussFilter</primary><secondary>dim</secondary></indexterm>
+<para><computeroutput>int dim</computeroutput></para><para>
+Definition at line <link linkend="_gauss_8h_source_1l00037">37</link> of file <link linkend="_gauss_8h_source">gauss.h</link>.</para>
+</section>
+<anchor xml:id="_structGaussFilter_1abb40a2ee28b839fb572e161c68141faf"/><section>
+    <title>mean</title>
+<indexterm><primary>mean</primary><secondary>GaussFilter</secondary></indexterm>
+<indexterm><primary>GaussFilter</primary><secondary>mean</secondary></indexterm>
+<para><computeroutput>double mean</computeroutput></para><para>
+Definition at line <link linkend="_gauss_8h_source_1l00039">39</link> of file <link linkend="_gauss_8h_source">gauss.h</link>.</para>
+</section>
+<anchor xml:id="_structGaussFilter_1a4ef930be9d7ab47d59cc0668d0d1fac8"/><section>
+    <title>sigma</title>
+<indexterm><primary>sigma</primary><secondary>GaussFilter</secondary></indexterm>
+<indexterm><primary>GaussFilter</primary><secondary>sigma</secondary></indexterm>
+<para><computeroutput>double sigma</computeroutput></para><para>
+Definition at line <link linkend="_gauss_8h_source_1l00038">38</link> of file <link linkend="_gauss_8h_source">gauss.h</link>.</para>
+</section>
+<anchor xml:id="_structGaussFilter_1a2098158062e3e63fce7d2575b324c386"/><section>
+    <title>values</title>
+<indexterm><primary>values</primary><secondary>GaussFilter</secondary></indexterm>
+<indexterm><primary>GaussFilter</primary><secondary>values</secondary></indexterm>
+<para><computeroutput>double* values</computeroutput></para><para>
+Definition at line <link linkend="_gauss_8h_source_1l00040">40</link> of file <link linkend="_gauss_8h_source">gauss.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+src/<link linkend="_gauss_8h">gauss.h</link></section>
+</section>

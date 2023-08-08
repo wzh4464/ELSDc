@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_pgm_8c" xml:lang="en-US">
+<title>src/pgm.c File Reference</title>
+<indexterm><primary>src/pgm.c</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &lt;stdio.h&gt;<?linebreak?>#include &lt;string.h&gt;<?linebreak?>#include &lt;stdlib.h&gt;<?linebreak?>#include &lt;float.h&gt;<?linebreak?>#include &lt;ctype.h&gt;<?linebreak?>#include &lt;time.h&gt;<?linebreak?>#include &lt;limits.h&gt;<?linebreak?>#include &quot;misc.h&quot;<?linebreak?>#include &quot;image.h&quot;<?linebreak?>#include &quot;pgm.h&quot;<?linebreak?></programlisting><simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> <link linkend="_pgm_8c_1a9a98683fcb23d861dc3b3ac2437267bb">read_pgm_image_double</link> (char *name)</para>
+</listitem>
+            <listitem><para>void <link linkend="_pgm_8c_1a94f252c634af4c81659315c4545be8b8">write_pgm_image_int</link> (int *image, int xsize, int ysize, char *name)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="_pgm_8c_1a9a98683fcb23d861dc3b3ac2437267bb"/><section>
+    <title>read_pgm_image_double()</title>
+<indexterm><primary>read_pgm_image_double</primary><secondary>pgm.c</secondary></indexterm>
+<indexterm><primary>pgm.c</primary><secondary>read_pgm_image_double</secondary></indexterm>
+<para><computeroutput><link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> read_pgm_image_double (char * name)</computeroutput></para>
+<para>Read a PGM file into an &quot;image_double&quot;. If the name is &quot;-&quot; the file is read from standard input. </para>
+<para>
+Definition at line <link linkend="_pgm_8c_source_1l00083">83</link> of file <link linkend="_pgm_8c_source">pgm.c</link>.</para>
+</section>
+<anchor xml:id="_pgm_8c_1a94f252c634af4c81659315c4545be8b8"/><section>
+    <title>write_pgm_image_int()</title>
+<indexterm><primary>write_pgm_image_int</primary><secondary>pgm.c</secondary></indexterm>
+<indexterm><primary>pgm.c</primary><secondary>write_pgm_image_int</secondary></indexterm>
+<para><computeroutput>void write_pgm_image_int (int * image, int xsize, int ysize, char * name)</computeroutput></para>
+<para>Write an int image into a PGM file. If the name is &quot;-&quot; the file is written to standard output. </para>
+<para>
+Definition at line <link linkend="_pgm_8c_source_1l00136">136</link> of file <link linkend="_pgm_8c_source">pgm.c</link>.</para>
+</section>
+</section>
+</section>

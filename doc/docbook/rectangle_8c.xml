@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_rectangle_8c" xml:lang="en-US">
+<title>src/rectangle.c File Reference</title>
+<indexterm><primary>src/rectangle.c</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &lt;stdio.h&gt;<?linebreak?>#include &lt;stdlib.h&gt;<?linebreak?>#include &lt;math.h&gt;<?linebreak?>#include &lt;float.h&gt;<?linebreak?>#include &quot;misc.h&quot;<?linebreak?>#include &quot;rectangle.h&quot;<?linebreak?></programlisting><simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>void <link linkend="_rectangle_8c_1aa3b83f9baca390809a96c7b84f3a886a">copy_rect</link> (<link linkend="_structRectangle">Rectangle</link> *in, <link linkend="_structRectangle">Rectangle</link> *out)</para>
+</listitem>
+            <listitem><para>void <link linkend="_rectangle_8c_1a85626f7f589faf73e5ce6432a2ccdde8">write_rectangle</link> (FILE *f, <link linkend="_structRectangle">Rectangle</link> *r)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="_rectangle_8c_1aa3b83f9baca390809a96c7b84f3a886a"/><section>
+    <title>copy_rect()</title>
+<indexterm><primary>copy_rect</primary><secondary>rectangle.c</secondary></indexterm>
+<indexterm><primary>rectangle.c</primary><secondary>copy_rect</secondary></indexterm>
+<para><computeroutput>void copy_rect (<link linkend="_structRectangle">Rectangle</link> * in, <link linkend="_structRectangle">Rectangle</link> * out)</computeroutput></para>
+<para>Copy one <link linkend="_structRectangle">Rectangle</link> structure to another. </para>
+<para>
+Definition at line <link linkend="_rectangle_8c_source_1l00037">37</link> of file <link linkend="_rectangle_8c_source">rectangle.c</link>.</para>
+</section>
+<anchor xml:id="_rectangle_8c_1a85626f7f589faf73e5ce6432a2ccdde8"/><section>
+    <title>write_rectangle()</title>
+<indexterm><primary>write_rectangle</primary><secondary>rectangle.c</secondary></indexterm>
+<indexterm><primary>rectangle.c</primary><secondary>write_rectangle</secondary></indexterm>
+<para><computeroutput>void write_rectangle (FILE * f, <link linkend="_structRectangle">Rectangle</link> * r)</computeroutput></para>
+<para>Write <link linkend="_structRectangle">Rectangle</link> coordinates to file; if file is NULL, write to stdout. </para>
+<para>
+Definition at line <link linkend="_rectangle_8c_source_1l00061">61</link> of file <link linkend="_rectangle_8c_source">rectangle.c</link>.</para>
+</section>
+</section>
+</section>

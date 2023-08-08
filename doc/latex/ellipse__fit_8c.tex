@@ -1,0 +1,28 @@
+\doxysection{src/ellipse\+\_\+fit.c File Reference}
+\hypertarget{ellipse__fit_8c}{}\label{ellipse__fit_8c}\index{src/ellipse\_fit.c@{src/ellipse\_fit.c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$float.\+h$>$}\newline
+{\ttfamily \#include $<$stddef.\+h$>$}\newline
+{\ttfamily \#include \"{}misc.\+h\"{}}\newline
+{\ttfamily \#include \"{}lapack\+\_\+wrapper.\+h\"{}}\newline
+{\ttfamily \#include \"{}ellipse\+\_\+fit.\+h\"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{ellipse__fit_8c_ae12e7701a84e615d38554c37a91e0c2c}{conic\+\_\+fit}} (\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} gradx, \mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}} grady, \mbox{\hyperlink{structPoint}{Point}} \texorpdfstring{$\ast$}{*}reg, int reg\+\_\+size, double \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}buff, int \texorpdfstring{$\ast$}{*}size\+\_\+buff\+\_\+max, double \texorpdfstring{$\ast$}{*}cparam, double \texorpdfstring{$\ast$}{*}eparam)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{ellipse__fit_8c_ae12e7701a84e615d38554c37a91e0c2c}\label{ellipse__fit_8c_ae12e7701a84e615d38554c37a91e0c2c} 
+\index{ellipse\_fit.c@{ellipse\_fit.c}!conic\_fit@{conic\_fit}}
+\index{conic\_fit@{conic\_fit}!ellipse\_fit.c@{ellipse\_fit.c}}
+\doxysubsubsection{\texorpdfstring{conic\_fit()}{conic\_fit()}}
+{\footnotesize\ttfamily void conic\+\_\+fit (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}}}]{gradx,  }\item[{\mbox{\hyperlink{image_8h_ae20deac149c624780e3492d96ed9b771}{PImage\+Double}}}]{grady,  }\item[{\mbox{\hyperlink{structPoint}{Point}} \texorpdfstring{$\ast$}{*}}]{reg,  }\item[{int}]{reg\+\_\+size,  }\item[{double \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{buff,  }\item[{int \texorpdfstring{$\ast$}{*}}]{size\+\_\+buff\+\_\+max,  }\item[{double \texorpdfstring{$\ast$}{*}}]{cparam,  }\item[{double \texorpdfstring{$\ast$}{*}}]{eparam }\end{DoxyParamCaption})}
+
+Given a set of oriented pixels, fit an ellipse and a circle on it 
+
+Definition at line \mbox{\hyperlink{ellipse__fit_8c_source_l00390}{390}} of file \mbox{\hyperlink{ellipse__fit_8c_source}{ellipse\+\_\+fit.\+c}}.
+

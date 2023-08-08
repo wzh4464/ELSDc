@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_structPolyRect" xml:lang="en-US">
+<title>PolyRect Struct Reference</title>
+<indexterm><primary>PolyRect</primary></indexterm>
+<para>
+<computeroutput>#include &lt;polygon.h&gt;</computeroutput>
+</para>
+<simplesect>
+    <title>Data Fields    </title>
+        <itemizedlist>
+            <listitem><para>int <link linkend="_structPolyRect_1a73b6802e6ce87ebaf9e175ef7ca48b6e">dim_max</link></para>
+</listitem>
+            <listitem><para>int <link linkend="_structPolyRect_1a70b5e28b5bc3d1b63a7435c5fe50b837">dim</link></para>
+</listitem>
+            <listitem><para>double <link linkend="_structPolyRect_1ad1515daed95ba43fd919fddcf3144d1a">wmin</link></para>
+</listitem>
+            <listitem><para>double <link linkend="_structPolyRect_1a54612b6d232db5e1a58ae8b2f26b1df4">wmax</link></para>
+</listitem>
+            <listitem><para><link linkend="_structRectangle">Rectangle</link> * <link linkend="_structPolyRect_1aa6c235e6fd60e9c44d47b5ff669a4b07">rectlist</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para>Convex polygon = set of (not necessarily meaningful) rectangles. </para>
+<para>
+Definition at line <link linkend="_polygon_8h_source_1l00036">36</link> of file <link linkend="_polygon_8h_source">polygon.h</link>.</para>
+</section>
+<section>
+<title>Field Documentation</title>
+<anchor xml:id="_structPolyRect_1a70b5e28b5bc3d1b63a7435c5fe50b837"/><section>
+    <title>dim</title>
+<indexterm><primary>dim</primary><secondary>PolyRect</secondary></indexterm>
+<indexterm><primary>PolyRect</primary><secondary>dim</secondary></indexterm>
+<para><computeroutput>int dim</computeroutput></para><para>
+Definition at line <link linkend="_polygon_8h_source_1l00039">39</link> of file <link linkend="_polygon_8h_source">polygon.h</link>.</para>
+</section>
+<anchor xml:id="_structPolyRect_1a73b6802e6ce87ebaf9e175ef7ca48b6e"/><section>
+    <title>dim_max</title>
+<indexterm><primary>dim_max</primary><secondary>PolyRect</secondary></indexterm>
+<indexterm><primary>PolyRect</primary><secondary>dim_max</secondary></indexterm>
+<para><computeroutput>int dim_max</computeroutput></para><para>
+Definition at line <link linkend="_polygon_8h_source_1l00038">38</link> of file <link linkend="_polygon_8h_source">polygon.h</link>.</para>
+</section>
+<anchor xml:id="_structPolyRect_1aa6c235e6fd60e9c44d47b5ff669a4b07"/><section>
+    <title>rectlist</title>
+<indexterm><primary>rectlist</primary><secondary>PolyRect</secondary></indexterm>
+<indexterm><primary>PolyRect</primary><secondary>rectlist</secondary></indexterm>
+<para><computeroutput><link linkend="_structRectangle">Rectangle</link>* rectlist</computeroutput></para><para>
+Definition at line <link linkend="_polygon_8h_source_1l00042">42</link> of file <link linkend="_polygon_8h_source">polygon.h</link>.</para>
+</section>
+<anchor xml:id="_structPolyRect_1a54612b6d232db5e1a58ae8b2f26b1df4"/><section>
+    <title>wmax</title>
+<indexterm><primary>wmax</primary><secondary>PolyRect</secondary></indexterm>
+<indexterm><primary>PolyRect</primary><secondary>wmax</secondary></indexterm>
+<para><computeroutput>double wmax</computeroutput></para><para>
+Definition at line <link linkend="_polygon_8h_source_1l00041">41</link> of file <link linkend="_polygon_8h_source">polygon.h</link>.</para>
+</section>
+<anchor xml:id="_structPolyRect_1ad1515daed95ba43fd919fddcf3144d1a"/><section>
+    <title>wmin</title>
+<indexterm><primary>wmin</primary><secondary>PolyRect</secondary></indexterm>
+<indexterm><primary>PolyRect</primary><secondary>wmin</secondary></indexterm>
+<para><computeroutput>double wmin</computeroutput></para><para>
+Definition at line <link linkend="_polygon_8h_source_1l00040">40</link> of file <link linkend="_polygon_8h_source">polygon.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+src/<link linkend="_polygon_8h">polygon.h</link></section>
+</section>

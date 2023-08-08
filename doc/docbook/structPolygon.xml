@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_structPolygon" xml:lang="en-US">
+<title>Polygon Struct Reference</title>
+<indexterm><primary>Polygon</primary></indexterm>
+<para>
+<computeroutput>#include &lt;polygon.h&gt;</computeroutput>
+</para>
+<simplesect>
+    <title>Data Fields    </title>
+        <itemizedlist>
+            <listitem><para>int <link linkend="_structPolygon_1a70b5e28b5bc3d1b63a7435c5fe50b837">dim</link></para>
+</listitem>
+            <listitem><para><link linkend="_structPointD">PointD</link> * <link linkend="_structPolygon_1a168a3e336fd6cad67b6df7e6320d4b2e">pts</link></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para><link linkend="_structPolygon">Polygon</link> defined through consecutive ends of its segments. </para>
+<para>
+Definition at line <link linkend="_polygon_8h_source_1l00055">55</link> of file <link linkend="_polygon_8h_source">polygon.h</link>.</para>
+</section>
+<section>
+<title>Field Documentation</title>
+<anchor xml:id="_structPolygon_1a70b5e28b5bc3d1b63a7435c5fe50b837"/><section>
+    <title>dim</title>
+<indexterm><primary>dim</primary><secondary>Polygon</secondary></indexterm>
+<indexterm><primary>Polygon</primary><secondary>dim</secondary></indexterm>
+<para><computeroutput>int dim</computeroutput></para><para>
+Definition at line <link linkend="_polygon_8h_source_1l00057">57</link> of file <link linkend="_polygon_8h_source">polygon.h</link>.</para>
+</section>
+<anchor xml:id="_structPolygon_1a168a3e336fd6cad67b6df7e6320d4b2e"/><section>
+    <title>pts</title>
+<indexterm><primary>pts</primary><secondary>Polygon</secondary></indexterm>
+<indexterm><primary>Polygon</primary><secondary>pts</secondary></indexterm>
+<para><computeroutput><link linkend="_structPointD">PointD</link>* pts</computeroutput></para><para>
+Definition at line <link linkend="_polygon_8h_source_1l00059">59</link> of file <link linkend="_polygon_8h_source">polygon.h</link>.</para>
+</section>
+<para>
+The documentation for this struct was generated from the following file:</para>
+src/<link linkend="_polygon_8h">polygon.h</link></section>
+</section>

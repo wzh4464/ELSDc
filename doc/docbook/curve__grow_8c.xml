@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_curve__grow_8c" xml:lang="en-US">
+<title>src/curve_grow.c File Reference</title>
+<indexterm><primary>src/curve_grow.c</primary></indexterm>
+<programlisting linenumbering="unnumbered">#include &lt;stdio.h&gt;<?linebreak?>#include &lt;stdlib.h&gt;<?linebreak?>#include &lt;math.h&gt;<?linebreak?>#include &lt;float.h&gt;<?linebreak?>#include &lt;string.h&gt;<?linebreak?>#include &quot;misc.h&quot;<?linebreak?>#include &quot;image.h&quot;<?linebreak?>#include &quot;rectangle.h&quot;<?linebreak?>#include &quot;iterator.h&quot;<?linebreak?>#include &quot;polygon.h&quot;<?linebreak?>#include &quot;ring.h&quot;<?linebreak?>#include &quot;curve_grow.h&quot;<?linebreak?></programlisting><simplesect>
+    <title>Functions    </title>
+        <itemizedlist>
+            <listitem><para>void <link linkend="_curve__grow_8c_1a6309f2cc70e39c4d40bbe504844b4866">region2rect</link> (<link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> gradmag, <link linkend="_structPoint">Point</link> *reg, int start, int end, double reg_angle, <link linkend="_structRectangle">Rectangle</link> *rec, double prec)</para>
+</listitem>
+            <listitem><para>int <link linkend="_curve__grow_8c_1a05a2be0b004173552b1178130d6c7369">curve_grow</link> (<link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> gradmag, <link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> angles, <link linkend="_image_8h_1ad2f6828b30c727a557c8c201c2913f0f">PImageInt</link> used, <link linkend="_structPoint">Point</link> *reg, int *reg_size, double density_th, double prec, <link linkend="_structPolyRect">PolyRect</link> *poly, int *label, double *pext1, double *pext2, double *spir)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Function Documentation</title>
+<anchor xml:id="_curve__grow_8c_1a05a2be0b004173552b1178130d6c7369"/><section>
+    <title>curve_grow()</title>
+<indexterm><primary>curve_grow</primary><secondary>curve_grow.c</secondary></indexterm>
+<indexterm><primary>curve_grow.c</primary><secondary>curve_grow</secondary></indexterm>
+<para><computeroutput>int curve_grow (<link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> gradmag, <link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> angles, <link linkend="_image_8h_1ad2f6828b30c727a557c8c201c2913f0f">PImageInt</link> used, <link linkend="_structPoint">Point</link> * reg, int * reg_size, double density_th, double prec, <link linkend="_structPolyRect">PolyRect</link> * poly, int * label, double * pext1, double * pext2, double * spir)</computeroutput></para>
+<para>Compute a polygonal approximation of a relatively smooth and convex curve, scanning in both directions starting from an initial rectangle. <?linebreak?> </para>
+<para>
+Definition at line <link linkend="_curve__grow_8c_source_1l00672">672</link> of file <link linkend="_curve__grow_8c_source">curve_grow.c</link>.</para>
+</section>
+<anchor xml:id="_curve__grow_8c_1a6309f2cc70e39c4d40bbe504844b4866"/><section>
+    <title>region2rect()</title>
+<indexterm><primary>region2rect</primary><secondary>curve_grow.c</secondary></indexterm>
+<indexterm><primary>curve_grow.c</primary><secondary>region2rect</secondary></indexterm>
+<para><computeroutput>void region2rect (<link linkend="_image_8h_1ae20deac149c624780e3492d96ed9b771">PImageDouble</link> gradmag, <link linkend="_structPoint">Point</link> * reg, int start, int end, double reg_angle, <link linkend="_structRectangle">Rectangle</link> * rec, double prec)</computeroutput></para>
+<para>Compute a rectangle that covers a connected region of points. A rectangle is defined by end points, center, orientation, width. Additional fields (precision of approximation) are useful for validation. </para>
+<para>
+Definition at line <link linkend="_curve__grow_8c_source_1l00214">214</link> of file <link linkend="_curve__grow_8c_source">curve_grow.c</link>.</para>
+</section>
+</section>
+</section>
