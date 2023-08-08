@@ -1,6 +1,7 @@
 #include "mex.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "misc.h"
 #include "pgm.h"
 #include "svg.h"
@@ -11,7 +12,7 @@
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
     /* check arguments */
-    if( nrhs < 1 ) mexErrMsgTxt("usage: ./elsdc image_name.pgm");
+    if( nrhs < 1 ) mexErrMsgTxt("usage: mexELSDc('imagename.pgm')");
 
     PImageDouble in;     /* input image */
     PImageInt    out;    /* output image having the same size as 'in'; the pixels
@@ -43,9 +44,16 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     FILE *fsvg;          /* output file with the detected ellipses and polygons 
                           in vectorial form */
     int i,j;
+    char sourcename[100], name[100], outname[100], svgname[100], pgmname[100];
 
     /* read input image; must be PGM form */
-    in = read_pgm_image_double( mxArrayToString(prhs[0]) );
+    strcpy(sourcename,mxArrayToString(prhs[0]));
+    // name is sourcename without the extension
+    strcpy(name, sourcename);
+    char* ext = strrchr(name, '.');
+    if (ext != NULL) *ext = '\0';
+
+    in = read_pgm_image_double( sourcename );
     int xsize = in->xsize, ysize = in->ysize;
   
     /* create and initialize with 0 output label image */
@@ -70,8 +78,12 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 
     if( ell_out != NULL )
     {
-        if( (ell_ascii = fopen("out_ellipse.txt","w")) == NULL )
+        strcpy(outname, name);
+        if( (ell_ascii = fopen(strcat(outname,"_out_ellipse.txt"),"w")) == NULL )
             error("main: can't open ellipse output file.");
+        /* return ell_out(5:) */
+        plhs[0] = mxCreateDoubleMatrix(ell_count, 7, mxREAL);
+        double *out_data = mxGetPr(plhs[0]);
         for( i=0; i<ell_count; i++ )
         {
           fprintf( ell_ascii,"%d ", ell_labels[i] );
@@ -79,6 +91,14 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
                    ell_out[i].x1, ell_out[i].y1, ell_out[i].x2, ell_out[i].y2, 
                    ell_out[i].cx, ell_out[i].cy, ell_out[i].ax, ell_out[i].bx,
                    ell_out[i].theta, ell_out[i].ang_start, ell_out[i].ang_end );
+          /* return ell_out(5:) */
+          out_data[i] = ell_out[i].x1;
+          out_data[i + ell_count] = ell_out[i].y1;
+          out_data[i + 2 * ell_count] = ell_out[i].x2;
+          out_data[i + 3 * ell_count] = ell_out[i].y2;
+          out_data[i + 4 * ell_count] = ell_out[i].cx;
+          out_data[i + 5 * ell_count] = ell_out[i].cy;
+          out_data[i + 6 * ell_count] = ell_out[i].theta;
         }
         fclose(ell_ascii);
     }
@@ -94,25 +114,27 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
      x1 y1 ... xn yn -- (x,y) coordinates of the ending points of each segment.
      A polygon with n/2 line segments has n points, given in consecutive order.
    */
-if( poly_out != NULL )
-    {
-      if( (poly_ascii = fopen("out_polygon.txt","w")) == NULL )
-        error("main: can't open polygon output file.");
-      for( i=0; i<poly_count; i++ )
-        {
-          fprintf( poly_ascii, "%d %d ", poly_labels[i], poly_out[i].dim );
-          for( j=0; j<poly_out[i].dim; j++ )
-            fprintf( poly_ascii,"%lf %lf ", poly_out[i].pts[j].x, poly_out[i].pts[j].y);
-          fprintf( poly_ascii, "\n" );
-        }
-      fclose(poly_ascii);
-    }  
-
+// if( poly_out != NULL )
+//     {
+//       if( (poly_ascii = fopen("out_polygon.txt","w")) == NULL )
+//         error("main: can't open polygon output file.");
+//       for( i=0; i<poly_count; i++ )
+//         {
+//           fprintf( poly_ascii, "%d %d ", poly_labels[i], poly_out[i].dim );
+//           for( j=0; j<poly_out[i].dim; j++ )
+//             fprintf( poly_ascii,"%lf %lf ", poly_out[i].pts[j].x, poly_out[i].pts[j].y);
+//           fprintf( poly_ascii, "\n" );
+//         }
+//       fclose(poly_ascii);
+//     }  
+  // name = strcat("../toPGM/", name);
   /* write vectorial output in SVG format */
   if( (ell_out != NULL) || (poly_out != NULL) )
     {
       /* init svg file */
-      fsvg = init_svg( "output.svg", xsize, ysize );
+      // fsvg = init_svg( "output.svg", xsize, ysize );
+      strcpy(svgname, name);
+      fsvg = init_svg( strcat(svgname, ".svg"), xsize, ysize );
  
       /* write ellipses */
       for( i=0; i<ell_count; i++)
@@ -131,7 +153,9 @@ if( poly_out != NULL )
     }
 
   /* write labels image in pgm form */
-  write_pgm_image_int( out->data, out->xsize, out->ysize, "labels.pgm" );
+  // write_pgm_image_int( out->data, out->xsize, out->ysize, "labels.pgm" );
+  strcpy(pgmname, name);
+  write_pgm_image_int( out->data, out->xsize, out->ysize, strcat(pgmname, "_labels.pgm"));
   free_PImageInt(out);
   if( ell_out != NULL ) {free(ell_out); free(ell_labels);}
   if( poly_out != NULL ) 
@@ -143,4 +167,5 @@ if( poly_out != NULL )
     }
     mexPrintf("Number of ellipses: %d\n", ell_count );
     mexPrintf("Number of polygons: %d\n", poly_count );
+    nlhs = 1;
 }
