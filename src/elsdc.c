@@ -1057,8 +1057,7 @@ void ELSDc( PImageDouble in, int *ell_count, Ring **ell_out, int **ell_labels,
       mark_img_pts( used, best_buff, 0, size_best_buff, USED );
 
       /* Mark label of the best feature in output label image */
-      mark_img_pts( out, best_buff, 0, size_best_buff, label_meaningful );  
-   
+      mark_img_pts_out( out, best_buff, 0, size_best_buff, label_meaningful);
     }  /* ! for loop */
 
   /* free useless structures and arrays */		    

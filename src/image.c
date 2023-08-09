@@ -419,6 +419,22 @@ void mark_img_pts( PImageInt im, Point *pts, int start, int end, int label )
     }
 }
 
+void mark_img_pts_out(PImageInt im, Point *pts, int start, int end, int label)
+{
+    int i = 0;
+    /* check parameters */
+    if ((im == NULL) || (im->data == NULL) || (im->xsize <= 0) || (im->ysize <= 0))
+      error("mark_img_pts: invalid input image.");
+    if (pts == NULL)
+      error("mark_img_pts: invalid input point list.");
+    if (start >= end)
+      error("mark_img_pts: invalid index.");
+
+    for (i = start; i < end; i++)
+    {
+      im->data[pts[i].x * im->ysize + pts[i].y] = label;
+    }
+}
 
 /*----------------------------------------------------------------------------*/
 /** Check if a given point is inside an image.

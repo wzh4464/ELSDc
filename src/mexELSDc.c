@@ -59,6 +59,11 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     /* create and initialize with 0 output label image */
     out = new_PImageInt_ini( in->xsize, in->ysize, 0 );  
   
+    /* second output is a int matrix */
+    plhs[1] = mxCreateNumericMatrix(ysize, xsize, mxINT32_CLASS, mxREAL);
+    out->data = (int *) mxGetData(plhs[1]);
+    mexPrintf("xsize: %d, ysize: %d\n", xsize, ysize);
+
     /* call detection procedure */
     ELSDc( in, &ell_count, &ell_out, &ell_labels, &poly_count, &poly_out, 
          &poly_labels, out );
@@ -154,9 +159,9 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 
   /* write labels image in pgm form */
   // write_pgm_image_int( out->data, out->xsize, out->ysize, "labels.pgm" );
-  strcpy(pgmname, name);
-  write_pgm_image_int( out->data, out->xsize, out->ysize, strcat(pgmname, "_labels.pgm"));
-  free_PImageInt(out);
+  // strcpy(pgmname, name);
+  // write_pgm_image_int( out->data, out->xsize, out->ysize, strcat(pgmname, "_labels.pgm"));
+  // free_PImageInt(out);
   if( ell_out != NULL ) {free(ell_out); free(ell_labels);}
   if( poly_out != NULL ) 
     {
@@ -167,5 +172,5 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     }
     mexPrintf("Number of ellipses: %d\n", ell_count );
     mexPrintf("Number of polygons: %d\n", poly_count );
-    nlhs = 1;
+    nlhs = 2;
 }
