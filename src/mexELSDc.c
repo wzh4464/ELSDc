@@ -60,8 +60,8 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     out = new_PImageInt_ini( in->xsize, in->ysize, 0 );  
   
     /* second output is a int matrix */
-    plhs[1] = mxCreateNumericMatrix(ysize, xsize, mxINT32_CLASS, mxREAL);
-    out->data = (int *) mxGetData(plhs[1]);
+    plhs[2] = mxCreateNumericMatrix(ysize, xsize, mxINT32_CLASS, mxREAL);
+    out->data = (int *) mxGetData(plhs[2]);
     mexPrintf("xsize: %d, ysize: %d\n", xsize, ysize);
 
     /* call detection procedure */
@@ -88,7 +88,9 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
             error("main: can't open ellipse output file.");
         /* return ell_out(5:) */
         plhs[0] = mxCreateDoubleMatrix(ell_count, 7, mxREAL);
+        plhs[1] = mxCreateDoubleMatrix(ell_count, 1, mxREAL);
         double *out_data = mxGetPr(plhs[0]);
+        double *out_label = mxGetPr(plhs[1]);
         for( i=0; i<ell_count; i++ )
         {
           fprintf( ell_ascii,"%d ", ell_labels[i] );
@@ -104,6 +106,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
           out_data[i + 4 * ell_count] = ell_out[i].cx;
           out_data[i + 5 * ell_count] = ell_out[i].cy;
           out_data[i + 6 * ell_count] = ell_out[i].theta;
+          out_label[i] = ell_labels[i];
         }
         fclose(ell_ascii);
     }
@@ -172,5 +175,5 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     }
     mexPrintf("Number of ellipses: %d\n", ell_count );
     mexPrintf("Number of polygons: %d\n", poly_count );
-    nlhs = 2;
+    nlhs = 3;
 }
