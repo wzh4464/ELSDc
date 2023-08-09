@@ -61,7 +61,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
   
     /* second output is a int matrix */
     plhs[2] = mxCreateNumericMatrix(ysize, xsize, mxINT32_CLASS, mxREAL);
-    out->data = (int *) mxGetData(plhs[1]);
+    out->data = (int *) mxGetData(plhs[2]);
     mexPrintf("xsize: %d, ysize: %d\n", xsize, ysize);
 
     /* call detection procedure */
