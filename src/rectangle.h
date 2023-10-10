@@ -26,6 +26,7 @@
 
 #ifndef RECTANGLE_H
 #define RECTANGLE_H
+#include <stdio.h>
 
 /*----------------------------------------------------------------------------*/
 /** Rectangle structure. A rectangle is actually a line segment with width.
@@ -46,4 +47,3 @@ void copy_rect( Rectangle *in, Rectangle *out );
 void write_rectangle( FILE *f, Rectangle *r );
 
 #endif
-

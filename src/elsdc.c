@@ -23,7 +23,6 @@
 
 ------------------------------------------------------------------------------*/
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -912,7 +911,7 @@ void ELSDc( PImageDouble in, int *ell_count, Ring **ell_out, int **ell_labels,
   angles0 = img_gradient_angle( in, rho );
  
   /* input image not needed any more; free it */
-  free_PImageDouble(in);
+  // free_PImageDouble(in);
   
   msize = max(xsize,ysize);
 
