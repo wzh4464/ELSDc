@@ -20,15 +20,28 @@
 # You may need to indicate the location of Lapack library in your system.
 # For that, uncomment the following line and replace `/usr/lib` with
 # the directory where the library is located.
-#LIB= -I/usr/lib
+
+# if comupter name is mercury, use the following line
+ifeq ($(shell hostname),mercury)
+LIB= -L/home/zihan/lib
+endif
 OPT= -O3
 
 elsdc: main.c pgm.c svg.c elsdc.c gauss.c curve_grow.c polygon.c ring.c ellipse_fit.c rectangle.c iterator.c image.c lapack_wrapper.c misc.c
+	ifeq ($(shell hostname),mercury)
+	cc $(OPT) $(LIB) -o $@ $^ -llapack -lm -lblas -lgfortran
+	else
 	cc $(OPT) $(LIB) -o $@ $^ -llapack -lm
+	endif
 
 shared: python_interface.c pgm.c svg.c elsdc.c gauss.c curve_grow.c polygon.c ring.c ellipse_fit.c rectangle.c iterator.c image.c lapack_wrapper.c misc.c
+	ifeq ($(shell hostname),mercury)
 	cc -c $(OPT) $(LIB) -fpic $^
-	cc -shared -o libelsdc.so python_interface.o pgm.o svg.o elsdc.o gauss.o curve_grow.o polygon.o ring.o ellipse_fit.o rectangle.o iterator.o image.o lapack_wrapper.o misc.o -llapack -lm
+	cc -shared $(OPT) $(LIB) -o libelsdc.so python_interface.o pgm.o svg.o elsdc.o gauss.o curve_grow.o polygon.o ring.o ellipse_fit.o rectangle.o iterator.o image.o lapack_wrapper.o misc.o -llapack -lm -lblas -lgfortran
+	else
+	cc -c $(OPT) $(LIB) -fpic $^
+	cc -shared $(OPT) $(LIB) -o libelsdc.so python_interface.o pgm.o svg.o elsdc.o gauss.o curve_grow.o polygon.o ring.o ellipse_fit.o rectangle.o iterator.o image.o lapack_wrapper.o misc.o -llapack -lm
+	endif
 
 clean:
 	rm elsdc

@@ -76,15 +76,15 @@ def detect_primitives(img: np.ndarray):
             elt.theta, elt.ax, elt.bx, elt.ang_start, elt.ang_end,
             elt.wmin, elt.wmax, elt.full, p_set.ell_label_arr[i]
         ))
-    for i in range(p_set.poly_count):
-        elt = p_set.poly_arr[i]
-        num_pts = elt.dim // 2
-        pts = np.empty((num_pts, 2))
-        _pts = elt.pts
-        for j in range(num_pts):
-            pts[j, 0] = _pts[j].x
-            pts[j, 1] = _pts[j].y
-        poly_arr.append(Polygon(elt.dim, pts, p_set.poly_label_arr[i]))
+    # for i in range(p_set.poly_count):
+    #     elt = p_set.poly_arr[i]
+    #     num_pts = elt.dim // 2
+    #     pts = np.empty((num_pts, 2))
+    #     _pts = elt.pts
+    #     for j in range(num_pts):
+    #         pts[j, 0] = _pts[j].x
+    #         pts[j, 1] = _pts[j].y
+    #     poly_arr.append(Polygon(elt.dim, pts, p_set.poly_label_arr[i]))
     output_img = np.ctypeslib.as_array(
         p_set.output_img, shape=(p_set.h, p_set.w)).copy()
     p_set.release_memory()
@@ -149,4 +149,15 @@ if __name__ == "__main__":
     ellipses, polygons, out_img = detect_primitives(img)
     print("Detection took {}s".format(time.monotonic() - start))
     plt.imshow(out_img)
-    plt.show()
+    plt.savefig("out_plot.png")
+
+    # show ellipses
+    for ell in ellipses:
+        # print as: ell_label x1 y1 x2 y2 ax bx theta ang_start ang_end
+        cx = ell.cx
+        cy = ell.cy
+        ax = ell.ax
+        bx = ell.bx
+        theta = ell.theta
+        cv2.ellipse(img, (int(cx), int(cy)), (int(ax), int(bx)), theta, 0, 360, (255, 0, 0), 2)
+    cv2.imwrite("out_ell.png", img)
