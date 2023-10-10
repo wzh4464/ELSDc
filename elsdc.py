@@ -35,6 +35,24 @@ class _Polygon(Structure):
 
 
 class Ring:
+    '''
+    x1: float
+    y1: float
+    x2: float
+    y2: float
+    width: float
+    cx: float
+    cy: float
+    theta: float
+    ax: float
+    bx: float
+    ang_start: float
+    ang_end: float
+    wmin: float
+    wmax: float
+    full: int
+    label: int
+    '''
     def __init__(self, x1: float, y1: float, x2: float, y2: float, 
         width: float, cx: float, cy: float, theta: float, ax: float, bx: float,
         ang_start: float, ang_end: float, wmin: float, wmax: float, full: int,
