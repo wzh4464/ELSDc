@@ -1,4 +1,4 @@
-from ctypes import POINTER, Structure, c_double, c_int, CDLL, byref
+from ctypes import POINTER, Structure, c_double, c_int, CDLL, byref, c_size_t
 import time
 from typing import List
 import numpy as np
@@ -35,6 +35,24 @@ class _Polygon(Structure):
 
 
 class Ring:
+    '''
+    x1: float
+    y1: float
+    x2: float
+    y2: float
+    width: float
+    cx: float
+    cy: float
+    theta: float
+    ax: float
+    bx: float
+    ang_start: float
+    ang_end: float
+    wmin: float
+    wmax: float
+    full: int
+    label: int
+    '''
     def __init__(self, x1: float, y1: float, x2: float, y2: float, 
         width: float, cx: float, cy: float, theta: float, ax: float, bx: float,
         ang_start: float, ang_end: float, wmin: float, wmax: float, full: int,
@@ -86,7 +104,7 @@ def detect_primitives(img: np.ndarray):
     #         pts[j, 1] = _pts[j].y
     #     poly_arr.append(Polygon(elt.dim, pts, p_set.poly_label_arr[i]))
     output_img = np.ctypeslib.as_array(
-        p_set.output_img, shape=(p_set.h, p_set.w)).copy()
+        p_set.output_img, shape=(int(p_set.h.value), int(p_set.w.value))).copy()
     p_set.release_memory()
     return ell_arr, poly_arr, output_img
 
@@ -94,6 +112,9 @@ def detect_primitives(img: np.ndarray):
 def _detect_primitives(img: np.ndarray) -> "PrimitveSet":
     img_gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY).astype("float64")
     h, w = img_gray.shape
+    # 确保传递的类型是正确的
+    h = c_size_t(h)
+    w = c_size_t(w)
     ell_arr = POINTER(_Ring)()
     ell_label_arr = POINTER(c_int)()
     ell_count = c_int()

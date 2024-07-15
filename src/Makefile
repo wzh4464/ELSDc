@@ -29,20 +29,21 @@ OPT= -O3
 # OPT= -g
 
 elsdc: main.c pgm.c svg.c elsdc.c gauss.c curve_grow.c polygon.c ring.c ellipse_fit.c rectangle.c iterator.c image.c lapack_wrapper.c misc.c
-	ifeq ($(shell hostname),mercury)
-	cc $(OPT) $(LIB) -o $@ $^ -llapack -lm -lblas -lgfortran
-	else
-	cc $(OPT) $(LIB) -o $@ $^ -llapack -lm
-	endif
+	if [ "$(shell hostname)" = "mercury" ]; then \
+		cc $(OPT) $(LIB) -o $@ $^ -llapack -lm -lblas -lgfortran; \
+	else \
+		cc $(OPT) $(LIB) -o $@ $^ -llapack -lm; \
+	fi
 
 shared: python_interface.c pgm.c svg.c elsdc.c gauss.c curve_grow.c polygon.c ring.c ellipse_fit.c rectangle.c iterator.c image.c lapack_wrapper.c misc.c
-	ifeq ($(shell hostname),mercury)
-	cc -c $(OPT) $(LIB) -fpic $^
-	cc -shared $(OPT) $(LIB) -o libelsdc.so python_interface.o pgm.o svg.o elsdc.o gauss.o curve_grow.o polygon.o ring.o ellipse_fit.o rectangle.o iterator.o image.o lapack_wrapper.o misc.o -llapack -lm -lblas -lgfortran
-	else
-	cc -c $(OPT) $(LIB) -fpic $^
-	cc -shared $(OPT) $(LIB) -o libelsdc.so python_interface.o pgm.o svg.o elsdc.o gauss.o curve_grow.o polygon.o ring.o ellipse_fit.o rectangle.o iterator.o image.o lapack_wrapper.o misc.o -llapack -lm
-	endif
+	if [ "$(shell hostname)" = "mercury" ]; then \
+	 	echo "mercury, use gfortran"; \
+		cc -c $(OPT) $(LIB) -fpic $^; \
+		cc -shared $(OPT) $(LIB) -o libelsdc.so python_interface.o pgm.o svg.o elsdc.o gauss.o curve_grow.o polygon.o ring.o ellipse_fit.o rectangle.o iterator.o image.o lapack_wrapper.o misc.o -llapack -lm -lblas -lgfortran; \
+	else \
+		cc -c $(OPT) $(LIB) -fpic $^; \
+		cc -shared $(OPT) $(LIB) -o libelsdc.so python_interface.o pgm.o svg.o elsdc.o gauss.o curve_grow.o polygon.o ring.o ellipse_fit.o rectangle.o iterator.o image.o lapack_wrapper.o misc.o -llapack -lm; \
+	fi
 
 clean:
 	rm elsdc
