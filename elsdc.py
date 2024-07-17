@@ -4,7 +4,8 @@ from typing import List
 import numpy as np
 import cv2
 import os
-
+import xml.etree.ElementTree as ET
+import math
 
 try:
     elsdc = CDLL(os.path.join(os.path.dirname(os.path.realpath(__file__)), "libelsdc.so"))
@@ -162,23 +163,136 @@ class PrimitveSet:
         self.release_memory()
 
 
+def generate_svg(ellipses, polygons, output_file, width, height):
+    svg = ET.Element('svg', xmlns="http://www.w3.org/2000/svg", width=str(width), height=str(height))
+    
+    for ellipse in ellipses:
+        if ellipse.ax == ellipse.bx:
+            ET.SubElement(svg, 'circle', cx=str(ellipse.cx), cy=str(ellipse.cy), 
+                          r=str(ellipse.ax), stroke="blue", fill="none")
+        else:
+            ET.SubElement(svg, 'ellipse', cx=str(ellipse.cx), cy=str(ellipse.cy),
+                          rx=str(ellipse.ax), ry=str(ellipse.bx), transform=f"rotate({ellipse.theta},{ellipse.cx},{ellipse.cy})",
+                          stroke="blue", fill="none")
+    
+    for polygon in polygons:
+        points_str = ' '.join([f"{x},{y}" for x, y in polygon.pts])
+        ET.SubElement(svg, 'polygon', points=points_str, stroke="red", fill="none")
+    
+    tree = ET.ElementTree(svg)
+    tree.write(output_file)
+    
+def generate_svg(ellipses, polygons, output_file, width, height):
+    svg = ET.Element('svg', xmlns="http://www.w3.org/2000/svg", width=str(width), height=str(height))
+    
+    for ellipse in ellipses:
+        if ellipse.ax == ellipse.bx:
+            write_svg_circ_arc(svg, ellipse)
+        else:
+            write_svg_ell_arc(svg, ellipse)
+    
+    for polygon in polygons:
+        points_str = ' '.join([f"{x},{y}" for x, y in polygon.pts])
+        ET.SubElement(svg, 'polygon', points=points_str, stroke="red", fill="none")
+    
+    tree = ET.ElementTree(svg)
+    tree.write(output_file)
+
+def write_svg_circ_arc(svg, cring):
+    fa = 0
+    fs = 1
+    
+    ang_start = math.atan2(cring.y1 - cring.cy, cring.x1 - cring.cx)
+    ang_end = math.atan2(cring.y2 - cring.cy, cring.x2 - cring.cx)
+    
+    C = 2 * math.pi * cring.ax
+    if cring.full or (angle_diff(ang_start, ang_end) < 2 * math.pi * math.sqrt(2) / C and angle_diff_signed(ang_start, ang_end) > 0):
+        ET.SubElement(svg, 'ellipse', cx=str(cring.cx), cy=str(cring.cy), rx=str(cring.ax), ry=str(cring.bx), stroke="red", fill="none", **{'stroke-width': "1"})
+    else:
+        x1 = cring.ax * math.cos(ang_start) + cring.cx
+        y1 = cring.ax * math.sin(ang_start) + cring.cy
+        x2 = cring.ax * math.cos(ang_end) + cring.cx
+        y2 = cring.ax * math.sin(ang_end) + cring.cy
+        if (x1 == x2 and y1 == y2) or dist(x1, y1, x2, y2) < 2.0:
+            ET.SubElement(svg, 'ellipse', cx=str(cring.cx), cy=str(cring.cy), rx=str(cring.ax), ry=str(cring.bx), stroke="red", fill="none", **{'stroke-width': "1"})
+        else:
+            if ang_start < 0:
+                ang_start += 2 * math.pi
+            if ang_end < 0:
+                ang_end += 2 * math.pi
+            if ang_end < ang_start:
+                ang_end += 2 * math.pi
+            if ang_end - ang_start > math.pi:
+                fa = 1
+            d = f"M {x1},{y1} A {cring.ax},{cring.ax} 0 {fa},{fs} {x2},{y2}"
+            ET.SubElement(svg, 'path', d=d, stroke="red", fill="none", **{'stroke-width': "1"})
+
+def write_svg_ell_arc(svg, ering):
+    fa = 0
+    fs = 1
+    
+    if ering.full:
+        ET.SubElement(svg, 'ellipse', transform=f"translate({ering.cx} {ering.cy}) rotate({ering.theta * 180 / math.pi})", rx=str(ering.ax), ry=str(ering.bx), stroke="red", fill="none", **{'stroke-width': "1"})
+    else:
+        x1, y1 = rosin_point(ering, ering.x1, ering.y1)
+        x2, y2 = rosin_point(ering, ering.x2, ering.y2)
+        if (x1 == x2 and y1 == y2) or dist(x1, y1, x2, y2) < 2.0:
+            ET.SubElement(svg, 'ellipse', transform=f"translate({ering.cx} {ering.cy}) rotate({ering.theta * 180 / math.pi})", rx=str(ering.ax), ry=str(ering.bx), stroke="red", fill="none", **{'stroke-width': "1"})
+        else:
+            ang_start = math.atan2(y1 - ering.cy, x1 - ering.cx)
+            ang_end = math.atan2(y2 - ering.cy, x2 - ering.cx)
+            if ang_start < 0:
+                ang_start += 2 * math.pi
+            if ang_end < 0:
+                ang_end += 2 * math.pi
+            if ang_end < ang_start:
+                ang_end += 2 * math.pi
+            if ang_end - ang_start > math.pi:
+                fa = 1
+            d = f"M {x1},{y1} A {ering.ax},{ering.bx} {ering.theta * 180 / math.pi} {fa},{fs} {x2},{y2}"
+            ET.SubElement(svg, 'path', d=d, stroke="red", fill="none", **{'stroke-width': "1"})
+
+def angle_diff(ang1, ang2):
+    return (ang2 - ang1) % (2 * math.pi)
+
+def angle_diff_signed(ang1, ang2):
+    return math.atan2(math.sin(ang2 - ang1), math.cos(ang2 - ang1))
+
+def rosin_point(ering, x, y):
+    cos_theta = math.cos(ering.theta)
+    sin_theta = math.sin(ering.theta)
+    x_new = ering.ax * cos_theta * x - ering.bx * sin_theta * y + ering.cx
+    y_new = ering.ax * sin_theta * x + ering.bx * cos_theta * y + ering.cy
+    return x_new, y_new
+
+def dist(x1, y1, x2, y2):
+    return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+
+def draw_ellipses_and_arcs(img, ellipses):
+    for ell in ellipses:
+        center = (int(ell.cx), int(ell.cy))
+        axes = (int(ell.ax), int(ell.bx))
+        angle = ell.theta * 180 / math.pi
+        startAngle = ell.ang_start * 180 / math.pi
+        endAngle = ell.ang_end * 180 / math.pi
+        cv2.ellipse(img, center, axes, angle, startAngle, endAngle, (0, 255, 0), 2)
+
+# Example usage in the main block
 if __name__ == "__main__":
     import sys
     import matplotlib.pyplot as plt
     img = cv2.imread(sys.argv[1])
     start = time.monotonic()
     ellipses, polygons, out_img = detect_primitives(img)
-    print("Detection took {}s".format(time.monotonic() - start))
+    print(f"Detection took {time.monotonic() - start}s")
+    
     plt.imshow(out_img)
-    plt.savefig("out_plot.png")
+    plt.savefig("out_plot_py.png")
+    
+    # Save ellipses and polygons to SVG
+    generate_svg(ellipses, polygons, 'output_py.svg', img.shape[1], img.shape[0])
 
-    # show ellipses
-    for ell in ellipses:
-        # print as: ell_label x1 y1 x2 y2 ax bx theta ang_start ang_end
-        cx = ell.cx
-        cy = ell.cy
-        ax = ell.ax
-        bx = ell.bx
-        theta = ell.theta
-        cv2.ellipse(img, (int(cx), int(cy)), (int(ax), int(bx)), theta, 0, 360, (255, 0, 0), 2)
-    cv2.imwrite("out_ell.png", img)
+    # Draw ellipses and arcs on the image
+    draw_ellipses_and_arcs(img, ellipses)
+    
+    cv2.imwrite("out_ell_py.png", img)
