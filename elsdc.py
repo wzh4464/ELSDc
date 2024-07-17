@@ -121,10 +121,10 @@ def _detect_primitives(img: np.ndarray) -> "PrimitveSet":
     )
 
 class PrimitveSet:
-    def __init__(self, ell_arr: POINTER(_Ring), ell_label_arr: POINTER(c_int),
-        ell_count: int, poly_arr: POINTER(_Polygon), 
-        poly_label_arr: POINTER(c_int), poly_count: int, 
-        output_img: POINTER(c_int), w: int, h: int
+    def __init__(self, ell_arr: POINTER(_Ring), ell_label_arr: POINTER(c_int), # type: ignore
+        ell_count: int, poly_arr: POINTER(_Polygon),  # type: ignore
+        poly_label_arr: POINTER(c_int), poly_count: int,  # type: ignore
+        output_img: POINTER(c_int), w: int, h: int # type: ignore
     ):
         self.ell_arr = ell_arr
         self.ell_label_arr = ell_label_arr
