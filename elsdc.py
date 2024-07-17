@@ -37,32 +37,14 @@ class Ring:
     """
     Represents a ring shape defined by its center, axes, angles, and label.
 
-    Args:
-        x1 (float): x-coordinate of the first point defining the ring.
-        y1 (float): y-coordinate of the first point defining the ring.
-        x2 (float): x-coordinate of the second point defining the ring.
-        y2 (float): y-coordinate of the second point defining the ring.
-        width (float): Width of the ring.
-        cx (float): x-coordinate of the center of the ring.
-        cy (float): y-coordinate of the center of the ring.
-        theta (float): Angle of rotation of the ring.
-        ax (float): Major axis length of the ring.
-        bx (float): Minor axis length of the ring.
-        ang_start (float): Starting angle of the ring.
-        ang_end (float): Ending angle of the ring.
-        wmin (float): Minimum width of the ring.
-        wmax (float): Maximum width of the ring.
-        full (int): Flag indicating if the ring is full or partial.
-        label (int): Label associated with the ring.
-
     Members:
-        center (Tuple[int, int]): Center of the ring.
-        axes (Tuple[int, int]): Major and minor axes of the ring.
-        angle (float): Angle of rotation of the ring.
-        startAngle (float): Starting angle of the ring.
-        endAngle (float): Ending angle of the ring.
-        full (int): Flag indicating if the ring is full or partial.
-        label (int): Label associated with the ring.
+        - center (Tuple[int, int]): Center of the ring.
+        - axes (Tuple[int, int]): Major and minor axes of the ring.
+        - angle (float): Angle of rotation of the ring.
+        - startAngle (float): Starting angle of the ring.
+        - endAngle (float): Ending angle of the ring.
+        - full (int): Flag indicating if the ring is full or partial.
+        - label (int): Label associated with the ring.
         
     Methods:
         draw(img: np.ndarray) -> None: Draw the ring on the image.
@@ -165,7 +147,7 @@ class PrimitveSet:
     def __del__(self):
         self.release_memory()
 
-def draw_ellipses_and_arcs(img, ellipses):
+def draw_ellipses_and_arcs(img, ellipses: List[Ring]):
     for ell in ellipses:
         ell.draw(img)
 
