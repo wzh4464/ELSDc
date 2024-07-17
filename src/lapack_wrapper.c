@@ -22,7 +22,15 @@
 
 ------------------------------------------------------------------------------*/
 
+#ifdef __APPLE__
+#include <lapacke.h>
+#define dsyev LAPACKE_dsyev
+#include <stdio.h>
+// 添加其他需要重定义的LAPACK函数
+#else
 #include <lapack.h>
+#endif
+
 #include "lapack_wrapper.h"
 
 typedef long int integer;
@@ -43,18 +51,30 @@ typedef double doublereal;
     'n' number of unknowns;
     'A' coefficients of the equations. 
  */
-void lap_eig( double *A, int n ) 
+void lap_eig(double *A, int n) 
 {
-  char jobz = 'V';
-  char uplo = 'U';
-  integer M = (integer)n;
-  integer LDA = M;
-  integer LWORK = 24;
-  integer INFO;
-  doublereal W[6];
-  doublereal WORK[LWORK];
-
-  /* Solve eigenproblem */
-  dsyev( &jobz, &uplo, &M, (doublereal*)A, &LDA, W, WORK, &LWORK, &INFO ); 
+#ifdef __APPLE__
+    // macOS 版本使用 LAPACKE 接口
+    int info;
+    info = LAPACKE_dsyev(LAPACK_COL_MAJOR, 'V', 'U', n, A, n, A + n*n);
+    if (info != 0) {
+        fprintf(stderr, "LAPACKE_dsyev failed with error %d\n", info);
+    }
+#else
+    // 其他系统使用原始 LAPACK 接口
+    char jobz = 'V';
+    char uplo = 'U';
+    integer M = (integer)n;
+    integer LDA = M;
+    integer LWORK = 24;
+    integer INFO;
+    doublereal W[6];
+    doublereal WORK[LWORK];
+    
+    dsyev_(&jobz, &uplo, &M, (doublereal*)A, &LDA, W, WORK, &LWORK, &INFO);
+    
+    if (INFO != 0) {
+        fprintf(stderr, "dsyev_ failed with error %d\n", (int)INFO);
+    }
+#endif
 }
-

@@ -10,7 +10,13 @@ import math
 try:
     elsdc = CDLL(os.path.join(os.path.dirname(os.path.realpath(__file__)), "libelsdc.so"))
 except OSError:
+    # push current path to CURR_PATH
+    CURR_PATH = os.getcwd()
+    # cd to folder that contains current file
+    os.chdir(os.path.dirname(os.path.realpath(__file__)))
     os.system("make shared")
+    # cd back to original path
+    os.chdir(CURR_PATH)
     elsdc = CDLL(os.path.join(os.path.dirname(os.path.realpath(__file__)), "libelsdc.so"))
 
 class _Ring(Structure):
@@ -159,7 +165,6 @@ if __name__ == "__main__":
     start = time.monotonic()
     ellipses, polygons, out_img = detect_primitives(img)
     print(f"Detection took {time.monotonic() - start}s")
-    
     plt.imshow(out_img)
     plt.savefig("out_plot_py.png")
     
