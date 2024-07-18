@@ -5,3 +5,5 @@ elsdc
 *.o
 __pycache__
 *.so
+*temp
+*tmp
