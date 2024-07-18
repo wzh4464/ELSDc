@@ -28,6 +28,10 @@
 #define POLYGON 'p'
 #define CURVE   'c'
 
+#include "image.h"
+#include "polygon.h"
+#include "ring.h"
+
 void ELSDc( PImageDouble in, int *ell_count, Ring **ell_out, int **ell_labels,
             int *poly_count, Polygon **poly_out, int **poly_labels, 
             PImageInt out );
