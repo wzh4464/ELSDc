@@ -24,27 +24,42 @@
 
 #ifdef __APPLE__
 #include <lapacke.h>
-#define dsyev LAPACKE_dsyev
 #include <stdio.h>
-// 添加其他需要重定义的LAPACK函数
+#define USE_LAPACKE_INTERFACE
+#elif defined(__linux__)
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int is_ubuntu() {
+    FILE *fp = fopen("/etc/os-release", "r");
+    if (!fp) return 0;
+
+    char buf[256];
+    while (fgets(buf, sizeof(buf), fp)) {
+        if (strstr(buf, "Ubuntu")) {
+            fclose(fp);
+            return 1;
+        }
+    }
+    fclose(fp);
+    return 0;
+}
+
+#ifdef USE_LAPACKE
+#include <lapacke.h>
+#define USE_LAPACKE_INTERFACE
 #else
 #include <lapack.h>
+#endif
+#else
+#error "Unsupported platform"
 #endif
 
 #include "lapack_wrapper.h"
 
 typedef long int integer;
 typedef double doublereal;
-
-
-/*----------------------------------------------------------------------------*/
-/** Header of lapack function for computing the eigen-decomposition of a
-    matrix of double. 
- */
-// void dsyev(char *jobz, char *uplo, integer *n, doublereal *a, 
-//            integer *lda, doublereal *w, doublereal *work, integer *lwork, 
-//            integer *info);
-
 
 /*----------------------------------------------------------------------------*/
 /** Solve linear system. 
@@ -53,15 +68,13 @@ typedef double doublereal;
  */
 void lap_eig(double *A, int n) 
 {
-#ifdef __APPLE__
-    // macOS 版本使用 LAPACKE 接口
+#ifdef USE_LAPACKE_INTERFACE
     int info;
-    info = LAPACKE_dsyev(LAPACK_COL_MAJOR, 'V', 'U', n, A, n, A + n*n);
+    info = LAPACKE_dsyev(LAPACK_ROW_MAJOR, 'V', 'U', n, A, n, A + n*n);
     if (info != 0) {
         fprintf(stderr, "LAPACKE_dsyev failed with error %d\n", info);
     }
 #else
-    // 其他系统使用原始 LAPACK 接口
     char jobz = 'V';
     char uplo = 'U';
     integer M = (integer)n;
