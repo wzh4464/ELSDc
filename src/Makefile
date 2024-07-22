@@ -25,8 +25,8 @@
 ifeq ($(shell hostname),mercury)
 LIB= -L/home/zihan/lib
 endif
-OPT= -O3
-# OPT= -g
+# OPT= -O3
+OPT= -g
 
 ifeq ($(shell uname),Darwin)
 LDFLAGS=-L/opt/homebrew/opt/lapack/lib
