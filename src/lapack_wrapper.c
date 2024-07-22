@@ -70,10 +70,18 @@ void lap_eig(double *A, int n)
 {
 #ifdef USE_LAPACKE_INTERFACE
     int info;
-    info = LAPACKE_dsyev(LAPACK_COL_MAJOR, 'V', 'U', n, A, n, A + n*n);
+    double* W = (double*)malloc(n * sizeof(double)); // 动态分配内存用于存储特征值
+    if (W == NULL) {
+        fprintf(stderr, "Failed to allocate memory for eigenvalues.\n");
+        return;
+    }
+    
+    info = LAPACKE_dsyev(LAPACK_COL_MAJOR, 'V', 'U', n, A, n, W);
     if (info != 0) {
         fprintf(stderr, "LAPACKE_dsyev failed with error %d\n", info);
     }
+
+    free(W); // 释放特征值数组的内存
 #else
     char jobz = 'V';
     char uplo = 'U';
