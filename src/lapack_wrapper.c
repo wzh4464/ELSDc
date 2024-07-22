@@ -70,7 +70,7 @@ void lap_eig(double *A, int n)
 {
 #ifdef USE_LAPACKE_INTERFACE
     int info;
-    info = LAPACKE_dsyev(LAPACK_ROW_MAJOR, 'V', 'U', n, A, n, A + n*n);
+    info = LAPACKE_dsyev(LAPACK_COL_MAJOR, 'V', 'U', n, A, n, A + n*n);
     if (info != 0) {
         fprintf(stderr, "LAPACKE_dsyev failed with error %d\n", info);
     }

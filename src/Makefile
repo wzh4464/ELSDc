@@ -28,7 +28,9 @@ UNAME_S := $(shell uname -s)
 OPT = -O3
 
 # 检查发行版
-IS_UBUNTU := $(shell grep -i ubuntu /etc/os-release > /dev/null && echo 1 || echo 0)
+ifeq ($(UNAME_S), Linux)
+	IS_UBUNTU := $(shell grep -i ubuntu /etc/os-release > /dev/null && echo 1 || echo 0)
+endif
 
 # 根据操作系统设置特定的编译和链接选项
 ifeq ($(UNAME_S), Darwin)
