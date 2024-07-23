@@ -17,18 +17,31 @@
 #  makefile - This file belongs to ELSDc project (Ellipse and Line Segment
 #             Detector with continuous validation).
 
+# macos use dylib, linux use so
+UNAME_S := $(shell uname -s)
+
+ifeq ($(UNAME_S), Darwin)
+	LIB_EXTENSION = dylib
+else
+	LIB_EXTENSION = so
+endif
+
+#  pass debug flag to the low-level makefile
+# e.g. make shared DEBUG=1
+DEBUG ?= 0
+
 elsdc:
-	make -C src
+	make -C src DEBUG=$(DEBUG)
 	mv src/elsdc .
 
 shared:
-	make -C src shared
-	mv src/libelsdc.so .
+	make -C src shared DEBUG=$(DEBUG)
+	mv -f src/libelsdc.$(LIB_EXTENSION) .
 
 test:
 	./elsdc shapes.pgm
 
 clean:
 	rm -f elsdc
-	rm -f libelsdc.so
+	rm -f libelsdc.$(LIB_EXTENSION)
 	rm -f src/*.o
