@@ -35,16 +35,16 @@ endif
 # 通过shell命令uname来检测操作系统
 UNAME_S := $(shell uname -s)
 
-# if comupter name is mercury, use the following line
-ifeq ($(shell hostname),mercury)
-LIB= -L/home/zihan/lib
-endif
-
 # lib extension
 ifeq ($(UNAME_S), Darwin)
 	LIB_EXTENSION = dylib
 else
 	LIB_EXTENSION = so
+endif
+
+# 检查发行版
+ifeq ($(UNAME_S), Linux)
+	IS_UBUNTU := $(shell grep -i ubuntu /etc/os-release > /dev/null && echo 1 || echo 0)
 endif
 
 # 根据操作系统设置特定的编译和链接选项
@@ -68,15 +68,11 @@ else ifeq ($(UNAME_S), Linux)
 		LAPACK_LIBS = -llapack -lblas -lgfortran
 	endif
 else
-LAPACK_LIBS=-llapack
+	$(error Unsupported platform)
 endif
 
 elsdc: main.c pgm.c svg.c elsdc.c gauss.c curve_grow.c polygon.c ring.c ellipse_fit.c rectangle.c iterator.c image.c lapack_wrapper.c misc.c
-	if [ "$(shell hostname)" = "mercury" ]; then \
-		cc $(OPT) $(LIB) -o $@ $^ -llapack -lm -lblas -lgfortran; \
-	else \
-		cc $(OPT) $(LIB) $(CPPFLAGS) $(LDFLAGS) $(LAPACK_FLAGS) -o $@ $^ $(LAPACK_LIBS) -lm; \
-	fi
+	cc $(OPT) $(CPPFLAGS) $(LDFLAGS) $(LAPACK_FLAGS) -o $@ $^ $(LAPACK_LIBS) -lm
 
 shared: python_interface.c pgm.c svg.c elsdc.c gauss.c curve_grow.c polygon.c ring.c ellipse_fit.c rectangle.c iterator.c image.c lapack_wrapper.c misc.c
 	cc -c $(OPT) $(CPPFLAGS) $(LAPACK_FLAGS) -fpic $^
